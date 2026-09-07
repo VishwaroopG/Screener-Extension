@@ -58,7 +58,7 @@
   });
 
   function drawSparkline(containerEl, dataPoints, color) {
-    if (!dataPoints || dataPoints.length < 2) {
+    if (!Array.isArray(dataPoints) || dataPoints.length < 2) {
       containerEl.innerHTML = '<span style="color:#9aa0a6;font-size:12px;">No chart data</span>';
       return;
     }
