@@ -1199,11 +1199,24 @@ document.addEventListener('DOMContentLoaded', () => {
     'FTSE 100': '^FTSE',
     'NIKKEI 225': '^N225',
     'HANG SENG': '^HSI',
+    'Singapore (STI)': '^STI',
     'GOLD Futures': 'GC=F',
     'SILVER Futures': 'SI=F',
     'CRUDE OIL': 'CL=F',
     'Bitcoin': 'BTC-USD',
-    'Ethereum': 'ETH-USD'
+    'Ethereum': 'ETH-USD',
+    'NIFTY METAL': '^CNXMETAL',
+    'NIFTY REALTY': '^CNXREALTY',
+    'NIFTY PSU BANK': '^CNXPSUBANK',
+    'NIFTY MEDIA': '^CNXMEDIA',
+    'INDIA VIX': '^INDIAVIX',
+    'VIX': '^VIX',
+    'DAX': '^GDAXI',
+    'CAC 40': '^FCHI',
+    'ASX 200': '^AXJO',
+    'USD/INR': 'INR=X',
+    'EUR/USD': 'EURUSD=X',
+    'GBP/USD': 'GBPUSD=X'
   };
 
   if (pinnedDisplayName) {
