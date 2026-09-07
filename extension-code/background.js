@@ -235,10 +235,13 @@ async function fetchIndices() {
 
     await Promise.all(indexConfigs.map(async (cfg) => {
       try {
-        const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(cfg.symbol)}?interval=1d&range=1d`);
+        const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(cfg.symbol)}?interval=1d&range=7d`);
         if (res.ok) {
           const data = await res.json();
           const meta = data.chart.result[0].meta;
+          const quotes = data.chart.result[0].indicators?.quote?.[0]?.close || [];
+          const sparkline = quotes.filter(p => p !== null && p !== undefined).map(p => parseFloat(p.toFixed(2)));
+
           const price = meta.regularMarketPrice;
           const prev = meta.chartPreviousClose || meta.previousClose;
           const diff = prev ? price - prev : 0;
@@ -250,7 +253,8 @@ async function fetchIndices() {
             rawPrice: price,
             changePct: Math.abs(parseFloat(pct)).toFixed(2) + '%',
             changeDir: diff >= 0 ? 'up' : 'down',
-            curr: realCurr
+            curr: realCurr,
+            sparkline: sparkline
           };
         }
       } catch(e) {}

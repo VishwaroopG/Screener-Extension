@@ -1343,16 +1343,17 @@ document.addEventListener('DOMContentLoaded', () => {
       newsContainer.innerHTML = '<div class="screener-loading" style="text-align:center; padding:20px;">Fetching latest financial news...</div>';
       
       let allNewsHtml = '';
-      for (const ticker of list.slice(0, 3)) { // fetch news for top 3 to be fast
+      const results = await Promise.all(list.slice(0, 15).map(async (ticker) => {
           try {
             const feedRes = await fetch(`https://news.google.com/rss/search?q=${ticker}+stock&hl=en-IN&gl=IN&ceid=IN:en`);
             const text = await feedRes.text();
             const parser = new DOMParser();
             const xml = parser.parseFromString(text, 'text/xml');
             const items = Array.from(xml.querySelectorAll('item')).slice(0, 2);
+            let html = '';
             
             if (items.length > 0) {
-              allNewsHtml += `<div style="font-size:12px; font-weight:bold; color:#188038; margin-top:12px; margin-bottom:4px; padding:0 12px;">${ticker} NEWS</div>`;
+              html += `<div style="font-size:12px; font-weight:bold; color:var(--accent-color, #1a73e8); margin-top:12px; margin-bottom:4px; padding:0 12px;">${ticker} NEWS</div>`;
               items.forEach(item => {
                 const title = item.querySelector('title')?.textContent || '';
                 const link = item.querySelector('link')?.textContent || '';
@@ -1360,18 +1361,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 const source = item.querySelector('source')?.textContent || 'Google News';
                 const dateStr = pubDate ? new Date(pubDate).toLocaleDateString() : '';
                 
-                allNewsHtml += `
-                  <div style="padding: 12px; border-bottom: 1px solid #dadce0;">
-                    <a href="${link}" target="_blank" style="color:#202124; text-decoration:none; font-size:14px; display:block; margin-bottom:4px;">${title}</a>
-                    <div style="font-size:11px; color:#5f6368;">${source} &bull; ${dateStr}</div>
+                html += `
+                  <div style="padding: 12px; border-bottom: 1px solid var(--border-color);">
+                    <a href="${link}" target="_blank" style="color:var(--text-color); text-decoration:none; font-size:14px; display:block; margin-bottom:4px;">${title}</a>
+                    <div style="font-size:11px; color:var(--label-color);">${source} &bull; ${dateStr}</div>
                   </div>
                 `;
               });
             }
+            return html;
           } catch (e) {
             console.error('News error for', ticker, e);
+            return '';
           }
-      }
+      }));
+      allNewsHtml = results.join('');
       
       if (allNewsHtml === '') {
         newsContainer.innerHTML = '<div style="text-align:center;color:#6c757d;padding:20px;">No recent news found for your portfolio.</div>';
@@ -1534,6 +1538,7 @@ setInterval(() => {
     });
   } catch(e) {}
 }, 1000);
+
 
 
 
