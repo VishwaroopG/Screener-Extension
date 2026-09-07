@@ -23,6 +23,27 @@ body {
   box-sizing: border-box;
 }
 
+/* Material Design 3 Custom Scrollbars (Light Mode) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #bdc1c6;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9aa0a6;
+}
+
 .screener-header {
   display: flex;
   justify-content: space-between;
@@ -411,7 +432,29 @@ body {
 body.dark-mode {
   background-color: #2d3139;
   color: #f0f2f5;
+  color-scheme: dark;
 }
+/* Custom Dark Mode Scrollbars for all overflowing containers */
+body.dark-mode ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+body.dark-mode ::-webkit-scrollbar-track {
+  background: transparent;
+}
+body.dark-mode ::-webkit-scrollbar-corner {
+  background: transparent;
+}
+body.dark-mode ::-webkit-scrollbar-thumb {
+  background: #5a6375;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: #79a8ff;
+}
+
 body.dark-mode .screener-header,
 body.dark-mode .screener-tabs,
 body.dark-mode .screener-view {
@@ -613,6 +656,7 @@ body *,
   --link-green: #188038;
   --row-even: #f8f9fa;
   --row-odd: #ffffff;
+  --row-hover: #e8eaed;
   --header-bg: #f8f9fa;
   --verdict-bg: #f1f3f4;
   --verdict-border: transparent;
@@ -629,6 +673,7 @@ body.dark-mode {
   --link-green: #85d996;
   --row-even: #353a45;
   --row-odd: #2d3139;
+  --row-hover: #414755;
   --header-bg: #353a45;
   --verdict-bg: #353a45;
   --verdict-border: #484f5f;

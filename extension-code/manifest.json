@@ -1,13 +1,13 @@
 {
   "manifest_version": 3,
   "name": "Screener Pro – Live Watchlist & Ticker",
-  "version": "2.0.47",
+  "version": "2.0.65",
   "icons": {
     "16": "icon_16.png",
     "48": "icon_48.png",
     "128": "icon_128.png"
   },
-  "description": "Screener extension – live watchlist, ticker tape, corporate action alerts. Support: https://buymeacoffee.com/vgexperiments",
+  "description": "Live Indian & Global stock watchlist, draggable portfolios, and ticker tape. Support: buymeacoffee.com/vgexperiments",
   "permissions": [
     "sidePanel",
     "storage",
@@ -42,12 +42,10 @@
         "<all_urls>"
       ],
       "js": [
-        "ticker_tape.js",
-        "floating_widget.js"
+        "ticker_tape.js"
       ],
       "css": [
-        "ticker_tape.css",
-        "floating_widget.css"
+        "ticker_tape.css"
       ]
     }
   ],

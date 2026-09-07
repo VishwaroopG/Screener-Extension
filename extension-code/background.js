@@ -29,7 +29,15 @@ async function fetchYahooData(symbol) {
     
     const companyName = meta.shortName || meta.longName || symbol;
     const isIndex = meta.instrumentType === 'INDEX' || symbol.startsWith('^');
-    const curr = meta.currency === 'INR' ? '₹' : (meta.currency === 'USD' ? '$' : (meta.currency ? meta.currency + ' ' : ''));
+    let currSym = '';
+    if (meta.currency === 'INR') currSym = '₹';
+    else if (meta.currency === 'USD') currSym = '$';
+    else if (meta.currency === 'GBP') currSym = '£';
+    else if (meta.currency === 'EUR') currSym = '€';
+    else if (meta.currency === 'JPY') currSym = '¥';
+    else if (meta.currency === 'SGD') currSym = 'SGD ';
+    else currSym = meta.currency ? meta.currency + ' ' : '';
+    const curr = currSym;
     const price = meta.regularMarketPrice;
     const prevClose = meta.chartPreviousClose || meta.previousClose;
     let diff = 0;
@@ -71,6 +79,49 @@ async function fetchYahooData(symbol) {
         sparkline = quotes.filter(p => p !== null && p !== undefined).map(p => parseFloat(p.toFixed(2)));
       }
     } catch(e) {}
+
+    // Fetch fundamental data from Finviz for US stocks
+    if (!isIndex) {
+      try {
+        const finvizRes = await fetch(`https://finviz.com/quote.ashx?t=${encodeURIComponent(sym.replace('.NS', ''))}`);
+        if (finvizRes.ok) {
+          const finvizHtml = await finvizRes.text();
+          
+          const extractFinviz = (field) => {
+            const regex = new RegExp(`>${field}<\\/div><\\/td><td[^>]*>.*?<div[^>]*>.*?<b>(.*?)<\\/b>`, 's');
+            const match = finvizHtml.match(regex);
+            if (match && match[1]) {
+              return match[1].replace(/<[^>]+>/g, '').trim();
+            }
+            // fallback if it's not inside <b> tags
+            const regex2 = new RegExp(`>${field}<\\/div><\\/td><td[^>]*>.*?<div[^>]*>.*?<span[^>]*>(.*?)<\\/span>`, 's');
+            const match2 = finvizHtml.match(regex2);
+            if (match2 && match2[1]) {
+              return match2[1].replace(/<[^>]+>/g, '').trim();
+            }
+            return null;
+          };
+
+          const pe = extractFinviz('P\\/E');
+          if (pe && pe !== '-') ratios['Stock P/E'] = pe;
+
+          const roi = extractFinviz('ROI');
+          if (roi && roi !== '-') ratios['ROCE'] = roi; // mapping ROI to ROCE for UI consistency
+          
+          const mcap = extractFinviz('Market Cap');
+          if (mcap && mcap !== '-') ratios['Market Cap'] = mcap;
+          
+          const div = extractFinviz('Dividend %');
+          if (div && div !== '-') ratios['Dividend Yield'] = div;
+
+          const pb = extractFinviz('P\\/B');
+          if (pb && pb !== '-') ratios['Price to book value'] = pb;
+          
+          const roe = extractFinviz('ROE');
+          if (roe && roe !== '-') ratios['ROE'] = roe;
+        }
+      } catch(e) {}
+    }
 
     return {
       success: true,
@@ -168,18 +219,19 @@ async function fetchIndices() {
       else if (curr === 'GBP') prefix = '£';
       else if (curr === 'EUR') prefix = '€';
       else if (curr === 'JPY') prefix = '¥';
+      else if (curr === 'SGD') prefix = 'SGD ';
       const locale = curr === 'INR' ? 'en-IN' : 'en-US';
-      return prefix + ' ' + Number(num).toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      return prefix + Number(num).toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
 
     const defaultPinned = [
-      { key: 'BANK NIFTY', symbol: '^NSEBANK', curr: 'INR' },
-      { key: 'NIFTY 50', symbol: '^NSEI', curr: 'INR' },
-      { key: 'S&P 500', symbol: '^GSPC', curr: 'USD' },
-      { key: 'SENSEX', symbol: '^BSESN', curr: 'INR' }
+      { key: 'S&P 500 (USA)', symbol: '^GSPC', curr: 'USD' },
+      { key: 'NIKKEI (Japan)', symbol: '^N225', curr: 'JPY' },
+      { key: 'STI (Singapore)', symbol: '^STI', curr: 'SGD' },
+      { key: 'FTSE 100 (UK)', symbol: '^FTSE', curr: 'GBP' }
     ];
     const storagePinned = (await chrome.storage.local.get(['pinnedIndices'])).pinnedIndices;
-    const indexConfigs = storagePinned && storagePinned.length === 4 ? storagePinned : defaultPinned;
+    const indexConfigs = Array.isArray(storagePinned) ? storagePinned : defaultPinned;
 
     await Promise.all(indexConfigs.map(async (cfg) => {
       try {
@@ -191,13 +243,14 @@ async function fetchIndices() {
           const prev = meta.chartPreviousClose || meta.previousClose;
           const diff = prev ? price - prev : 0;
           const pct = prev ? ((diff / prev) * 100).toFixed(2) : '0.00';
+          const realCurr = meta.currency || cfg.curr || 'USD';
           indices[cfg.key] = {
             symbol: cfg.symbol,
-            price: formatPrice(price, cfg.curr),
+            price: formatPrice(price, realCurr),
             rawPrice: price,
             changePct: Math.abs(parseFloat(pct)).toFixed(2) + '%',
             changeDir: diff >= 0 ? 'up' : 'down',
-            curr: cfg.curr
+            curr: realCurr
           };
         }
       } catch(e) {}
@@ -563,12 +616,12 @@ async function fetchFastPrices() {
   try {
     const data = await chrome.storage.local.get(['pinnedIndices', 'screenerWatchlist', 'portfolios', 'cachedData', 'marketIndices']);
     const defaultPinned = [
-      { key: 'BANK NIFTY', symbol: '^NSEBANK', curr: 'INR' },
-      { key: 'NIFTY 50', symbol: '^NSEI', curr: 'INR' },
-      { key: 'S&P 500', symbol: '^GSPC', curr: 'USD' },
-      { key: 'SENSEX', symbol: '^BSESN', curr: 'INR' }
+      { key: 'S&P 500 (USA)', symbol: '^GSPC', curr: 'USD' },
+      { key: 'NIKKEI (Japan)', symbol: '^N225', curr: 'JPY' },
+      { key: 'STI (Singapore)', symbol: '^STI', curr: 'SGD' },
+      { key: 'FTSE 100 (UK)', symbol: '^FTSE', curr: 'GBP' }
     ];
-    const pinnedIndices = data.pinnedIndices && data.pinnedIndices.length === 4 ? data.pinnedIndices : defaultPinned;
+    const pinnedIndices = Array.isArray(data.pinnedIndices) ? data.pinnedIndices : defaultPinned;
     const screenerWatchlist = data.screenerWatchlist || [];
     const portfolios = data.portfolios || {};
     const cachedData = data.cachedData || {};
@@ -629,8 +682,9 @@ async function fetchFastPrices() {
             else if (idx.curr === 'GBP') prefix = '£';
             else if (idx.curr === 'EUR') prefix = '€';
             else if (idx.curr === 'JPY') prefix = '¥';
+            else if (idx.curr === 'SGD') prefix = 'SGD ';
             const locale = idx.curr === 'INR' ? 'en-IN' : 'en-US';
-            const formatted = `${prefix} ${price.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            const formatted = `${prefix}${price.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             
             const oldIdx = marketIndices[idx.key];
             let flash = oldIdx?.flash;
@@ -679,10 +733,18 @@ async function fetchFastPrices() {
 
             if (!cachedData[ticker]) cachedData[ticker] = { ratios: {} };
             if (!cachedData[ticker].ratios) cachedData[ticker].ratios = {};
-
-            const curr = cachedData[ticker]?.currency === 'USD' ? '$' : (cachedData[ticker]?.currency === 'INR' ? '₹' : (cachedData[ticker]?.isIndex ? '' : '₹'));
+            const c = cachedData[ticker]?.currency;
+            let currSym = '';
+            if (c === 'INR') currSym = '₹';
+            else if (c === 'USD') currSym = '$';
+            else if (c === 'GBP') currSym = '£';
+            else if (c === 'EUR') currSym = '€';
+            else if (c === 'JPY') currSym = '¥';
+            else if (c === 'SGD') currSym = 'SGD ';
+            else currSym = c ? c + ' ' : (cachedData[ticker]?.isIndex ? '' : '₹');
+            const curr = currSym;
             const currentStr = cachedData[ticker].ratios['Current Price'];
-            const formattedPrice = `${curr} ${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            const formattedPrice = `${curr}${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
             if (currentStr !== formattedPrice) {
               const oldNum = parseFloat((currentStr || '0').replace(/[^\d\.]/g, ''));

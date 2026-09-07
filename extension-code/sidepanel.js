@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnExportCsv = document.getElementById('btn-export-csv');
   const newsContainer = document.getElementById('news-container');
 
-  let activePortfolio = 'Default';
+  let activePortfolio = 'Sample';
   // Tab Switching Logic
   function switchTab(activeTab, activeView) {
     [tabSearch, tabNews, tabActions].forEach(t => t && t.classList.remove('active'));
@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const svgSun = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 0 0 0-1.41.996.996 0 0 0 0 1.41l1.06 1.06c.39.39.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>`;
   const svgPause = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
   const svgPlay = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+  const svgEye = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>`;
+  const svgEyeOff = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg>`;
 
   function applyTheme(theme) {
     if (theme === 'dark') {
@@ -192,6 +194,18 @@ document.addEventListener('DOMContentLoaded', () => {
     speedCustomInput.addEventListener('click', (e) => e.stopPropagation());
   }
 
+  // Clickable preset labels (0.5x, 1.0x, 2.0x, 3.0x)
+  const speedPresets = document.querySelectorAll('.speed-preset');
+  speedPresets.forEach(preset => {
+    preset.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const val = parseFloat(preset.getAttribute('data-speed'));
+      if (!isNaN(val)) {
+        setSpeedMultiplier(val);
+      }
+    });
+  });
+
   // Load Initial Speed
   chrome.storage.local.get(['tapeSpeedMultiplier', 'tapeSpeed'], (res) => {
     let initialM = 1.0;
@@ -204,7 +218,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const tapePauseBtn = document.getElementById('tape-pause-btn');
+  const tapeVisibilityBtn = document.getElementById('tape-visibility-btn');
   let isTapePaused = false;
+  let isTapeVisible = true;
 
   function updatePauseUI(paused) {
     isTapePaused = paused === true;
@@ -219,15 +235,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Load Initial Pause State from Storage
-  chrome.storage.local.get(['tapePaused'], (res) => {
+  function updateVisibilityUI(visible) {
+    isTapeVisible = visible !== false; // default true
+    if (!tapeVisibilityBtn) return;
+    tapeVisibilityBtn.innerHTML = isTapeVisible ? svgEye : svgEyeOff;
+    tapeVisibilityBtn.title = isTapeVisible ? 'Hide Ticker Tape' : 'Show Ticker Tape';
+    tapeVisibilityBtn.setAttribute('aria-label', isTapeVisible ? 'Hide Ticker Tape' : 'Show Ticker Tape');
+  }
+
+  // Load Initial States from Storage
+  chrome.storage.local.get(['tapePaused', 'tapeVisible'], (res) => {
     updatePauseUI(res.tapePaused === true);
+    updateVisibilityUI(res.tapeVisible !== false);
   });
 
   // Listen for storage changes from any other window/panel
   chrome.storage.onChanged.addListener((changes, namespace) => {
-    if (namespace === 'local' && changes.tapePaused !== undefined) {
-      updatePauseUI(changes.tapePaused.newValue === true);
+    if (namespace === 'local') {
+      if (changes.tapePaused !== undefined) {
+        updatePauseUI(changes.tapePaused.newValue === true);
+      }
+      if (changes.tapeVisible !== undefined) {
+        updateVisibilityUI(changes.tapeVisible.newValue !== false);
+      }
     }
   });
 
@@ -267,6 +297,122 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  if (tapeVisibilityBtn) {
+    tapeVisibilityBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const nextState = !isTapeVisible;
+
+      // 1. Instant optimistic UI update (0ms latency)
+      updateVisibilityUI(nextState);
+
+      // 2. Persist state to storage
+      chrome.storage.local.set({ tapeVisible: nextState });
+
+      // 3. Notify background service worker
+      try {
+        chrome.runtime.sendMessage({ type: 'SET_TAPE_VISIBLE', isVisible: nextState }, () => {
+          if (chrome.runtime.lastError) {}
+        });
+      } catch (err) {}
+
+      // 4. Directly broadcast to all open tabs for instant content script response
+      try {
+        if (chrome.tabs && chrome.tabs.query) {
+          chrome.tabs.query({}, (tabs) => {
+            for (const t of (tabs || [])) {
+              if (t && t.id) {
+                chrome.tabs.sendMessage(t.id, { type: 'TAPE_VISIBILITY_UPDATE', isVisible: nextState }, () => {
+                  if (chrome.runtime.lastError) {}
+                });
+              }
+            }
+          });
+        }
+      } catch (err) {}
+    });
+  }
+
+  // --- Domain Disable Logic ---
+  const tapeDomainBtn = document.getElementById('tape-domain-btn');
+  let currentDomain = '';
+  let disabledDomains = [];
+
+  const svgDomainDisabled = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#d93025"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/></svg>';
+  const svgDomainEnabled = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>';
+
+  function updateDomainUI() {
+    if (!tapeDomainBtn || !currentDomain) return;
+    const isDisabled = disabledDomains.includes(currentDomain);
+    tapeDomainBtn.innerHTML = isDisabled ? svgDomainDisabled : '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/></svg>';
+    tapeDomainBtn.title = isDisabled ? `Enable on ${currentDomain}` : `Disable on ${currentDomain}`;
+    
+    if (isDisabled) {
+      tapeDomainBtn.style.color = '#d93025';
+    } else {
+      tapeDomainBtn.style.color = ''; // reset to default
+    }
+  }
+
+  // Get current active tab
+  chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+    if (tabs && tabs.length > 0 && tabs[0].url) {
+      try {
+        currentDomain = new URL(tabs[0].url).hostname;
+        chrome.storage.local.get(['disabledDomains'], (res) => {
+          disabledDomains = res.disabledDomains || [];
+          updateDomainUI();
+        });
+      } catch (e) {}
+    }
+  });
+
+  if (tapeDomainBtn) {
+    tapeDomainBtn.addEventListener('click', () => {
+      if (!currentDomain) return;
+      const isCurrentlyDisabled = disabledDomains.includes(currentDomain);
+      if (isCurrentlyDisabled) {
+        disabledDomains = disabledDomains.filter(d => d !== currentDomain);
+      } else {
+        disabledDomains.push(currentDomain);
+      }
+      
+      chrome.storage.local.set({ disabledDomains }, () => {
+        updateDomainUI();
+        // Send message to active tab to show/hide instantly
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+          if (tabs && tabs[0].id) {
+            chrome.tabs.sendMessage(tabs[0].id, { type: 'TAPE_DOMAIN_TOGGLE', disabled: !isCurrentlyDisabled }, () => {
+              if (chrome.runtime.lastError) {}
+            });
+          }
+        });
+      });
+    });
+  }
+
+  // When tab changes, update domain UI
+  chrome.tabs.onActivated.addListener((activeInfo) => {
+    chrome.tabs.get(activeInfo.tabId, (tab) => {
+      if (tab && tab.url) {
+        try {
+          currentDomain = new URL(tab.url).hostname;
+          updateDomainUI();
+        } catch (e) {}
+      }
+    });
+  });
+  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (tab.active && tab.url) {
+      try {
+        currentDomain = new URL(tab.url).hostname;
+        updateDomainUI();
+      } catch (e) {}
+    }
+  });
+
+
+
   // About & Support Modal
   const btnAbout = document.getElementById('btn-about');
   const aboutModal = document.getElementById('about-modal');
@@ -290,14 +436,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   // --- Multi-Portfolio Logic ---
-  function loadPortfolios() {
+  const btnRenamePortfolio = document.getElementById('btn-rename-portfolio');
+  
+  function loadPortfolios(callback) {
     chrome.storage.local.get(['portfolios', 'screenerWatchlist'], (res) => {
       let portfolios = res.portfolios || {};
+      let needsSave = false;
       
-      // Migration for old users
+      // Migration for old users & Default override
+      if (portfolios['Default'] && !portfolios['Sample']) {
+        let listToMigrate = portfolios['Default'];
+        if (listToMigrate.length === 0) {
+           listToMigrate = ['AAPL', 'MSFT', 'NVDA', 'TSLA'];
+        }
+        portfolios['Sample'] = listToMigrate;
+        delete portfolios['Default'];
+        if (activePortfolio === 'Default') activePortfolio = 'Sample';
+        needsSave = true;
+      }
+
       if (Object.keys(portfolios).length === 0) {
-        portfolios['Default'] = res.screenerWatchlist || [];
-        chrome.storage.local.set({ portfolios });
+        // Pre-populate with top US stocks if empty
+        let initialList = res.screenerWatchlist && res.screenerWatchlist.length > 0 ? res.screenerWatchlist : ['AAPL', 'MSFT', 'NVDA', 'TSLA'];
+        portfolios['Sample'] = initialList;
+        if (activePortfolio === 'Default') activePortfolio = 'Sample';
+        needsSave = true;
       }
 
       portfolioSelect.innerHTML = '';
@@ -308,11 +471,21 @@ document.addEventListener('DOMContentLoaded', () => {
         portfolioSelect.appendChild(opt);
       }
       portfolioSelect.value = activePortfolio;
+
+      if (needsSave) {
+        chrome.storage.local.set({ portfolios, screenerWatchlist: portfolios['Sample'] }, () => {
+          if (callback) callback();
+        });
+      } else {
+        if (callback) callback();
+      }
     });
   }
-  loadPortfolios();
-  renderDefaultSearch();
-  renderWatchlist(); // Instantly render watchlist from cache with zero delay!
+
+  loadPortfolios(() => {
+    renderDefaultSearch();
+    renderWatchlist(); // Instantly render watchlist from cache with zero delay!
+  });
 
   portfolioSelect.addEventListener('change', (e) => {
     activePortfolio = e.target.value;
@@ -324,23 +497,94 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  btnNewPortfolio.addEventListener('click', () => {
-    
-    const name = prompt("Enter new portfolio name:");
-    if (name && name.trim() !== '') {
-      chrome.storage.local.get(['portfolios'], (res) => {
-        const ports = res.portfolios || {};
-        if (!ports[name]) {
-          ports[name] = [];
-          activePortfolio = name;
-          chrome.storage.local.set({ portfolios: ports, screenerWatchlist: [] }, () => {
-            loadPortfolios();
-            renderWatchlist();
+  // --- Custom Text Prompt Logic ---
+  const textPromptModal = document.getElementById('text-prompt-modal');
+  const textPromptTitle = document.getElementById('text-prompt-title');
+  const textPromptInput = document.getElementById('text-prompt-input');
+  const btnTextPromptCancel = document.getElementById('btn-text-prompt-cancel');
+  const btnTextPromptSave = document.getElementById('btn-text-prompt-save');
+
+  let textPromptCallback = null;
+
+  function showCustomPrompt(title, defaultValue, callback) {
+    textPromptTitle.textContent = title;
+    textPromptInput.value = defaultValue || '';
+    textPromptCallback = callback;
+    textPromptModal.style.display = 'flex';
+    setTimeout(() => {
+      textPromptInput.focus();
+      textPromptInput.select();
+    }, 50);
+  }
+
+  function closeCustomPrompt() {
+    textPromptModal.style.display = 'none';
+    textPromptCallback = null;
+  }
+
+  btnTextPromptCancel.addEventListener('click', closeCustomPrompt);
+  
+  textPromptModal.addEventListener('click', (e) => {
+    if (e.target === textPromptModal) closeCustomPrompt();
+  });
+
+  btnTextPromptSave.addEventListener('click', () => {
+    if (textPromptCallback) {
+      textPromptCallback(textPromptInput.value);
+    }
+    closeCustomPrompt();
+  });
+  
+  textPromptInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      btnTextPromptSave.click();
+    } else if (e.key === 'Escape') {
+      btnTextPromptCancel.click();
+    }
+  });
+
+  if (btnRenamePortfolio) {
+    btnRenamePortfolio.addEventListener('click', () => {
+      showCustomPrompt(`Rename portfolio "${activePortfolio}"`, activePortfolio, (newName) => {
+        if (newName && newName.trim() !== '' && newName !== activePortfolio) {
+          chrome.storage.local.get(['portfolios'], (res) => {
+            let ports = res.portfolios || {};
+            if (ports[newName]) {
+              alert("A portfolio with this name already exists!");
+              return;
+            }
+            ports[newName] = ports[activePortfolio];
+            delete ports[activePortfolio];
+            activePortfolio = newName;
+            chrome.storage.local.set({ portfolios: ports }, () => {
+              loadPortfolios();
+            });
           });
         }
       });
-    }
+    });
+  }
+
+  btnNewPortfolio.addEventListener('click', () => {
+    showCustomPrompt("New portfolio name", "", (name) => {
+      if (name && name.trim() !== '') {
+        chrome.storage.local.get(['portfolios'], (res) => {
+          const ports = res.portfolios || {};
+          if (!ports[name]) {
+            ports[name] = [];
+            activePortfolio = name;
+            chrome.storage.local.set({ portfolios: ports, screenerWatchlist: [] }, () => {
+              loadPortfolios();
+              renderWatchlist();
+            });
+          } else {
+            alert("A portfolio with this name already exists!");
+          }
+        });
+      }
+    });
   });
+
 
   // --- Export to CSV ---
   btnExportCsv.addEventListener('click', () => {
@@ -422,7 +666,10 @@ document.addEventListener('DOMContentLoaded', () => {
            const companyUrl = (data.source === 'yahoo' || ticker.startsWith('^'))
              ? `https://finance.yahoo.com/quote/${encodeURIComponent(ticker)}`
              : `https://www.screener.in/company/${ticker}/`;
-           let html = `<h3 style="margin:0 0 4px 0;"><a href="${companyUrl}" target="_blank" style="color:var(--link-green); text-decoration:none;">${data.companyName}</a></h3>`;
+           let html = `<div style="display:flex; justify-content:space-between; align-items:flex-start;">
+             <h3 style="margin:0 0 4px 0;"><a href="${companyUrl}" target="_blank" style="color:var(--link-green); text-decoration:none;">${data.companyName}</a></h3>
+             <button id="btn-back-dashboard" class="screener-btn screener-btn-secondary" style="padding:4px 8px; font-size:11px; flex-shrink:0; margin-left:8px;">← Back</button>
+           </div>`;
            if (data.isIndex) {
              html += `<div style="background:var(--verdict-bg); border:var(--border-color); padding:12px; border-radius:8px; margin-top:12px; font-size:13px;"><span style="color:var(--label-color); font-weight:600;">AI Verdict:</span> <span style="color:var(--link-green); font-weight:500;">[Market Index] Key benchmark tracking market performance.</span></div>`;
            } else {
@@ -534,6 +781,15 @@ document.addEventListener('DOMContentLoaded', () => {
       resultsSearch.innerHTML = '<div class="screener-error">Error.</div>';
     }
   });
+  
+  // --- Event Delegation for Back Button ---
+  resultsSearch.addEventListener('click', (e) => {
+    if (e.target.closest('#btn-back-dashboard')) {
+      inputSearch.value = '';
+      searchSuggestions.style.display = 'none';
+      renderDefaultSearch();
+    }
+  });
 
   // --- Watchlist Rendering ---
   function removeTicker(ticker) {
@@ -637,11 +893,32 @@ document.addEventListener('DOMContentLoaded', () => {
     return `<svg viewBox="-2 -2 ${width + 4} ${height + 4}" width="${width}" height="${height}" style="overflow:visible; display:block; margin: 4px auto;"><polyline points="${points}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   }
 
+  let currentSortBy = null; // 'price', 'mcap'
+  let currentSortDesc = true;
+  let isDragging = false; // Prevent re-rendering while user is dragging
+
+  function getSortIndicator(col) {
+    if (currentSortBy !== col) return '';
+    return currentSortDesc ? ' ▼' : ' ▲';
+  }
+
+  function handleSort(column) {
+    if (currentSortBy === column) {
+      currentSortDesc = !currentSortDesc;
+    } else {
+      currentSortBy = column;
+      currentSortDesc = true;
+    }
+    renderWatchlist();
+  }
+
   function renderWatchlist() {
+    if (isDragging) return; // Do not interrupt drag and drop
+
     // Single consolidated fetch for instant rendering with zero network delay
     chrome.storage.local.get(['portfolios', 'screenerWatchlist', 'cachedData', 'notes', 'alerts'], (res) => {
       const ports = res.portfolios || {};
-      const list = ports[activePortfolio] || res.screenerWatchlist || [];
+      let list = ports[activePortfolio] || res.screenerWatchlist || [];
       const cached = res.cachedData || {};
       const notesObj = res.notes || {};
       const alertsObj = res.alerts || {};
@@ -651,15 +928,45 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // Handle Sorting
+      if (currentSortBy) {
+        list = [...list].sort((a, b) => {
+          const dA = cached[a];
+          const dB = cached[b];
+          if (!dA || !dB) return 0;
+          
+          let valA = 0;
+          let valB = 0;
+          
+          if (currentSortBy === 'price') {
+            valA = parseFloat((dA.ratios['Current Price'] || '0').replace(/[^\d.-]/g, '')) || 0;
+            valB = parseFloat((dB.ratios['Current Price'] || '0').replace(/[^\d.-]/g, '')) || 0;
+          } else if (currentSortBy === 'mcap') {
+            const parseMcap = (str) => {
+              const num = parseFloat((str || '0').replace(/[^\d.-]/g, '')) || 0;
+              if (str.includes('T')) return num * 1000;
+              if (str.includes('B')) return num;
+              if (str.includes('M')) return num / 1000;
+              if (str.includes('Cr')) return num * 10; // Rs Crores ~ 10M
+              return num;
+            };
+            valA = parseMcap(dA.ratios['Market Cap'] || '');
+            valB = parseMcap(dB.ratios['Market Cap'] || '');
+          }
+          
+          return currentSortDesc ? valB - valA : valA - valB;
+        });
+      }
+
       let html = `<div style="width:100%; overflow-x:auto; border:1px solid var(--border-color); border-radius:8px;">
         <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:right; color:var(--text-color); white-space:nowrap;">
           <thead>
             <tr style="background:var(--header-bg); border-bottom:1px solid var(--border-color); font-weight:600;">
               <td style="text-align:left; padding:10px;">Symbol</td>
               <td style="padding:10px; text-align:center;">7D Trend</td>
-              <td style="padding:10px;">Price</td>
+              <td style="padding:10px; cursor:pointer;" id="sort-price" title="Sort by Price">Price${getSortIndicator('price')}</td>
               <td style="padding:10px;">P/E</td>
-              <td style="padding:10px;">ROCE</td>
+              <td style="padding:10px; cursor:pointer;" id="sort-mcap" title="Sort by Market Cap">M. Cap${getSortIndicator('mcap')}</td>
               <td style="padding:10px; text-align:center;">Actions</td>
             </tr>
           </thead>
@@ -680,8 +987,8 @@ document.addEventListener('DOMContentLoaded', () => {
               const color = data.changeDir === 'up' ? '#188038' : '#d93025';
               const sign = data.changeDir === 'up' ? '\u25B2' : '\u25BC';
               pctHtml = `<span style="color:${color}; font-size:11px;">${sign} ${data.changePct}</span>`;
-              flashClass = data.changeDir === 'up' ? 'screener-flash-up' : 'screener-flash-down';
             }
+            flashClass = data.flash && (Date.now() - (data.flashTime || 0) < 5000) ? (data.flash === 'up' ? 'screener-flash-up' : 'screener-flash-down') : '';
 
             const noteTxt = notesObj[ticker] || '';
             const hasAlert = !!(alertsObj[ticker] && (alertsObj[ticker].above || alertsObj[ticker].below));
@@ -689,15 +996,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const spark = createSparkline(data.sparkline);
 
             html += `
-              <tr style="background:${idx % 2 === 0 ? 'var(--row-even)' : 'var(--row-odd)'}; border-bottom:1px solid var(--border-color);">
+              <tr class="watchlist-row" draggable="true" data-ticker="${ticker}" style="background:${idx % 2 === 0 ? 'var(--row-even)' : 'var(--row-odd)'}; border-bottom:1px solid var(--border-color); cursor:grab;">
                 <td style="text-align:left; padding:10px; font-weight:500;">
+                  <span style="color:#aaa; margin-right:4px; font-size:10px;" title="Drag to reorder">⣿</span>
                   <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + ticker + '/'}" target="_blank" title="${data.companyName}" style="color:var(--link-green); text-decoration:none;">${ticker}</a>
-                  ${noteTxt ? `<div style="font-size:10px; color:#5f6368; font-weight:normal; max-width:100px; white-space:normal; margin-top:4px;">ðŸ“ ${noteTxt}</div>` : ''}
+                  ${noteTxt ? `<div style="font-size:10px; color:#5f6368; font-weight:normal; max-width:100px; white-space:normal; margin-top:4px;">ðŸ“  ${noteTxt}</div>` : ''}
                 </td>
                 <td style="padding:10px;">${spark}</td>
                 <td class="${flashClass}" style="padding:10px;">${data.ratios['Current Price']||'-'}<br/>${pctHtml}</td>
                 <td style="padding:10px;">${data.ratios['Stock P/E']||'-'}</td>
-                <td style="padding:10px;">${data.ratios['ROCE']||'-'}</td>
+                <td style="padding:10px;">${data.ratios['Market Cap']||'-'}</td>
                 <td style="padding:10px; text-align:center;">
                   <button class="screener-note-btn" data-ticker="${ticker}" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px;" title="Add Note">\uD83D\uDCDD</button>
                   <button class="screener-alert-btn" data-ticker="${ticker}" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px;" title="Set Alert">${hasAlert ? '\uD83D\uDD14' : '\u23F0'}</button>
@@ -712,24 +1020,97 @@ document.addEventListener('DOMContentLoaded', () => {
         html += `</tbody></table></div>`;
         wlItemsContainer.innerHTML = html;
 
+        // Wire up sorting
+        const sortPrice = document.getElementById('sort-price');
+        const sortMcap = document.getElementById('sort-mcap');
+        if (sortPrice) sortPrice.onclick = () => handleSort('price');
+        if (sortMcap) sortMcap.onclick = () => handleSort('mcap');
+
         // Wire up buttons
         wlItemsContainer.querySelectorAll('.screener-del-btn').forEach(b => b.onclick = () => removeTicker(b.getAttribute('data-ticker')));
         wlItemsContainer.querySelectorAll('.screener-note-btn').forEach(b => b.onclick = () => openNoteModal(b.getAttribute('data-ticker')));
         wlItemsContainer.querySelectorAll('.screener-alert-btn').forEach(b => b.onclick = () => openAlertModal(b.getAttribute('data-ticker')));
+
+        // Wire up Drag and Drop
+        let draggedRow = null;
+        wlItemsContainer.querySelectorAll('.watchlist-row').forEach(row => {
+          row.addEventListener('dragstart', function(e) {
+            isDragging = true;
+            draggedRow = this;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', this.getAttribute('data-ticker'));
+            this.style.opacity = '0.5';
+          });
+          row.addEventListener('dragend', function() {
+            isDragging = false;
+            draggedRow = null;
+            this.style.opacity = '1';
+          });
+          row.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+          });
+          row.addEventListener('dragenter', function(e) {
+            e.preventDefault();
+            this.style.background = 'var(--row-hover)';
+          });
+          row.addEventListener('dragleave', function() {
+            this.style.background = '';
+          });
+          row.addEventListener('drop', function(e) {
+            e.stopPropagation();
+            this.style.background = '';
+            if (draggedRow && draggedRow !== this) {
+              const allRows = Array.from(wlItemsContainer.querySelectorAll('.watchlist-row'));
+              const fromIdx = allRows.indexOf(draggedRow);
+              const toIdx = allRows.indexOf(this);
+              
+              if (fromIdx >= 0 && toIdx >= 0) {
+                // Clear sort visually
+                if (currentSortBy) {
+                  currentSortBy = null;
+                }
+                
+                // Reorder DOM synchronously before dragend sets draggedRow to null
+                const tbody = this.parentNode;
+                const rowToMove = draggedRow; // Capture locally
+                if (fromIdx < toIdx) {
+                  tbody.insertBefore(rowToMove, this.nextSibling);
+                } else {
+                  tbody.insertBefore(rowToMove, this);
+                }
+                
+                // Build new array based on new DOM order
+                const newOrder = Array.from(tbody.querySelectorAll('.watchlist-row')).map(r => r.getAttribute('data-ticker'));
+                
+                // Save to storage asynchronously
+                chrome.storage.local.get(['portfolios', 'screenerWatchlist'], (localRes) => {
+                  let p = localRes.portfolios || {};
+                  p[activePortfolio] = newOrder;
+                  chrome.storage.local.set({ portfolios: p, screenerWatchlist: newOrder }, () => {
+                     renderWatchlist();
+                  });
+                });
+              }
+            }
+            return false;
+          });
+        });
     });
   }
 
   // --- Default Search Render (Customizable 4 Pinned Cards) ---
   const defaultPinnedIndices = [
-    { key: 'BANK NIFTY', symbol: '^NSEBANK', curr: 'INR' },
-    { key: 'NIFTY 50', symbol: '^NSEI', curr: 'INR' },
-    { key: 'S&P 500', symbol: '^GSPC', curr: 'USD' },
-    { key: 'SENSEX', symbol: '^BSESN', curr: 'INR' }
+    { key: 'S&P 500 (USA)', symbol: '^GSPC', curr: 'USD' },
+    { key: 'NIKKEI (Japan)', symbol: '^N225', curr: 'JPY' },
+    { key: 'STI (Singapore)', symbol: '^STI', curr: 'SGD' },
+    { key: 'FTSE 100 (UK)', symbol: '^FTSE', curr: 'GBP' }
   ];
 
   function renderDefaultSearch() {
     chrome.storage.local.get(['pinnedIndices', 'marketIndices'], (res) => {
-      const pinned = res.pinnedIndices && res.pinnedIndices.length === 4 ? res.pinnedIndices : defaultPinnedIndices;
+      const pinned = Array.isArray(res.pinnedIndices) ? res.pinnedIndices : defaultPinnedIndices;
       const indices = res.marketIndices || {};
 
       let html = `<div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px;">
@@ -744,14 +1125,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const changeSign = changeVal > 0 ? '&#9650;' : (changeVal < 0 ? '&#9660;' : '');
         const flashClass = data.flash && (Date.now() - (data.flashTime || 0) < 5000) ? (data.flash === 'up' ? 'screener-flash-up' : 'screener-flash-down') : '';
 
-        let curPrefix = '₹';
-        if (item.curr === 'USD' || item.key === 'S&P 500') curPrefix = '$';
-        else if (item.curr === 'GBP') curPrefix = '£';
-        else if (item.curr === 'EUR') curPrefix = '€';
-        else if (item.curr === 'JPY') curPrefix = '¥';
-
-        const rawPrice = String(data.price || '').replace(/^[₹$£€¥]\s*/, '').trim();
-        const displayPrice = rawPrice ? `${curPrefix} ${rawPrice}` : 'Loading...';
+        const displayPrice = data.price || 'Loading...';
         const displayPct = data.changePct ? `${Math.abs(changeVal).toFixed(2)}%` : '0.00%';
 
         html += `
@@ -762,6 +1136,15 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         `;
       });
+      
+      for (let slot = pinned.length; slot < 4; slot++) {
+        html += `
+          <div class="pinned-card empty-slot" data-slot="${slot}" style="background:var(--verdict-bg); border:1px dashed var(--border-color); border-radius:8px; padding:12px 10px; text-align:center; position:relative; cursor:pointer; display:flex; flex-direction:column; justify-content:center; align-items:center; opacity:0.6; transition:border-color 0.2s, opacity 0.2s;" title="Add a new index or stock">
+            <div style="font-size:24px; color:var(--label-color); line-height:1;">+</div>
+            <div style="font-size:12px; font-weight:500; color:var(--label-color); margin-top:4px;">Add Ticker</div>
+          </div>
+        `;
+      }
 
       html += `</div>`;
       
@@ -786,35 +1169,64 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Edit Pinned Card Modal Logic ---
   let editingPinnedSlot = 0;
   const editPinnedModal = document.getElementById('edit-pinned-modal');
-  const presetPinnedSelect = document.getElementById('preset-pinned-select');
   const pinnedDisplayName = document.getElementById('pinned-display-name');
   const pinnedSymbol = document.getElementById('pinned-symbol');
-  const pinnedCurr = document.getElementById('pinned-curr');
   const btnPinnedCancel = document.getElementById('btn-pinned-cancel');
   const btnPinnedSave = document.getElementById('btn-pinned-save');
+  const btnPinnedRemove = document.getElementById('btn-pinned-remove');
 
   function openEditPinnedModal(slot) {
     editingPinnedSlot = slot;
     chrome.storage.local.get(['pinnedIndices'], (res) => {
-      const pinned = res.pinnedIndices && res.pinnedIndices.length === 4 ? res.pinnedIndices : defaultPinnedIndices;
-      const cur = pinned[slot] || defaultPinnedIndices[slot];
-      pinnedDisplayName.value = cur.key;
-      pinnedSymbol.value = cur.symbol;
-      pinnedCurr.value = cur.curr || 'INR';
-      if (presetPinnedSelect) presetPinnedSelect.value = '';
+      const pinned = Array.isArray(res.pinnedIndices) ? res.pinnedIndices : defaultPinnedIndices;
+      const cur = pinned[slot] || { key: '', symbol: '' };
+      pinnedDisplayName.value = cur.key || '';
+      pinnedSymbol.value = cur.symbol || '';
       if (editPinnedModal) editPinnedModal.style.display = 'flex';
       setTimeout(() => pinnedDisplayName.focus(), 50);
     });
   }
 
-  if (presetPinnedSelect) {
-    presetPinnedSelect.addEventListener('change', () => {
-      const val = presetPinnedSelect.value;
-      if (val) {
-        const [sym, name, curr] = val.split('|');
-        pinnedSymbol.value = sym;
-        pinnedDisplayName.value = name;
-        pinnedCurr.value = curr;
+  const presetMap = {
+    'NIFTY 50': '^NSEI',
+    'BANK NIFTY': '^NSEBANK',
+    'SENSEX': '^BSESN',
+    'NIFTY IT': '^CNXIT',
+    'FIN NIFTY': 'NIFTY_FIN_SERVICE.NS',
+    'NIFTY MIDCAP 50': '^NSEMDCP50',
+    'NIFTY AUTO': '^CNXAUTO',
+    'NIFTY ENERGY': '^CNXENERGY',
+    'NIFTY FMCG': '^CNXFMCG',
+    'NIFTY PHARMA': '^CNXPHARMA',
+    'S&P 500': '^GSPC',
+    'NASDAQ': '^IXIC',
+    'DOW JONES': '^DJI',
+    'RUSSELL 2000': '^RUT',
+    'FTSE 100': '^FTSE',
+    'NIKKEI 225': '^N225',
+    'HANG SENG': '^HSI',
+    'GOLD Futures': 'GC=F',
+    'SILVER Futures': 'SI=F',
+    'CRUDE OIL': 'CL=F',
+    'Bitcoin': 'BTC-USD',
+    'Ethereum': 'ETH-USD'
+  };
+
+  if (pinnedDisplayName) {
+    pinnedDisplayName.addEventListener('input', () => {
+      const val = pinnedDisplayName.value;
+      if (presetMap[val]) {
+        pinnedSymbol.value = presetMap[val];
+      }
+    });
+  }
+
+  if (pinnedSymbol) {
+    pinnedSymbol.addEventListener('input', () => {
+      const val = pinnedSymbol.value;
+      const nameMatch = Object.keys(presetMap).find(k => presetMap[k] === val);
+      if (nameMatch) {
+        pinnedDisplayName.value = nameMatch;
       }
     });
   }
@@ -831,11 +1243,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  if (btnPinnedRemove) {
+    btnPinnedRemove.addEventListener('click', () => {
+      chrome.storage.local.get(['pinnedIndices', 'marketIndices'], (res) => {
+        let pinned = Array.isArray(res.pinnedIndices) ? [...res.pinnedIndices] : [...defaultPinnedIndices];
+        const oldKey = pinned[editingPinnedSlot]?.key;
+        
+        pinned.splice(editingPinnedSlot, 1); // Remove the item
+        
+        const marketIndices = res.marketIndices || {};
+        if (oldKey) {
+          delete marketIndices[oldKey];
+        }
+
+        chrome.storage.local.set({ pinnedIndices: pinned, marketIndices }, () => {
+          if (editPinnedModal) editPinnedModal.style.display = 'none';
+          renderDefaultSearch();
+          chrome.runtime.sendMessage({ type: 'POLL_NOW' });
+        });
+      });
+    });
+  }
+
   if (btnPinnedSave) {
     btnPinnedSave.addEventListener('click', () => {
       const name = pinnedDisplayName.value.trim();
       const sym = pinnedSymbol.value.trim();
-      const curr = pinnedCurr.value;
 
       if (!name || !sym) {
         alert('Please enter both a Display Name and Symbol.');
@@ -843,9 +1276,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       chrome.storage.local.get(['pinnedIndices', 'marketIndices'], (res) => {
-        let pinned = res.pinnedIndices && res.pinnedIndices.length === 4 ? [...res.pinnedIndices] : [...defaultPinnedIndices];
+        let pinned = Array.isArray(res.pinnedIndices) ? [...res.pinnedIndices] : [...defaultPinnedIndices];
         const oldKey = pinned[editingPinnedSlot]?.key;
-        pinned[editingPinnedSlot] = { key: name, symbol: sym, curr: curr };
+        pinned[editingPinnedSlot] = { key: name, symbol: sym };
         
         const marketIndices = res.marketIndices || {};
         if (oldKey && oldKey !== name) {
@@ -866,7 +1299,37 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.local.get(['portfolios'], async (res) => {
       const list = (res.portfolios || {})[activePortfolio] || [];
       if (list.length === 0) {
-        newsContainer.innerHTML = '<div style="text-align:center;color:#6c757d;padding:20px;">No stocks in this portfolio to fetch news for.</div>';
+        newsContainer.innerHTML = '<div class="screener-loading" style="text-align:center; padding:20px;">Fetching US Macro News...</div>';
+        try {
+          const feedRes = await fetch(`https://news.google.com/rss/search?q=US+Economy+OR+Federal+Reserve+OR+S%26P+500&hl=en-US&gl=US&ceid=US:en`);
+          const text = await feedRes.text();
+          const parser = new DOMParser();
+          const xml = parser.parseFromString(text, 'text/xml');
+          const items = Array.from(xml.querySelectorAll('item')).slice(0, 6);
+          
+          if (items.length > 0) {
+            let allNewsHtml = `<div style="font-size:12px; font-weight:bold; color:var(--accent-color, #1a73e8); margin-top:12px; margin-bottom:4px; padding:0 12px;">US MACRO NEWS</div>`;
+            items.forEach(item => {
+              const title = item.querySelector('title')?.textContent || '';
+              const link = item.querySelector('link')?.textContent || '';
+              const pubDate = item.querySelector('pubDate')?.textContent || '';
+              const source = item.querySelector('source')?.textContent || 'Google News';
+              const dateStr = pubDate ? new Date(pubDate).toLocaleDateString() : '';
+              
+              allNewsHtml += `
+                <div style="padding: 12px; border-bottom: 1px solid var(--border-color);">
+                  <a href="${link}" target="_blank" style="color:var(--text-color); text-decoration:none; font-size:14px; display:block; margin-bottom:4px;">${title}</a>
+                  <div style="font-size:11px; color:var(--label-color);">${source} &bull; ${dateStr}</div>
+                </div>
+              `;
+            });
+            newsContainer.innerHTML = allNewsHtml;
+            return;
+          }
+        } catch (e) {
+          console.error('US Macro News error', e);
+        }
+        newsContainer.innerHTML = '<div style="text-align:center;color:var(--label-color);padding:20px;">No stocks in this portfolio to fetch news for.</div>';
         return;
       }
       

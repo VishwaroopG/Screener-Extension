@@ -17,23 +17,101 @@
   document.documentElement.appendChild(tapeDiv);
   document.documentElement.classList.add('screener-tape-active');
 
+  // --- Modal Injection ---
+  const modalBackdrop = document.createElement('div');
+  modalBackdrop.className = 'screener-modal-backdrop';
+  modalBackdrop.innerHTML = `
+    <div class="screener-detail-modal">
+      <div class="screener-modal-header">
+        <div>
+          <h3 class="screener-modal-title" id="screener-modal-title">Company Name</h3>
+          <div class="screener-modal-subtitle" id="screener-modal-subtitle">Details</div>
+        </div>
+        <button class="screener-modal-close" id="screener-modal-close">&times;</button>
+      </div>
+      <div class="screener-modal-body">
+        <div class="screener-modal-desc" id="screener-modal-desc"></div>
+        <div class="screener-sparkline-title">7D Price Trend</div>
+        <div class="screener-sparkline-container" id="screener-sparkline-container"></div>
+        <div class="screener-metrics-grid" id="screener-metrics-grid"></div>
+      </div>
+      <div class="screener-modal-footer">
+        <a href="#" target="_blank" class="screener-btn-details" id="screener-btn-details">View Details</a>
+      </div>
+    </div>
+  `;
+  document.documentElement.appendChild(modalBackdrop);
+
+  // Close Modal logic
+  document.getElementById('screener-modal-close').addEventListener('click', () => {
+    modalBackdrop.classList.remove('visible');
+    isPaused = false; // Resume tape
+  });
+  modalBackdrop.addEventListener('click', (e) => {
+    if (e.target === modalBackdrop) {
+      modalBackdrop.classList.remove('visible');
+      isPaused = false;
+    }
+  });
+
+  function drawSparkline(containerEl, dataPoints, color) {
+    if (!dataPoints || dataPoints.length < 2) {
+      containerEl.innerHTML = '<span style="color:#9aa0a6;font-size:12px;">No chart data</span>';
+      return;
+    }
+    const min = Math.min(...dataPoints);
+    const max = Math.max(...dataPoints);
+    const padding = (max - min) * 0.1 || (min * 0.01) || 1;
+    const yMin = min - padding;
+    const yMax = max + padding;
+    const w = 300, h = 80;
+    
+    let pathD = '';
+    dataPoints.forEach((val, i) => {
+      const x = (i / (dataPoints.length - 1)) * w;
+      const y = h - ((val - yMin) / (yMax - yMin)) * h;
+      pathD += (i === 0 ? \`M \${x} \${y}\` : \` L \${x} \${y}\`);
+    });
+    
+    containerEl.innerHTML = \`
+      <svg width="100%" height="100%" viewBox="0 0 \${w} \${h}" preserveAspectRatio="none">
+        <path d="\${pathD}" fill="none" stroke="\${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    \`;
+  }
+
+
   // --- State Variables ---
   let isPaused = false;
+  let isVisible = true;
   let isDragging = false;
   let isHovered = false;
   let startX = 0;
   let dragStartX = 0;
   let currentX = 0;
   let speed = 0.8; // Default 1x speed in pixels per frame
+  let latestCachedData = {};
+  let latestIndices = {};
 
   // Read stored preferences (controlled via side panel)
-  chrome.storage.local.get(['tapePaused', 'tapeSpeedMultiplier', 'tapeSpeed'], (res) => {
+  let isDomainDisabled = false;
+  const currentDomain = window.location.hostname;
+
+  chrome.storage.local.get(['tapePaused', 'tapeSpeedMultiplier', 'tapeSpeed', 'tapeVisible', 'disabledDomains'], (res) => {
     isPaused = res.tapePaused === true;
+    isVisible = res.tapeVisible !== false; // Default true
+    
+    const disabledDomains = res.disabledDomains || [];
+    if (disabledDomains.includes(currentDomain)) {
+      isDomainDisabled = true;
+    }
+
     if (res.tapeSpeedMultiplier !== undefined && typeof res.tapeSpeedMultiplier === 'number') {
       speed = res.tapeSpeedMultiplier * 0.8;
     } else if (res.tapeSpeed !== undefined && typeof res.tapeSpeed === 'number') {
       speed = res.tapeSpeed;
     }
+    renderTape(); // Force an initial render now that all prefs are loaded
   });
 
   // Listen for control updates from side panel
@@ -41,6 +119,15 @@
     if (namespace === 'local') {
       if (changes.tapePaused !== undefined) {
         isPaused = changes.tapePaused.newValue === true;
+      }
+      if (changes.tapeVisible !== undefined) {
+        isVisible = changes.tapeVisible.newValue !== false;
+        renderTape();
+      }
+      if (changes.disabledDomains !== undefined) {
+        const disabledDomains = changes.disabledDomains.newValue || [];
+        isDomainDisabled = disabledDomains.includes(currentDomain);
+        renderTape();
       }
       if (changes.tapeSpeedMultiplier !== undefined) {
         speed = changes.tapeSpeedMultiplier.newValue * 0.8;
@@ -135,6 +222,108 @@
     }
   });
 
+  // Modal Open Logic via Event Delegation
+  marquee.addEventListener('click', (e) => {
+    // Only open if we didn't just drag
+    if (Math.abs(startX - e.pageX) > 5) return;
+
+    const tickerItem = e.target.closest('.screener-clickable-ticker');
+    if (!tickerItem) return;
+
+    const ticker = tickerItem.getAttribute('data-ticker');
+    const isIndex = tickerItem.getAttribute('data-is-index') === 'true';
+
+    let data;
+    let symbolForLink = ticker;
+    if (isIndex) {
+      data = latestIndices[ticker];
+      if (data) symbolForLink = data.symbol;
+    } else {
+      data = latestCachedData[ticker];
+    }
+
+    if (!data) return;
+
+    isPaused = true; // Pause tape while modal is open
+    modalBackdrop.classList.add('visible');
+
+    const titleEl = document.getElementById('screener-modal-title');
+    const subtitleEl = document.getElementById('screener-modal-subtitle');
+    const descEl = document.getElementById('screener-modal-desc');
+    const sparklineEl = document.getElementById('screener-sparkline-container');
+    const metricsGrid = document.getElementById('screener-metrics-grid');
+    const btnEl = document.getElementById('screener-btn-details');
+
+    let metricsHtml = '';
+
+    if (isIndex) {
+      titleEl.innerText = ticker; // e.g. "S&P 500 (USA)"
+      subtitleEl.innerText = \`Market Index • \${data.symbol || ''}\`;
+      descEl.innerText = '';
+      
+      const price = data.price || '';
+      const pct = data.changePct || '';
+      const colorCls = data.changeDir === 'up' ? 'screener-metric-up' : 'screener-metric-down';
+      
+      metricsHtml = \`
+        <div class="screener-metric-box">
+          <span class="screener-metric-label">Last Price</span>
+          <span class="screener-metric-val">\${price}</span>
+        </div>
+        <div class="screener-metric-box">
+          <span class="screener-metric-label">1D Return</span>
+          <span class="screener-metric-val \${colorCls}">\${pct}</span>
+        </div>
+      \`;
+
+      btnEl.href = \`https://finance.yahoo.com/quote/\${encodeURIComponent(data.symbol || '')}/\`;
+      drawSparkline(sparklineEl, [], '#1a73e8'); // Indices don't have sparklines cached yet
+    } else {
+      titleEl.innerText = data.companyName || ticker;
+      
+      const ratios = data.ratios || {};
+      const sector = ratios['Type'] || ratios['Sector'] || 'Equity';
+      const exchange = ratios['Exchange'] || (data.source === 'yahoo' ? 'Global' : 'NSE/BSE');
+      subtitleEl.innerText = \`\${sector} • \${exchange} • \${ticker}\`;
+      
+      descEl.innerText = data.aboutText || '';
+
+      const pct = data.changePct || '';
+      const colorCls = data.changeDir === 'up' ? 'screener-metric-up' : 'screener-metric-down';
+
+      const metrics = [
+        { label: 'Last Price', val: ratios['Current Price'] || '-' },
+        { label: '1D Return', val: \`<span class="\${colorCls}">\${pct}</span>\` },
+        { label: 'Market Cap', val: ratios['Market Cap'] || '-' },
+        { label: 'P/E Ratio', val: ratios['Stock P/E'] || '-' },
+        { label: 'Div Yield', val: ratios['Dividend Yield'] || '-' },
+        { label: 'ROCE', val: ratios['ROCE'] || '-' }
+      ];
+
+      metrics.forEach(m => {
+        metricsHtml += \`
+          <div class="screener-metric-box">
+            <span class="screener-metric-label">\${m.label}</span>
+            <span class="screener-metric-val">\${m.val}</span>
+          </div>
+        \`;
+      });
+
+      // Set correct URL
+      if (data.source === 'yahoo') {
+        btnEl.href = \`https://finance.yahoo.com/quote/\${encodeURIComponent(ticker)}/\`;
+      } else {
+        btnEl.href = \`https://www.screener.in/company/\${encodeURIComponent(ticker)}/\`;
+      }
+
+      // Draw sparkline
+      const sparkColor = data.changeDir === 'up' ? '#137333' : '#d93025';
+      drawSparkline(sparklineEl, data.sparkline || [], sparkColor);
+    }
+
+    metricsGrid.innerHTML = metricsHtml;
+  });
+
   // --- Continuous GPU-Accelerated Auto-Scroll Engine ---
   // Uses translate3d which never hits DOM scroll limits or integer truncation issues
   function autoScrollStep() {
@@ -162,7 +351,10 @@
       const cached = res.cachedData || {};
       const indices = res.marketIndices || {};
       
-      if (list.length === 0 && Object.keys(indices).length === 0) {
+      latestCachedData = cached;
+      latestIndices = indices;
+
+      if (!isVisible || isDomainDisabled || (list.length === 0 && Object.keys(indices).length === 0)) {
         tapeDiv.style.display = 'none';
         document.documentElement.classList.remove('screener-tape-active');
         return;
@@ -185,10 +377,10 @@
            flashClass = idx.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down';
         }
 
-        const formattedPrice = (idx.price.startsWith('\u20B9') || idx.price.startsWith('$')) ? idx.price : ('\u20B9' + idx.price);
+        const formattedPrice = idx.price;
 
         html += `
-          <div class="screener-ticker-item" style="color: #ff9800;">
+          <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${idxName}" data-is-index="true" style="color: #ff9800; cursor: pointer;">
             <span class="screener-ticker-name">${idxName}</span>
             <span class="screener-ticker-price ${flashClass}" style="color: #ff9800;">${formattedPrice}</span>
             <span style="color: ${color}; font-size: 12px; margin-left: 6px;">${sign} ${Math.abs(parseFloat(idx.changePct)).toFixed(2)}%</span>
@@ -215,7 +407,7 @@
           }
 
           html += `
-            <div class="screener-ticker-item">
+            <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${ticker}" style="cursor: pointer;">
               <span class="screener-ticker-name">${data.companyName || ticker}</span>
               <span class="screener-ticker-price ${flashClass}">${price}</span>
               ${pctHtml}
@@ -227,15 +419,19 @@
       if (html === '') {
         marquee.innerHTML = `<div class="screener-ticker-item">Loading Screener Watchlist...</div>`;
       } else {
-        // Repeat items 4 times so content always spans comfortably beyond screen width
-        marquee.innerHTML = html + html + html + html;
+        let itemsCount = Object.keys(indices).length + list.length;
+        let gapHtml = '';
+        if (itemsCount < 8) {
+          // Add a large visual gap so the same stock doesn't appear right next to itself
+          gapHtml = `<div class="screener-ticker-item" style="border: none; padding: 0; margin-right: 80vw;"></div>`;
+        }
+        const block = html + gapHtml;
+        // We must duplicate the block at least once for the infinite scroll math to work seamlessly
+        marquee.innerHTML = block + block;
       }
       marquee.style.transform = `translate3d(${currentX}px, 0, 0)`;
     });
   }
-
-  // Initial render
-  renderTape();
 
   // Listen for updates from background script and sidepanel
   chrome.runtime.onMessage.addListener((msg) => {
@@ -249,6 +445,14 @@
       if (typeof msg.speedMultiplier === 'number') {
         speed = msg.speedMultiplier * 0.8;
       }
+    }
+    if (msg.type === 'TAPE_VISIBILITY_UPDATE') {
+      isVisible = msg.isVisible !== false;
+      renderTape();
+    }
+    if (msg.type === 'TAPE_DOMAIN_TOGGLE') {
+      isDomainDisabled = msg.disabled === true;
+      renderTape();
     }
   });
 })();
