@@ -30,11 +30,11 @@ async function fetchYahooData(symbol) {
     const companyName = meta.shortName || meta.longName || symbol;
     const isIndex = meta.instrumentType === 'INDEX' || symbol.startsWith('^');
     let currSym = '';
-    if (meta.currency === 'INR') currSym = 'â‚¹';
+    if (meta.currency === 'INR') currSym = '₹';
     else if (meta.currency === 'USD') currSym = '$';
-    else if (meta.currency === 'GBP') currSym = 'Â£';
-    else if (meta.currency === 'EUR') currSym = 'â‚¬';
-    else if (meta.currency === 'JPY') currSym = 'Â¥';
+    else if (meta.currency === 'GBP') currSym = '£';
+    else if (meta.currency === 'EUR') currSym = '€';
+    else if (meta.currency === 'JPY') currSym = '¥';
     else if (meta.currency === 'SGD') currSym = 'SGD ';
     else currSym = meta.currency ? meta.currency + ' ' : '';
     const curr = currSym;
@@ -214,11 +214,11 @@ async function fetchIndices() {
   try {
     const indices = {};
     const formatPrice = (num, curr) => {
-      let prefix = 'â‚¹';
+      let prefix = '₹';
       if (curr === 'USD') prefix = '$';
-      else if (curr === 'GBP') prefix = 'Â£';
-      else if (curr === 'EUR') prefix = 'â‚¬';
-      else if (curr === 'JPY') prefix = 'Â¥';
+      else if (curr === 'GBP') prefix = '£';
+      else if (curr === 'EUR') prefix = '€';
+      else if (curr === 'JPY') prefix = '¥';
       else if (curr === 'SGD') prefix = 'SGD ';
       const locale = curr === 'INR' ? 'en-IN' : 'en-US';
       return prefix + Number(num).toLocaleString(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
@@ -301,8 +301,8 @@ async function checkPriceAlerts() {
           chrome.notifications.create({
             type: 'basic',
             iconUrl: 'icon_128.png',
-            title: 'Price Alert Triggered! ðŸ“ˆ',
-            message: `${ticker} has crossed above â‚¹${threshold.above} (Current: â‚¹${price})`
+            title: 'Price Alert Triggered! 📈',
+            message: `${ticker} has crossed above ₹${threshold.above} (Current: ₹${price})`
           });
           // Remove the alert once triggered
           delete alerts[ticker].above;
@@ -311,8 +311,8 @@ async function checkPriceAlerts() {
           chrome.notifications.create({
             type: 'basic',
             iconUrl: 'icon_128.png',
-            title: 'Price Alert Triggered! ðŸ“‰',
-            message: `${ticker} has dropped below â‚¹${threshold.below} (Current: â‚¹${price})`
+            title: 'Price Alert Triggered! 📉',
+            message: `${ticker} has dropped below ₹${threshold.below} (Current: ₹${price})`
           });
           delete alerts[ticker].below;
         }
@@ -659,11 +659,11 @@ async function fetchFastPrices() {
             const diff = prev ? price - prev : 0;
             const pct = prev ? ((diff / prev) * 100).toFixed(2) : '0.00';
             
-            let prefix = 'â‚¹';
+            let prefix = '₹';
             if (idx.curr === 'USD') prefix = '$';
-            else if (idx.curr === 'GBP') prefix = 'Â£';
-            else if (idx.curr === 'EUR') prefix = 'â‚¬';
-            else if (idx.curr === 'JPY') prefix = 'Â¥';
+            else if (idx.curr === 'GBP') prefix = '£';
+            else if (idx.curr === 'EUR') prefix = '€';
+            else if (idx.curr === 'JPY') prefix = '¥';
             else if (idx.curr === 'SGD') prefix = 'SGD ';
             const locale = idx.curr === 'INR' ? 'en-IN' : 'en-US';
             const formatted = `${prefix}${price.toLocaleString(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`;
@@ -688,7 +688,8 @@ async function fetchFastPrices() {
                 changeDir: diff >= 0 ? 'up' : 'down',
                 changePct: Math.abs(parseFloat(pct)).toFixed(2) + '%',
                 flash,
-                flashTime
+                flashTime,
+                sparkline: oldIdx?.sparkline || []
               };
               changed = true;
             }
@@ -717,13 +718,13 @@ async function fetchFastPrices() {
             if (!cachedData[ticker].ratios) cachedData[ticker].ratios = {};
             const c = cachedData[ticker]?.currency;
             let currSym = '';
-            if (c === 'INR') currSym = 'â‚¹';
+            if (c === 'INR') currSym = '₹';
             else if (c === 'USD') currSym = '$';
-            else if (c === 'GBP') currSym = 'Â£';
-            else if (c === 'EUR') currSym = 'â‚¬';
-            else if (c === 'JPY') currSym = 'Â¥';
+            else if (c === 'GBP') currSym = '£';
+            else if (c === 'EUR') currSym = '€';
+            else if (c === 'JPY') currSym = '¥';
             else if (c === 'SGD') currSym = 'SGD ';
-            else currSym = c ? c + ' ' : (cachedData[ticker]?.isIndex ? '' : 'â‚¹');
+            else currSym = c ? c + ' ' : (cachedData[ticker]?.isIndex ? '' : '₹');
             const curr = currSym;
             const currentStr = cachedData[ticker].ratios['Current Price'];
             const formattedPrice = `${curr}${price.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`;
@@ -759,4 +760,3 @@ fetchFastPrices();
 if (!fastPollInterval) {
   fastPollInterval = setInterval(fetchFastPrices, 1000);
 }
-

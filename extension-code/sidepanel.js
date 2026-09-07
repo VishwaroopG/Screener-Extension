@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formatted = m.toFixed(1) + 'x';
     if (tapeSpeedBtn) {
       tapeSpeedBtn.textContent = formatted;
-      tapeSpeedBtn.title = `Tape Speed: ${formatted} (Click to adjust 0.5x Ã¢â‚¬â€œ 3.0x)`;
+      tapeSpeedBtn.title = `Tape Speed: ${formatted} (Click to adjust 0.5x – 3.0x)`;
     }
     if (speedDisplayVal) speedDisplayVal.textContent = formatted;
     if (speedSlider) speedSlider.value = m.toString();
@@ -662,7 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
              : `https://www.screener.in/company/${ticker}/`;
            let html = `<div style="display:flex; justify-content:space-between; align-items:flex-start;">
              <h3 style="margin:0 0 4px 0;"><a href="${companyUrl}" target="_blank" style="color:var(--link-green); text-decoration:none;">${data.companyName}</a></h3>
-             <button id="btn-back-dashboard" class="screener-btn screener-btn-secondary" style="padding:4px 8px; font-size:11px; flex-shrink:0; margin-left:8px;">Ã¢â€ Â Back</button>
+             <button id="btn-back-dashboard" class="screener-btn screener-btn-secondary" style="padding:4px 8px; font-size:11px; flex-shrink:0; margin-left:8px;">← Back</button>
            </div>`;
            if (data.isIndex) {
              html += `<div style="background:var(--verdict-bg); border:var(--border-color); padding:12px; border-radius:8px; margin-top:12px; font-size:13px;"><span style="color:var(--label-color); font-weight:600;">AI Verdict:</span> <span style="color:var(--link-green); font-weight:500;">[Market Index] Key benchmark tracking market performance.</span></div>`;
@@ -893,7 +893,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getSortIndicator(col) {
     if (currentSortBy !== col) return '';
-    return currentSortDesc ? ' Ã¢â€“Â¼' : ' Ã¢â€“Â²';
+    return currentSortDesc ? ' ▼' : ' ▲';
   }
 
   function handleSort(column) {
@@ -992,9 +992,9 @@ document.addEventListener('DOMContentLoaded', () => {
             html += `
               <tr class="watchlist-row" draggable="true" data-ticker="${ticker}" style="background:${idx % 2 === 0 ? 'var(--row-even)' : 'var(--row-odd)'}; border-bottom:1px solid var(--border-color); cursor:grab;">
                 <td style="text-align:left; padding:10px; font-weight:500;">
-                  <span style="color:#aaa; margin-right:4px; font-size:10px;" title="Drag to reorder">Ã¢Â£Â¿</span>
+                  <span style="color:#aaa; margin-right:4px; font-size:10px;" title="Drag to reorder">⣿</span>
                   <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + ticker + '/'}" target="_blank" title="${data.companyName}" style="color:var(--link-green); text-decoration:none;">${ticker}</a>
-                  ${noteTxt ? `<div style="font-size:10px; color:#5f6368; font-weight:normal; max-width:100px; white-space:normal; margin-top:4px;">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“  ${noteTxt}</div>` : ''}
+                  ${noteTxt ? `<div style="font-size:10px; color:#5f6368; font-weight:normal; max-width:100px; white-space:normal; margin-top:4px;">ðŸ“  ${noteTxt}</div>` : ''}
                 </td>
                 <td style="padding:10px;">${spark}</td>
                 <td class="${flashClass}" style="padding:10px;">${data.ratios['Current Price']||'-'}<br/>${pctHtml}</td>
@@ -1538,8 +1538,6 @@ setInterval(() => {
     });
   } catch(e) {}
 }, 1000);
-
-
 
 
 

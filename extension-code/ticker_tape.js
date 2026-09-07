@@ -261,7 +261,7 @@
 
     if (isIndex) {
       titleEl.innerText = ticker; // e.g. "S&P 500 (USA)"
-      subtitleEl.innerText = `Market Index â€¢ ${data.symbol || ''}`;
+      subtitleEl.innerText = `Market Index • ${data.symbol || ''}`;
       descEl.innerText = '';
       
       const price = data.price || '';
@@ -287,7 +287,7 @@
       const ratios = data.ratios || {};
       const sector = ratios['Type'] || ratios['Sector'] || 'Equity';
       const exchange = ratios['Exchange'] || (data.source === 'yahoo' ? 'Global' : 'NSE/BSE');
-      subtitleEl.innerText = `${sector} â€¢ ${exchange} â€¢ ${ticker}`;
+      subtitleEl.innerText = `${sector} • ${exchange} • ${ticker}`;
       
       descEl.innerText = data.aboutText || '';
 
@@ -402,7 +402,7 @@
           let pctHtml = '';
           if (data.changePct) {
             const color = data.changeDir === 'up' ? '#81c995' : '#f28b82';
-            const sign = data.changeDir === 'up' ? 'â–²' : 'â–¼';
+            const sign = data.changeDir === 'up' ? '▲' : '▼';
             pctHtml = `<span style="color: ${color}; font-size: 12px; margin-left: 6px;">${sign} ${data.changePct}</span>`;
           }
 
@@ -470,4 +470,3 @@ setInterval(() => {
     });
   } catch(e) {}
 }, 1000);
-
