@@ -509,29 +509,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 
-  if (message.type === 'CORPORATE_ACTIONS') {
-    const { symbol } = message;
-    fetch('https://www.nseindia.com/api/corporates-corporateActions?index=equities&symbol=' + encodeURIComponent(symbol), {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Accept': 'application/json',
-        'Referer': 'https://www.nseindia.com/'
-      }
-    })
-      .then(res => res.ok ? res.json() : [])
-      .then(data => {
-        const trimmed = (Array.isArray(data) ? data : []).slice(0, 10).map(a => ({
-          symbol: a.symbol,
-          subject: a.subject,
-          exDate: a.exDate,
-          recDate: a.recDate,
-          series: a.series
-        }));
-        sendResponse({ success: true, data: trimmed });
-      })
-      .catch(err => sendResponse({ success: false, data: [], error: err.message }));
-    return true;
-  }
+
 
   if (message.type === 'SET_TAPE_PAUSED') {
     const isPaused = message.isPaused === true;

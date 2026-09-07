@@ -29,20 +29,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let activePortfolio = 'Sample';
   // Tab Switching Logic
   function switchTab(activeTab, activeView) {
-    [tabSearch, tabNews, tabActions].forEach(t => t && t.classList.remove('active'));
-    [viewSearch, viewNews, viewActions].forEach(v => v && v.classList.remove('active'));
+    [tabSearch, tabNews].forEach(t => t && t.classList.remove('active'));
+    [viewSearch, viewNews].forEach(v => v && v.classList.remove('active'));
     
     activeTab.classList.add('active');
     activeView.classList.add('active');
     
     if (activeTab === tabSearch) renderWatchlist();
     if (activeTab === tabNews) renderNews();
-    if (activeTab === tabActions) renderCorporateActions();
   }
 
   tabSearch.addEventListener('click', () => switchTab(tabSearch, viewSearch));
   tabNews.addEventListener('click', () => switchTab(tabNews, viewNews));
-  tabActions.addEventListener('click', () => switchTab(tabActions, viewActions));
   // --- Google Material Design 3 Header Controls ---
   const svgMoon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>`;
   const svgSun = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 0 0 0-1.41.996.996 0 0 0 0 1.41l1.06 1.06c.39.39.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>`;
@@ -1375,125 +1373,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // --- Corporate Actions ---
-    function getActionType(subject) {
-    const s = subject.toLowerCase();
-    if (s.includes('dividend')) return { label: 'Dividend', color: '#188038', icon: '💰' };
-    if (s.includes('bonus')) return { label: 'Bonus', color: '#1a73e8', icon: '🎁' };
-    if (s.includes('split')) return { label: 'Split', color: '#f29900', icon: '✂️' };
-    if (s.includes('buyback')) return { label: 'Buyback', color: '#a142f4', icon: '🔄' };
-    if (s.includes('rights')) return { label: 'Rights', color: '#c5221f', icon: '📋' };
-    return { label: 'Other', color: '#5f6368', icon: '📌' };
-  }
 
-  function buildActionsTable(data) {
-    if (!data || data.length === 0) {
-      return '<div style="padding:10px 0; color:var(--label-color); font-size:12px; font-style:italic;">No recent corporate actions found.</div>';
-    }
-    const rows = data.map(a => {
-      const { label, color, icon } = getActionType(a.subject);
-      return `<tr style="border-bottom:1px solid var(--border-color);">
-        <td style="padding:8px 10px; white-space:nowrap;"><span style="display:inline-block; background:${color}22; color:${color}; padding:2px 7px; border-radius:10px; font-size:11px; font-weight:600;">${icon} ${label}</span></td>
-        <td style="padding:8px 10px; font-size:12px; color:var(--text-color); white-space:normal; line-height:1.4;">${a.subject}</td>
-        <td style="padding:8px 10px; font-size:12px; color:var(--label-color); white-space:nowrap;">${a.exDate}</td>
-        <td style="padding:8px 10px; font-size:12px; color:var(--label-color); white-space:nowrap;">${a.recDate}</td>
-      </tr>`;
-    }).join('');
-    return `<div style="overflow-x:auto;">
-      <table style="width:100%; border-collapse:collapse; font-size:12px;">
-        <thead><tr style="background:var(--header-bg); font-weight:600; font-size:11px; color:var(--label-color); text-transform:uppercase; letter-spacing:0.4px;">
-          <th style="padding:6px 10px; text-align:left;">Type</th>
-          <th style="padding:6px 10px; text-align:left;">Details</th>
-          <th style="padding:6px 10px; text-align:left;">Ex-Date</th>
-          <th style="padding:6px 10px; text-align:left;">Record Date</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table></div>`;
-  }
-
-  async function renderCorporateActions() {
-    actionsContainer.innerHTML = '<div class="screener-loading" style="text-align:center; padding:30px;">Loading corporate actions for your watchlist...</div>';
-
-    chrome.storage.local.get(['portfolios'], async (res) => {
-      const list = (res.portfolios || {})[activePortfolio] || [];
-      if (list.length === 0) {
-        actionsContainer.innerHTML = '<div style="text-align:center; color:var(--label-color); padding:40px 16px;">Your watchlist is empty. Add some stocks first!</div>';
-        return;
-      }
-
-      actionsContainer.innerHTML = '<div class="screener-loading" style="text-align:center; padding:30px;">Scanning watchlist for recent corporate actions...</div>';
-
-      const now = new Date();
-      now.setHours(0,0,0,0);
-
-      const allResults = await Promise.all(list.map(ticker => {
-        return new Promise(resolve => {
-          chrome.runtime.sendMessage({ type: 'CORPORATE_ACTIONS', symbol: ticker }, (r) => {
-            if (chrome.runtime.lastError || !r || !r.success) {
-              resolve({ ticker, data: [] });
-            } else {
-              // Keep only upcoming actions
-              const upcoming = (r.data || []).filter(a => {
-                const dateStr = (a.exDate && a.exDate !== '-') ? a.exDate : a.recDate;
-                if (!dateStr || dateStr === '-') return false;
-                const d = new Date(dateStr);
-                return !isNaN(d) && d >= now;
-              });
-              resolve({ ticker, data: upcoming });
-            }
-          });
-        });
-      }));
-
-      const activeActions = allResults.filter(r => r.data.length > 0);
-
-      if (activeActions.length === 0) {
-        actionsContainer.innerHTML = `
-          <div style="text-align:center; color:var(--label-color); padding:40px 16px;">
-            No recent corporate actions found for any stocks in this watchlist.
-          </div>`;
-        return;
-      }
-
-      actionsContainer.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding:4px 0;">
-          <span style="font-size:12px; color:var(--text-color);">Found upcoming actions for <strong>${activeActions.length}</strong> of ${list.length} stocks</span>
-          <span style="font-size:10px; color:var(--label-color);">Source: NSE India</span>
-        </div>
-        <div id="actions-list"></div>`;
-
-      const actionsList = document.getElementById('actions-list');
-
-      activeActions.forEach(({ ticker, data }) => {
-        const card = document.createElement('div');
-        card.style.cssText = 'border:1px solid var(--border-color); border-radius:8px; margin-bottom:10px; overflow:hidden;';
-        
-        const next = data[0] ? `Next: ${data[0].subject.substring(0, 35)}${data[0].subject.length > 35 ? '...' : ''} (${data[0].exDate})` : '';
-
-        card.innerHTML = `
-          <div style="background:var(--header-bg); padding:10px 14px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; user-select:none; white-space:nowrap;" class="corp-header">
-            <div style="display:flex; align-items:center; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; min-width:0; flex:1; margin-right:8px;">
-              <span style="font-weight:600; color:var(--link-green); font-size:14px; flex-shrink:0;">${ticker}</span>
-              <span style="font-size:11px; color:var(--label-color); margin-left:8px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${next}</span>
-            </div>
-            <span class="corp-toggle" style="font-size:16px; color:var(--label-color); transition:transform 0.2s; flex-shrink:0;">\u25BE</span>
-          </div>
-          <div class="corp-body" style="padding:8px 12px; display:none;">
-            ${buildActionsTable(data)}
-          </div>`;
-
-        card.querySelector('.corp-header').addEventListener('click', () => {
-          const body = card.querySelector('.corp-body');
-          const arrow = card.querySelector('.corp-toggle');
-          const open = body.style.display !== 'none';
-          body.style.display = open ? 'none' : 'block';
-          arrow.style.transform = open ? '' : 'rotate(180deg)';
-        });
-        
-        actionsList.appendChild(card);
-      });
-    });
-  }
 
   // Listen for background updates
   chrome.runtime.onMessage.addListener((msg) => {
