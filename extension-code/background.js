@@ -1,5 +1,6 @@
 let fastPollInterval = null;
 let isFetchingFastPrices = false;
+let lastFastFallbackAt = 0;
 const PRICE_DECIMALS = 2;
 // Open side panel on action icon click
 chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch((error) => console.error(error));
@@ -24,6 +25,53 @@ function formatMarketCap(value) {
   });
 }
 
+function getCurrencyDetails(currency) {
+  switch (currency || 'INR') {
+    case 'INR': return { code: 'INR', prefix: '₹', locale: 'en-IN' };
+    case 'USD': return { code: 'USD', prefix: '$', locale: 'en-US' };
+    case 'GBP': return { code: 'GBP', prefix: '£', locale: 'en-GB' };
+    case 'EUR': return { code: 'EUR', prefix: '€', locale: 'de-DE' };
+    case 'JPY': return { code: 'JPY', prefix: '¥', locale: 'ja-JP' };
+    case 'SGD': return { code: 'SGD', prefix: 'S$', locale: 'en-SG' };
+    default: return { code: currency, prefix: `${currency} `, locale: 'en-US' };
+  }
+}
+
+function normalizeSparkData(payload) {
+  const results = payload?.spark?.result;
+  if (!Array.isArray(results)) return payload || {};
+
+  return results.reduce((bySymbol, item) => {
+    const response = Array.isArray(item?.response) ? item.response[0] : (item?.response || item || {});
+    const meta = response.meta || {};
+    bySymbol[item.symbol] = {
+      close: response.indicators?.quote?.[0]?.close || [],
+      previousClose: meta.chartPreviousClose ?? meta.previousClose,
+      regularMarketPrice: meta.regularMarketPrice,
+      meta
+    };
+    return bySymbol;
+  }, {});
+}
+
+async function fetchChartQuote(symbol) {
+  try {
+    const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1m&range=1d`);
+    if (!response.ok) return null;
+    const result = (await response.json())?.chart?.result?.[0];
+    if (!result) return null;
+    const meta = result.meta || {};
+    return {
+      close: result.indicators?.quote?.[0]?.close || [],
+      previousClose: meta.chartPreviousClose ?? meta.previousClose,
+      regularMarketPrice: meta.regularMarketPrice,
+      meta
+    };
+  } catch (e) {
+    return null;
+  }
+}
+
 async function fetchYahooData(symbol) {
   try {
     let sym = symbol;
@@ -40,15 +88,8 @@ async function fetchYahooData(symbol) {
     
     const companyName = meta.shortName || meta.longName || symbol;
     const isIndex = meta.instrumentType === 'INDEX' || symbol.startsWith('^');
-    let currSym = '';
-    if (meta.currency === 'INR') currSym = '₹';
-    else if (meta.currency === 'USD') currSym = '$';
-    else if (meta.currency === 'GBP') currSym = '£';
-    else if (meta.currency === 'EUR') currSym = '€';
-    else if (meta.currency === 'JPY') currSym = '¥';
-    else if (meta.currency === 'SGD') currSym = 'SGD ';
-    else currSym = meta.currency ? meta.currency + ' ' : '';
-    const curr = currSym;
+    const currency = getCurrencyDetails(meta.currency);
+    const curr = currency.prefix;
     const price = meta.regularMarketPrice;
     const prevClose = meta.chartPreviousClose || meta.previousClose;
     let diff = 0;
@@ -62,13 +103,13 @@ async function fetchYahooData(symbol) {
     
     const ratios = {};
     if (price !== undefined) {
-      ratios['Current Price'] = `${curr}${price.toLocaleString('en-US', { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
+      ratios['Current Price'] = `${curr}${price.toLocaleString(currency.locale, { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
     }
     if (meta.regularMarketDayLow !== undefined && meta.regularMarketDayHigh !== undefined) {
-      ratios['Day Range'] = `${curr}${meta.regularMarketDayLow.toLocaleString('en-US', { minimumFractionDigits: 2 })} - ${curr}${meta.regularMarketDayHigh.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+      ratios['Day Range'] = `${curr}${meta.regularMarketDayLow.toLocaleString(currency.locale, { minimumFractionDigits: 2 })} - ${curr}${meta.regularMarketDayHigh.toLocaleString(currency.locale, { minimumFractionDigits: 2 })}`;
     }
     if (meta.fiftyTwoWeekLow !== undefined && meta.fiftyTwoWeekHigh !== undefined) {
-      ratios['52W Range'] = `${curr}${meta.fiftyTwoWeekLow.toLocaleString('en-US', { minimumFractionDigits: 2 })} - ${curr}${meta.fiftyTwoWeekHigh.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+      ratios['52W Range'] = `${curr}${meta.fiftyTwoWeekLow.toLocaleString(currency.locale, { minimumFractionDigits: 2 })} - ${curr}${meta.fiftyTwoWeekHigh.toLocaleString(currency.locale, { minimumFractionDigits: 2 })}`;
     }
     if (meta.regularMarketVolume !== undefined && meta.regularMarketVolume > 0) {
       ratios['Volume'] = meta.regularMarketVolume.toLocaleString('en-US');
@@ -627,9 +668,20 @@ async function fetchFastPrices() {
       }
     }
 
-    const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/spark?symbols=${encodeURIComponent(symbolsToFetch.join(','))}&interval=1m&range=1d`);
-    if (res.ok) {
-      const sparkData = await res.json();
+    const uniqueSymbols = [...new Set(symbolsToFetch)];
+    const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/spark?symbols=${encodeURIComponent(uniqueSymbols.join(','))}&interval=1m&range=1d`);
+    const sparkData = res.ok ? normalizeSparkData(await res.json()) : {};
+      const missingSymbols = uniqueSymbols.filter((symbol) => {
+        const quote = sparkData[symbol];
+        return !quote || ((!Array.isArray(quote.close) || !quote.close.some((value) => value !== null && value !== undefined)) && quote.regularMarketPrice === undefined && quote.previousClose === undefined);
+      });
+      if (missingSymbols.length > 0 && Date.now() - lastFastFallbackAt >= 5000) {
+        lastFastFallbackAt = Date.now();
+        const fallbackQuotes = await Promise.all(missingSymbols.map(async (symbol) => [symbol, await fetchChartQuote(symbol)]));
+        for (const [symbol, quote] of fallbackQuotes) {
+          if (quote) sparkData[symbol] = quote;
+        }
+      }
       let changed = false;
 
       // Clean up stale index keys when cards are modified
@@ -650,23 +702,18 @@ async function fetchFastPrices() {
           for (let i = prices.length - 1; i >= 0; i--) {
             if (prices[i] !== null && prices[i] !== undefined) { price = prices[i]; break; }
           }
-          if (price === null && d.previousClose !== undefined) price = d.previousClose;
+           if (price === null && d.regularMarketPrice !== undefined) price = d.regularMarketPrice;
+           if (price === null && d.previousClose !== undefined) price = d.previousClose;
 
           if (price !== null) {
             const prev = d.previousClose;
             const diff = prev ? price - prev : 0;
             const pct = prev ? ((diff / prev) * 100).toFixed(2) : '0.00';
             
-            let prefix = '₹';
-            if (idx.curr === 'USD') prefix = '$';
-            else if (idx.curr === 'GBP') prefix = '£';
-            else if (idx.curr === 'EUR') prefix = '€';
-            else if (idx.curr === 'JPY') prefix = '¥';
-            else if (idx.curr === 'SGD') prefix = 'SGD ';
-            const locale = idx.curr === 'INR' ? 'en-IN' : 'en-US';
-            const formatted = `${prefix}${price.toLocaleString(locale, { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
-            
             const oldIdx = marketIndices[idx.key];
+            const currency = getCurrencyDetails(d.meta?.currency || oldIdx?.curr || idx.curr || 'INR');
+            const formatted = `${currency.prefix}${price.toLocaleString(currency.locale, { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
+
             let flash = oldIdx?.flash;
             let flashTime = oldIdx?.flashTime;
 
@@ -682,7 +729,7 @@ async function fetchFastPrices() {
               marketIndices[idx.key] = {
                 symbol: idx.symbol,
                 price: formatted,
-                curr: idx.curr,
+                curr: currency.code,
                 changeDir: diff >= 0 ? 'up' : 'down',
                 changePct: Math.abs(parseFloat(pct)).toFixed(2) + '%',
                 flash,
@@ -705,6 +752,7 @@ async function fetchFastPrices() {
           for (let i = prices.length - 1; i >= 0; i--) {
             if (prices[i] !== null && prices[i] !== undefined) { price = prices[i]; break; }
           }
+          if (price === null && d.regularMarketPrice !== undefined) price = d.regularMarketPrice;
           if (price === null && d.previousClose !== undefined) price = d.previousClose;
 
           if (price !== null) {
@@ -714,18 +762,9 @@ async function fetchFastPrices() {
 
             if (!cachedData[ticker]) cachedData[ticker] = { ratios: {} };
             if (!cachedData[ticker].ratios) cachedData[ticker].ratios = {};
-            const c = cachedData[ticker]?.currency;
-            let currSym = '';
-            if (c === 'INR') currSym = '₹';
-            else if (c === 'USD') currSym = '$';
-            else if (c === 'GBP') currSym = '£';
-            else if (c === 'EUR') currSym = '€';
-            else if (c === 'JPY') currSym = '¥';
-            else if (c === 'SGD') currSym = 'SGD ';
-            else currSym = c ? c + ' ' : (cachedData[ticker]?.isIndex ? '' : '₹');
-            const curr = currSym;
+            const currency = getCurrencyDetails(d.meta?.currency || cachedData[ticker]?.currency || 'INR');
             const currentStr = cachedData[ticker].ratios['Current Price'];
-            const formattedPrice = `${curr}${price.toLocaleString('en-US', { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
+            const formattedPrice = `${currency.prefix}${price.toLocaleString(currency.locale, { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
 
             if (currentStr !== formattedPrice) {
               const oldNum = parseFloat((currentStr || '0').replace(/[^\d\.]/g, ''));
@@ -734,6 +773,7 @@ async function fetchFastPrices() {
                 cachedData[ticker].flashTime = Date.now();
               }
               cachedData[ticker].ratios['Current Price'] = formattedPrice;
+              cachedData[ticker].currency = currency.code;
               cachedData[ticker].changePct = Math.abs(parseFloat(pct)).toFixed(2) + '%';
               cachedData[ticker].changeDir = diff >= 0 ? 'up' : 'down';
               changed = true;
@@ -742,10 +782,9 @@ async function fetchFastPrices() {
         }
       }
 
-      if (changed) {
-        await chrome.storage.local.set({ cachedData, marketIndices, lastFastPoll: Date.now() });
-        chrome.runtime.sendMessage({ type: 'WATCHLIST_UPDATED' }).catch(() => {});
-      }
+    if (changed) {
+      await chrome.storage.local.set({ cachedData, marketIndices, lastFastPoll: Date.now() });
+      chrome.runtime.sendMessage({ type: 'WATCHLIST_UPDATED' }).catch(() => {});
     }
   } catch (e) {
   } finally {

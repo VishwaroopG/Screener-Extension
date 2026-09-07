@@ -10,9 +10,21 @@
   
   const marquee = document.createElement('div');
   marquee.className = 'screener-marquee';
+
+  const tapeControls = document.createElement('div');
+  tapeControls.className = 'screener-tape-controls';
+  tapeControls.innerHTML = `
+    <button class="screener-tape-scroll-btn" data-direction="left" type="button" title="Scroll tape left" aria-label="Scroll tape left">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </button>
+    <button class="screener-tape-scroll-btn" data-direction="right" type="button" title="Scroll tape right" aria-label="Scroll tape right">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m8.59 16.59 1.41 1.41 6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+    </button>
+  `;
   
   container.appendChild(marquee);
   tapeDiv.appendChild(container);
+  tapeDiv.appendChild(tapeControls);
   
   document.documentElement.appendChild(tapeDiv);
   document.documentElement.classList.add('screener-tape-active');
@@ -102,6 +114,7 @@
   let startX = 0;
   let dragStartX = 0;
   let currentX = 0;
+  let arrowScrollRemaining = 0;
   let speed = 0.8; // Default 1x speed in pixels per frame
   let latestCachedData = {};
   let latestIndices = {};
@@ -205,6 +218,25 @@
     marquee.style.transform = `translate3d(${currentX}px, 0, 0)`;
   }, { passive: false });
 
+  function normalizeTapePosition() {
+    const halfWidth = marquee.scrollWidth / 2;
+    if (halfWidth <= 0) return;
+    if (currentX > 0) {
+      currentX -= halfWidth;
+    } else if (Math.abs(currentX) >= halfWidth) {
+      currentX += halfWidth;
+    }
+  }
+
+  tapeControls.querySelectorAll('.screener-tape-scroll-btn').forEach((button) => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const direction = button.dataset.direction === 'left' ? 1 : -1;
+      // Ease each press into the same continuous motion as the live marquee.
+      arrowScrollRemaining += direction * 180;
+    });
+  });
   // Hover detection (temporarily pause scrolling while user actively hovers)
   container.addEventListener('mouseenter', () => { isHovered = true; });
   container.addEventListener('mouseleave', () => { isHovered = false; });
@@ -341,7 +373,14 @@
   // Uses translate3d which never hits DOM scroll limits or integer truncation issues
   function autoScrollStep() {
     if (!isPaused && !isDragging && !isHovered && isVisible && !isDomainDisabled) {
-      currentX -= speed;
+      if (Math.abs(arrowScrollRemaining) > 0.25) {
+        const step = Math.sign(arrowScrollRemaining) * Math.max(0.5, Math.abs(arrowScrollRemaining) * 0.16);
+        currentX += step;
+        arrowScrollRemaining -= step;
+      } else {
+        arrowScrollRemaining = 0;
+        currentX -= speed;
+      }
       const halfWidth = marquee.scrollWidth / 2;
       
       // Use modulo to prevent massive negative values if it ever gets out of sync
@@ -395,9 +434,9 @@
         const formattedPrice = idx.price;
 
         html += `
-          <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${idxName}" data-is-index="true" style="color: #ff9800; cursor: pointer;">
+          <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${idxName}" data-is-index="true" style="cursor: pointer;">
             <span class="screener-ticker-name">${idxName}</span>
-            <span class="screener-ticker-price ${flashClass}" style="color: #ff9800;">${formattedPrice}</span>
+            <span class="screener-ticker-price ${flashClass}">${formattedPrice}</span>
             <span style="color: ${color}; font-size: 12px; margin-left: 6px;">${sign} ${Math.abs(parseFloat(idx.changePct)).toFixed(2)}%</span>
           </div>
         `;
