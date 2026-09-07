@@ -73,14 +73,14 @@
     dataPoints.forEach((val, i) => {
       const x = (i / (dataPoints.length - 1)) * w;
       const y = h - ((val - yMin) / (yMax - yMin)) * h;
-      pathD += (i === 0 ? \`M \${x} \${y}\` : \` L \${x} \${y}\`);
+      pathD += (i === 0 ? `M ${x} ${y}` : ` L ${x} ${y}`);
     });
     
-    containerEl.innerHTML = \`
-      <svg width="100%" height="100%" viewBox="0 0 \${w} \${h}" preserveAspectRatio="none">
-        <path d="\${pathD}" fill="none" stroke="\${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    containerEl.innerHTML = `
+      <svg width="100%" height="100%" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+        <path d="${pathD}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-    \`;
+    `;
   }
 
 
@@ -261,25 +261,25 @@
 
     if (isIndex) {
       titleEl.innerText = ticker; // e.g. "S&P 500 (USA)"
-      subtitleEl.innerText = \`Market Index • \${data.symbol || ''}\`;
+      subtitleEl.innerText = `Market Index • ${data.symbol || ''}`;
       descEl.innerText = '';
       
       const price = data.price || '';
       const pct = data.changePct || '';
       const colorCls = data.changeDir === 'up' ? 'screener-metric-up' : 'screener-metric-down';
       
-      metricsHtml = \`
+      metricsHtml = `
         <div class="screener-metric-box">
           <span class="screener-metric-label">Last Price</span>
-          <span class="screener-metric-val">\${price}</span>
+          <span class="screener-metric-val">${price}</span>
         </div>
         <div class="screener-metric-box">
           <span class="screener-metric-label">1D Return</span>
-          <span class="screener-metric-val \${colorCls}">\${pct}</span>
+          <span class="screener-metric-val ${colorCls}">${pct}</span>
         </div>
-      \`;
+      `;
 
-      btnEl.href = \`https://finance.yahoo.com/quote/\${encodeURIComponent(data.symbol || '')}/\`;
+      btnEl.href = `https://finance.yahoo.com/quote/${encodeURIComponent(data.symbol || '')}/`;
       drawSparkline(sparklineEl, [], '#1a73e8'); // Indices don't have sparklines cached yet
     } else {
       titleEl.innerText = data.companyName || ticker;
@@ -287,7 +287,7 @@
       const ratios = data.ratios || {};
       const sector = ratios['Type'] || ratios['Sector'] || 'Equity';
       const exchange = ratios['Exchange'] || (data.source === 'yahoo' ? 'Global' : 'NSE/BSE');
-      subtitleEl.innerText = \`\${sector} • \${exchange} • \${ticker}\`;
+      subtitleEl.innerText = `${sector} • ${exchange} • ${ticker}`;
       
       descEl.innerText = data.aboutText || '';
 
@@ -296,7 +296,7 @@
 
       const metrics = [
         { label: 'Last Price', val: ratios['Current Price'] || '-' },
-        { label: '1D Return', val: \`<span class="\${colorCls}">\${pct}</span>\` },
+        { label: '1D Return', val: `<span class="${colorCls}">${pct}</span>` },
         { label: 'Market Cap', val: ratios['Market Cap'] || '-' },
         { label: 'P/E Ratio', val: ratios['Stock P/E'] || '-' },
         { label: 'Div Yield', val: ratios['Dividend Yield'] || '-' },
@@ -304,19 +304,19 @@
       ];
 
       metrics.forEach(m => {
-        metricsHtml += \`
+        metricsHtml += `
           <div class="screener-metric-box">
-            <span class="screener-metric-label">\${m.label}</span>
-            <span class="screener-metric-val">\${m.val}</span>
+            <span class="screener-metric-label">${m.label}</span>
+            <span class="screener-metric-val">${m.val}</span>
           </div>
-        \`;
+        `;
       });
 
       // Set correct URL
       if (data.source === 'yahoo') {
-        btnEl.href = \`https://finance.yahoo.com/quote/\${encodeURIComponent(ticker)}/\`;
+        btnEl.href = `https://finance.yahoo.com/quote/${encodeURIComponent(ticker)}/`;
       } else {
-        btnEl.href = \`https://www.screener.in/company/\${encodeURIComponent(ticker)}/\`;
+        btnEl.href = `https://www.screener.in/company/${encodeURIComponent(ticker)}/`;
       }
 
       // Draw sparkline
