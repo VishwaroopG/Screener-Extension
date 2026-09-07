@@ -280,7 +280,7 @@
       `;
 
       btnEl.href = `https://finance.yahoo.com/quote/${encodeURIComponent(data.symbol || '')}/`;
-      drawSparkline(sparklineEl, data.sparkline || [], '#1a73e8');
+      drawSparkline(sparklineEl, [], '#1a73e8'); // Indices don't have sparklines cached yet
     } else {
       titleEl.innerText = data.companyName || ticker;
       
