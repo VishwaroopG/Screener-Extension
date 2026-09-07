@@ -31,7 +31,7 @@
       </div>
       <div class="screener-modal-body">
         <div class="screener-modal-desc" id="screener-modal-desc"></div>
-        <div class="screener-sparkline-title">7D Price Trend</div>
+        <div class="screener-sparkline-title">1Y Price Trend</div>
         <div class="screener-sparkline-container" id="screener-sparkline-container"></div>
         <div class="screener-metrics-grid" id="screener-metrics-grid"></div>
       </div>
@@ -261,7 +261,7 @@
 
     if (isIndex) {
       titleEl.innerText = ticker; // e.g. "S&P 500 (USA)"
-      subtitleEl.innerText = `Market Index • ${data.symbol || ''}`;
+      subtitleEl.innerText = `Market Index â€¢ ${data.symbol || ''}`;
       descEl.innerText = '';
       
       const price = data.price || '';
@@ -287,7 +287,7 @@
       const ratios = data.ratios || {};
       const sector = ratios['Type'] || ratios['Sector'] || 'Equity';
       const exchange = ratios['Exchange'] || (data.source === 'yahoo' ? 'Global' : 'NSE/BSE');
-      subtitleEl.innerText = `${sector} • ${exchange} • ${ticker}`;
+      subtitleEl.innerText = `${sector} â€¢ ${exchange} â€¢ ${ticker}`;
       
       descEl.innerText = data.aboutText || '';
 
@@ -402,7 +402,7 @@
           let pctHtml = '';
           if (data.changePct) {
             const color = data.changeDir === 'up' ? '#81c995' : '#f28b82';
-            const sign = data.changeDir === 'up' ? '▲' : '▼';
+            const sign = data.changeDir === 'up' ? 'â–²' : 'â–¼';
             pctHtml = `<span style="color: ${color}; font-size: 12px; margin-left: 6px;">${sign} ${data.changePct}</span>`;
           }
 
@@ -470,3 +470,4 @@ setInterval(() => {
     });
   } catch(e) {}
 }, 1000);
+
