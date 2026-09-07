@@ -1,5 +1,6 @@
 let fastPollInterval = null;
 let isFetchingFastPrices = false;
+const PRICE_DECIMALS = 2;
 // Open side panel on action icon click
 chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch((error) => console.error(error));
 
@@ -10,6 +11,16 @@ function roundStringValue(str, decimals = 2) {
     const num = parseFloat(match.replace(/,/g, ''));
     if (isNaN(num)) return match;
     return num.toLocaleString('en-IN', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  });
+}
+
+function formatMarketCap(value) {
+  if (value === null || value === undefined || value === '-') return value;
+  return String(value).replace(/[\d,]+(?:\.\d+)?/g, (match) => {
+    const num = Number(match.replace(/,/g, ''));
+    return Number.isFinite(num)
+      ? num.toLocaleString('en-IN', { maximumFractionDigits: 0 })
+      : match;
   });
 }
 
@@ -51,7 +62,7 @@ async function fetchYahooData(symbol) {
     
     const ratios = {};
     if (price !== undefined) {
-      ratios['Current Price'] = `${curr}${price.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`;
+      ratios['Current Price'] = `${curr}${price.toLocaleString('en-US', { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
     }
     if (meta.regularMarketDayLow !== undefined && meta.regularMarketDayHigh !== undefined) {
       ratios['Day Range'] = `${curr}${meta.regularMarketDayLow.toLocaleString('en-US', { minimumFractionDigits: 2 })} - ${curr}${meta.regularMarketDayHigh.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
@@ -69,7 +80,7 @@ async function fetchYahooData(symbol) {
       ratios['Exchange'] = meta.fullExchangeName || meta.exchangeName;
     }
 
-    // 7-day sparkline
+    // 1-year sparkline
     let sparkline = [];
     try {
       const sparkRes = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=1y`);
@@ -109,7 +120,7 @@ async function fetchYahooData(symbol) {
           if (roi && roi !== '-') ratios['ROCE'] = roi; // mapping ROI to ROCE for UI consistency
           
           const mcap = extractFinviz('Market Cap');
-          if (mcap && mcap !== '-') ratios['Market Cap'] = mcap;
+          if (mcap && mcap !== '-') ratios['Market Cap'] = formatMarketCap(mcap);
           
           const div = extractFinviz('Dividend %');
           if (div && div !== '-') ratios['Dividend Yield'] = div;
@@ -172,7 +183,9 @@ async function fetchScreenerData(ticker) {
           let name = nameMatch[1].trim();
           let afterName = liHtml.substring(nameMatch.index + nameMatch[0].length);
           let valueStr = afterName.replace(/<[^>]+>/g, '').trim().replace(/\s+/g, ' ');
-          ratios[name] = roundStringValue(valueStr, name === 'Market Cap' ? 0 : 2);
+          ratios[name] = name === 'Market Cap'
+            ? formatMarketCap(valueStr)
+            : roundStringValue(valueStr);
         }
       }
     }
@@ -213,16 +226,6 @@ async function fetchScreenerData(ticker) {
 async function fetchIndices() {
   try {
     const indices = {};
-    const formatPrice = (num, curr) => {
-      let prefix = '₹';
-      if (curr === 'USD') prefix = '$';
-      else if (curr === 'GBP') prefix = '£';
-      else if (curr === 'EUR') prefix = '€';
-      else if (curr === 'JPY') prefix = '¥';
-      else if (curr === 'SGD') prefix = 'SGD ';
-      const locale = curr === 'INR' ? 'en-IN' : 'en-US';
-      return prefix + Number(num).toLocaleString(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-    };
 
     const defaultPinned = [
       { key: 'S&P 500 (USA)', symbol: '^GSPC', curr: 'USD' },
@@ -235,29 +238,23 @@ async function fetchIndices() {
 
     await Promise.all(indexConfigs.map(async (cfg) => {
       try {
-        const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(cfg.symbol)}?interval=1d&range=1y`);
-        if (res.ok) {
-          const data = await res.json();
-          const meta = data.chart.result[0].meta;
-          const quotes = data.chart.result[0].indicators?.quote?.[0]?.close || [];
-          const sparkline = quotes.filter(p => p !== null && p !== undefined).map(p => parseFloat(p.toFixed(2)));
-
-          const price = meta.regularMarketPrice;
-          const prev = meta.chartPreviousClose || meta.previousClose;
-          const diff = prev ? price - prev : 0;
-          const pct = prev ? ((diff / prev) * 100).toFixed(2) : '0.00';
-          const realCurr = meta.currency || cfg.curr || 'USD';
+        const quote = await fetchYahooData(cfg.symbol);
+        if (quote?.success) {
+          const priceText = quote.ratios?.['Current Price'] || '';
+          const rawPrice = parseFloat(priceText.replace(/[^\d.-]/g, '')) || 0;
           indices[cfg.key] = {
             symbol: cfg.symbol,
-            price: formatPrice(price, realCurr),
-            rawPrice: price,
-            changePct: Math.abs(parseFloat(pct)).toFixed(2) + '%',
-            changeDir: diff >= 0 ? 'up' : 'down',
-            curr: realCurr,
-            sparkline: sparkline
+            price: priceText,
+            rawPrice,
+            changePct: quote.changePct || '0.00%',
+            changeDir: quote.changeDir || 'up',
+            curr: quote.currency || cfg.curr || 'USD',
+            sparkline: quote.sparkline || []
           };
         }
-      } catch(e) {}
+      } catch (e) {
+        console.warn(`Could not load index ${cfg.symbol}:`, e);
+      }
     }));
 
     return indices;
@@ -332,6 +329,7 @@ async function syncWatchlistData() {
     allTickers.push(...list);
   }
   allTickers = [...new Set(allTickers)]; // remove duplicates
+  const indicesPromise = fetchIndices();
   
   const cachedData = {};
   for (const ticker of allTickers) {
@@ -383,7 +381,7 @@ async function syncWatchlistData() {
     await new Promise(resolve => setTimeout(resolve, 500));
   }
 
-  const indices = await fetchIndices();
+  const indices = await indicesPromise;
   if (indices) {
     for (const key of ['SENSEX', 'NIFTY 50']) {
       if (indices[key] && oldIndices[key]) {
@@ -666,7 +664,7 @@ async function fetchFastPrices() {
             else if (idx.curr === 'JPY') prefix = '¥';
             else if (idx.curr === 'SGD') prefix = 'SGD ';
             const locale = idx.curr === 'INR' ? 'en-IN' : 'en-US';
-            const formatted = `${prefix}${price.toLocaleString(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`;
+            const formatted = `${prefix}${price.toLocaleString(locale, { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
             
             const oldIdx = marketIndices[idx.key];
             let flash = oldIdx?.flash;
@@ -727,7 +725,7 @@ async function fetchFastPrices() {
             else currSym = c ? c + ' ' : (cachedData[ticker]?.isIndex ? '' : '₹');
             const curr = currSym;
             const currentStr = cachedData[ticker].ratios['Current Price'];
-            const formattedPrice = `${curr}${price.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`;
+            const formattedPrice = `${curr}${price.toLocaleString('en-US', { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
 
             if (currentStr !== formattedPrice) {
               const oldNum = parseFloat((currentStr || '0').replace(/[^\d\.]/g, ''));

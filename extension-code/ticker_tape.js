@@ -83,6 +83,16 @@
     `;
   }
 
+  function formatMarketCap(value) {
+    if (value === null || value === undefined || value === '-') return value;
+    return String(value).replace(/[\d,]+(?:\.\d+)?/g, (match) => {
+      const num = Number(match.replace(/,/g, ''));
+      return Number.isFinite(num)
+        ? num.toLocaleString('en-IN', { maximumFractionDigits: 0 })
+        : match;
+    });
+  }
+
 
   // --- State Variables ---
   let isPaused = false;
@@ -280,7 +290,7 @@
       `;
 
       btnEl.href = `https://finance.yahoo.com/quote/${encodeURIComponent(data.symbol || '')}/`;
-      drawSparkline(sparklineEl, [], '#1a73e8'); // Indices don't have sparklines cached yet
+      drawSparkline(sparklineEl, data.sparkline || [], '#1a73e8');
     } else {
       titleEl.innerText = data.companyName || ticker;
       
@@ -297,7 +307,7 @@
       const metrics = [
         { label: 'Last Price', val: ratios['Current Price'] || '-' },
         { label: '1D Return', val: `<span class="${colorCls}">${pct}</span>` },
-        { label: 'Market Cap', val: ratios['Market Cap'] || '-' },
+        { label: 'Market Cap', val: formatMarketCap(ratios['Market Cap'] || '-') },
         { label: 'P/E Ratio', val: ratios['Stock P/E'] || '-' },
         { label: 'Div Yield', val: ratios['Dividend Yield'] || '-' },
         { label: 'ROCE', val: ratios['ROCE'] || '-' }
@@ -402,7 +412,7 @@
           let pctHtml = '';
           if (data.changePct) {
             const color = data.changeDir === 'up' ? '#81c995' : '#f28b82';
-            const sign = data.changeDir === 'up' ? '▲' : '▼';
+            const sign = data.changeDir === 'up' ? '\u25B2' : '\u25BC';
             pctHtml = `<span style="color: ${color}; font-size: 12px; margin-left: 6px;">${sign} ${data.changePct}</span>`;
           }
 

@@ -21,8 +21,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnNewPortfolio = document.getElementById('btn-new-portfolio');
   const btnExportCsv = document.getElementById('btn-export-csv');
   const newsContainer = document.getElementById('news-container');
+  const extensionVersion = document.getElementById('extension-version');
 
   let activePortfolio = 'Sample';
+
+  if (extensionVersion) {
+    extensionVersion.textContent = `v${chrome.runtime.getManifest().version}`;
+  }
+
+  function formatMarketCap(value) {
+    if (value === null || value === undefined || value === '-') return value;
+    return String(value).replace(/[\d,]+(?:\.\d+)?/g, (match) => {
+      const num = Number(match.replace(/,/g, ''));
+      return Number.isFinite(num)
+        ? num.toLocaleString('en-IN', { maximumFractionDigits: 0 })
+        : match;
+    });
+  }
   // Tab Switching Logic
   function switchTab(activeTab, activeView) {
     [tabSearch, tabNews].forEach(t => t && t.classList.remove('active'));
@@ -333,12 +348,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let disabledDomains = [];
 
   const svgDomainDisabled = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#d93025"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/></svg>';
-  const svgDomainEnabled = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>';
+  const svgDomainEnabled = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1.1 14.2-3.8-3.8 1.4-1.4 2.4 2.4 4.6-4.6 1.4 1.4z"/></svg>';
 
   function updateDomainUI() {
     if (!tapeDomainBtn || !currentDomain) return;
     const isDisabled = disabledDomains.includes(currentDomain);
-    tapeDomainBtn.innerHTML = isDisabled ? svgDomainDisabled : '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/></svg>';
+    tapeDomainBtn.innerHTML = isDisabled ? svgDomainDisabled : svgDomainEnabled;
     tapeDomainBtn.title = isDisabled ? `Enable on ${currentDomain}` : `Disable on ${currentDomain}`;
     
     if (isDisabled) {
@@ -994,12 +1009,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td style="text-align:left; padding:10px; font-weight:500;">
                   <span style="color:#aaa; margin-right:4px; font-size:10px;" title="Drag to reorder">⣿</span>
                   <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + ticker + '/'}" target="_blank" title="${data.companyName}" style="color:var(--link-green); text-decoration:none;">${ticker}</a>
-                  ${noteTxt ? `<div style="font-size:10px; color:#5f6368; font-weight:normal; max-width:100px; white-space:normal; margin-top:4px;">ðŸ“  ${noteTxt}</div>` : ''}
+                  ${noteTxt ? `<div style="font-size:10px; color:#5f6368; font-weight:normal; max-width:100px; white-space:normal; margin-top:4px;">\uD83D\uDCDD ${noteTxt}</div>` : ''}
                 </td>
                 <td style="padding:10px;">${spark}</td>
                 <td class="${flashClass}" style="padding:10px;">${data.ratios['Current Price']||'-'}<br/>${pctHtml}</td>
                 <td style="padding:10px;">${data.ratios['Stock P/E']||'-'}</td>
-                <td style="padding:10px;">${data.ratios['Market Cap']||'-'}</td>
+                <td style="padding:10px;">${formatMarketCap(data.ratios['Market Cap'] || '-')}</td>
                 <td style="padding:10px; text-align:center;">
                   <button class="screener-note-btn" data-ticker="${ticker}" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px;" title="Add Note">\uD83D\uDCDD</button>
                   <button class="screener-alert-btn" data-ticker="${ticker}" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px;" title="Set Alert">${hasAlert ? '\uD83D\uDD14' : '\u23F0'}</button>
@@ -1343,7 +1358,7 @@ document.addEventListener('DOMContentLoaded', () => {
       newsContainer.innerHTML = '<div class="screener-loading" style="text-align:center; padding:20px;">Fetching latest financial news...</div>';
       
       let allNewsHtml = '';
-      const results = await Promise.all(list.slice(0, 15).map(async (ticker) => {
+      const results = await Promise.all(list.map(async (ticker) => {
           try {
             const feedRes = await fetch(`https://news.google.com/rss/search?q=${ticker}+stock&hl=en-IN&gl=IN&ceid=IN:en`);
             const text = await feedRes.text();
@@ -1538,7 +1553,6 @@ setInterval(() => {
     });
   } catch(e) {}
 }, 1000);
-
 
 
 
