@@ -327,11 +327,13 @@
   // --- Continuous GPU-Accelerated Auto-Scroll Engine ---
   // Uses translate3d which never hits DOM scroll limits or integer truncation issues
   function autoScrollStep() {
-    if (!isPaused && !isDragging && !isHovered) {
+    if (!isPaused && !isDragging && !isHovered && isVisible && !isDomainDisabled) {
       currentX -= speed;
       const halfWidth = marquee.scrollWidth / 2;
+      
+      // Use modulo to prevent massive negative values if it ever gets out of sync
       if (halfWidth > 0 && Math.abs(currentX) >= halfWidth) {
-        currentX += halfWidth;
+        currentX = currentX % halfWidth;
       }
       marquee.style.transform = `translate3d(${currentX}px, 0, 0)`;
     }
