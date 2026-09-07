@@ -43,10 +43,13 @@
   document.documentElement.appendChild(modalBackdrop);
 
   // Close Modal logic
-  document.getElementById('screener-modal-close').addEventListener('click', () => {
-    modalBackdrop.classList.remove('visible');
-    isPaused = false; // Resume tape
-  });
+  const closeBtn = modalBackdrop.querySelector('#screener-modal-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      modalBackdrop.classList.remove('visible');
+      isPaused = false; // Resume tape
+    });
+  }
   modalBackdrop.addEventListener('click', (e) => {
     if (e.target === modalBackdrop) {
       modalBackdrop.classList.remove('visible');
@@ -247,12 +250,12 @@
     isPaused = true; // Pause tape while modal is open
     modalBackdrop.classList.add('visible');
 
-    const titleEl = document.getElementById('screener-modal-title');
-    const subtitleEl = document.getElementById('screener-modal-subtitle');
-    const descEl = document.getElementById('screener-modal-desc');
-    const sparklineEl = document.getElementById('screener-sparkline-container');
-    const metricsGrid = document.getElementById('screener-metrics-grid');
-    const btnEl = document.getElementById('screener-btn-details');
+    const titleEl = modalBackdrop.querySelector('#screener-modal-title');
+    const subtitleEl = modalBackdrop.querySelector('#screener-modal-subtitle');
+    const descEl = modalBackdrop.querySelector('#screener-modal-desc');
+    const sparklineEl = modalBackdrop.querySelector('#screener-sparkline-container');
+    const metricsGrid = modalBackdrop.querySelector('#screener-metrics-grid');
+    const btnEl = modalBackdrop.querySelector('#screener-btn-details');
 
     let metricsHtml = '';
 
