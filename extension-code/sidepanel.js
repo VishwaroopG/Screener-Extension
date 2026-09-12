@@ -1296,9 +1296,9 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     pinnedNameSuggestions.innerHTML = matches.map(([name, symbol]) => `
-      <div class="screener-suggestion-item" data-name="${name}" data-symbol="${symbol}">
-        <span class="suggestion-name">${name}</span>
-        <span class="suggestion-symbol">${symbol}</span>
+      <div class="screener-suggestion-item" data-name="${name}" data-symbol="${symbol}" style="display:flex; justify-content:space-between; align-items:center; width:100%; cursor:pointer;">
+        <span style="font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-right:8px;">${name}</span>
+        <span style="font-size:10px; padding:2px 6px; border-radius:4px; background:var(--verdict-bg, #f1f3f4); color:var(--text-color, #3c4043); border:1px solid var(--border-color, #dadce0); flex-shrink:0;">Index</span>
       </div>
     `).join('');
     pinnedNameSuggestions.style.display = 'block';
@@ -1327,13 +1327,50 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const pinnedSymbolSuggestions = document.getElementById('pinned-symbol-suggestions');
+
+  function showPinnedSymbolSuggestions(query) {
+    if (!pinnedSymbolSuggestions) return;
+    const trimmed = (query || '').trim().toLowerCase();
+    const matches = trimmed.length === 0
+      ? Object.entries(presetMap)
+      : Object.entries(presetMap).filter(([name, sym]) =>
+          sym.toLowerCase().includes(trimmed)
+        );
+    if (matches.length === 0) {
+      pinnedSymbolSuggestions.style.display = 'none';
+      return;
+    }
+    pinnedSymbolSuggestions.innerHTML = matches.map(([name, symbol]) => `
+      <div class="screener-suggestion-item" data-name="${name}" data-symbol="${symbol}" style="display:flex; justify-content:space-between; align-items:center; width:100%; cursor:pointer;">
+        <span style="font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-right:8px;">${symbol}</span>
+        <span style="font-size:10px; padding:2px 6px; border-radius:4px; background:var(--verdict-bg, #f1f3f4); color:var(--text-color, #3c4043); border:1px solid var(--border-color, #dadce0); flex-shrink:0;">Index</span>
+      </div>
+    `).join('');
+    pinnedSymbolSuggestions.style.display = 'block';
+
+    pinnedSymbolSuggestions.querySelectorAll('.screener-suggestion-item').forEach(item => {
+      item.addEventListener('click', () => {
+        pinnedDisplayName.value = item.getAttribute('data-name');
+        pinnedSymbol.value = item.getAttribute('data-symbol');
+        pinnedSymbolSuggestions.style.display = 'none';
+      });
+    });
+  }
+
   if (pinnedSymbol) {
     pinnedSymbol.addEventListener('input', () => {
       const val = pinnedSymbol.value;
       const nameMatch = Object.keys(presetMap).find(k => presetMap[k] === val);
       if (nameMatch) {
         pinnedDisplayName.value = nameMatch;
+        pinnedSymbolSuggestions.style.display = 'none';
+      } else {
+        showPinnedSymbolSuggestions(val);
       }
+    });
+    pinnedSymbol.addEventListener('focus', () => {
+      showPinnedSymbolSuggestions(pinnedSymbol.value || '');
     });
   }
 

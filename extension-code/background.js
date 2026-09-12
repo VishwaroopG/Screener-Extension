@@ -32,6 +32,10 @@ function formatMacroValue(raw, def) {
 }
 // Open side panel on action icon click
 chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch((error) => console.error(error));
+// Open feedback page when the extension is uninstalled
+try {
+  chrome.runtime.setUninstallURL('https://vishwaroopg.github.io/Screener-Extension/uninstall/');
+} catch (error) { console.error(error); }
 
 // Fetch helper
 function roundStringValue(str, decimals = 2) {
@@ -792,6 +796,9 @@ chrome.runtime.onInstalled.addListener(() => {
     title: 'Add "%s" to Screener Watchlist',
     contexts: ["selection"]
   });
+  
+  // Set Uninstall Survey URL
+  chrome.runtime.setUninstallURL("https://forms.gle/YOUR_GOOGLE_FORM_URL_HERE");
 });
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
