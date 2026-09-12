@@ -206,20 +206,21 @@ h1 .accent { color: var(--mint); }
 .feedback-form input::placeholder, .feedback-form textarea::placeholder { color: #7e96a9; }
 .feedback-form input:focus, .feedback-form textarea:focus { outline: none; border-color: var(--mint); }
 .feedback-form .button { width: 100%; }
-.attach-label { font-size: 12px; color: var(--muted); text-align: left; margin-bottom: -6px; }
-.feedback-form input[type="file"] { padding: 10px 12px; font-size: 13px; cursor: pointer; }
-.feedback-form input[type="file"]::file-selector-button {
-  margin-right: 12px;
-  padding: 8px 14px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(129, 244, 198, .1);
-  color: var(--mint);
-  font: inherit;
-  font-size: 13px;
-  font-weight: 700;
+.file-hidden { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.attach-drop {
+  display: block;
+  padding: 18px;
+  border: 1px dashed rgba(166, 206, 225, .35);
+  border-radius: 12px;
+  background: rgba(4, 17, 27, .5);
   cursor: pointer;
+  text-align: center;
+  transition: border-color .2s ease, background .2s ease;
 }
+.attach-drop:hover, .attach-drop.drag-over { border-color: var(--mint); background: rgba(129, 244, 198, .06); }
+.attach-drop-title { display: block; font-size: 14px; font-weight: 700; }
+.attach-drop-sub { display: block; margin-top: 4px; font-size: 12px; color: var(--muted); }
+.attach-drop-files { display: block; margin-top: 8px; font-size: 12px; font-weight: 600; color: var(--mint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .attach-preview { display: flex; flex-wrap: wrap; gap: 8px; }
 .attach-preview:empty { display: none; }
 .attach-preview img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); }
