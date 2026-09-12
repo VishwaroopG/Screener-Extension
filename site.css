@@ -158,6 +158,9 @@ h1 .accent { color: var(--mint); }
 .article-body li { margin-bottom: 10px; }
 .article-body strong { color: var(--ink); }
 .article-body a { color: var(--mint); font-weight: 700; }
+.shot { margin: 26px 0; }
+.shot img { display: block; width: 100%; border-radius: 14px; border: 1px solid var(--line); }
+.shot figcaption { margin-top: 10px; color: var(--muted); font-size: 13px; line-height: 1.6; }
 .post-list { margin-top: 42px; }
 .post-row { display: block; padding: 26px 4px; transition: background .2s ease; border-radius: 12px; }
 .post-row:hover { background: rgba(129, 244, 198, .04); }
