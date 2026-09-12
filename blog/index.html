@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Screener Pro Blog — market explainers, indicator guides and investing notes in plain language.">
+  <title>Blog | Screener Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <div class="aurora"></div>
+  <div class="site-shell">
+    <header class="container nav">
+      <a class="brand" href="../"><img class="brand-mark" src="../store-assets/icon_128.png" alt="Screener Pro icon">Screener <em>Pro</em></a>
+      <nav class="nav-links" aria-label="Primary navigation"><a href="../#features">Features</a><a href="../#markets">Markets</a><a href="./">Blog</a></nav>
+      <a class="button button-secondary" href="https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en">Get the extension</a>
+    </header>
+
+    <main>
+      <section class="container section">
+        <div class="section-head"><span class="eyebrow">Screener Pro Blog</span><h2 class="section-title">Market notes, explained.</h2><p class="section-copy">Short reads on markets, indicators and investing — in plain language.</p></div>
+        <div class="blog-grid" id="all-posts"><p class="section-copy">Loading posts…</p></div>
+      </section>
+    </main>
+
+    <footer class="container footer"><div class="footer-row"><span>© 2026 Screener Pro. Built for focused market watching.</span><span><a href="../uninstall/">Feedback</a> · <a href="https://buymeacoffee.com/vgexperiments">Support the developer</a></span></div></footer>
+  </div>
+  <script>
+    function fmtDate(iso) {
+      try { return new Date(iso + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); }
+      catch (e) { return iso; }
+    }
+    fetch('posts.json').then(function (r) { return r.json(); }).then(function (posts) {
+      var wrap = document.getElementById('all-posts');
+      if (!posts.length) { wrap.innerHTML = '<p class="section-copy">No posts yet — check back soon.</p>'; return; }
+      posts.sort(function (a, b) { return b.date.localeCompare(a.date); });
+      wrap.innerHTML = posts.map(function (p) {
+        var tags = (p.tags || []).map(function (t) { return '<span class="tag">' + t + '</span>'; }).join('');
+        return '<a class="post-card" href="post.html?slug=' + encodeURIComponent(p.slug) + '">'
+          + '<div class="post-meta"><span>' + fmtDate(p.date) + '</span></div>'
+          + '<h3>' + p.title + '</h3>'
+          + '<p>' + p.excerpt + '</p>'
+          + (tags ? '<div class="tag-row">' + tags + '</div>' : '')
+          + '</a>';
+      }).join('');
+    }).catch(function () {
+      document.getElementById('all-posts').innerHTML = '<p class="section-copy">Could not load posts. Please refresh.</p>';
+    });
+  </script>
+</body>
+</html>

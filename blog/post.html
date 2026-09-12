@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Screener Pro Blog post.">
+  <title>Blog | Screener Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <div class="aurora"></div>
+  <div class="site-shell">
+    <header class="container nav">
+      <a class="brand" href="../"><img class="brand-mark" src="../store-assets/icon_128.png" alt="Screener Pro icon">Screener <em>Pro</em></a>
+      <nav class="nav-links" aria-label="Primary navigation"><a href="../#features">Features</a><a href="../#markets">Markets</a><a href="./">Blog</a></nav>
+      <a class="button button-secondary" href="https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en">Get the extension</a>
+    </header>
+
+    <main>
+      <section class="container section">
+        <a class="back-link" href="./">← All posts</a>
+        <article class="article" id="post-article"><p class="section-copy">Loading post…</p></article>
+      </section>
+    </main>
+
+    <footer class="container footer"><div class="footer-row"><span>© 2026 Screener Pro. Built for focused market watching.</span><span><a href="../uninstall/">Feedback</a> · <a href="https://buymeacoffee.com/vgexperiments">Support the developer</a></span></div></footer>
+  </div>
+  <script>
+    function fmtDate(iso) {
+      try { return new Date(iso + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); }
+      catch (e) { return iso; }
+    }
+    var slug = new URLSearchParams(window.location.search).get('slug');
+    var article = document.getElementById('post-article');
+    if (!slug) {
+      article.innerHTML = '<p class="section-copy">No post selected. <a href="./">Back to all posts</a>.</p>';
+    } else {
+      fetch('posts.json').then(function (r) { return r.json(); }).then(function (posts) {
+        var meta = posts.filter(function (p) { return p.slug === slug; })[0];
+        if (!meta) throw new Error('not found');
+        document.title = meta.title + ' | Screener Pro Blog';
+        return fetch('posts/' + encodeURIComponent(slug) + '.html').then(function (r) {
+          if (!r.ok) throw new Error('not found');
+          return r.text();
+        }).then(function (body) {
+          var tags = (meta.tags || []).map(function (t) { return '<span class="tag">' + t + '</span>'; }).join('');
+          article.innerHTML = '<span class="eyebrow">' + fmtDate(meta.date) + '</span>'
+            + '<h1 class="article-title">' + meta.title + '</h1>'
+            + (tags ? '<div class="tag-row">' + tags + '</div>' : '')
+            + '<div class="article-body">' + body + '</div>';
+        });
+      }).catch(function () {
+        article.innerHTML = '<p class="section-copy">Post not found. <a href="./">Back to all posts</a>.</p>';
+      });
+    }
+  </script>
+</body>
+</html>
