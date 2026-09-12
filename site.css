@@ -189,6 +189,21 @@ h1 .accent { color: var(--mint); }
 .feedback-card h1 { margin: 18px auto; font-size: clamp(38px, 6vw, 58px); letter-spacing: -3px; }
 .feedback-card p { color: var(--muted); line-height: 1.75; }
 .feedback-note { margin-top: 20px; color: #84a0b3; font-size: 12px; }
+.feedback-form { display: grid; gap: 12px; margin-top: 26px; }
+.feedback-form input, .feedback-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(4, 17, 27, .5);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+}
+.feedback-form textarea { resize: vertical; min-height: 110px; }
+.feedback-form input::placeholder, .feedback-form textarea::placeholder { color: #7e96a9; }
+.feedback-form input:focus, .feedback-form textarea:focus { outline: none; border-color: var(--mint); }
+.feedback-form .button { width: 100%; }
 .button[aria-disabled="true"] { cursor: not-allowed; opacity: .55; pointer-events: none; }
 
 @media (max-width: 800px) {

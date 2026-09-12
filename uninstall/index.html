@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../site.css">
-  <script src="feedback-config.js"></script>
 </head>
 <body>
   <div class="aurora"></div>
@@ -18,21 +17,47 @@
       <a class="brand" href="../">Screener <em>Pro</em></a>
       <img src="../store-assets/icon_128.png" alt="Screener Pro icon" style="display:block; width:64px; height:64px; border-radius:16px; margin:32px auto 0; box-shadow:0 4px 20px rgba(0,0,0,0.35);">
       <h1>Help us make the next version better.</h1>
-      <p>Sorry to see you go. Your feedback helps us improve the watchlist, ticker tape, and the features that matter most to investors like you.</p>
-      <a id="feedback-link" class="button button-primary" href="#" aria-disabled="true">Open feedback form</a>
-      <p id="redirect-message" class="feedback-note">The feedback form will open here once it is configured.</p>
+      <p>Sorry to see you go. Tell us what happened, what broke, or what you'd love to see — it lands straight in our inbox.</p>
+      <form id="feedback-form" class="feedback-form">
+        <input type="text" name="name" placeholder="Your name (optional)" autocomplete="name">
+        <input type="email" name="email" placeholder="Your email (optional, if you'd like a reply)" autocomplete="email">
+        <textarea name="message" rows="5" required placeholder="Write your feedback here…"></textarea>
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+        <button class="button button-primary" type="submit" id="feedback-submit">Send feedback</button>
+        <p id="feedback-status" class="feedback-note" role="status"></p>
+      </form>
       <p class="feedback-note"><a href="../">Return to Screener Pro</a></p>
     </section>
   </main>
   <script>
     (() => {
-      const formUrl = window.SCREENER_PRO_UNINSTALL_FORM_URL;
-      const link = document.getElementById('feedback-link');
-      const message = document.getElementById('redirect-message');
-      if (!/^https:\/\/(docs\.google\.com\/forms\/|forms\.gle\/)/.test(formUrl || '')) return;
-      link.href = formUrl;
-      link.removeAttribute('aria-disabled');
-      message.textContent = 'Thanks for helping us improve. Click the button above to open the form.';
+      const form = document.getElementById('feedback-form');
+      const status = document.getElementById('feedback-status');
+      const submit = document.getElementById('feedback-submit');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        status.textContent = 'Sending…';
+        submit.disabled = true;
+        submit.style.opacity = '.6';
+        try {
+          const data = Object.fromEntries(new FormData(form).entries());
+          data._subject = 'Screener Pro feedback';
+          data._template = 'table';
+          data._captcha = 'false';
+          const r = await fetch('https://formsubmit.co/ajax/vishwaroopg8@gmail.com', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          if (!r.ok) throw new Error('send failed');
+          form.reset();
+          status.textContent = 'Thanks — your feedback is on its way. We read every message.';
+        } catch (err) {
+          status.textContent = 'Could not send right now. Please try again in a moment.';
+          submit.disabled = false;
+          submit.style.opacity = '';
+        }
+      });
     })();
   </script>
 </body>
