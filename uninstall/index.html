@@ -24,6 +24,7 @@
         <textarea name="message" rows="5" required placeholder="Write your feedback here…"></textarea>
         <label class="attach-label" for="feedback-files">Attach screenshots or photos (optional, max 10MB total)</label>
         <input type="file" id="feedback-files" name="attachment" accept="image/*" multiple>
+        <div id="attach-preview" class="attach-preview"></div>
         <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
         <button class="button button-primary" type="submit" id="feedback-submit">Send feedback</button>
         <p id="feedback-status" class="feedback-note" role="status"></p>
@@ -55,6 +56,19 @@
         if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
       }
       dialog.addEventListener('click', hideDialog);
+      const fileInput = document.getElementById('feedback-files');
+      const previewBox = document.getElementById('attach-preview');
+      fileInput.addEventListener('change', () => {
+        previewBox.innerHTML = '';
+        Array.from(fileInput.files || []).forEach((f) => {
+          if (!f.type.startsWith('image/')) return;
+          const img = document.createElement('img');
+          img.alt = f.name;
+          img.src = URL.createObjectURL(f);
+          img.onload = () => URL.revokeObjectURL(img.src);
+          previewBox.appendChild(img);
+        });
+      });
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         status.textContent = 'Sending…';
@@ -67,6 +81,12 @@
         };
         const files = Array.from(form.elements.attachment.files || []);
         const MAX_TOTAL = 10 * 1024 * 1024;
+        if (files.some((f) => !f.type.startsWith('image/'))) {
+          status.textContent = 'Only image files (photos, screenshots) can be attached.';
+          submit.disabled = false;
+          submit.style.opacity = '';
+          return;
+        }
         if (files.reduce((s, f) => s + f.size, 0) > MAX_TOTAL) {
           status.textContent = 'Attachments exceed 10MB in total. Please remove some files.';
           submit.disabled = false;
@@ -89,6 +109,7 @@
           });
           if (!r.ok) throw new Error('send failed');
           form.reset();
+          previewBox.innerHTML = '';
           status.textContent = '';
           submit.disabled = false;
           submit.style.opacity = '';
