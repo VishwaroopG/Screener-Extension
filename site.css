@@ -101,7 +101,7 @@ h1 .accent { color: var(--mint); }
 .ticker-chip { position: absolute; left: -28px; bottom: 34px; padding: 10px 14px; border: 1px solid rgba(129,244,198,.33); border-radius: 10px; background: rgba(7, 22, 33, .92); color: var(--mint); font-size: 12px; font-weight: 800; box-shadow: 0 12px 24px rgba(0,0,0,.25); }
 
 .section { padding: 92px 0; }
-.section-tight { padding-top: 48px; }
+.section-tight { padding: 24px 0 64px; }
 .section-head { max-width: 650px; }
 .section-title { margin: 12px 0; font-size: clamp(32px, 4vw, 50px); line-height: 1.06; letter-spacing: -2.4px; }
 .section-copy { color: var(--muted); line-height: 1.7; }
@@ -163,8 +163,8 @@ h1 .accent { color: var(--mint); }
 .shot { margin: 26px 0; }
 .shot img { display: block; width: 100%; border-radius: 14px; border: 1px solid var(--line); }
 .shot figcaption { margin-top: 10px; color: var(--muted); font-size: 13px; line-height: 1.6; }
-.post-list { margin-top: 42px; }
-.post-row { display: block; padding: 26px 4px; transition: background .2s ease; border-radius: 12px; }
+.post-list { margin-top: 20px; }
+.post-row { display: block; padding: 20px 4px; transition: background .2s ease; border-radius: 12px; }
 .post-row:hover { background: rgba(129, 244, 198, .04); }
 .post-row:hover h3 { color: var(--mint); }
 .post-row h3 { margin: 12px 0 9px; font-size: 22px; letter-spacing: -.4px; line-height: 1.35; }
