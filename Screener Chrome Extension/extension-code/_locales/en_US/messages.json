@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Live Indian & Global stock watchlist, draggable portfolios, and ticker tape. Support: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Open Screener Watchlist" },
+  "commandDesc": { "message": "Open Screener Side Panel" },
+
+  "speedTitle": {
+    "message": "Tape Speed: $SPEED$ (Click to adjust 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Tape Speed: 1.0x (Click to adjust 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Tape Speed" },
+  "speedDecrease": { "message": "Decrease by 0.1x" },
+  "speedIncrease": { "message": "Increase by 0.1x" },
+  "speedCustom": { "message": "Custom:" },
+  "speedExample": { "message": "e.g. 2.3" },
+
+  "pauseTape": { "message": "Pause Ticker Tape" },
+  "resumeTape": { "message": "Resume Ticker Tape" },
+  "hideTape": { "message": "Hide Ticker Tape" },
+  "showTape": { "message": "Show Ticker Tape" },
+  "domainDisableSite": { "message": "Disable on this site" },
+  "domainDisable": {
+    "message": "Disable on $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Enable on $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Switch to Light Mode" },
+  "themeToDark": { "message": "Switch to Dark Mode" },
+  "aboutSupport": { "message": "About & Support" },
+
+  "tabDashboard": { "message": "Dashboard" },
+  "tabMarkets": { "message": "Markets" },
+  "tabNews": { "message": "News" },
+
+  "searchPlaceholder": { "message": "Search Ticker to Analyze or Add..." },
+  "searchButton": { "message": "Search" },
+  "clocksLabel": { "message": "World market clocks" },
+  "clockOpen": { "message": "● Open" },
+  "clockClosed": { "message": "● Closed" },
+
+  "watchlistTitle": { "message": "Your Watchlist" },
+  "liveBadge": { "message": "Live" },
+  "watchlistEmpty": { "message": "Watchlist is empty. Search and add a ticker above!" },
+  "colSymbol": { "message": "Symbol" },
+  "colTrend": { "message": "1Y Trend" },
+  "colPrice": { "message": "Price" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "M. Cap" },
+  "colActions": { "message": "Actions" },
+  "sortByPrice": { "message": "Sort by Price" },
+  "sortByMCap": { "message": "Sort by Market Cap" },
+  "dragHint": { "message": "Drag to reorder" },
+  "trendReturnTitle": { "message": "Return over shown period" },
+  "setAlertTitle": { "message": "Set Alert" },
+  "deleteTitle": { "message": "Delete" },
+  "renameTitle": { "message": "Rename Portfolio" },
+  "newTitle": { "message": "New Portfolio" },
+  "exportTitle": { "message": "Export to Excel" },
+
+  "portfolioExists": { "message": "A portfolio with this name already exists!" },
+  "renamePrompt": {
+    "message": "Rename portfolio \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "New portfolio name" },
+
+  "verdictLabel": { "message": "AI Verdict:" },
+  "verdictNoData": { "message": "Not enough data to formulate a verdict." },
+  "verdictGem": { "message": "[Undervalued] Gem with highly efficient capital return." },
+  "verdictExpensive": { "message": "[Expensive] Strong business, but trading at an expensive premium." },
+  "verdictRisk": { "message": "[High Risk] Overvalued with poor capital efficiency." },
+  "verdictSolid": { "message": "[Solid] Great fundamentals at a reasonable price." },
+  "verdictAvg": { "message": "[Average] Standard fundamentals. Monitor for growth catalysts." },
+  "verdictIndex": { "message": "[Market Index] Key benchmark tracking market performance." },
+
+  "scrapingData": { "message": "Scraping data..." },
+  "backButton": { "message": "← Back" },
+  "addToWatchlist": { "message": "+ Add to Watchlist" },
+  "addedButton": { "message": "Added!" },
+  "alreadyButton": { "message": "Already in Watchlist" },
+  "customizeScreener": { "message": "⚙ Customize Parameters on Screener.in" },
+  "peerTitle": { "message": "Peer Comparison" },
+  "annTitle": { "message": "Company Announcements" },
+  "fetchFailed": { "message": "Could not fetch data." },
+  "fetchError": { "message": "Error." },
+
+  "marketIndices": { "message": "Market Indices" },
+  "clickEditCard": {
+    "message": "Click to edit $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Add Ticker" },
+  "addNewSlot": { "message": "Add a new index or stock" },
+  "loadingPrice": { "message": "Loading..." },
+  "editCardTitle": { "message": "Edit Market Card" },
+  "displayNameLabel": { "message": "Display Name:" },
+  "displayNamePh": { "message": "e.g. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Symbol (Yahoo/NSE):" },
+  "symbolPh": { "message": "e.g. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Remove" },
+  "cancelBtn": { "message": "Cancel" },
+  "saveBtn": { "message": "Save" },
+  "saveCardBtn": { "message": "Save Card" },
+  "needBoth": { "message": "Please enter both a Display Name and Symbol." },
+
+  "alertPrefix": { "message": "Set Alert for" },
+  "aboveLabel": { "message": "Alert if price goes ABOVE (₹):" },
+  "abovePh": { "message": "e.g. 3000" },
+  "belowLabel": { "message": "Alert if price goes BELOW (₹):" },
+  "belowPh": { "message": "e.g. 2500" },
+
+  "aboutTagline": { "message": "Multi-Market Live Feed" },
+  "aboutDesc": { "message": "Real-time watchlist, ticker tape, and ratios powered by Screener.in & Yahoo Finance." },
+  "buyCoffee": { "message": "Buy me a coffee" },
+  "scanSupport": { "message": "Scan to support ☕" },
+  "closeBtn": { "message": "Close" },
+  "qrAlt": { "message": "Scan to support via Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Edit Indicator" },
+  "macroTileOf": {
+    "message": "Tile $N$ of 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Indicator:" },
+  "wbLink": { "message": "View on World Bank" },
+  "macroInflation": { "message": "Inflation (CPI)" },
+  "macroUnemployment": { "message": "Unemployment" },
+  "macroGdp": { "message": "GDP Growth" },
+  "macroGdppc": { "message": "GDP per Capita" },
+  "macroGdptotal": { "message": "GDP Total" },
+  "macroTrade": { "message": "Trade (% of GDP)" },
+  "macroReserves": { "message": "Forex Reserves" },
+  "macroPopulation": { "message": "Population" },
+
+  "overviewTitle": { "message": "Market Overview" },
+  "selectMarket": { "message": "Select Market:" },
+  "refreshBtn": { "message": "↻ Refresh" },
+  "refreshTitle": { "message": "Refresh overview" },
+  "indicatorsTitle": { "message": "ECONOMY INDICATORS" },
+  "loadingMarkets": {
+    "message": "Loading $ECO$ markets...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Loading indicators..." },
+  "indicatorsDown": { "message": "Indicators unavailable." },
+  "clickAnalyze": {
+    "message": "$NAME$ — click to analyze",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — click to edit",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ TOP GAINERS" },
+  "losersTitle": { "message": "▼ TOP LOSERS" },
+  "noGainers": { "message": "No gainers today" },
+  "noLosers": { "message": "No losers today" },
+  "updatedAt": {
+    "message": "Updated $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Could not load market data. Try Refresh." },
+  "latestLabel": { "message": "Latest" },
+  "loadingWord": { "message": "loading..." },
+
+  "newsLoading": { "message": "Loading latest news..." },
+  "macroNewsTitle": { "message": "US MACRO NEWS" },
+  "fetchingMacroNews": { "message": "Fetching US Macro News..." },
+  "noPortfolioNews": { "message": "No stocks in this portfolio to fetch news for." },
+  "fetchingNews": { "message": "Fetching latest financial news..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ NEWS",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "No recent news found for your portfolio." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Prompt" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Indian Stock" },
+  "typeIndex": { "message": "Index" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ Stock",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Stock" },
+
+  "ratioCurrentPrice": { "message": "Current Price" },
+  "ratioDayRange": { "message": "Day Range" },
+  "ratio52W": { "message": "52W Range" },
+  "ratioVolume": { "message": "Volume" },
+  "ratioType": { "message": "Type" },
+  "ratioExchange": { "message": "Exchange" },
+  "ratioMCap": { "message": "Market Cap" },
+  "ratioPE": { "message": "Stock P/E" },
+  "ratioDiv": { "message": "Dividend Yield" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Scroll tape left" },
+  "tapeScrollRight": { "message": "Scroll tape right" },
+  "chartNoData": { "message": "No chart data" },
+  "chartLoading": { "message": "Loading chart..." },
+  "ret1M": { "message": "1M Return" },
+  "ret6M": { "message": "6M Return" },
+  "ret1Y": { "message": "1Y Return" },
+  "ret3Y": { "message": "3Y Return" },
+  "ret5Y": { "message": "5Y Return" },
+  "ret10Y": { "message": "10Y Return" },
+  "retMax": { "message": "Overall Return" },
+  "metricLastPrice": { "message": "Last Price" },
+  "metricDivYield": { "message": "Div Yield" },
+  "metricPERatio": { "message": "P/E Ratio" },
+  "viewDetails": { "message": "View Details" },
+  "modalSubtitleIndex": {
+    "message": "Market Index • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Equity" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Global" },
+  "modalDetails": { "message": "Details" },
+  "tapeLoading": { "message": "Loading Screener Watchlist..." },
+
+  "notifAboveTitle": { "message": "Price Alert Triggered! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ has crossed above ₹$PRICE$ (Current: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Price Alert Triggered! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ has dropped below ₹$PRICE$ (Current: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Screener Price Alert" },
+  "notifGeneric": {
+    "message": "$TICKER$ has crossed your target of $TARGET$ (Current: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Add \"%s\" to Screener Watchlist" },
+  "ctxAddedTitle": { "message": "Screener Watchlist" },
+  "ctxAddedMsg": {
+    "message": "Added $TICKER$ to your watchlist!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

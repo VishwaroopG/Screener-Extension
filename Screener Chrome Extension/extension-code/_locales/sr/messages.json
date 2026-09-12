@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Praćenje indijskih i svetskih akcija uživo, portfelji koji se prevlače i traka. Podrška: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Otvori Screener praćenje" },
+  "commandDesc": { "message": "Otvori bočni panel Screener" },
+
+  "speedTitle": {
+    "message": "Brzina trake: $SPEED$ (kliknite za podešavanje 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Brzina trake: 1.0x (kliknite za podešavanje 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Brzina trake" },
+  "speedDecrease": { "message": "Smanji za 0.1x" },
+  "speedIncrease": { "message": "Povećaj za 0.1x" },
+  "speedCustom": { "message": "Prilagođeno:" },
+  "speedExample": { "message": "npr. 2.3" },
+
+  "pauseTape": { "message": "Pauziraj traku" },
+  "resumeTape": { "message": "Nastavi traku" },
+  "hideTape": { "message": "Sakrij traku" },
+  "showTape": { "message": "Prikaži traku" },
+  "domainDisableSite": { "message": "Onemogući na ovom sajtu" },
+  "domainDisable": {
+    "message": "Onemogući na $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Omogući na $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Prebaci na svetli režim" },
+  "themeToDark": { "message": "Prebaci na tamni režim" },
+  "aboutSupport": { "message": "O nama i podrška" },
+
+  "tabDashboard": { "message": "Kontrolna tabla" },
+  "tabMarkets": { "message": "Tržišta" },
+  "tabNews": { "message": "Vesti" },
+
+  "searchPlaceholder": { "message": "Traži tiker za analizu ili dodavanje..." },
+  "searchButton": { "message": "Traži" },
+  "clocksLabel": { "message": "Satovi svetskih tržišta" },
+  "clockOpen": { "message": "● Otvoreno" },
+  "clockClosed": { "message": "● Zatvoreno" },
+
+  "watchlistTitle": { "message": "Vaše praćenje" },
+  "liveBadge": { "message": "Uživo" },
+  "watchlistEmpty": { "message": "Praćenje je prazno. Potražite i dodajte tiker iznad!" },
+  "colSymbol": { "message": "Simbol" },
+  "colTrend": { "message": "Trend 1G" },
+  "colPrice": { "message": "Cena" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Trž. kap." },
+  "colActions": { "message": "Radnje" },
+  "sortByPrice": { "message": "Sortiraj po ceni" },
+  "sortByMCap": { "message": "Sortiraj po kapitalizaciji" },
+  "dragHint": { "message": "Prevucite za promenu redosleda" },
+  "trendReturnTitle": { "message": "Prinos prikazanog perioda" },
+  "setAlertTitle": { "message": "Napravi upozorenje" },
+  "deleteTitle": { "message": "Obriši" },
+  "renameTitle": { "message": "Preimenuj portfelj" },
+  "newTitle": { "message": "Novi portfelj" },
+  "exportTitle": { "message": "Izvezi u Excel" },
+
+  "portfolioExists": { "message": "Portfelj sa tim imenom već postoji!" },
+  "renamePrompt": {
+    "message": "Preimenuj portfelj \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Naziv novog portfelja" },
+
+  "verdictLabel": { "message": "Presuda AI:" },
+  "verdictNoData": { "message": "Nedovoljno podataka za presudu." },
+  "verdictGem": { "message": "[Potcenjena] Dragulj sa veoma efikasnim povratom kapitala." },
+  "verdictExpensive": { "message": "[Skupa] Snažan biznis, ali sa skupom premijom." },
+  "verdictRisk": { "message": "[Visok rizik] Precenjena uz slabu efikasnost kapitala." },
+  "verdictSolid": { "message": "[Čvrsta] Izvrsni fundamenti po razumnoj ceni." },
+  "verdictAvg": { "message": "[Prosečna] Standardni fundamenti. Pratite katalizatore." },
+  "verdictIndex": { "message": "[Indeks] Ključni tržišni benchmark." },
+
+  "scrapingData": { "message": "Preuzimanje podataka..." },
+  "backButton": { "message": "← Nazad" },
+  "addToWatchlist": { "message": "+ Dodaj u praćenje" },
+  "addedButton": { "message": "Dodato!" },
+  "alreadyButton": { "message": "Već je u praćenju" },
+  "customizeScreener": { "message": "⚙ Prilagodi parametre na Screener.in" },
+  "peerTitle": { "message": "Poređenje sa konkurencijom" },
+  "annTitle": { "message": "Saopštenja kompanije" },
+  "fetchFailed": { "message": "Podaci se ne mogu preuzeti." },
+  "fetchError": { "message": "Greška." },
+
+  "marketIndices": { "message": "Tržišni indeksi" },
+  "clickEditCard": {
+    "message": "Kliknite za izmenu $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Dodaj tiker" },
+  "addNewSlot": { "message": "Dodaj indeks ili akciju" },
+  "loadingPrice": { "message": "Učitavanje..." },
+  "editCardTitle": { "message": "Izmeni tržišnu karticu" },
+  "displayNameLabel": { "message": "Prikazano ime:" },
+  "displayNamePh": { "message": "npr. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Simbol (Yahoo/NSE):" },
+  "symbolPh": { "message": "npr. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Ukloni" },
+  "cancelBtn": { "message": "Otkaži" },
+  "saveBtn": { "message": "Sačuvaj" },
+  "saveCardBtn": { "message": "Sačuvaj karticu" },
+  "needBoth": { "message": "Unesite prikazano ime i simbol." },
+
+  "alertPrefix": { "message": "Napravi upozorenje za" },
+  "aboveLabel": { "message": "Upozori ako cena pređe (₹):" },
+  "abovePh": { "message": "npr. 3000" },
+  "belowLabel": { "message": "Upozori ako cena padne ispod (₹):" },
+  "belowPh": { "message": "npr. 2500" },
+
+  "aboutTagline": { "message": "Višetržišni fid uživo" },
+  "aboutDesc": { "message": "Praćenje, traka i racija u realnom vremenu preko Screener.in i Yahoo Finance." },
+  "buyCoffee": { "message": "Počastite me kafom" },
+  "scanSupport": { "message": "Skenirajte za podršku ☕" },
+  "closeBtn": { "message": "Zatvori" },
+  "qrAlt": { "message": "Skenirajte za podršku preko Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Izmeni indikator" },
+  "macroTileOf": {
+    "message": "Pločica $N$ od 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Indikator:" },
+  "wbLink": { "message": "Pogledaj na Svetskoj banci" },
+  "macroInflation": { "message": "Inflacija (CPI)" },
+  "macroUnemployment": { "message": "Nezaposlenost" },
+  "macroGdp": { "message": "Rast BDP-a" },
+  "macroGdppc": { "message": "BDP po stanovniku" },
+  "macroGdptotal": { "message": "Ukupni BDP" },
+  "macroTrade": { "message": "Trgovina (% BDP-a)" },
+  "macroReserves": { "message": "Devizne rezerve" },
+  "macroPopulation": { "message": "Stanovništvo" },
+
+  "overviewTitle": { "message": "Pregled tržišta" },
+  "selectMarket": { "message": "Izaberite tržište:" },
+  "refreshBtn": { "message": "↻ Osveži" },
+  "refreshTitle": { "message": "Osveži pregled" },
+  "indicatorsTitle": { "message": "EKONOMSKI INDIKATORI" },
+  "loadingMarkets": {
+    "message": "Učitavanje tržišta $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Učitavanje indikatora..." },
+  "indicatorsDown": { "message": "Indikatori nisu dostupni." },
+  "clickAnalyze": {
+    "message": "$NAME$ — kliknite za analizu",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — kliknite za izmenu",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ TOP DOBITNICI" },
+  "losersTitle": { "message": "▼ TOP GUBITNICI" },
+  "noGainers": { "message": "Danas nema dobitnika" },
+  "noLosers": { "message": "Danas nema gubitnika" },
+  "updatedAt": {
+    "message": "Ažurirano $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Učitavanje nije uspelo. Osvežite." },
+  "latestLabel": { "message": "Najnovije" },
+  "loadingWord": { "message": "učitavanje..." },
+
+  "newsLoading": { "message": "Učitavanje najnovijih vesti..." },
+  "macroNewsTitle": { "message": "MAKRO VESTI SAD" },
+  "fetchingMacroNews": { "message": "Preuzimanje makro vesti SAD..." },
+  "noPortfolioNews": { "message": "Nema akcija u ovom portfelju za vesti." },
+  "fetchingNews": { "message": "Preuzimanje finansijskih vesti..." },
+  "tickerNewsTitle": {
+    "message": "VESTI $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Nema svežih vesti za vaš portfelj." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Upit" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Indijska akcija" },
+  "typeIndex": { "message": "Indeks" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "Akcija $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Akcija" },
+
+  "ratioCurrentPrice": { "message": "Trenutna cena" },
+  "ratioDayRange": { "message": "Dnevni raspon" },
+  "ratio52W": { "message": "Raspon 52N" },
+  "ratioVolume": { "message": "Obim" },
+  "ratioType": { "message": "Vrsta" },
+  "ratioExchange": { "message": "Berza" },
+  "ratioMCap": { "message": "Tržišna kap." },
+  "ratioPE": { "message": "P/E akcije" },
+  "ratioDiv": { "message": "Div. prinos" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Pomeri traku ulevo" },
+  "tapeScrollRight": { "message": "Pomeri traku udesno" },
+  "chartNoData": { "message": "Nema podataka grafikona" },
+  "chartLoading": { "message": "Učitavanje grafikona..." },
+  "ret1M": { "message": "Prinos 1M" },
+  "ret6M": { "message": "Prinos 6M" },
+  "ret1Y": { "message": "Prinos 1G" },
+  "ret3Y": { "message": "Prinos 3G" },
+  "ret5Y": { "message": "Prinos 5G" },
+  "ret10Y": { "message": "Prinos 10G" },
+  "retMax": { "message": "Ukupan prinos" },
+  "metricLastPrice": { "message": "Zadnja cena" },
+  "metricDivYield": { "message": "Div. prinos" },
+  "metricPERatio": { "message": "Odnos P/E" },
+  "viewDetails": { "message": "Vidi detalje" },
+  "modalSubtitleIndex": {
+    "message": "Tržišni indeks • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Akcije" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Globalno" },
+  "modalDetails": { "message": "Detalji" },
+  "tapeLoading": { "message": "Učitavanje Screener praćenja..." },
+
+  "notifAboveTitle": { "message": "Cenovno upozorenje! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ iznad ₹$PRICE$ (trenutno: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Cenovno upozorenje! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ ispod ₹$PRICE$ (trenutno: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Cenovno upozorenje Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ je dostigao vaš cilj $TARGET$ (trenutno: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Dodaj „%s” u Screener praćenje" },
+  "ctxAddedTitle": { "message": "Screener praćenje" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ dodat u vaše praćenje!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

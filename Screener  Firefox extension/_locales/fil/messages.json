@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Live na watchlist ng Indian at pandaigdigang stocks, draggable na portfolio, at ticker tape. Suporta: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Buksan ang Screener watchlist" },
+  "commandDesc": { "message": "Buksan ang Screener side panel" },
+
+  "speedTitle": {
+    "message": "Bilis ng tape: $SPEED$ (i-click para i-adjust 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Bilis ng tape: 1.0x (i-click para i-adjust 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Bilis ng tape" },
+  "speedDecrease": { "message": "Bawasan ng 0.1x" },
+  "speedIncrease": { "message": "Dagdagan ng 0.1x" },
+  "speedCustom": { "message": "Custom:" },
+  "speedExample": { "message": "hal. 2.3" },
+
+  "pauseTape": { "message": "I-pause ang ticker tape" },
+  "resumeTape": { "message": "Ituloy ang ticker tape" },
+  "hideTape": { "message": "Itago ang ticker tape" },
+  "showTape": { "message": "Ipakita ang ticker tape" },
+  "domainDisableSite": { "message": "I-off sa site na ito" },
+  "domainDisable": {
+    "message": "I-off sa $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "I-on sa $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Lumipat sa light mode" },
+  "themeToDark": { "message": "Lumipat sa dark mode" },
+  "aboutSupport": { "message": "Tungkol & suporta" },
+
+  "tabDashboard": { "message": "Dashboard" },
+  "tabMarkets": { "message": "Mga market" },
+  "tabNews": { "message": "Balita" },
+
+  "searchPlaceholder": { "message": "Maghanap ng ticker para i-analyze o idagdag..." },
+  "searchButton": { "message": "Hanapin" },
+  "clocksLabel": { "message": "Mga orasan ng pandaigdigang market" },
+  "clockOpen": { "message": "● Bukas" },
+  "clockClosed": { "message": "● Sarado" },
+
+  "watchlistTitle": { "message": "Iyong watchlist" },
+  "liveBadge": { "message": "Live" },
+  "watchlistEmpty": { "message": "Walang laman ang watchlist. Maghanap at magdagdag ng ticker sa itaas!" },
+  "colSymbol": { "message": "Simbolo" },
+  "colTrend": { "message": "1Y trend" },
+  "colPrice": { "message": "Presyo" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "M. Cap" },
+  "colActions": { "message": "Mga aksyon" },
+  "sortByPrice": { "message": "Ayusin ayon sa presyo" },
+  "sortByMCap": { "message": "Ayusin ayon sa market cap" },
+  "dragHint": { "message": "I-drag para ayusin muli" },
+  "trendReturnTitle": { "message": "Return sa pinakitang panahon" },
+  "setAlertTitle": { "message": "Gumawa ng alert" },
+  "deleteTitle": { "message": "Burahin" },
+  "renameTitle": { "message": "Palitan ang pangalan ng portfolio" },
+  "newTitle": { "message": "Bagong portfolio" },
+  "exportTitle": { "message": "I-export sa Excel" },
+
+  "portfolioExists": { "message": "May portfolio na sa pangalang ito!" },
+  "renamePrompt": {
+    "message": "Palitan ang pangalan ng portfolio \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Pangalan ng bagong portfolio" },
+
+  "verdictLabel": { "message": "Hatol ng AI:" },
+  "verdictNoData": { "message": "Kulang ang datos para sa hatol." },
+  "verdictGem": { "message": "[Mura] Hiyas na may napakaepektibong balik ng kapital." },
+  "verdictExpensive": { "message": "[Mahal] Malakas na negosyo, pero may mahal na premium." },
+  "verdictRisk": { "message": "[Mataas na peligro] Overvalued na may mahinang kahusayan ng kapital." },
+  "verdictSolid": { "message": "[Matatag] Mahusay na pundasyon sa makatuwirang presyo." },
+  "verdictAvg": { "message": "[Karaniwan] Standard na pundasyon. Bantayan ang catalysts." },
+  "verdictIndex": { "message": "[Index] Pangunahing benchmark ng market." },
+
+  "scrapingData": { "message": "Kumukuha ng datos..." },
+  "backButton": { "message": "← Bumalik" },
+  "addToWatchlist": { "message": "+ Idagdag sa watchlist" },
+  "addedButton": { "message": "Naidagdag!" },
+  "alreadyButton": { "message": "Nasa watchlist na" },
+  "customizeScreener": { "message": "⚙ I-customize ang parameters sa Screener.in" },
+  "peerTitle": { "message": "Paghahambing sa kapwa" },
+  "annTitle": { "message": "Mga anunsyo ng kumpanya" },
+  "fetchFailed": { "message": "Hindi nakuha ang datos." },
+  "fetchError": { "message": "Error." },
+
+  "marketIndices": { "message": "Mga index ng market" },
+  "clickEditCard": {
+    "message": "I-click para i-edit ang $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Magdagdag ng ticker" },
+  "addNewSlot": { "message": "Magdagdag ng index o stock" },
+  "loadingPrice": { "message": "Naglo-load..." },
+  "editCardTitle": { "message": "I-edit ang market card" },
+  "displayNameLabel": { "message": "Ipakitang pangalan:" },
+  "displayNamePh": { "message": "hal. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Simbolo (Yahoo/NSE):" },
+  "symbolPh": { "message": "hal. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Alisin" },
+  "cancelBtn": { "message": "Kanselahin" },
+  "saveBtn": { "message": "I-save" },
+  "saveCardBtn": { "message": "I-save ang card" },
+  "needBoth": { "message": "Ilagay ang ipakitang pangalan at simbolo." },
+
+  "alertPrefix": { "message": "Gumawa ng alert para sa" },
+  "aboveLabel": { "message": "Alert kung ang presyo lalampas (₹):" },
+  "abovePh": { "message": "hal. 3000" },
+  "belowLabel": { "message": "Alert kung ang presyo bababa (₹):" },
+  "belowPh": { "message": "hal. 2500" },
+
+  "aboutTagline": { "message": "Multi-market live feed" },
+  "aboutDesc": { "message": "Real-time na watchlist, ticker tape, at ratios via Screener.in & Yahoo Finance." },
+  "buyCoffee": { "message": "Libre mo ako ng kape" },
+  "scanSupport": { "message": "I-scan para sumuporta ☕" },
+  "closeBtn": { "message": "Isara" },
+  "qrAlt": { "message": "I-scan para sumuporta via Buy Me a Coffee" },
+
+  "macroTitle": { "message": "I-edit ang indicator" },
+  "macroTileOf": {
+    "message": "Tile $N$ sa 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Indicator:" },
+  "wbLink": { "message": "Tingnan sa World Bank" },
+  "macroInflation": { "message": "Inflation (CPI)" },
+  "macroUnemployment": { "message": "Kawalan ng trabaho" },
+  "macroGdp": { "message": "Paglago ng GDP" },
+  "macroGdppc": { "message": "GDP per capita" },
+  "macroGdptotal": { "message": "Kabuuang GDP" },
+  "macroTrade": { "message": "Kalakalan (% ng GDP)" },
+  "macroReserves": { "message": "Reserbang foreign exchange" },
+  "macroPopulation": { "message": "Populasyon" },
+
+  "overviewTitle": { "message": "Buod ng market" },
+  "selectMarket": { "message": "Pumili ng market:" },
+  "refreshBtn": { "message": "↻ I-refresh" },
+  "refreshTitle": { "message": "I-refresh ang buod" },
+  "indicatorsTitle": { "message": "MGA ECONOMIC INDICATOR" },
+  "loadingMarkets": {
+    "message": "Naglo-load ang $ECO$ markets...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Naglo-load ang mga indicator..." },
+  "indicatorsDown": { "message": "Walang indicator." },
+  "clickAnalyze": {
+    "message": "$NAME$ — i-click para suriin",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — i-click para i-edit",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ NANGUNGUNANG TUMAAS" },
+  "losersTitle": { "message": "▼ NANGUNGUNANG BUMABA" },
+  "noGainers": { "message": "Walang tumaas ngayon" },
+  "noLosers": { "message": "Walang bumaba ngayon" },
+  "updatedAt": {
+    "message": "Na-update $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Nabigong mag-load. I-refresh." },
+  "latestLabel": { "message": "Pinakabago" },
+  "loadingWord": { "message": "naglo-load..." },
+
+  "newsLoading": { "message": "Naglo-load ng pinakabagong balita..." },
+  "macroNewsTitle": { "message": "US MACRO BALITA" },
+  "fetchingMacroNews": { "message": "Kumukuha ng US macro balita..." },
+  "noPortfolioNews": { "message": "Walang stocks sa portfolio na ito para sa balita." },
+  "fetchingNews": { "message": "Kumukuha ng financial news..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ BALITA",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Walang bagong balita para sa portfolio mo." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Prompt" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Indian stock" },
+  "typeIndex": { "message": "Index" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ stock",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Stock" },
+
+  "ratioCurrentPrice": { "message": "Kasalukuyang presyo" },
+  "ratioDayRange": { "message": "Saklaw ng araw" },
+  "ratio52W": { "message": "Saklaw 52L" },
+  "ratioVolume": { "message": "Volume" },
+  "ratioType": { "message": "Uri" },
+  "ratioExchange": { "message": "Exchange" },
+  "ratioMCap": { "message": "Market cap" },
+  "ratioPE": { "message": "Stock P/E" },
+  "ratioDiv": { "message": "Dividend yield" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "I-scroll ang tape pakaliwa" },
+  "tapeScrollRight": { "message": "I-scroll ang tape pakanan" },
+  "chartNoData": { "message": "Walang chart data" },
+  "chartLoading": { "message": "Naglo-load ang chart..." },
+  "ret1M": { "message": "1M return" },
+  "ret6M": { "message": "6M return" },
+  "ret1Y": { "message": "1Y return" },
+  "ret3Y": { "message": "3Y return" },
+  "ret5Y": { "message": "5Y return" },
+  "ret10Y": { "message": "10Y return" },
+  "retMax": { "message": "Kabuuang return" },
+  "metricLastPrice": { "message": "Huling presyo" },
+  "metricDivYield": { "message": "Div yield" },
+  "metricPERatio": { "message": "P/E ratio" },
+  "viewDetails": { "message": "Tingnan ang detalye" },
+  "modalSubtitleIndex": {
+    "message": "Market index • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Equity" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Global" },
+  "modalDetails": { "message": "Mga detalye" },
+  "tapeLoading": { "message": "Naglo-load ang Screener watchlist..." },
+
+  "notifAboveTitle": { "message": "Price alert! 📈" },
+  "notifAbove": {
+    "message": "Ang $TICKER$ ay lumampas sa ₹$PRICE$ (ngayon: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Price alert! 📉" },
+  "notifBelow": {
+    "message": "Ang $TICKER$ ay bumaba sa ₹$PRICE$ (ngayon: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Screener price alert" },
+  "notifGeneric": {
+    "message": "Naabot ng $TICKER$ ang target mong $TARGET$ (ngayon: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Idagdag ang \"%s\" sa Screener watchlist" },
+  "ctxAddedTitle": { "message": "Screener watchlist" },
+  "ctxAddedMsg": {
+    "message": "Naidagdag ang $TICKER$ sa watchlist mo!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

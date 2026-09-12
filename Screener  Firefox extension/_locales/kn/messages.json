@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "ಲೈವ್ ಭಾರತೀಯ ಮತ್ತು ಜಾಗತಿಕ ಸ್ಟಾಕ್ ವಾಚ್‌ಲಿಸ್ಟ್, ಎಳೆದಾಡಬಹುದಾದ ಪೋರ್ಟ್‌ಫೋಲಿಯೋಗಳು ಮತ್ತು ಟಿಕ್ಕರ್ ಟೇಪ್. ಬೆಂಬಲ: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "ಸ್ಕ್ರೀನರ್ ವಾಚ್‌ಲಿಸ್ಟ್ ತೆರೆಯಿರಿ" },
+  "commandDesc": { "message": "ಸ್ಕ್ರೀನರ್ ಸೈಡ್ ಪ್ಯಾನಲ್ ತೆರೆಯಿರಿ" },
+
+  "speedTitle": {
+    "message": "ಟೇಪ್ ವೇಗ: $SPEED$ (0.5x – 3.0x ಬದಲಾಯಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "ಟೇಪ್ ವೇಗ: 1.0x (0.5x – 3.0x ಬದಲಾಯಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ)" },
+  "speedLabel": { "message": "ಟೇಪ್ ವೇಗ" },
+  "speedDecrease": { "message": "0.1x ಕಡಿಮೆ ಮಾಡಿ" },
+  "speedIncrease": { "message": "0.1x ಹೆಚ್ಚಿಸಿ" },
+  "speedCustom": { "message": "ಕಸ್ಟಮ್:" },
+  "speedExample": { "message": "ಉದಾ. 2.3" },
+
+  "pauseTape": { "message": "ಟಿಕ್ಕರ್ ಟೇಪ್ ನಿಲ್ಲಿಸಿ" },
+  "resumeTape": { "message": "ಟಿಕ್ಕರ್ ಟೇಪ್ ಮುಂದುವರಿಸಿ" },
+  "hideTape": { "message": "ಟಿಕ್ಕರ್ ಟೇಪ್ ಮರೆಮಾಡಿ" },
+  "showTape": { "message": "ಟಿಕ್ಕರ್ ಟೇಪ್ ತೋರಿಸಿ" },
+  "domainDisableSite": { "message": "ಈ ಸೈಟ್‌ನಲ್ಲಿ ಆಫ್ ಮಾಡಿ" },
+  "domainDisable": {
+    "message": "$DOMAIN$ ನಲ್ಲಿ ಆಫ್ ಮಾಡಿ",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "$DOMAIN$ ನಲ್ಲಿ ಆನ್ ಮಾಡಿ",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "ಲೈಟ್ ಮೋಡ್‌ಗೆ ಬದಲಾಯಿಸಿ" },
+  "themeToDark": { "message": "ಡಾರ್ಕ್ ಮೋಡ್‌ಗೆ ಬದಲಾಯಿಸಿ" },
+  "aboutSupport": { "message": "ಬಗ್ಗೆ & ಬೆಂಬಲ" },
+
+  "tabDashboard": { "message": "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್" },
+  "tabMarkets": { "message": "ಮಾರುಕಟ್ಟೆಗಳು" },
+  "tabNews": { "message": "ಸುದ್ದಿ" },
+
+  "searchPlaceholder": { "message": "ವಿಶ್ಲೇಷಿಸಲು ಅಥವಾ ಸೇರಿಸಲು ಟಿಕ್ಕರ್ ಹುಡುಕಿ..." },
+  "searchButton": { "message": "ಹುಡುಕಿ" },
+  "clocksLabel": { "message": "ವಿಶ್ವ ಮಾರುಕಟ್ಟೆ ಗಡಿಯಾರಗಳು" },
+  "clockOpen": { "message": "● ತೆರೆದಿದೆ" },
+  "clockClosed": { "message": "● ಮುಚ್ಚಿದೆ" },
+
+  "watchlistTitle": { "message": "ನಿಮ್ಮ ವಾಚ್‌ಲಿಸ್ಟ್" },
+  "liveBadge": { "message": "ಲೈವ್" },
+  "watchlistEmpty": { "message": "ವಾಚ್‌ಲಿಸ್ಟ್ ಖಾಲಿಯಿದೆ. ಮೇಲೆ ಟಿಕ್ಕರ್ ಹುಡುಕಿ ಸೇರಿಸಿ!" },
+  "colSymbol": { "message": "ಸಿಂಬಲ್" },
+  "colTrend": { "message": "1Y ಟ್ರೆಂಡ್" },
+  "colPrice": { "message": "ಬೆಲೆ" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "M. ಕ್ಯಾಪ್" },
+  "colActions": { "message": "ಕ್ರಿಯೆಗಳು" },
+  "sortByPrice": { "message": "ಬೆಲೆಯಂತೆ ವಿಂಗಡಿಸಿ" },
+  "sortByMCap": { "message": "ಮಾರ್ಕೆಟ್ ಕ್ಯಾಪ್‌ನಂತೆ ವಿಂಗಡಿಸಿ" },
+  "dragHint": { "message": "ಮರುಕ್ರಮಕ್ಕೆ ಎಳೆಯಿರಿ" },
+  "trendReturnTitle": { "message": "ತೋರಿಸಿದ ಅವಧಿಯ ಲಾಭ" },
+  "setAlertTitle": { "message": "ಎಚ್ಚರಿಕೆ ಹೊಂದಿಸಿ" },
+  "deleteTitle": { "message": "ಅಳಿಸಿ" },
+  "renameTitle": { "message": "ಪೋರ್ಟ್‌ಫೋಲಿಯೋ ಮರುನಾಮಕರಣ" },
+  "newTitle": { "message": "ಹೊಸ ಪೋರ್ಟ್‌ಫೋಲಿಯೋ" },
+  "exportTitle": { "message": "Excelಗೆ ರಫ್ತು ಮಾಡಿ" },
+
+  "portfolioExists": { "message": "ಈ ಹೆಸರಿನ ಪೋರ್ಟ್‌ಫೋಲಿಯೋ ಈಗಾಗಲೇ ಇದೆ!" },
+  "renamePrompt": {
+    "message": "ಪೋರ್ಟ್‌ಫೋಲಿಯೋ \"$NAME$\" ಮರುನಾಮಕರಣ",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "ಹೊಸ ಪೋರ್ಟ್‌ಫೋಲಿಯೋ ಹೆಸರು" },
+
+  "verdictLabel": { "message": "AI ತೀರ್ಪು:" },
+  "verdictNoData": { "message": "ತೀರ್ಪಿಗೆ ಸಾಕಷ್ಟು ಡೇಟಾ ಇಲ್ಲ." },
+  "verdictGem": { "message": "[ಕಡಿಮೆ ಮೌಲ್ಯ] ಬಂಡವಾಳದ ಮೇಲೆ ದಕ್ಷ ಲಾಭ ನೀಡುವ ರತ್ನ." },
+  "verdictExpensive": { "message": "[ದುಬಾರಿ] ಬಲವಾದ ವ್ಯವಹಾರ, ಆದರೆ ದುಬಾರಿ ಪ್ರೀಮಿಯಂನಲ್ಲಿ." },
+  "verdictRisk": { "message": "[ಹೆಚ್ಚಿನ ಅಪಾಯ] ಕಳಪೆ ಬಂಡವಾಳ ದಕ್ಷತೆಯೊಂದಿಗೆ ಅಧಿಕ ಮೌಲ್ಯ." },
+  "verdictSolid": { "message": "[ಭದ್ರ] ಸಮಂಜಸ ಬೆಲೆಯಲ್ಲಿ ಉತ್ತಮ ಮೂಲಭೂತಾಂಶಗಳು." },
+  "verdictAvg": { "message": "[ಸರಾಸರಿ] ಸಾಮಾನ್ಯ ಮೂಲಭೂತಾಂಶಗಳು. ಬೆಳವಣಿಗೆ ಸೂಚನೆ ಗಮನಿಸಿ." },
+  "verdictIndex": { "message": "[ಮಾರುಕಟ್ಟೆ ಸೂಚ್ಯಂಕ] ಪ್ರಮುಖ ಮಾರುಕಟ್ಟೆ ಮಾನದಂಡ." },
+
+  "scrapingData": { "message": "ಡೇಟಾ ತರಲಾಗುತ್ತಿದೆ..." },
+  "backButton": { "message": "← ಹಿಂದೆ" },
+  "addToWatchlist": { "message": "+ ವಾಚ್‌ಲಿಸ್ಟ್‌ಗೆ ಸೇರಿಸಿ" },
+  "addedButton": { "message": "ಸೇರಿಸಲಾಗಿದೆ!" },
+  "alreadyButton": { "message": "ಈಗಾಗಲೇ ವಾಚ್‌ಲಿಸ್ಟ್‌ನಲ್ಲಿದೆ" },
+  "customizeScreener": { "message": "⚙ Screener.inನಲ್ಲಿ ನಿಯತಾಂಕಗಳನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ" },
+  "peerTitle": { "message": "ಸಹವರ್ತಿ ಹೋಲಿಕೆ" },
+  "annTitle": { "message": "ಕಂಪನಿ ಪ್ರಕಟಣೆಗಳು" },
+  "fetchFailed": { "message": "ಡೇಟಾ ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ." },
+  "fetchError": { "message": "ದೋಷ." },
+
+  "marketIndices": { "message": "ಮಾರುಕಟ್ಟೆ ಸೂಚ್ಯಂಕಗಳು" },
+  "clickEditCard": {
+    "message": "$NAME$ ಸಂಪಾದಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "ಟಿಕ್ಕರ್ ಸೇರಿಸಿ" },
+  "addNewSlot": { "message": "ಹೊಸ ಸೂಚ್ಯಂಕ ಅಥವಾ ಸ್ಟಾಕ್ ಸೇರಿಸಿ" },
+  "loadingPrice": { "message": "ಲೋಡ್ ಆಗುತ್ತಿದೆ..." },
+  "editCardTitle": { "message": "ಮಾರುಕಟ್ಟೆ ಕಾರ್ಡ್ ಸಂಪಾದಿಸಿ" },
+  "displayNameLabel": { "message": "ಪ್ರದರ್ಶನ ಹೆಸರು:" },
+  "displayNamePh": { "message": "ಉದಾ. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "ಸಿಂಬಲ್ (Yahoo/NSE):" },
+  "symbolPh": { "message": "ಉದಾ. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "ತೆಗೆದುಹಾಕಿ" },
+  "cancelBtn": { "message": "ರದ್ದುಮಾಡಿ" },
+  "saveBtn": { "message": "ಉಳಿಸಿ" },
+  "saveCardBtn": { "message": "ಕಾರ್ಡ್ ಉಳಿಸಿ" },
+  "needBoth": { "message": "ದಯವಿಟ್ಟು ಪ್ರದರ್ಶನ ಹೆಸರು ಮತ್ತು ಸಿಂಬಲ್ ಎರಡನ್ನೂ ನೀಡಿ." },
+
+  "alertPrefix": { "message": "ಎಚ್ಚರಿಕೆ ಹೊಂದಿಸಿ:" },
+  "aboveLabel": { "message": "ಬೆಲೆ ಮೇಲೇರಿದರೆ ಎಚ್ಚರಿಕೆ (₹):" },
+  "abovePh": { "message": "ಉದಾ. 3000" },
+  "belowLabel": { "message": "ಬೆಲೆ ಇಳಿದರೆ ಎಚ್ಚರಿಕೆ (₹):" },
+  "belowPh": { "message": "ಉದಾ. 2500" },
+
+  "aboutTagline": { "message": "ಬಹು-ಮಾರುಕಟ್ಟೆ ಲೈವ್ ಫೀಡ್" },
+  "aboutDesc": { "message": "Screener.in & Yahoo Finance ಮೂಲಕ ರಿಯಲ್-ಟೈಮ್ ವಾಚ್‌ಲಿಸ್ಟ್, ಟಿಕ್ಕರ್ ಟೇಪ್, ಅನುಪಾತಗಳು." },
+  "buyCoffee": { "message": "ನನಗೆ ಕಾಫಿ ಕೊಡಿಸಿ" },
+  "scanSupport": { "message": "ಬೆಂಬಲಕ್ಕೆ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ ☕" },
+  "closeBtn": { "message": "ಮುಚ್ಚಿ" },
+  "qrAlt": { "message": "Buy Me a Coffee ಬೆಂಬಲಕ್ಕೆ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ" },
+
+  "macroTitle": { "message": "ಸೂಚಕ ಸಂಪಾದಿಸಿ" },
+  "macroTileOf": {
+    "message": "4ರಲ್ಲಿ ಟೈಲ್ $N$",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "ಸೂಚಕ:" },
+  "wbLink": { "message": "ವಿಶ್ವ ಬ್ಯಾಂಕ್‌ನಲ್ಲಿ ನೋಡಿ" },
+  "macroInflation": { "message": "ಹಣದುಬ್ಬರ (CPI)" },
+  "macroUnemployment": { "message": "ನಿರುದ್ಯೋಗ" },
+  "macroGdp": { "message": "GDP ಬೆಳವಣಿಗೆ" },
+  "macroGdppc": { "message": "ತಲಾ GDP" },
+  "macroGdptotal": { "message": "ಒಟ್ಟು GDP" },
+  "macroTrade": { "message": "ವ್ಯಾಪಾರ (GDPಯ %)" },
+  "macroReserves": { "message": "ವಿದೇಶಿ ವಿನಿಮಯ ಮೀಸಲು" },
+  "macroPopulation": { "message": "ಜನಸಂಖ್ಯೆ" },
+
+  "overviewTitle": { "message": "ಮಾರುಕಟ್ಟೆ ಅವಲೋಕನ" },
+  "selectMarket": { "message": "ಮಾರುಕಟ್ಟೆ ಆಯ್ಕೆ:" },
+  "refreshBtn": { "message": "↻ ರಿಫ್ರೆಶ್" },
+  "refreshTitle": { "message": "ಅವಲೋಕನ ರಿಫ್ರೆಶ್ ಮಾಡಿ" },
+  "indicatorsTitle": { "message": "ಆರ್ಥಿಕ ಸೂಚಕಗಳು" },
+  "loadingMarkets": {
+    "message": "$ECO$ ಮಾರುಕಟ್ಟೆಗಳು ಲೋಡ್ ಆಗುತ್ತಿವೆ...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "ಸೂಚಕಗಳು ಲೋಡ್ ಆಗುತ್ತಿವೆ..." },
+  "indicatorsDown": { "message": "ಸೂಚಕಗಳು ಲಭ್ಯವಿಲ್ಲ." },
+  "clickAnalyze": {
+    "message": "$NAME$ — ವಿಶ್ಲೇಷಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — ಸಂಪಾದಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ ಅಗ್ರ ಏರಿಕೆಗಳು" },
+  "losersTitle": { "message": "▼ ಅಗ್ರ ಇಳಿಕೆಗಳು" },
+  "noGainers": { "message": "ಇಂದು ಏರಿಕೆ ಇಲ್ಲ" },
+  "noLosers": { "message": "ಇಂದು ಇಳಿಕೆ ಇಲ್ಲ" },
+  "updatedAt": {
+    "message": "ನವೀಕರಿಸಿದ್ದು: $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "ಮಾರುಕಟ್ಟೆ ಡೇಟಾ ಲೋಡ್ ಆಗಲಿಲ್ಲ. ರಿಫ್ರೆಶ್ ಮಾಡಿ." },
+  "latestLabel": { "message": "ಇತ್ತೀಚಿನ" },
+  "loadingWord": { "message": "ಲೋಡ್ ಆಗುತ್ತಿದೆ..." },
+
+  "newsLoading": { "message": "ಇತ್ತೀಚಿನ ಸುದ್ದಿ ಲೋಡ್ ಆಗುತ್ತಿದೆ..." },
+  "macroNewsTitle": { "message": "US ಮ್ಯಾಕ್ರೋ ಸುದ್ದಿ" },
+  "fetchingMacroNews": { "message": "US ಮ್ಯಾಕ್ರೋ ಸುದ್ದಿ ತರಲಾಗುತ್ತಿದೆ..." },
+  "noPortfolioNews": { "message": "ಈ ಪೋರ್ಟ್‌ಫೋಲಿಯೋದಲ್ಲಿ ಸುದ್ದಿಗೆ ಸ್ಟಾಕ್‌ಗಳಿಲ್ಲ." },
+  "fetchingNews": { "message": "ಇತ್ತೀಚಿನ ಹಣಕಾಸು ಸುದ್ದಿ ತರಲಾಗುತ್ತಿದೆ..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ ಸುದ್ದಿ",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "ಪೋರ್ಟ್‌ಫೋಲಿಯೋಗೆ ಇತ್ತೀಚಿನ ಸುದ್ದಿ ಇಲ್ಲ." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "ಸೂಚನೆ" },
+  "promptOk": { "message": "ಸರಿ" },
+
+  "typeIndian": { "message": "ಭಾರತೀಯ ಸ್ಟಾಕ್" },
+  "typeIndex": { "message": "ಸೂಚ್ಯಂಕ" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ ಸ್ಟಾಕ್",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "ಸ್ಟಾಕ್" },
+
+  "ratioCurrentPrice": { "message": "ಪ್ರಸ್ತುತ ಬೆಲೆ" },
+  "ratioDayRange": { "message": "ದಿನದ ವ್ಯಾಪ್ತಿ" },
+  "ratio52W": { "message": "52W ವ್ಯಾಪ್ತಿ" },
+  "ratioVolume": { "message": "ವಾಲ್ಯೂಮ್" },
+  "ratioType": { "message": "ವಿಧ" },
+  "ratioExchange": { "message": "ವಿನಿಮಯ" },
+  "ratioMCap": { "message": "ಮಾರ್ಕೆಟ್ ಕ್ಯಾಪ್" },
+  "ratioPE": { "message": "ಸ್ಟಾಕ್ P/E" },
+  "ratioDiv": { "message": "ಡಿವಿಡೆಂಡ್ ಯೀಲ್ಡ್" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "ಟೇಪ್ ಎಡಕ್ಕೆ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ" },
+  "tapeScrollRight": { "message": "ಟೇಪ್ ಬಲಕ್ಕೆ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ" },
+  "chartNoData": { "message": "ಚಾರ್ಟ್ ಡೇಟಾ ಇಲ್ಲ" },
+  "chartLoading": { "message": "ಚಾರ್ಟ್ ಲೋಡ್ ಆಗುತ್ತಿದೆ..." },
+  "ret1M": { "message": "1M ಲಾಭ" },
+  "ret6M": { "message": "6M ಲಾಭ" },
+  "ret1Y": { "message": "1Y ಲಾಭ" },
+  "ret3Y": { "message": "3Y ಲಾಭ" },
+  "ret5Y": { "message": "5Y ಲಾಭ" },
+  "ret10Y": { "message": "10Y ಲಾಭ" },
+  "retMax": { "message": "ಒಟ್ಟು ಲಾಭ" },
+  "metricLastPrice": { "message": "ಕೊನೆಯ ಬೆಲೆ" },
+  "metricDivYield": { "message": "ಡಿವ್ ಯೀಲ್ಡ್" },
+  "metricPERatio": { "message": "P/E ಅನುಪಾತ" },
+  "viewDetails": { "message": "ವಿವರ ನೋಡಿ" },
+  "modalSubtitleIndex": {
+    "message": "ಮಾರುಕಟ್ಟೆ ಸೂಚ್ಯಂಕ • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "ಈಕ್ವಿಟಿ" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "ಜಾಗತಿಕ" },
+  "modalDetails": { "message": "ವಿವರಗಳು" },
+  "tapeLoading": { "message": "ಸ್ಕ್ರೀನರ್ ವಾಚ್‌ಲಿಸ್ಟ್ ಲೋಡ್ ಆಗುತ್ತಿದೆ..." },
+
+  "notifAboveTitle": { "message": "ಬೆಲೆ ಎಚ್ಚರಿಕೆ! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ ₹$PRICE$ ಮೀರಿದೆ (ಪ್ರಸ್ತುತ: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "ಬೆಲೆ ಎಚ್ಚರಿಕೆ! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ ₹$PRICE$ ಕೆಳಗಿಳಿದಿದೆ (ಪ್ರಸ್ತುತ: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "ಸ್ಕ್ರೀನರ್ ಬೆಲೆ ಎಚ್ಚರಿಕೆ" },
+  "notifGeneric": {
+    "message": "$TICKER$ ನಿಮ್ಮ ಗುರಿ $TARGET$ ದಾಟಿದೆ (ಪ್ರಸ್ತುತ: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "\"%s\" ಸ್ಕ್ರೀನರ್ ವಾಚ್‌ಲಿಸ್ಟ್‌ಗೆ ಸೇರಿಸಿ" },
+  "ctxAddedTitle": { "message": "ಸ್ಕ್ರೀನರ್ ವಾಚ್‌ಲಿಸ್ಟ್" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ ನಿಮ್ಮ ವಾಚ್‌ಲಿಸ್ಟ್‌ಗೆ ಸೇರಿದೆ!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "የቀጥታ የህንድ እና የዓለም አቀፍ የአክሲዮን መከታተያ ዝርዝር፣ ሊጎተቱ የሚችሉ ፖርትፎሊዮዎች እና ቲከር ቴፕ። ድጋፍ: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "የScreener መከታተያ ዝርዝር ክፈት" },
+  "commandDesc": { "message": "የScreener የጎን ፓነል ክፈት" },
+
+  "speedTitle": {
+    "message": "የቴፕ ፍጥነት: $SPEED$ (ከ0.5x – 3.0x ለማስተካከል ጠቅ ያድርጉ)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "የቴፕ ፍጥነት: 1.0x (ከ0.5x – 3.0x ለማስተካከል ጠቅ ያድርጉ)" },
+  "speedLabel": { "message": "የቴፕ ፍጥነት" },
+  "speedDecrease": { "message": "0.1x ቀንስ" },
+  "speedIncrease": { "message": "0.1x ጨምር" },
+  "speedCustom": { "message": "ብጁ:" },
+  "speedExample": { "message": "ለምሳሌ 2.3" },
+
+  "pauseTape": { "message": "ቲከር ቴፕ ለአፍታ አቁም" },
+  "resumeTape": { "message": "ቲከር ቴፕ ቀጥል" },
+  "hideTape": { "message": "ቲከር ቴፕ ደብቅ" },
+  "showTape": { "message": "ቲከር ቴፕ አሳይ" },
+  "domainDisableSite": { "message": "በዚህ ጣቢያ ላይ አሰናክል" },
+  "domainDisable": {
+    "message": "በ$DOMAIN$ ላይ አሰናክል",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "በ$DOMAIN$ ላይ አንቃ",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "ወደ ብሩህ ሁነታ ቀይር" },
+  "themeToDark": { "message": "ወደ ጨለማ ሁነታ ቀይር" },
+  "aboutSupport": { "message": "ስለ & ድጋፍ" },
+
+  "tabDashboard": { "message": "ዳሽቦርድ" },
+  "tabMarkets": { "message": "ገበያዎች" },
+  "tabNews": { "message": "ዜና" },
+
+  "searchPlaceholder": { "message": "ለመተንተን ወይም ለመጨመር ቲከር ፈልግ..." },
+  "searchButton": { "message": "ፈልግ" },
+  "clocksLabel": { "message": "የዓለም ገበያ ሰዓቶች" },
+  "clockOpen": { "message": "● ክፍት" },
+  "clockClosed": { "message": "● ዝግ" },
+
+  "watchlistTitle": { "message": "የእርስዎ መከታተያ ዝርዝር" },
+  "liveBadge": { "message": "ቀጥታ" },
+  "watchlistEmpty": { "message": "መከታተያ ዝርዝር ባዶ ነው። ከላይ ቲከር ፈልገው ጨምሩ!" },
+  "colSymbol": { "message": "ምልክት" },
+  "colTrend": { "message": "1Y አዝማሚያ" },
+  "colPrice": { "message": "ዋጋ" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "M. ካፕ" },
+  "colActions": { "message": "እርምጃዎች" },
+  "sortByPrice": { "message": "በዋጋ ደርድር" },
+  "sortByMCap": { "message": "በገበያ ካፕ ደርድር" },
+  "dragHint": { "message": "እንደገና ለማደራጀት ይጎትቱ" },
+  "trendReturnTitle": { "message": "የሚታይ ጊዜի ትርፍ" },
+  "setAlertTitle": { "message": "ማንቂያ ፍጠር" },
+  "deleteTitle": { "message": "ሰርዝ" },
+  "renameTitle": { "message": "ፖርትፎሊዮ እንደገና ሰይም" },
+  "newTitle": { "message": "አዲስ ፖርትፎሊዮ" },
+  "exportTitle": { "message": "ወደ Excel ላክ" },
+
+  "portfolioExists": { "message": "በዚህ ስም ያለ ፖርትፎሊዮ ቀድሞ አለ!" },
+  "renamePrompt": {
+    "message": "ፖርትፎሊዮ \"$NAME$\" እንደገና ሰይም",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "የአዲስ ፖርትፎሊዮ ስም" },
+
+  "verdictLabel": { "message": "የAI ውሳኔ:" },
+  "verdictNoData": { "message": "ለውሳኔ በቂ መረጃ የለም።" },
+  "verdictGem": { "message": "[ዝቅ ብሎ የተገመተ] በጣም ቀልጣፋ የካፒታል ትርፍ ያለው ዕንቁ።" },
+  "verdictExpensive": { "message": "[ውድ] ጠንካራ ንግድ፣ ግን በውድ ዋጋ።" },
+  "verdictRisk": { "message": "[ከፍተኛ ስጋት] በተዳከመ የካፒታል ብቃት ከመጠን በላይ የተገመተ።" },
+  "verdictSolid": { "message": "[ጠንካራ] በተመጣጣኝ ዋጋ ምርጥ መሰረታዊ ነገሮች።" },
+  "verdictAvg": { "message": "[አማካይ] መደበኛ መሰረታዊ ነገሮች። ማነቃቂያዎችን ይከታተሉ።" },
+  "verdictIndex": { "message": "[የገበያ መረጃ ጠቋሚ] የገበያ ዋና መስፈርት።" },
+
+  "scrapingData": { "message": "መረጃ በማምጣት ላይ..." },
+  "backButton": { "message": "← ተመለስ" },
+  "addToWatchlist": { "message": "+ ወደ መከታተያ ዝርዝር ጨምር" },
+  "addedButton": { "message": "ተጨምሯል!" },
+  "alreadyButton": { "message": "ቀድሞ በመከታተያ ዝርዝር ውስጥ አለ" },
+  "customizeScreener": { "message": "⚙ መለኪያዎችን በScreener.in ላይ አብጅ" },
+  "peerTitle": { "message": "የእኩዮች ንጽጽር" },
+  "annTitle": { "message": "የኩባንያ ማስታወቂያዎች" },
+  "fetchFailed": { "message": "መረጃ ማምጣት አልተቻለም።" },
+  "fetchError": { "message": "ስህተት።" },
+
+  "marketIndices": { "message": "የገበያ መረጃ ጠቋሚዎች" },
+  "clickEditCard": {
+    "message": "$NAME$ ለማርትዕ ጠቅ ያድርጉ",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "ቲከር ጨምር" },
+  "addNewSlot": { "message": "አዲስ መረጃ ጠቋሚ ወይም አክሲዮን ጨምር" },
+  "loadingPrice": { "message": "በመጫን ላይ..." },
+  "editCardTitle": { "message": "የገበያ ካርድ አርም" },
+  "displayNameLabel": { "message": "የማሳያ ስም:" },
+  "displayNamePh": { "message": "ለምሳሌ NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "ምልክት (Yahoo/NSE):" },
+  "symbolPh": { "message": "ለምሳሌ ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "አስወግድ" },
+  "cancelBtn": { "message": "ሰርዝ" },
+  "saveBtn": { "message": "አስቀምጥ" },
+  "saveCardBtn": { "message": "ካርድ አስቀምጥ" },
+  "needBoth": { "message": "እባክዎ የማሳያ ስም እና ምልክት ያስገቡ።" },
+
+  "alertPrefix": { "message": "ማንቂያ ፍጠር ለ" },
+  "aboveLabel": { "message": "ዋጋ ከላይ ከሆነ ማንቂያ (₹):" },
+  "abovePh": { "message": "ለምሳሌ 3000" },
+  "belowLabel": { "message": "ዋጋ ከታች ከሆነ ማንቂያ (₹):" },
+  "belowPh": { "message": "ለምሳሌ 2500" },
+
+  "aboutTagline": { "message": "ባለብዙ ገበያ ቀጥታ ምግብ" },
+  "aboutDesc": { "message": "በScreener.in እና Yahoo Finance የሚሰራ የቀጥታ መከታተያ ዝርዝር፣ ቲከር ቴፕ እና ጥምርቶች።" },
+  "buyCoffee": { "message": "ቡና ግዛልኝ" },
+  "scanSupport": { "message": "ለድጋፍ ስካን ያድርጉ ☕" },
+  "closeBtn": { "message": "ዝጋ" },
+  "qrAlt": { "message": "በBuy Me a Coffee በኩል ለድጋፍ ስካን ያድርጉ" },
+
+  "macroTitle": { "message": "አመልካች አርም" },
+  "macroTileOf": {
+    "message": "ንጣፍ $N$ ከ4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "አመልካች:" },
+  "wbLink": { "message": "በዓለም ባንክ ላይ ይመልከቱ" },
+  "macroInflation": { "message": "የዋጋ ግሽበት (CPI)" },
+  "macroUnemployment": { "message": "ሥራ አጥነት" },
+  "macroGdp": { "message": "የGDP እድገት" },
+  "macroGdppc": { "message": "GDP በአንድ ሰው" },
+  "macroGdptotal": { "message": "ጠቅላላ GDP" },
+  "macroTrade": { "message": "ንግድ (GDP %)" },
+  "macroReserves": { "message": "የውጭ ምንዛሬ ክምችት" },
+  "macroPopulation": { "message": "ሕዝብ" },
+
+  "overviewTitle": { "message": "የገበያ አጠቃላይ እይታ" },
+  "selectMarket": { "message": "ገበያ ምረጥ:" },
+  "refreshBtn": { "message": "↻ አድስ" },
+  "refreshTitle": { "message": "አጠቃላይ እይታ አድስ" },
+  "indicatorsTitle": { "message": "ኢኮኖሚያዊ አመልካቾች" },
+  "loadingMarkets": {
+    "message": "$ECO$ ገበያዎች በመጫን ላይ...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "አመልካቾች በመጫን ላይ..." },
+  "indicatorsDown": { "message": "አመልካቾች አይገኙም።" },
+  "clickAnalyze": {
+    "message": "$NAME$ — ለመተንተን ጠቅ ያድርጉ",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — ለማርትዕ ጠቅ ያድርጉ",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ ከፍተኛ አሸናፊዎች" },
+  "losersTitle": { "message": "▼ ከፍተኛ ተሸናፊዎች" },
+  "noGainers": { "message": "ዛሬ አሸናፊዎች የሉም" },
+  "noLosers": { "message": "ዛሬ ተሸናፊዎች የሉም" },
+  "updatedAt": {
+    "message": "የዘመነ $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "መጫን አልተሳካም። አድስ።" },
+  "latestLabel": { "message": "የቅርብ ጊዜ" },
+  "loadingWord": { "message": "በመጫን ላይ..." },
+
+  "newsLoading": { "message": "የቅርብ ጊዜ ዜና በመጫን ላይ..." },
+  "macroNewsTitle": { "message": "የUS ማክሮ ዜና" },
+  "fetchingMacroNews": { "message": "የUS ማክሮ ዜና በማምጣት ላይ..." },
+  "noPortfolioNews": { "message": "በዚህ ፖርትፎሊዮ ውስጥ ለዜና አክሲዮኖች የሉም።" },
+  "fetchingNews": { "message": "የቅርብ ጊዜ የፋይናንስ ዜና በማምጣት ላይ..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ ዜና",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "ለፖርትፎሊዮዎ የቅርብ ጊዜ ዜና የለም።" },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "ጥያቄ" },
+  "promptOk": { "message": "እሺ" },
+
+  "typeIndian": { "message": "የህንድ አክሲዮን" },
+  "typeIndex": { "message": "መረጃ ጠቋሚ" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ አክሲዮን",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "አክሲዮን" },
+
+  "ratioCurrentPrice": { "message": "የአሁን ዋጋ" },
+  "ratioDayRange": { "message": "የቀን ክልል" },
+  "ratio52W": { "message": "52W ክልል" },
+  "ratioVolume": { "message": "ድምጽ" },
+  "ratioType": { "message": "ዓይነት" },
+  "ratioExchange": { "message": "ልውውጥ" },
+  "ratioMCap": { "message": "የገበያ ካፕ" },
+  "ratioPE": { "message": "አክሲዮን P/E" },
+  "ratioDiv": { "message": "የትርፍ ክፍፍል ምርት" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "ቴፕ ወደ ግራ ሸብልል" },
+  "tapeScrollRight": { "message": "ቴፕ ወደ ቀኝ ሸብልል" },
+  "chartNoData": { "message": "የቻርት መረጃ የለም" },
+  "chartLoading": { "message": "ቻርት በመጫን ላይ..." },
+  "ret1M": { "message": "1M ትርፍ" },
+  "ret6M": { "message": "6M ትርፍ" },
+  "ret1Y": { "message": "1Y ትርፍ" },
+  "ret3Y": { "message": "3Y ትርፍ" },
+  "ret5Y": { "message": "5Y ትርፍ" },
+  "ret10Y": { "message": "10Y ትርፍ" },
+  "retMax": { "message": "ጠቅላላ ትርፍ" },
+  "metricLastPrice": { "message": "የመጨረሻ ዋጋ" },
+  "metricDivYield": { "message": "የትርፍ ምርት" },
+  "metricPERatio": { "message": "P/E ጥምር" },
+  "viewDetails": { "message": "ዝርዝሮችን ይመልከቱ" },
+  "modalSubtitleIndex": {
+    "message": "የገበያ መረጃ ጠቋሚ • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "አክሲዮኖች" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "ዓለም አቀፍ" },
+  "modalDetails": { "message": "ዝርዝሮች" },
+  "tapeLoading": { "message": "የScreener መከታተያ ዝርዝር በመጫን ላይ..." },
+
+  "notifAboveTitle": { "message": "የዋጋ ማንቂያ! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ ከ₹$PRICE$ በላይ ሄዷል (አሁን: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "የዋጋ ማንቂያ! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ ከ₹$PRICE$ በታች ወርዷል (አሁን: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "የScreener ዋጋ ማንቂያ" },
+  "notifGeneric": {
+    "message": "$TICKER$ የእርስዎን ኢላማ $TARGET$ ደርሷል (አሁን: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "\"%s\" ወደ Screener መከታተያ ዝርዝር ጨምር" },
+  "ctxAddedTitle": { "message": "Screener መከታተያ ዝርዝር" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ ወደ መከታተያ ዝርዝርዎ ታክሏል!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

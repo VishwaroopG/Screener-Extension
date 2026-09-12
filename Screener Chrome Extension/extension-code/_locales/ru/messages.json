@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Прямой вотчлист индийских и мировых акций, перемещаемые портфели и бегущая строка. Поддержка: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Открыть вотчлист Screener" },
+  "commandDesc": { "message": "Открыть боковую панель Screener" },
+
+  "speedTitle": {
+    "message": "Скорость ленты: $SPEED$ (нажмите, чтобы настроить 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Скорость ленты: 1.0x (нажмите, чтобы настроить 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Скорость ленты" },
+  "speedDecrease": { "message": "Уменьшить на 0.1x" },
+  "speedIncrease": { "message": "Увеличить на 0.1x" },
+  "speedCustom": { "message": "Своя:" },
+  "speedExample": { "message": "напр. 2.3" },
+
+  "pauseTape": { "message": "Приостановить ленту" },
+  "resumeTape": { "message": "Продолжить ленту" },
+  "hideTape": { "message": "Скрыть ленту" },
+  "showTape": { "message": "Показать ленту" },
+  "domainDisableSite": { "message": "Отключить на этом сайте" },
+  "domainDisable": {
+    "message": "Отключить на $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Включить на $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Перейти на светлую тему" },
+  "themeToDark": { "message": "Перейти на тёмную тему" },
+  "aboutSupport": { "message": "О нас и поддержка" },
+
+  "tabDashboard": { "message": "Дашборд" },
+  "tabMarkets": { "message": "Рынки" },
+  "tabNews": { "message": "Новости" },
+
+  "searchPlaceholder": { "message": "Найти тикер для анализа или добавления..." },
+  "searchButton": { "message": "Найти" },
+  "clocksLabel": { "message": "Часы мировых рынков" },
+  "clockOpen": { "message": "● Открыт" },
+  "clockClosed": { "message": "● Закрыт" },
+
+  "watchlistTitle": { "message": "Ваш вотчлист" },
+  "liveBadge": { "message": "Лайв" },
+  "watchlistEmpty": { "message": "Вотчлист пуст. Найдите и добавьте тикер выше!" },
+  "colSymbol": { "message": "Тикер" },
+  "colTrend": { "message": "Тренд 1Г" },
+  "colPrice": { "message": "Цена" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Капитал." },
+  "colActions": { "message": "Действия" },
+  "sortByPrice": { "message": "Сортировать по цене" },
+  "sortByMCap": { "message": "Сортировать по капитализации" },
+  "dragHint": { "message": "Перетащите для сортировки" },
+  "trendReturnTitle": { "message": "Доходность за показанный период" },
+  "setAlertTitle": { "message": "Создать алерт" },
+  "deleteTitle": { "message": "Удалить" },
+  "renameTitle": { "message": "Переименовать портфель" },
+  "newTitle": { "message": "Новый портфель" },
+  "exportTitle": { "message": "Экспорт в Excel" },
+
+  "portfolioExists": { "message": "Портфель с таким именем уже существует!" },
+  "renamePrompt": {
+    "message": "Переименовать портфель \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Название нового портфеля" },
+
+  "verdictLabel": { "message": "Вердикт ИИ:" },
+  "verdictNoData": { "message": "Недостаточно данных для вердикта." },
+  "verdictGem": { "message": "[Недооценена] Жемчужина с очень эффективной отдачей на капитал." },
+  "verdictExpensive": { "message": "[Дорогая] Сильный бизнес, но с высокой премией." },
+  "verdictRisk": { "message": "[Высокий риск] Переоценена при слабой эффективности капитала." },
+  "verdictSolid": { "message": "[Крепкая] Отличные фундаментальные показатели по разумной цене." },
+  "verdictAvg": { "message": "[Средняя] Стандартные показатели. Следите за драйверами." },
+  "verdictIndex": { "message": "[Индекс] Ключевой бенчмарк рынка." },
+
+  "scrapingData": { "message": "Загрузка данных..." },
+  "backButton": { "message": "← Назад" },
+  "addToWatchlist": { "message": "+ Добавить в вотчлист" },
+  "addedButton": { "message": "Добавлено!" },
+  "alreadyButton": { "message": "Уже в вотчлисте" },
+  "customizeScreener": { "message": "⚙ Настроить параметры на Screener.in" },
+  "peerTitle": { "message": "Сравнение с аналогами" },
+  "annTitle": { "message": "Новости компании" },
+  "fetchFailed": { "message": "Не удалось получить данные." },
+  "fetchError": { "message": "Ошибка." },
+
+  "marketIndices": { "message": "Рыночные индексы" },
+  "clickEditCard": {
+    "message": "Нажмите, чтобы изменить $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Добавить тикер" },
+  "addNewSlot": { "message": "Добавить индекс или акцию" },
+  "loadingPrice": { "message": "Загрузка..." },
+  "editCardTitle": { "message": "Изменить карточку рынка" },
+  "displayNameLabel": { "message": "Отображаемое имя:" },
+  "displayNamePh": { "message": "напр. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Символ (Yahoo/NSE):" },
+  "symbolPh": { "message": "напр. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Убрать" },
+  "cancelBtn": { "message": "Отмена" },
+  "saveBtn": { "message": "Сохранить" },
+  "saveCardBtn": { "message": "Сохранить карточку" },
+  "needBoth": { "message": "Введите отображаемое имя и символ." },
+
+  "alertPrefix": { "message": "Создать алерт для" },
+  "aboveLabel": { "message": "Алерт, если цена выше (₹):" },
+  "abovePh": { "message": "напр. 3000" },
+  "belowLabel": { "message": "Алерт, если цена ниже (₹):" },
+  "belowPh": { "message": "напр. 2500" },
+
+  "aboutTagline": { "message": "Мультирыночный лайв-фид" },
+  "aboutDesc": { "message": "Вотчлист, лента и коэффициенты в реальном времени через Screener.in и Yahoo Finance." },
+  "buyCoffee": { "message": "Угостите меня кофе" },
+  "scanSupport": { "message": "Сканируйте, чтобы поддержать ☕" },
+  "closeBtn": { "message": "Закрыть" },
+  "qrAlt": { "message": "Сканируйте, чтобы поддержать через Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Изменить индикатор" },
+  "macroTileOf": {
+    "message": "Плитка $N$ из 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Индикатор:" },
+  "wbLink": { "message": "Смотреть на сайте Всемирного банка" },
+  "macroInflation": { "message": "Инфляция (CPI)" },
+  "macroUnemployment": { "message": "Безработица" },
+  "macroGdp": { "message": "Рост ВВП" },
+  "macroGdppc": { "message": "ВВП на душу" },
+  "macroGdptotal": { "message": "ВВП всего" },
+  "macroTrade": { "message": "Торговля (% ВВП)" },
+  "macroReserves": { "message": "Валютные резервы" },
+  "macroPopulation": { "message": "Население" },
+
+  "overviewTitle": { "message": "Обзор рынка" },
+  "selectMarket": { "message": "Выберите рынок:" },
+  "refreshBtn": { "message": "↻ Обновить" },
+  "refreshTitle": { "message": "Обновить обзор" },
+  "indicatorsTitle": { "message": "ЭКОНОМИЧЕСКИЕ ИНДИКАТОРЫ" },
+  "loadingMarkets": {
+    "message": "Загрузка рынков $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Загрузка индикаторов..." },
+  "indicatorsDown": { "message": "Индикаторы недоступны." },
+  "clickAnalyze": {
+    "message": "$NAME$ — нажмите для анализа",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — нажмите для изменения",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ ЛИДЕРЫ РОСТА" },
+  "losersTitle": { "message": "▼ ЛИДЕРЫ ПАДЕНИЯ" },
+  "noGainers": { "message": "Сегодня роста нет" },
+  "noLosers": { "message": "Сегодня падения нет" },
+  "updatedAt": {
+    "message": "Обновлено $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Не удалось загрузить. Обновите." },
+  "latestLabel": { "message": "Свежее" },
+  "loadingWord": { "message": "загрузка..." },
+
+  "newsLoading": { "message": "Загрузка последних новостей..." },
+  "macroNewsTitle": { "message": "МАКРОНОВОСТИ США" },
+  "fetchingMacroNews": { "message": "Загрузка макроновостей США..." },
+  "noPortfolioNews": { "message": "В этом портфеле нет акций для новостей." },
+  "fetchingNews": { "message": "Загрузка финансовых новостей..." },
+  "tickerNewsTitle": {
+    "message": "НОВОСТИ $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Свежих новостей для портфеля нет." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Запрос" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Индийская акция" },
+  "typeIndex": { "message": "Индекс" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "Акция $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Акция" },
+
+  "ratioCurrentPrice": { "message": "Текущая цена" },
+  "ratioDayRange": { "message": "Дневной диапазон" },
+  "ratio52W": { "message": "Диапазон 52Н" },
+  "ratioVolume": { "message": "Объём" },
+  "ratioType": { "message": "Тип" },
+  "ratioExchange": { "message": "Биржа" },
+  "ratioMCap": { "message": "Капитализация" },
+  "ratioPE": { "message": "P/E акции" },
+  "ratioDiv": { "message": "Дивдоходность" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Прокрутить ленту влево" },
+  "tapeScrollRight": { "message": "Прокрутить ленту вправо" },
+  "chartNoData": { "message": "Нет данных графика" },
+  "chartLoading": { "message": "Загрузка графика..." },
+  "ret1M": { "message": "Дох. 1М" },
+  "ret6M": { "message": "Дох. 6М" },
+  "ret1Y": { "message": "Дох. 1Г" },
+  "ret3Y": { "message": "Дох. 3Г" },
+  "ret5Y": { "message": "Дох. 5Л" },
+  "ret10Y": { "message": "Дох. 10Л" },
+  "retMax": { "message": "Общая дох." },
+  "metricLastPrice": { "message": "Посл. цена" },
+  "metricDivYield": { "message": "Див. дох." },
+  "metricPERatio": { "message": "Коэфф. P/E" },
+  "viewDetails": { "message": "Подробнее" },
+  "modalSubtitleIndex": {
+    "message": "Рыночный индекс • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Акции" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Мир" },
+  "modalDetails": { "message": "Детали" },
+  "tapeLoading": { "message": "Загрузка вотчлиста Screener..." },
+
+  "notifAboveTitle": { "message": "Ценовой алерт! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ выше ₹$PRICE$ (текущая: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Ценовой алерт! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ ниже ₹$PRICE$ (текущая: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Ценовой алерт Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ достиг вашей цели $TARGET$ (текущая: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Добавить «%s» в вотчлист Screener" },
+  "ctxAddedTitle": { "message": "Вотчлист Screener" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ добавлен в ваш вотчлист!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

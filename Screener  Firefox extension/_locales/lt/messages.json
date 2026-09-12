@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Tiesioginė Indijos ir pasaulio akcijų stebėsena, tempiami portfeliai ir kainų juosta. Palaikymas: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Atidaryti Screener stebėseną" },
+  "commandDesc": { "message": "Atidaryti Screener šoninį skydelį" },
+
+  "speedTitle": {
+    "message": "Juostos greitis: $SPEED$ (spustelėkite 0.5x – 3.0x reguliuoti)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Juostos greitis: 1.0x (spustelėkite 0.5x – 3.0x reguliuoti)" },
+  "speedLabel": { "message": "Juostos greitis" },
+  "speedDecrease": { "message": "Sumažinti 0.1x" },
+  "speedIncrease": { "message": "Padidinti 0.1x" },
+  "speedCustom": { "message": "Pasirinktinis:" },
+  "speedExample": { "message": "pvz. 2.3" },
+
+  "pauseTape": { "message": "Pristabdyti kainų juostą" },
+  "resumeTape": { "message": "Tęsti kainų juostą" },
+  "hideTape": { "message": "Slėpti kainų juostą" },
+  "showTape": { "message": "Rodyti kainų juostą" },
+  "domainDisableSite": { "message": "Išjungti šioje svetainėje" },
+  "domainDisable": {
+    "message": "Išjungti $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Įjungti $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Perjungti į šviesų režimą" },
+  "themeToDark": { "message": "Perjungti į tamsų režimą" },
+  "aboutSupport": { "message": "Apie ir palaikymas" },
+
+  "tabDashboard": { "message": "Skydelis" },
+  "tabMarkets": { "message": "Rinkos" },
+  "tabNews": { "message": "Naujienos" },
+
+  "searchPlaceholder": { "message": "Ieškoti tickerio analizei ar pridėjimui..." },
+  "searchButton": { "message": "Ieškoti" },
+  "clocksLabel": { "message": "Pasaulio rinkų laikrodžiai" },
+  "clockOpen": { "message": "● Atidaryta" },
+  "clockClosed": { "message": "● Uždaryta" },
+
+  "watchlistTitle": { "message": "Jūsų stebėsena" },
+  "liveBadge": { "message": "Tiesiogiai" },
+  "watchlistEmpty": { "message": "Stebėsena tuščia. Ieškokite ir pridėkite tickerį aukščiau!" },
+  "colSymbol": { "message": "Simbolis" },
+  "colTrend": { "message": "1 m. tend." },
+  "colPrice": { "message": "Kaina" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Rink. kap." },
+  "colActions": { "message": "Veiksmai" },
+  "sortByPrice": { "message": "Rikiuoti pagal kainą" },
+  "sortByMCap": { "message": "Rikiuoti pagal kapitalizaciją" },
+  "dragHint": { "message": "Vilkite norėdami pertvarkyti" },
+  "trendReturnTitle": { "message": "Rodomo laikotarpio grąža" },
+  "setAlertTitle": { "message": "Sukurti įspėjimą" },
+  "deleteTitle": { "message": "Ištrinti" },
+  "renameTitle": { "message": "Pervadinti portfelį" },
+  "newTitle": { "message": "Naujas portfelis" },
+  "exportTitle": { "message": "Eksportuoti į Excel" },
+
+  "portfolioExists": { "message": "Portfelis tokiu pavadinimu jau yra!" },
+  "renamePrompt": {
+    "message": "Pervadinti portfelį \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Naujo portfelio pavadinimas" },
+
+  "verdictLabel": { "message": "DI verdiktas:" },
+  "verdictNoData": { "message": "Verdiktui duomenų nepakanka." },
+  "verdictGem": { "message": "[Neįvertinta] Perlas su labai efektyvia kapitalo grąža." },
+  "verdictExpensive": { "message": "[Brangu] Stiprus verslas, bet su brangia premija." },
+  "verdictRisk": { "message": "[Didelė rizika] Pervertinta esant silpnam kapitalo efektyvumui." },
+  "verdictSolid": { "message": "[Tvirta] Puikūs pagrindai už priimtiną kainą." },
+  "verdictAvg": { "message": "[Vidutinė] Standartiniai pagrindai. Stebėkite katalizatorius." },
+  "verdictIndex": { "message": "[Indeksas] Pagrindinis rinkos etalonas." },
+
+  "scrapingData": { "message": "Gaunami duomenys..." },
+  "backButton": { "message": "← Atgal" },
+  "addToWatchlist": { "message": "+ Pridėti į stebėseną" },
+  "addedButton": { "message": "Pridėta!" },
+  "alreadyButton": { "message": "Jau stebima" },
+  "customizeScreener": { "message": "⚙ Tinkinti parametrus Screener.in" },
+  "peerTitle": { "message": "Palyginimas su analogais" },
+  "annTitle": { "message": "Įmonės pranešimai" },
+  "fetchFailed": { "message": "Nepavyko gauti duomenų." },
+  "fetchError": { "message": "Klaida." },
+
+  "marketIndices": { "message": "Rinkos indeksai" },
+  "clickEditCard": {
+    "message": "Spustelėkite norėdami redaguoti $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Pridėti tickerį" },
+  "addNewSlot": { "message": "Pridėti indeksą ar akciją" },
+  "loadingPrice": { "message": "Kraunama..." },
+  "editCardTitle": { "message": "Redaguoti rinkos kortelę" },
+  "displayNameLabel": { "message": "Rodomas vardas:" },
+  "displayNamePh": { "message": "pvz. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Simbolis (Yahoo/NSE):" },
+  "symbolPh": { "message": "pvz. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Pašalinti" },
+  "cancelBtn": { "message": "Atšaukti" },
+  "saveBtn": { "message": "Išsaugoti" },
+  "saveCardBtn": { "message": "Išsaugoti kortelę" },
+  "needBoth": { "message": "Įveskite rodomą vardą ir simbolį." },
+
+  "alertPrefix": { "message": "Sukurti įspėjimą:" },
+  "aboveLabel": { "message": "Įspėti jei kaina virš (₹):" },
+  "abovePh": { "message": "pvz. 3000" },
+  "belowLabel": { "message": "Įspėti jei kaina žemiau (₹):" },
+  "belowPh": { "message": "pvz. 2500" },
+
+  "aboutTagline": { "message": "Kelių rinkų tiesioginis srautas" },
+  "aboutDesc": { "message": "Realaus laiko stebėsena, juosta ir rodikliai per Screener.in ir Yahoo Finance." },
+  "buyCoffee": { "message": "Pavaišink mane kava" },
+  "scanSupport": { "message": "Skenuokite norėdami paremti ☕" },
+  "closeBtn": { "message": "Uždaryti" },
+  "qrAlt": { "message": "Skenuokite norėdami paremti per Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Redaguoti rodiklį" },
+  "macroTileOf": {
+    "message": "Plytelė $N$ iš 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Rodiklis:" },
+  "wbLink": { "message": "Žiūrėti Pasaulio banke" },
+  "macroInflation": { "message": "Infliacija (CPI)" },
+  "macroUnemployment": { "message": "Nedarbas" },
+  "macroGdp": { "message": "BVP augimas" },
+  "macroGdppc": { "message": "BVP vienam gyventojui" },
+  "macroGdptotal": { "message": "Bendras BVP" },
+  "macroTrade": { "message": "Prekyba (% BVP)" },
+  "macroReserves": { "message": "Valiutos rezervai" },
+  "macroPopulation": { "message": "Gyventojai" },
+
+  "overviewTitle": { "message": "Rinkos apžvalga" },
+  "selectMarket": { "message": "Pasirinkite rinką:" },
+  "refreshBtn": { "message": "↻ Atnaujinti" },
+  "refreshTitle": { "message": "Atnaujinti apžvalgą" },
+  "indicatorsTitle": { "message": "EKONOMINIAI RODIKLIAI" },
+  "loadingMarkets": {
+    "message": "Kraunamos $ECO$ rinkos...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Kraunami rodikliai..." },
+  "indicatorsDown": { "message": "Rodikliai nepasiekiami." },
+  "clickAnalyze": {
+    "message": "$NAME$ — spustelėkite analizei",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — spustelėkite redagavimui",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ TOP KILIMAS" },
+  "losersTitle": { "message": "▼ TOP KRITIMAS" },
+  "noGainers": { "message": "Šiandien kilimo nėra" },
+  "noLosers": { "message": "Šiandien kritimo nėra" },
+  "updatedAt": {
+    "message": "Atnaujinta $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Nepavyko įkelti. Atnaujinkite." },
+  "latestLabel": { "message": "Naujausia" },
+  "loadingWord": { "message": "kraunama..." },
+
+  "newsLoading": { "message": "Kraunamos naujausios naujienos..." },
+  "macroNewsTitle": { "message": "JAV MAKRO NAUJIENOS" },
+  "fetchingMacroNews": { "message": "Gaunamos JAV makro naujienos..." },
+  "noPortfolioNews": { "message": "Šiame portfelyje nėra akcijų naujienoms." },
+  "fetchingNews": { "message": "Gaunamos finansų naujienos..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ NAUJIENOS",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Jūsų portfeliui naujų naujienų nėra." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Užklausa" },
+  "promptOk": { "message": "Gerai" },
+
+  "typeIndian": { "message": "Indijos akcija" },
+  "typeIndex": { "message": "Indeksas" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ akcija",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Akcija" },
+
+  "ratioCurrentPrice": { "message": "Dabartinė kaina" },
+  "ratioDayRange": { "message": "Dienos intervalas" },
+  "ratio52W": { "message": "52 sav. intervalas" },
+  "ratioVolume": { "message": "Apyvarta" },
+  "ratioType": { "message": "Tipas" },
+  "ratioExchange": { "message": "Birža" },
+  "ratioMCap": { "message": "Rinkos kap." },
+  "ratioPE": { "message": "Akcijos P/E" },
+  "ratioDiv": { "message": "Div. pajamingumas" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Slinkti juostą kairėn" },
+  "tapeScrollRight": { "message": "Slinkti juostą dešinėn" },
+  "chartNoData": { "message": "Grafo duomenų nėra" },
+  "chartLoading": { "message": "Kraunamas grafas..." },
+  "ret1M": { "message": "Grąža 1 mėn." },
+  "ret6M": { "message": "Grąža 6 mėn." },
+  "ret1Y": { "message": "Grąža 1 m." },
+  "ret3Y": { "message": "Grąža 3 m." },
+  "ret5Y": { "message": "Grąža 5 m." },
+  "ret10Y": { "message": "Grąža 10 m." },
+  "retMax": { "message": "Bendra grąža" },
+  "metricLastPrice": { "message": "Paskutinė kaina" },
+  "metricDivYield": { "message": "Div. pajam." },
+  "metricPERatio": { "message": "P/E santykis" },
+  "viewDetails": { "message": "Žiūrėti detaliau" },
+  "modalSubtitleIndex": {
+    "message": "Rinkos indeksas • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Akcijos" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Pasaulis" },
+  "modalDetails": { "message": "Detalės" },
+  "tapeLoading": { "message": "Kraunama Screener stebėsena..." },
+
+  "notifAboveTitle": { "message": "Kainos įspėjimas! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ virš ₹$PRICE$ (dabar: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Kainos įspėjimas! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ žemiau ₹$PRICE$ (dabar: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Kainos įspėjimas Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ pasiekė jūsų tikslą $TARGET$ (dabar: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Pridėti „%s” į Screener stebėseną" },
+  "ctxAddedTitle": { "message": "Screener stebėsena" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ pridėta į jūsų stebėseną!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

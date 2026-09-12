@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "India ja ülemaailmsete aktsiate reaalajas jälgimisnimekiri, lohistatavad portfellid ja ticker-lint. Tugi: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Ava Screeneri jälgimisnimekiri" },
+  "commandDesc": { "message": "Ava Screeneri külgpaneel" },
+
+  "speedTitle": {
+    "message": "Lindi kiirus: $SPEED$ (klõpsa 0.5x – 3.0x reguleerimiseks)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Lindi kiirus: 1.0x (klõpsa 0.5x – 3.0x reguleerimiseks)" },
+  "speedLabel": { "message": "Lindi kiirus" },
+  "speedDecrease": { "message": "Vähenda 0.1x" },
+  "speedIncrease": { "message": "Suurenda 0.1x" },
+  "speedCustom": { "message": "Kohandatud:" },
+  "speedExample": { "message": "nt. 2.3" },
+
+  "pauseTape": { "message": "Peata ticker-lint" },
+  "resumeTape": { "message": "Jätka ticker-linti" },
+  "hideTape": { "message": "Peida ticker-lint" },
+  "showTape": { "message": "Näita ticker-linti" },
+  "domainDisableSite": { "message": "Keela sellel saidil" },
+  "domainDisable": {
+    "message": "Keela saidil $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Luba saidil $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Lülitu heledale režiimile" },
+  "themeToDark": { "message": "Lülitu tumedale režiimile" },
+  "aboutSupport": { "message": "Teave ja tugi" },
+
+  "tabDashboard": { "message": "Töölaud" },
+  "tabMarkets": { "message": "Turud" },
+  "tabNews": { "message": "Uudised" },
+
+  "searchPlaceholder": { "message": "Otsi analüüsimiseks või lisamiseks tikkerit..." },
+  "searchButton": { "message": "Otsi" },
+  "clocksLabel": { "message": "Maailmaturgude kellad" },
+  "clockOpen": { "message": "● Avatud" },
+  "clockClosed": { "message": "● Suletud" },
+
+  "watchlistTitle": { "message": "Sinu jälgimisnimekiri" },
+  "liveBadge": { "message": "Reaalajas" },
+  "watchlistEmpty": { "message": "Nimekiri on tühi. Otsi ja lisa ülalt tikker!" },
+  "colSymbol": { "message": "Sümbol" },
+  "colTrend": { "message": "1A trend" },
+  "colPrice": { "message": "Hind" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Turukap." },
+  "colActions": { "message": "Tegevused" },
+  "sortByPrice": { "message": "Sordi hinda" },
+  "sortByMCap": { "message": "Sordi turukapitalisatsiooni" },
+  "dragHint": { "message": "Lohista ümberjärjestamiseks" },
+  "trendReturnTitle": { "message": "Kuvatava perioodi tootlus" },
+  "setAlertTitle": { "message": "Loo hoiatus" },
+  "deleteTitle": { "message": "Kustuta" },
+  "renameTitle": { "message": "Nimeta portfell ümber" },
+  "newTitle": { "message": "Uus portfell" },
+  "exportTitle": { "message": "Ekspordi Excelisse" },
+
+  "portfolioExists": { "message": "Selle nimega portfell on juba olemas!" },
+  "renamePrompt": {
+    "message": "Nimeta portfell \"$NAME$\" ümber",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Uue portfelli nimi" },
+
+  "verdictLabel": { "message": "AI hinnang:" },
+  "verdictNoData": { "message": "Hinnanguks pole piisavalt andmeid." },
+  "verdictGem": { "message": "[Alahinnatud] Pärl väga tõhusa kapitalitootlusega." },
+  "verdictExpensive": { "message": "[Kallis] Tugev ettevõte, kuid kalli preemiaga." },
+  "verdictRisk": { "message": "[Kõrge risk] Ülehinnatud nõrga kapitaluefektiivsusega." },
+  "verdictSolid": { "message": "[Tugev] Suurepärased alused mõistliku hinnaga." },
+  "verdictAvg": { "message": "[Keskmine] Standardsed alused. Jälgi katalüsaatoreid." },
+  "verdictIndex": { "message": "[Indeks] Turu võrdlusalus." },
+
+  "scrapingData": { "message": "Andmete toomine..." },
+  "backButton": { "message": "← Tagasi" },
+  "addToWatchlist": { "message": "+ Lisa jälgimisnimekirja" },
+  "addedButton": { "message": "Lisatud!" },
+  "alreadyButton": { "message": "Juba nimekirjas" },
+  "customizeScreener": { "message": "⚙ Kohanda parameetreid saidil Screener.in" },
+  "peerTitle": { "message": "Võrdlus konkurentidega" },
+  "annTitle": { "message": "Ettevõtte teated" },
+  "fetchFailed": { "message": "Andmeid ei saanud tuua." },
+  "fetchError": { "message": "Viga." },
+
+  "marketIndices": { "message": "Turuindeksid" },
+  "clickEditCard": {
+    "message": "Klõpsa $NAME$ muutmiseks",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Lisa tikker" },
+  "addNewSlot": { "message": "Lisa indeks või aktsia" },
+  "loadingPrice": { "message": "Laadimine..." },
+  "editCardTitle": { "message": "Muuda turukaarti" },
+  "displayNameLabel": { "message": "Kuvatav nimi:" },
+  "displayNamePh": { "message": "nt. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Sümbol (Yahoo/NSE):" },
+  "symbolPh": { "message": "nt. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Eemalda" },
+  "cancelBtn": { "message": "Tühista" },
+  "saveBtn": { "message": "Salvesta" },
+  "saveCardBtn": { "message": "Salvesta kaart" },
+  "needBoth": { "message": "Sisesta kuvatav nimi ja sümbol." },
+
+  "alertPrefix": { "message": "Loo hoiatus:" },
+  "aboveLabel": { "message": "Hoiata kui hind ületab (₹):" },
+  "abovePh": { "message": "nt. 3000" },
+  "belowLabel": { "message": "Hoiata kui hind langeb alla (₹):" },
+  "belowPh": { "message": "nt. 2500" },
+
+  "aboutTagline": { "message": "Mitme turu reaalajavoog" },
+  "aboutDesc": { "message": "Reaalajas jälgimisnimekiri, ticker-lint ja suhtarvud teenustelt Screener.in ja Yahoo Finance." },
+  "buyCoffee": { "message": "Kutsu mind kohvile" },
+  "scanSupport": { "message": "Skanni toetuseks ☕" },
+  "closeBtn": { "message": "Sulge" },
+  "qrAlt": { "message": "Skanni toetuseks teenuse Buy Me a Coffee kaudu" },
+
+  "macroTitle": { "message": "Muuda indikaatorit" },
+  "macroTileOf": {
+    "message": "Paani $N$ / 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Indikaator:" },
+  "wbLink": { "message": "Vaata Maailmapangas" },
+  "macroInflation": { "message": "Inflatsioon (CPI)" },
+  "macroUnemployment": { "message": "Tööpuudus" },
+  "macroGdp": { "message": "SKP kasv" },
+  "macroGdppc": { "message": "SKP elaniku kohta" },
+  "macroGdptotal": { "message": "SKP kokku" },
+  "macroTrade": { "message": "Kaubandus (% SKP-st)" },
+  "macroReserves": { "message": "Välisvaluutareservid" },
+  "macroPopulation": { "message": "Rahvastik" },
+
+  "overviewTitle": { "message": "Turuülevaade" },
+  "selectMarket": { "message": "Vali turg:" },
+  "refreshBtn": { "message": "↻ Värskenda" },
+  "refreshTitle": { "message": "Värskenda ülevaadet" },
+  "indicatorsTitle": { "message": "MAJANDUSNÄITAJAD" },
+  "loadingMarkets": {
+    "message": "Laadin $ECO$ turge...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Laadin näitajaid..." },
+  "indicatorsDown": { "message": "Näitajad pole saadaval." },
+  "clickAnalyze": {
+    "message": "$NAME$ — klõpsa analüüsimiseks",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — klõpsa muutmiseks",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ TOP TÕUSJAD" },
+  "losersTitle": { "message": "▼ TOP LANGEJAD" },
+  "noGainers": { "message": "Täna tõusjaid pole" },
+  "noLosers": { "message": "Täna langejaid pole" },
+  "updatedAt": {
+    "message": "Värskendatud $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Laadimine ebaõnnestus. Värskenda." },
+  "latestLabel": { "message": "Värskeim" },
+  "loadingWord": { "message": "laadimine..." },
+
+  "newsLoading": { "message": "Laadin värskeid uudiseid..." },
+  "macroNewsTitle": { "message": "USA MAKROUUDISED" },
+  "fetchingMacroNews": { "message": "Toon USA makrouudiseid..." },
+  "noPortfolioNews": { "message": "Selles portfellis pole uudiste jaoks aktsiaid." },
+  "fetchingNews": { "message": "Toon finantsuudiseid..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ UUDISED",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Sinu portfelli jaoks värskeid uudiseid pole." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Viip" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "India aktsia" },
+  "typeIndex": { "message": "Indeks" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ aktsia",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Aktsia" },
+
+  "ratioCurrentPrice": { "message": "Praegune hind" },
+  "ratioDayRange": { "message": "Päevavahemik" },
+  "ratio52W": { "message": "52N vahemik" },
+  "ratioVolume": { "message": "Käive" },
+  "ratioType": { "message": "Tüüp" },
+  "ratioExchange": { "message": "Börs" },
+  "ratioMCap": { "message": "Turukap." },
+  "ratioPE": { "message": "Aktsia P/E" },
+  "ratioDiv": { "message": "Div. tootlus" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Kerige linti vasakule" },
+  "tapeScrollRight": { "message": "Kerige linti paremale" },
+  "chartNoData": { "message": "Graafikuandmed puuduvad" },
+  "chartLoading": { "message": "Graafiku laadimine..." },
+  "ret1M": { "message": "1K tootlus" },
+  "ret6M": { "message": "6K tootlus" },
+  "ret1Y": { "message": "1A tootlus" },
+  "ret3Y": { "message": "3A tootlus" },
+  "ret5Y": { "message": "5A tootlus" },
+  "ret10Y": { "message": "10A tootlus" },
+  "retMax": { "message": "Kogutootlus" },
+  "metricLastPrice": { "message": "Viimane hind" },
+  "metricDivYield": { "message": "Div. tootlus" },
+  "metricPERatio": { "message": "P/E suhe" },
+  "viewDetails": { "message": "Vaata detaile" },
+  "modalSubtitleIndex": {
+    "message": "Turuindeks • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Aktsiad" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Globaalne" },
+  "modalDetails": { "message": "Detailid" },
+  "tapeLoading": { "message": "Screeneri nimekirja laadimine..." },
+
+  "notifAboveTitle": { "message": "Hinnahoiatus! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ üle ₹$PRICE$ (praegu: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Hinnahoiatus! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ alla ₹$PRICE$ (praegu: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Screeneri hinnahoiatus" },
+  "notifGeneric": {
+    "message": "$TICKER$ saavutas sinu eesmärgi $TARGET$ (praegu: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Lisa \"%s\" Screeneri nimekirja" },
+  "ctxAddedTitle": { "message": "Screeneri nimekiri" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ lisatud sinu nimekirja!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

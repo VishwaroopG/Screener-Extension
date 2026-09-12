@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "நேரடி இந்திய & உலக பங்கு கண்காணிப்பு, இழுக்கக்கூடிய போர்ட்ஃபோலியோக்கள் மற்றும் டிக்கர் டேப். ஆதரவு: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "ஸ்கிரீனர் கண்காணிப்பைத் திற" },
+  "commandDesc": { "message": "ஸ்கிரீனர் பக்கப்பட்டியைத் திற" },
+
+  "speedTitle": {
+    "message": "டேப் வேகம்: $SPEED$ (0.5x – 3.0x மாற்ற கிளிக் செய்க)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "டேப் வேகம்: 1.0x (0.5x – 3.0x மாற்ற கிளிக் செய்க)" },
+  "speedLabel": { "message": "டேப் வேகம்" },
+  "speedDecrease": { "message": "0.1x குறை" },
+  "speedIncrease": { "message": "0.1x அதிகரி" },
+  "speedCustom": { "message": "தனிப்பயன்:" },
+  "speedExample": { "message": "எ.கா. 2.3" },
+
+  "pauseTape": { "message": "டிக்கர் டேப்பை நிறுத்து" },
+  "resumeTape": { "message": "டிக்கர் டேப்பை தொடர்" },
+  "hideTape": { "message": "டிக்கர் டேப்பை மறை" },
+  "showTape": { "message": "டிக்கர் டேப்பை காட்டு" },
+  "domainDisableSite": { "message": "இந்த தளத்தில் அணை" },
+  "domainDisable": {
+    "message": "$DOMAIN$-இல் அணை",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "$DOMAIN$-இல் இயக்கு",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "வெளிச்ச பயன்முறைக்கு மாறு" },
+  "themeToDark": { "message": "இருள் பயன்முறைக்கு மாறு" },
+  "aboutSupport": { "message": "பற்றி & ஆதரவு" },
+
+  "tabDashboard": { "message": "டாஷ்போர்டு" },
+  "tabMarkets": { "message": "சந்தைகள்" },
+  "tabNews": { "message": "செய்திகள்" },
+
+  "searchPlaceholder": { "message": "பகுப்பாய அல்லது சேர்க்க டிக்கரைத் தேடு..." },
+  "searchButton": { "message": "தேடு" },
+  "clocksLabel": { "message": "உலக சந்தை கடிகாரங்கள்" },
+  "clockOpen": { "message": "● திறந்துள்ளது" },
+  "clockClosed": { "message": "● மூடியுள்ளது" },
+
+  "watchlistTitle": { "message": "உங்கள் கண்காணிப்பு" },
+  "liveBadge": { "message": "நேரலை" },
+  "watchlistEmpty": { "message": "கண்காணிப்பு காலி. மேலே டிக்கரைத் தேடி சேர்க்கவும்!" },
+  "colSymbol": { "message": "குறியீடு" },
+  "colTrend": { "message": "1Y போக்கு" },
+  "colPrice": { "message": "விலை" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "M. கேப்" },
+  "colActions": { "message": "செயல்கள்" },
+  "sortByPrice": { "message": "விலைப்படி வரிசை" },
+  "sortByMCap": { "message": "சந்தை மதிப்புப்படி வரிசை" },
+  "dragHint": { "message": "மறுவரிசைக்கு இழுக்கவும்" },
+  "trendReturnTitle": { "message": "காட்டும் கால வருமானம்" },
+  "setAlertTitle": { "message": "எச்சரிக்கை அமை" },
+  "deleteTitle": { "message": "நீக்கு" },
+  "renameTitle": { "message": "போர்ட்ஃபோலியோ பெயர் மாற்று" },
+  "newTitle": { "message": "புது போர்ட்ஃபோலியோ" },
+  "exportTitle": { "message": "Excel-க்கு ஏற்றுமதி" },
+
+  "portfolioExists": { "message": "இந்தப் பெயரில் போர்ட்ஃபோலியோ ஏற்கனவே உள்ளது!" },
+  "renamePrompt": {
+    "message": "போர்ட்ஃபோலியோ \"$NAME$\" பெயர் மாற்று",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "புது போர்ட்ஃபோலியோ பெயர்" },
+
+  "verdictLabel": { "message": "AI தீர்ப்பு:" },
+  "verdictNoData": { "message": "தீர்ப்புக்கு போதிய தரவு இல்லை." },
+  "verdictGem": { "message": "[குறைமதிப்பு] மூலதனத்தில் திறமையான வருமானம் தரும் மணி." },
+  "verdictExpensive": { "message": "[விலை அதிகம்] வலுவான தொழில், ஆனால் விலை பிரீமியத்தில்." },
+  "verdictRisk": { "message": "[அதிக ஆபத்து] மோசமான மூலதன திறனுடன் மிகைமதிப்பு." },
+  "verdictSolid": { "message": "[உறுதி] நியாய விலையில் சிறந்த அடிப்படைகள்." },
+  "verdictAvg": { "message": "[சராசரி] வழக்கமான அடிப்படைகள். வளர்ச்சி தூண்டல்களை கவனி." },
+  "verdictIndex": { "message": "[சந்தை குறியீடு] முக்கிய சந்தை அளவுகோல்." },
+
+  "scrapingData": { "message": "தரவு எடுக்கப்படுகிறது..." },
+  "backButton": { "message": "← பின்செல்" },
+  "addToWatchlist": { "message": "+ கண்காணிப்பில் சேர்" },
+  "addedButton": { "message": "சேர்க்கப்பட்டது!" },
+  "alreadyButton": { "message": "ஏற்கனவே கண்காணிப்பில் உள்ளது" },
+  "customizeScreener": { "message": "⚙ Screener.in-இல் அளவுருக்களைத் தனிப்பயனாக்கு" },
+  "peerTitle": { "message": "சக நிறுவன ஒப்பீடு" },
+  "annTitle": { "message": "நிறுவன அறிவிப்புகள்" },
+  "fetchFailed": { "message": "தரவைப் பெற முடியவில்லை." },
+  "fetchError": { "message": "பிழை." },
+
+  "marketIndices": { "message": "சந்தை குறியீடுகள்" },
+  "clickEditCard": {
+    "message": "$NAME$ திருத்த கிளிக் செய்க",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "டிக்கர் சேர்" },
+  "addNewSlot": { "message": "புது குறியீடு அல்லது பங்கு சேர்" },
+  "loadingPrice": { "message": "ஏற்றுகிறது..." },
+  "editCardTitle": { "message": "சந்தை அட்டை திருத்து" },
+  "displayNameLabel": { "message": "காட்சிப் பெயர்:" },
+  "displayNamePh": { "message": "எ.கா. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "குறியீடு (Yahoo/NSE):" },
+  "symbolPh": { "message": "எ.கா. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "அகற்று" },
+  "cancelBtn": { "message": "ரத்து" },
+  "saveBtn": { "message": "சேமி" },
+  "saveCardBtn": { "message": "அட்டை சேமி" },
+  "needBoth": { "message": "காட்சிப் பெயர், குறியீடு இரண்டையும் தருக." },
+
+  "alertPrefix": { "message": "எச்சரிக்கை அமை:" },
+  "aboveLabel": { "message": "விலை மேலே சென்றால் எச்சரி (₹):" },
+  "abovePh": { "message": "எ.கா. 3000" },
+  "belowLabel": { "message": "விலை கீழே சென்றால் எச்சரி (₹):" },
+  "belowPh": { "message": "எ.கா. 2500" },
+
+  "aboutTagline": { "message": "பல சந்தை நேரலை ஊட்டு" },
+  "aboutDesc": { "message": "Screener.in & Yahoo Finance மூலம் நேரடி கண்காணிப்பு, டிக்கர் டேப், விகிதங்கள்." },
+  "buyCoffee": { "message": "எனக்கு காபி வாங்கித் தா" },
+  "scanSupport": { "message": "ஆதரிக்க ஸ்கேன் செய்க ☕" },
+  "closeBtn": { "message": "மூடு" },
+  "qrAlt": { "message": "Buy Me a Coffee ஆதரவுக்கு ஸ்கேன் செய்க" },
+
+  "macroTitle": { "message": "குறிகாட்டி திருத்து" },
+  "macroTileOf": {
+    "message": "4-இல் ஓடு $N$",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "குறிகாட்டி:" },
+  "wbLink": { "message": "உலக வங்கியில் பார்" },
+  "macroInflation": { "message": "பணவீக்கம் (CPI)" },
+  "macroUnemployment": { "message": "வேலையின்மை" },
+  "macroGdp": { "message": "GDP வளர்ச்சி" },
+  "macroGdppc": { "message": "தலா GDP" },
+  "macroGdptotal": { "message": "மொத்த GDP" },
+  "macroTrade": { "message": "வர்த்தகம் (GDP-யில் %)" },
+  "macroReserves": { "message": "அந்நிய செலாவணி கையிருப்பு" },
+  "macroPopulation": { "message": "மக்கள்தொகை" },
+
+  "overviewTitle": { "message": "சந்தை கண்ணோட்டம்" },
+  "selectMarket": { "message": "சந்தை தேர்வு:" },
+  "refreshBtn": { "message": "↻ புதுப்பி" },
+  "refreshTitle": { "message": "கண்ணோட்டம் புதுப்பி" },
+  "indicatorsTitle": { "message": "பொருளாதார குறிகாட்டிகள்" },
+  "loadingMarkets": {
+    "message": "$ECO$ சந்தைகள் ஏற்றப்படுகின்றன...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "குறிகாட்டிகள் ஏற்றப்படுகின்றன..." },
+  "indicatorsDown": { "message": "குறிகாட்டிகள் இல்லை." },
+  "clickAnalyze": {
+    "message": "$NAME$ — பகுக்க கிளிக் செய்க",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — திருத்த கிளிக் செய்க",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ முன்னணி ஏற்றங்கள்" },
+  "losersTitle": { "message": "▼ முன்னணி சரிவுகள்" },
+  "noGainers": { "message": "இன்று ஏற்றம் இல்லை" },
+  "noLosers": { "message": "இன்று சரிவு இல்லை" },
+  "updatedAt": {
+    "message": "புதுப்பித்தது: $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "சந்தை தரவு ஏற்றவில்லை. புதுப்பிக்கவும்." },
+  "latestLabel": { "message": "சமீபத்தது" },
+  "loadingWord": { "message": "ஏற்றுகிறது..." },
+
+  "newsLoading": { "message": "சமீப செய்திகள் ஏற்றப்படுகின்றன..." },
+  "macroNewsTitle": { "message": "US மேக்ரோ செய்திகள்" },
+  "fetchingMacroNews": { "message": "US மேக்ரோ செய்திகள் எடுக்கப்படுகின்றன..." },
+  "noPortfolioNews": { "message": "இந்த போர்ட்ஃபோலியோவில் செய்திக்கு பங்குகள் இல்லை." },
+  "fetchingNews": { "message": "நிதி செய்திகள் எடுக்கப்படுகின்றன..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ செய்திகள்",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "போர்ட்ஃபோலியோவுக்கு சமீப செய்திகள் இல்லை." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "குறிப்பு" },
+  "promptOk": { "message": "சரி" },
+
+  "typeIndian": { "message": "இந்திய பங்கு" },
+  "typeIndex": { "message": "குறியீடு" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ பங்கு",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "பங்கு" },
+
+  "ratioCurrentPrice": { "message": "தற்போதைய விலை" },
+  "ratioDayRange": { "message": "நாள் வரம்பு" },
+  "ratio52W": { "message": "52W வரம்பு" },
+  "ratioVolume": { "message": "வர்த்தகம்" },
+  "ratioType": { "message": "வகை" },
+  "ratioExchange": { "message": "பரிமாற்றம்" },
+  "ratioMCap": { "message": "சந்தை மதிப்பு" },
+  "ratioPE": { "message": "பங்கு P/E" },
+  "ratioDiv": { "message": "ஈவு வருவாய்" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "டேப்பை இடது உருட்டு" },
+  "tapeScrollRight": { "message": "டேப்பை வலது உருட்டு" },
+  "chartNoData": { "message": "வரைபட தரவு இல்லை" },
+  "chartLoading": { "message": "வரைபடம் ஏற்றப்படுகிறது..." },
+  "ret1M": { "message": "1M வருமானம்" },
+  "ret6M": { "message": "6M வருமானம்" },
+  "ret1Y": { "message": "1Y வருமானம்" },
+  "ret3Y": { "message": "3Y வருமானம்" },
+  "ret5Y": { "message": "5Y வருமானம்" },
+  "ret10Y": { "message": "10Y வருமானம்" },
+  "retMax": { "message": "மொத்த வருமானம்" },
+  "metricLastPrice": { "message": "கடைசி விலை" },
+  "metricDivYield": { "message": "ஈவு வருவாய்" },
+  "metricPERatio": { "message": "P/E விகிதம்" },
+  "viewDetails": { "message": "விவரம் பார்" },
+  "modalSubtitleIndex": {
+    "message": "சந்தை குறியீடு • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "பங்கு" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "உலகளாவிய" },
+  "modalDetails": { "message": "விவரங்கள்" },
+  "tapeLoading": { "message": "ஸ்கிரீனர் கண்காணிப்பு ஏற்றப்படுகிறது..." },
+
+  "notifAboveTitle": { "message": "விலை எச்சரிக்கை! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ ₹$PRICE$ மேலே சென்றது (தற்போது: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "விலை எச்சரிக்கை! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ ₹$PRICE$ கீழே சென்றது (தற்போது: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "ஸ்கிரீனர் விலை எச்சரிக்கை" },
+  "notifGeneric": {
+    "message": "$TICKER$ இலக்கு $TARGET$ தாண்டியது (தற்போது: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "\"%s\" ஸ்கிரீனர் கண்காணிப்பில் சேர்" },
+  "ctxAddedTitle": { "message": "ஸ்கிரீனர் கண்காணிப்பு" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ கண்காணிப்பில் சேர்க்கப்பட்டது!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

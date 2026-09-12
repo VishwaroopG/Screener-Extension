@@ -1,0 +1,78 @@
+{
+  "manifest_version": 3,
+  "name": "Screener Pro – Live Watchlist & Ticker",
+  "version": "2.1.9",
+  "default_locale": "en",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "screener-pro@vishwaroopg.github.io",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    }
+  },
+  "icons": {
+    "16": "icon_16.png",
+    "48": "icon_48.png",
+    "128": "icon_128.png"
+  },
+  "description": "__MSG_appDescription__",
+  "permissions": [
+    "storage",
+    "alarms",
+    "notifications",
+    "contextMenus",
+    "tabs"
+  ],
+  "host_permissions": [
+    "*://*.screener.in/*",
+    "*://*.yahoo.com/*",
+    "*://*.finviz.com/*",
+    "*://api.worldbank.org/*",
+    "*://news.google.com/*",
+    "https://www.nseindia.com/*"
+  ],
+  "action": {
+    "default_title": "__MSG_actionTitle__"
+  },
+  "sidebar_action": {
+    "default_panel": "sidepanel.html",
+    "default_title": "__MSG_actionTitle__",
+    "default_icon": {
+      "16": "icon_16.png",
+      "48": "icon_48.png",
+      "128": "icon_128.png"
+    },
+    "open_at_install": false
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
+      },
+      "description": "__MSG_commandDesc__"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "ticker_tape.js"
+      ],
+      "css": [
+        "ticker_tape.css"
+      ]
+    }
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  }
+}

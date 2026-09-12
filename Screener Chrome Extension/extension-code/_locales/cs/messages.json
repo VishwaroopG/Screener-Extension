@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Živý seznam indických a globálních akcií, přetahovatelná portfolia a ticker pás. Podpora: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Otevřít seznam Screener" },
+  "commandDesc": { "message": "Otevřít postranní panel Screener" },
+
+  "speedTitle": {
+    "message": "Rychlost pásu: $SPEED$ (klikněte pro úpravu 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Rychlost pásu: 1.0x (klikněte pro úpravu 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Rychlost pásu" },
+  "speedDecrease": { "message": "Snížit o 0.1x" },
+  "speedIncrease": { "message": "Zvýšit o 0.1x" },
+  "speedCustom": { "message": "Vlastní:" },
+  "speedExample": { "message": "např. 2.3" },
+
+  "pauseTape": { "message": "Pozastavit ticker pás" },
+  "resumeTape": { "message": "Pokračovat v pásu" },
+  "hideTape": { "message": "Skrýt ticker pás" },
+  "showTape": { "message": "Zobrazit ticker pás" },
+  "domainDisableSite": { "message": "Vypnout na tomto webu" },
+  "domainDisable": {
+    "message": "Vypnout na $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Zapnout na $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Přepnout na světlý režim" },
+  "themeToDark": { "message": "Přepnout na tmavý režim" },
+  "aboutSupport": { "message": "O aplikaci a podpora" },
+
+  "tabDashboard": { "message": "Přehled" },
+  "tabMarkets": { "message": "Trhy" },
+  "tabNews": { "message": "Zprávy" },
+
+  "searchPlaceholder": { "message": "Hledat ticker k analýze nebo přidání..." },
+  "searchButton": { "message": "Hledat" },
+  "clocksLabel": { "message": "Hodiny světových trhů" },
+  "clockOpen": { "message": "● Otevřeno" },
+  "clockClosed": { "message": "● Zavřeno" },
+
+  "watchlistTitle": { "message": "Váš seznam" },
+  "liveBadge": { "message": "Živě" },
+  "watchlistEmpty": { "message": "Seznam je prázdný. Vyhledejte a přidejte ticker výše!" },
+  "colSymbol": { "message": "Symbol" },
+  "colTrend": { "message": "Trend 1R" },
+  "colPrice": { "message": "Cena" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Trž. kap." },
+  "colActions": { "message": "Akce" },
+  "sortByPrice": { "message": "Řadit podle ceny" },
+  "sortByMCap": { "message": "Řadit podle kapitalizace" },
+  "dragHint": { "message": "Přetáhněte pro změnu pořadí" },
+  "trendReturnTitle": { "message": "Výnos za zobrazené období" },
+  "setAlertTitle": { "message": "Vytvořit upozornění" },
+  "deleteTitle": { "message": "Smazat" },
+  "renameTitle": { "message": "Přejmenovat portfolio" },
+  "newTitle": { "message": "Nové portfolio" },
+  "exportTitle": { "message": "Export do Excel" },
+
+  "portfolioExists": { "message": "Portfolio s tímto názvem již existuje!" },
+  "renamePrompt": {
+    "message": "Přejmenovat portfolio \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Název nového portfolia" },
+
+  "verdictLabel": { "message": "Verdikt AI:" },
+  "verdictNoData": { "message": "Nedostatek dat pro verdikt." },
+  "verdictGem": { "message": "[Podhodnocená] Perla s vysoce efektivním výnosem kapitálu." },
+  "verdictExpensive": { "message": "[Drahá] Silný byznys, ale s drahou prémií." },
+  "verdictRisk": { "message": "[Vysoké riziko] Nadhocená při slabé efektivitě kapitálu." },
+  "verdictSolid": { "message": "[Solidní] Skvělé fundamenty za rozumnou cenu." },
+  "verdictAvg": { "message": "[Průměrná] Standardní fundamenty. Sledujte katalyzátory." },
+  "verdictIndex": { "message": "[Index] Klíčový benchmark trhu." },
+
+  "scrapingData": { "message": "Načítání dat..." },
+  "backButton": { "message": "← Zpět" },
+  "addToWatchlist": { "message": "+ Přidat do seznamu" },
+  "addedButton": { "message": "Přidáno!" },
+  "alreadyButton": { "message": "Již je v seznamu" },
+  "customizeScreener": { "message": "⚙ Přizpůsobit parametry na Screener.in" },
+  "peerTitle": { "message": "Srovnání s konkurencí" },
+  "annTitle": { "message": "Oznámení společnosti" },
+  "fetchFailed": { "message": "Data se nepodařilo načíst." },
+  "fetchError": { "message": "Chyba." },
+
+  "marketIndices": { "message": "Tržní indexy" },
+  "clickEditCard": {
+    "message": "Klikněte pro úpravu $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Přidat ticker" },
+  "addNewSlot": { "message": "Přidat index nebo akcii" },
+  "loadingPrice": { "message": "Načítání..." },
+  "editCardTitle": { "message": "Upravit tržní kartu" },
+  "displayNameLabel": { "message": "Zobrazovaný název:" },
+  "displayNamePh": { "message": "např. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Symbol (Yahoo/NSE):" },
+  "symbolPh": { "message": "např. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Odebrat" },
+  "cancelBtn": { "message": "Zrušit" },
+  "saveBtn": { "message": "Uložit" },
+  "saveCardBtn": { "message": "Uložit kartu" },
+  "needBoth": { "message": "Zadejte zobrazovaný název i symbol." },
+
+  "alertPrefix": { "message": "Vytvořit upozornění pro" },
+  "aboveLabel": { "message": "Upozornit při ceně nad (₹):" },
+  "abovePh": { "message": "např. 3000" },
+  "belowLabel": { "message": "Upozornit při ceně pod (₹):" },
+  "belowPh": { "message": "např. 2500" },
+
+  "aboutTagline": { "message": "Multi-tržní živý feed" },
+  "aboutDesc": { "message": "Seznam, ticker pás a ukazatele v reálném čase přes Screener.in a Yahoo Finance." },
+  "buyCoffee": { "message": "Pozvěte mě na kávu" },
+  "scanSupport": { "message": "Naskenujte pro podporu ☕" },
+  "closeBtn": { "message": "Zavřít" },
+  "qrAlt": { "message": "Naskenujte pro podporu přes Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Upravit indikátor" },
+  "macroTileOf": {
+    "message": "Dlaždice $N$ ze 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Indikátor:" },
+  "wbLink": { "message": "Zobrazit na Světové bance" },
+  "macroInflation": { "message": "Inflace (CPI)" },
+  "macroUnemployment": { "message": "Nezaměstnanost" },
+  "macroGdp": { "message": "Růst HDP" },
+  "macroGdppc": { "message": "HDP na hlavu" },
+  "macroGdptotal": { "message": "HDP celkem" },
+  "macroTrade": { "message": "Obchod (% HDP)" },
+  "macroReserves": { "message": "Devizové rezervy" },
+  "macroPopulation": { "message": "Populace" },
+
+  "overviewTitle": { "message": "Přehled trhu" },
+  "selectMarket": { "message": "Vyberte trh:" },
+  "refreshBtn": { "message": "↻ Obnovit" },
+  "refreshTitle": { "message": "Obnovit přehled" },
+  "indicatorsTitle": { "message": "EKONOMICKÉ UKAZATELE" },
+  "loadingMarkets": {
+    "message": "Načítání trhů $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Načítání ukazatelů..." },
+  "indicatorsDown": { "message": "Ukazatele nejsou k dispozici." },
+  "clickAnalyze": {
+    "message": "$NAME$ — klikněte pro analýzu",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — klikněte pro úpravu",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ TOP RŮSTY" },
+  "losersTitle": { "message": "▼ TOP POKLESY" },
+  "noGainers": { "message": "Dnes žádné růsty" },
+  "noLosers": { "message": "Dnes žádné poklesy" },
+  "updatedAt": {
+    "message": "Aktualizováno $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Načtení selhalo. Obnovte." },
+  "latestLabel": { "message": "Nejnovější" },
+  "loadingWord": { "message": "načítání..." },
+
+  "newsLoading": { "message": "Načítání nejnovějších zpráv..." },
+  "macroNewsTitle": { "message": "MAKRO ZPRÁVY USA" },
+  "fetchingMacroNews": { "message": "Načítání makro zpráv USA..." },
+  "noPortfolioNews": { "message": "V tomto portfoliu nejsou akcie pro zprávy." },
+  "fetchingNews": { "message": "Načítání finančních zpráv..." },
+  "tickerNewsTitle": {
+    "message": "ZPRÁVY $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Žádné čerstvé zprávy pro vaše portfolio." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Výzva" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Indická akcie" },
+  "typeIndex": { "message": "Index" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "Akcie $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Akcie" },
+
+  "ratioCurrentPrice": { "message": "Aktuální cena" },
+  "ratioDayRange": { "message": "Denní rozpětí" },
+  "ratio52W": { "message": "Rozpětí 52T" },
+  "ratioVolume": { "message": "Objem" },
+  "ratioType": { "message": "Typ" },
+  "ratioExchange": { "message": "Burza" },
+  "ratioMCap": { "message": "Tržní kap." },
+  "ratioPE": { "message": "P/E akcie" },
+  "ratioDiv": { "message": "Div. výnos" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Posunout pás doleva" },
+  "tapeScrollRight": { "message": "Posunout pás doprava" },
+  "chartNoData": { "message": "Žádná data grafu" },
+  "chartLoading": { "message": "Načítání grafu..." },
+  "ret1M": { "message": "Výnos 1M" },
+  "ret6M": { "message": "Výnos 6M" },
+  "ret1Y": { "message": "Výnos 1R" },
+  "ret3Y": { "message": "Výnos 3R" },
+  "ret5Y": { "message": "Výnos 5L" },
+  "ret10Y": { "message": "Výnos 10L" },
+  "retMax": { "message": "Celk. výnos" },
+  "metricLastPrice": { "message": "Posl. cena" },
+  "metricDivYield": { "message": "Div. výnos" },
+  "metricPERatio": { "message": "Poměr P/E" },
+  "viewDetails": { "message": "Zobrazit detaily" },
+  "modalSubtitleIndex": {
+    "message": "Tržní index • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Akcie" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Svět" },
+  "modalDetails": { "message": "Detaily" },
+  "tapeLoading": { "message": "Načítání seznamu Screener..." },
+
+  "notifAboveTitle": { "message": "Cenové upozornění! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ nad ₹$PRICE$ (aktuálně: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Cenové upozornění! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ pod ₹$PRICE$ (aktuálně: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Cenové upozornění Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ dosáhl vašeho cíle $TARGET$ (aktuálně: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Přidat „%s” do seznamu Screener" },
+  "ctxAddedTitle": { "message": "Seznam Screener" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ přidán do vašeho seznamu!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

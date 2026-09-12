@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "തത്സമയ ഇന്ത്യൻ & ആഗോള സ്റ്റോക്ക് വാച്ച്‌ലിസ്റ്റ്, വലിച്ചിടാവുന്ന പോർട്ട്‌ഫോളിയോകൾ, ടിക്കർ ടേപ്പ്. പിന്തുണ: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "സ്ക്രീനർ വാച്ച്‌ലിസ്റ്റ് തുറക്കുക" },
+  "commandDesc": { "message": "സ്ക്രീനർ സൈഡ് പാനൽ തുറക്കുക" },
+
+  "speedTitle": {
+    "message": "ടേപ്പ് വേഗത: $SPEED$ (0.5x – 3.0x മാറ്റാൻ ക്ലിക്ക് ചെയ്യുക)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "ടേപ്പ് വേഗത: 1.0x (0.5x – 3.0x മാറ്റാൻ ക്ലിക്ക് ചെയ്യുക)" },
+  "speedLabel": { "message": "ടേപ്പ് വേഗത" },
+  "speedDecrease": { "message": "0.1x കുറയ്ക്കുക" },
+  "speedIncrease": { "message": "0.1x കൂട്ടുക" },
+  "speedCustom": { "message": "കസ്റ്റം:" },
+  "speedExample": { "message": "ഉദാ. 2.3" },
+
+  "pauseTape": { "message": "ടിക്കർ ടേപ്പ് നിർത്തുക" },
+  "resumeTape": { "message": "ടിക്കർ ടേപ്പ് തുടരുക" },
+  "hideTape": { "message": "ടിക്കർ ടേപ്പ് മറയ്ക്കുക" },
+  "showTape": { "message": "ടിക്കർ ടേപ്പ് കാണിക്കുക" },
+  "domainDisableSite": { "message": "ഈ സൈറ്റിൽ ഓഫാക്കുക" },
+  "domainDisable": {
+    "message": "$DOMAIN$-ൽ ഓഫാക്കുക",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "$DOMAIN$-ൽ ഓണാക്കുക",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "ലൈറ്റ് മോഡിലേക്ക് മാറുക" },
+  "themeToDark": { "message": "ഡാർക്ക് മോഡിലേക്ക് മാറുക" },
+  "aboutSupport": { "message": "വിവരവും പിന്തുണയും" },
+
+  "tabDashboard": { "message": "ഡാഷ്‌ബോർഡ്" },
+  "tabMarkets": { "message": "വിപണികൾ" },
+  "tabNews": { "message": "വാർത്തകൾ" },
+
+  "searchPlaceholder": { "message": "വിശകലനത്തിനോ ചേർക്കാനോ ടിക്കർ തேடുക..." },
+  "searchButton": { "message": "തேடുക" },
+  "clocksLabel": { "message": "ലോക വിപണി ക്ലോക്കുകൾ" },
+  "clockOpen": { "message": "● തുറന്നിരിക്കുന്നു" },
+  "clockClosed": { "message": "● അടച്ചിരിക്കുന്നു" },
+
+  "watchlistTitle": { "message": "നിങ്ങളുടെ വാച്ച്‌ലിസ്റ്റ്" },
+  "liveBadge": { "message": "ലൈവ്" },
+  "watchlistEmpty": { "message": "വാച്ച്‌ലിസ്റ്റ് ശൂന്യമാണ്. മുകളിൽ ടിക്കർ തேടി ചേർക്കൂ!" },
+  "colSymbol": { "message": "സിംബൽ" },
+  "colTrend": { "message": "1Y ട്രെൻഡ്" },
+  "colPrice": { "message": "വില" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "M. ക്യാപ്പ്" },
+  "colActions": { "message": "പ്രവർത്തനങ്ങൾ" },
+  "sortByPrice": { "message": "വിലയനുസരിച്ച് അടുക്കുക" },
+  "sortByMCap": { "message": "മാർക്കറ്റ് ക്യാപ് അനുസരിച്ച് അടുക്കുക" },
+  "dragHint": { "message": "ക്രമം മാറ്റാൻ വലിച്ചിടുക" },
+  "trendReturnTitle": { "message": "കാണിച്ച കാലയളവിലെ നേട്ടം" },
+  "setAlertTitle": { "message": "അലേർട്ട് സജ്ജമാക്കുക" },
+  "deleteTitle": { "message": "നീക്കംചെയ്യുക" },
+  "renameTitle": { "message": "പോർട്ട്‌ഫോളിയോ പുനർനാമകരണം" },
+  "newTitle": { "message": "പുതിയ പോർട്ട്‌ഫോളിയോ" },
+  "exportTitle": { "message": "Excel-ലേക്ക് കയറ്റുമതി ചെയ്യുക" },
+
+  "portfolioExists": { "message": "ഈ പേരിൽ പോർട്ട്‌ഫോളിയോ നിലവിലുണ്ട്!" },
+  "renamePrompt": {
+    "message": "പോർട്ട്‌ഫോളിയോ \"$NAME$\" പുനർനാമകരണം",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "പുതിയ പോർട്ട്‌ഫോളിയോ പേര്" },
+
+  "verdictLabel": { "message": "AI വിധി:" },
+  "verdictNoData": { "message": "വിധിക്ക് മതിയായ ഡാറ്റയില്ല." },
+  "verdictGem": { "message": "[കുറഞ്ഞ മதிப்பு] മൂലധനത്തിൽ മികച്ച വരുമാനം നൽകുന്ന രത്നം." },
+  "verdictExpensive": { "message": "[വിലകൂടിയത്] ശക്തമായ ബിസിനസ്, പക്ഷേ ഉയർന്ന പ്രീമിയത്തിൽ." },
+  "verdictRisk": { "message": "[ഉയർന്ന അപകടം] മോശം മൂലധനക്ഷമതയോടെ അമിതമൂല്യം." },
+  "verdictSolid": { "message": "[ഉറച്ചത്] ന്യായവിലയിൽ മികച്ച അടിസ്ഥാനങ്ങൾ." },
+  "verdictAvg": { "message": "[ശരാശരി] സാധാരണ അടിസ്ഥാനങ്ങൾ. വളർച്ചാ സൂചനകൾ ശ്രദ്ധിക്കുക." },
+  "verdictIndex": { "message": "[വിപണി സൂചിക] പ്രധാന വിപണി മാനദണ്ഡം." },
+
+  "scrapingData": { "message": "ഡാറ്റ എടുക്കുന്നു..." },
+  "backButton": { "message": "← തിരികെ" },
+  "addToWatchlist": { "message": "+ വാച്ച്‌ലിസ്റ്റിൽ ചേർക്കുക" },
+  "addedButton": { "message": "ചേർത്തു!" },
+  "alreadyButton": { "message": "ഇതിനകം വാച്ച്‌ലിസ്റ്റിലുണ്ട്" },
+  "customizeScreener": { "message": "⚙ Screener.in-ൽ പാരാമീറ്ററുകൾ ഇഷ്ടാനുസൃതമാക്കുക" },
+  "peerTitle": { "message": "സമാന താരതമ്യം" },
+  "annTitle": { "message": "കമ്പനി അറിയിപ്പുകൾ" },
+  "fetchFailed": { "message": "ഡാറ്റ ലഭിച്ചില്ല." },
+  "fetchError": { "message": "പിശക്." },
+
+  "marketIndices": { "message": "വിപണി സൂചികകൾ" },
+  "clickEditCard": {
+    "message": "$NAME$ തിരുത്താൻ ക്ലിക്ക് ചെയ്യുക",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "ടിക്കർ ചേർക്കുക" },
+  "addNewSlot": { "message": "പുതിയ സൂചികയോ സ്റ്റോക്കോ ചേർക്കുക" },
+  "loadingPrice": { "message": "ലോഡ് ചെയ്യുന്നു..." },
+  "editCardTitle": { "message": "വിപണി കാർഡ് തിരുത്തുക" },
+  "displayNameLabel": { "message": "പ്രദർശന നാമം:" },
+  "displayNamePh": { "message": "ഉദാ. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "സിംബൽ (Yahoo/NSE):" },
+  "symbolPh": { "message": "ഉദാ. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "നീക്കംചെയ്യുക" },
+  "cancelBtn": { "message": "റദ്ദാക്കുക" },
+  "saveBtn": { "message": "സേവ് ചെയ്യുക" },
+  "saveCardBtn": { "message": "കാർഡ് സേവ് ചെയ്യുക" },
+  "needBoth": { "message": "പ്രദർശന നാമവും സിംബലും നൽകുക." },
+
+  "alertPrefix": { "message": "അലേർട്ട് സജ്ജമാക്കുക:" },
+  "aboveLabel": { "message": "വില ഉയർന്നാൽ അലേർട്ട് (₹):" },
+  "abovePh": { "message": "ഉദാ. 3000" },
+  "belowLabel": { "message": "വില താഴ்ந்தാൽ അലേർട്ട് (₹):" },
+  "belowPh": { "message": "ഉദാ. 2500" },
+
+  "aboutTagline": { "message": "മൾട്ടി-വിപണി ലൈവ് ഫീഡ്" },
+  "aboutDesc": { "message": "Screener.in & Yahoo Finance വഴി തത്സമയ വാച്ച്‌ലിസ്റ്റ്, ടിക്കർ ടേപ്പ്, അനുപാതങ്ങൾ." },
+  "buyCoffee": { "message": "എനിക്ക് കാപ്പി വാങ്ങித் തരൂ" },
+  "scanSupport": { "message": "പിന്തുണയ്ക്ക് സ്കാൻ ചെയ്യൂ ☕" },
+  "closeBtn": { "message": "അടയ്ക്കുക" },
+  "qrAlt": { "message": "Buy Me a Coffee പിന്തുണയ്ക്ക് സ്കാൻ ചെയ്യൂ" },
+
+  "macroTitle": { "message": "സൂചകം തിരുത്തുക" },
+  "macroTileOf": {
+    "message": "4-ൽ ടൈൽ $N$",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "സൂചകം:" },
+  "wbLink": { "message": "ലോകബാങ്കിൽ കാണുക" },
+  "macroInflation": { "message": "പണപ്പെരുപ്പം (CPI)" },
+  "macroUnemployment": { "message": "തൊഴിലില്ലായ്മ" },
+  "macroGdp": { "message": "GDP വളർച്ച" },
+  "macroGdppc": { "message": "ആളോഹരി GDP" },
+  "macroGdptotal": { "message": "ആകെ GDP" },
+  "macroTrade": { "message": "വ്യാപാരം (GDP-യുടെ %)" },
+  "macroReserves": { "message": "വിദേശനാണ്യ കരുതൽ" },
+  "macroPopulation": { "message": "ജനസംഖ്യ" },
+
+  "overviewTitle": { "message": "വിപണി അവലോകനം" },
+  "selectMarket": { "message": "വിപണി തിരഞ്ഞെടുക്കുക:" },
+  "refreshBtn": { "message": "↻ పునഃప్రారంభం" },
+  "refreshTitle": { "message": "അവലോകനം పునഃప్రారంభിക്കുക" },
+  "indicatorsTitle": { "message": "സാമ്പത്തിക സൂചകങ്ങൾ" },
+  "loadingMarkets": {
+    "message": "$ECO$ വിപണികൾ ലോഡ് ചെയ്യുന്നു...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "സൂചകങ്ങൾ ലോഡ് ചെയ്യുന്നു..." },
+  "indicatorsDown": { "message": "സൂചകങ്ങൾ ലഭ്യമല്ല." },
+  "clickAnalyze": {
+    "message": "$NAME$ — വിശകലനത്തിന് ക്ലിക്ക് ചെയ്യുക",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — തിരുത്താൻ ക്ലിക്ക് ചെയ്യുക",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ മുൻനിര നേട്ടങ്ങൾ" },
+  "losersTitle": { "message": "▼ മുൻനിര നഷ്ടങ്ങൾ" },
+  "noGainers": { "message": "ഇന്ന് നേട്ടമില്ല" },
+  "noLosers": { "message": "ഇന്ന് നഷ്ടമില്ല" },
+  "updatedAt": {
+    "message": "പുതുക്കിയത്: $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "വിപണി ഡാറ്റ ലോഡ് ആയില്ല. പുതുക്കുക." },
+  "latestLabel": { "message": "പുതിയത്" },
+  "loadingWord": { "message": "ലോഡ് ചെയ്യുന്നു..." },
+
+  "newsLoading": { "message": "പുതിയ വാർത്തകൾ ലോഡ് ചെയ്യുന്നു..." },
+  "macroNewsTitle": { "message": "US മാക്രോ വാർത്തകൾ" },
+  "fetchingMacroNews": { "message": "US മാക്രോ വാർത്തകൾ എടുക്കുന്നു..." },
+  "noPortfolioNews": { "message": "ഈ പോർട്ട്‌ഫോളിയോയിൽ വാർത്തയ്ക്ക് സ്റ്റോക്കുകളില്ല." },
+  "fetchingNews": { "message": "പുതിയ സാമ്പത്തിക വാർത്തകൾ എടുക്കുന്നു..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ വാർത്തകൾ",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "പോർട്ട്‌ഫോളിയോയ്ക്ക് പുതിയ വാർത്തകളില്ല." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "നിർദ്ദേശം" },
+  "promptOk": { "message": "ശരി" },
+
+  "typeIndian": { "message": "ഇന്ത്യൻ സ്റ്റോക്ക്" },
+  "typeIndex": { "message": "സൂചിക" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ സ്റ്റോക്ക്",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "സ്റ്റോക്ക്" },
+
+  "ratioCurrentPrice": { "message": "നിലവിലെ വില" },
+  "ratioDayRange": { "message": "ദിവസ പരിധി" },
+  "ratio52W": { "message": "52W പരിധി" },
+  "ratioVolume": { "message": "വോളിയം" },
+  "ratioType": { "message": "തരം" },
+  "ratioExchange": { "message": "എക്സ്ചേഞ്ച്" },
+  "ratioMCap": { "message": "മാർക്കറ്റ് ക്യാപ്പ്" },
+  "ratioPE": { "message": "സ്റ്റോക്ക് P/E" },
+  "ratioDiv": { "message": "ഡിവിഡന്റ് യീൽഡ്" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "ടേപ്പ് ഇടത്തേക്ക് ഉരുട്ടുക" },
+  "tapeScrollRight": { "message": "ടേപ്പ് വലത്തേക്ക് ഉരുട്ടുക" },
+  "chartNoData": { "message": "ചാർട്ട് ഡാറ്റയില്ല" },
+  "chartLoading": { "message": "ചാർട്ട് ലോഡ് ചെയ്യുന്നു..." },
+  "ret1M": { "message": "1M നേട്ടം" },
+  "ret6M": { "message": "6M നേട്ടം" },
+  "ret1Y": { "message": "1Y നേട്ടം" },
+  "ret3Y": { "message": "3Y നേട്ടം" },
+  "ret5Y": { "message": "5Y നേട്ടം" },
+  "ret10Y": { "message": "10Y നേട്ടം" },
+  "retMax": { "message": "ആകെ നേട്ടം" },
+  "metricLastPrice": { "message": "അവസാന വില" },
+  "metricDivYield": { "message": "ഡിവ് യീൽഡ്" },
+  "metricPERatio": { "message": "P/E അനുപാതം" },
+  "viewDetails": { "message": "വിശദാംശങ്ങൾ കാണുക" },
+  "modalSubtitleIndex": {
+    "message": "വിപണി സൂചിക • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "ഇക്വിറ്റി" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "ആഗോളം" },
+  "modalDetails": { "message": "വിശദാംശങ്ങൾ" },
+  "tapeLoading": { "message": "സ്ക്രീനർ വാച്ച്‌ലിസ്റ്റ് ലോഡ് ചെയ്യുന്നു..." },
+
+  "notifAboveTitle": { "message": "വില മുന്നറിയിപ്പ്! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ ₹$PRICE$-ന് മുകളിൽ പോയി (നിലവിൽ: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "വില മുന്നറിയിപ്പ്! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ ₹$PRICE$-ന് താഴെ പോയി (നിലവിൽ: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "സ്ക്രീനർ വില മുന്നറിയിപ്പ്" },
+  "notifGeneric": {
+    "message": "$TICKER$ നിങ്ങളുടെ ലക്ഷ്യം $TARGET$ കடந்தது (നിലവിൽ: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "\"%s\" സ്ക്രീനർ വാച്ച്‌ലിസ്റ്റിൽ ചേർക്കുക" },
+  "ctxAddedTitle": { "message": "സ്ക്രീനർ വാച്ച്‌ലിസ്റ്റ്" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ വാച്ച്‌ലിസ്റ്റിൽ ചേർത്തു!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

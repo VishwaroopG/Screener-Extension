@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Liveovervåking av indiske og globale aksjer, porteføljer som kan dras, og tickerbånd. Støtte: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Åpne Screener-overvåking" },
+  "commandDesc": { "message": "Åpne Screener-sidepanelet" },
+
+  "speedTitle": {
+    "message": "Båndhastighet: $SPEED$ (klikk for å justere 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Båndhastighet: 1.0x (klikk for å justere 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Båndhastighet" },
+  "speedDecrease": { "message": "Reduser med 0.1x" },
+  "speedIncrease": { "message": "Øk med 0.1x" },
+  "speedCustom": { "message": "Egendef.:" },
+  "speedExample": { "message": "f.eks. 2.3" },
+
+  "pauseTape": { "message": "Sett tickerbånd på pause" },
+  "resumeTape": { "message": "Gjenoppta tickerbånd" },
+  "hideTape": { "message": "Skjul tickerbånd" },
+  "showTape": { "message": "Vis tickerbånd" },
+  "domainDisableSite": { "message": "Deaktiver på dette nettstedet" },
+  "domainDisable": {
+    "message": "Deaktiver på $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Aktiver på $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Bytt til lys modus" },
+  "themeToDark": { "message": "Bytt til mørk modus" },
+  "aboutSupport": { "message": "Om & støtte" },
+
+  "tabDashboard": { "message": "Dashbord" },
+  "tabMarkets": { "message": "Markeder" },
+  "tabNews": { "message": "Nyheter" },
+
+  "searchPlaceholder": { "message": "Søk ticker for analyse eller tillegg..." },
+  "searchButton": { "message": "Søk" },
+  "clocksLabel": { "message": "Verdensmarkedsklokker" },
+  "clockOpen": { "message": "● Åpen" },
+  "clockClosed": { "message": "● Stengt" },
+
+  "watchlistTitle": { "message": "Din overvåking" },
+  "liveBadge": { "message": "Live" },
+  "watchlistEmpty": { "message": "Overvåkingen er tom. Søk og legg til en ticker ovenfor!" },
+  "colSymbol": { "message": "Symbol" },
+  "colTrend": { "message": "1Å-trend" },
+  "colPrice": { "message": "Kurs" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Markedsverdi" },
+  "colActions": { "message": "Handlinger" },
+  "sortByPrice": { "message": "Sorter etter kurs" },
+  "sortByMCap": { "message": "Sorter etter markedsverdi" },
+  "dragHint": { "message": "Dra for å endre rekkefølge" },
+  "trendReturnTitle": { "message": "Avkastning i vist periode" },
+  "setAlertTitle": { "message": "Opprett alarm" },
+  "deleteTitle": { "message": "Slett" },
+  "renameTitle": { "message": "Gi portefølje nytt navn" },
+  "newTitle": { "message": "Ny portefølje" },
+  "exportTitle": { "message": "Eksporter til Excel" },
+
+  "portfolioExists": { "message": "Det finnes allerede en portefølje med dette navnet!" },
+  "renamePrompt": {
+    "message": "Gi porteføljen \"$NAME$\" nytt navn",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Navn på ny portefølje" },
+
+  "verdictLabel": { "message": "AI-dom:" },
+  "verdictNoData": { "message": "Ikke nok data til en dom." },
+  "verdictGem": { "message": "[Undervurdert] Perle med svært effektiv kapitalavkastning." },
+  "verdictExpensive": { "message": "[Dyr] Sterkt selskap, men med dyr premie." },
+  "verdictRisk": { "message": "[Høy risiko] Overvurdert med svak kapitaleffektivitet." },
+  "verdictSolid": { "message": "[Solid] Glimrende fundamentalia til rimelig pris." },
+  "verdictAvg": { "message": "[Middels] Standard fundamentalia. Følg med på katalysatorer." },
+  "verdictIndex": { "message": "[Indeks] Markedets nøkkelreferanse." },
+
+  "scrapingData": { "message": "Henter data..." },
+  "backButton": { "message": "← Tilbake" },
+  "addToWatchlist": { "message": "+ Legg til i overvåking" },
+  "addedButton": { "message": "Lagt til!" },
+  "alreadyButton": { "message": "Er allerede i overvåkingen" },
+  "customizeScreener": { "message": "⚙ Tilpass parametere på Screener.in" },
+  "peerTitle": { "message": "Sammenligning med konkurrenter" },
+  "annTitle": { "message": "Selskapsmeldinger" },
+  "fetchFailed": { "message": "Kunne ikke hente data." },
+  "fetchError": { "message": "Feil." },
+
+  "marketIndices": { "message": "Markedsindekser" },
+  "clickEditCard": {
+    "message": "Klikk for å redigere $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Legg til ticker" },
+  "addNewSlot": { "message": "Legg til indeks eller aksje" },
+  "loadingPrice": { "message": "Laster..." },
+  "editCardTitle": { "message": "Rediger markedskort" },
+  "displayNameLabel": { "message": "Vist navn:" },
+  "displayNamePh": { "message": "f.eks. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Symbol (Yahoo/NSE):" },
+  "symbolPh": { "message": "f.eks. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Fjern" },
+  "cancelBtn": { "message": "Avbryt" },
+  "saveBtn": { "message": "Lagre" },
+  "saveCardBtn": { "message": "Lagre kort" },
+  "needBoth": { "message": "Oppgi vist navn og symbol." },
+
+  "alertPrefix": { "message": "Opprett alarm for" },
+  "aboveLabel": { "message": "Alarm ved kurs over (₹):" },
+  "abovePh": { "message": "f.eks. 3000" },
+  "belowLabel": { "message": "Alarm ved kurs under (₹):" },
+  "belowPh": { "message": "f.eks. 2500" },
+
+  "aboutTagline": { "message": "Livefeed for flere markeder" },
+  "aboutDesc": { "message": "Overvåking, tickerbånd og nøkkeltall i sanntid via Screener.in & Yahoo Finance." },
+  "buyCoffee": { "message": "Spander en kaffe på meg" },
+  "scanSupport": { "message": "Skann for å støtte ☕" },
+  "closeBtn": { "message": "Lukk" },
+  "qrAlt": { "message": "Skann for å støtte via Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Rediger indikator" },
+  "macroTileOf": {
+    "message": "Felt $N$ av 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Indikator:" },
+  "wbLink": { "message": "Se på Verdensbanken" },
+  "macroInflation": { "message": "Inflasjon (KPI)" },
+  "macroUnemployment": { "message": "Arbeidsledighet" },
+  "macroGdp": { "message": "BNP-vekst" },
+  "macroGdppc": { "message": "BNP per innbygger" },
+  "macroGdptotal": { "message": "BNP totalt" },
+  "macroTrade": { "message": "Handel (% av BNP)" },
+  "macroReserves": { "message": "Valutareserver" },
+  "macroPopulation": { "message": "Befolkning" },
+
+  "overviewTitle": { "message": "Markedsoversikt" },
+  "selectMarket": { "message": "Velg marked:" },
+  "refreshBtn": { "message": "↻ Oppdater" },
+  "refreshTitle": { "message": "Oppdater oversikt" },
+  "indicatorsTitle": { "message": "ØKONOMISKE INDIKATORER" },
+  "loadingMarkets": {
+    "message": "Laster $ECO$-markeder...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Laster indikatorer..." },
+  "indicatorsDown": { "message": "Indikatorer ikke tilgjengelige." },
+  "clickAnalyze": {
+    "message": "$NAME$ — klikk for å analysere",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — klikk for å redigere",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ TOPPVINNERE" },
+  "losersTitle": { "message": "▼ TOPPTAPERE" },
+  "noGainers": { "message": "Ingen vinnere i dag" },
+  "noLosers": { "message": "Ingen tapere i dag" },
+  "updatedAt": {
+    "message": "Oppdatert $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Lasting mislyktes. Oppdater." },
+  "latestLabel": { "message": "Nyeste" },
+  "loadingWord": { "message": "laster..." },
+
+  "newsLoading": { "message": "Laster siste nyheter..." },
+  "macroNewsTitle": { "message": "USA MAKRONYHETER" },
+  "fetchingMacroNews": { "message": "Henter USA-makronyheter..." },
+  "noPortfolioNews": { "message": "Ingen aksjer i denne porteføljen for nyheter." },
+  "fetchingNews": { "message": "Henter finansnyheter..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$-NYHETER",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Ingen ferske nyheter for porteføljen din." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Spørsmål" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Indisk aksje" },
+  "typeIndex": { "message": "Indeks" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$-aksje",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Aksje" },
+
+  "ratioCurrentPrice": { "message": "Gjeldende kurs" },
+  "ratioDayRange": { "message": "Dagsintervall" },
+  "ratio52W": { "message": "52U-intervall" },
+  "ratioVolume": { "message": "Volum" },
+  "ratioType": { "message": "Type" },
+  "ratioExchange": { "message": "Børs" },
+  "ratioMCap": { "message": "Markedsverdi" },
+  "ratioPE": { "message": "P/E-aksje" },
+  "ratioDiv": { "message": "Utbytteavkastning" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Rull bånd til venstre" },
+  "tapeScrollRight": { "message": "Rull bånd til høyre" },
+  "chartNoData": { "message": "Ingen grafdata" },
+  "chartLoading": { "message": "Laster graf..." },
+  "ret1M": { "message": "Avk. 1M" },
+  "ret6M": { "message": "Avk. 6M" },
+  "ret1Y": { "message": "Avk. 1Å" },
+  "ret3Y": { "message": "Avk. 3Å" },
+  "ret5Y": { "message": "Avk. 5Å" },
+  "ret10Y": { "message": "Avk. 10Å" },
+  "retMax": { "message": "Totalavk." },
+  "metricLastPrice": { "message": "Siste kurs" },
+  "metricDivYield": { "message": "Utbytteavk." },
+  "metricPERatio": { "message": "P/E-forhold" },
+  "viewDetails": { "message": "Se detaljer" },
+  "modalSubtitleIndex": {
+    "message": "Markedsindeks • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Aksjer" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Global" },
+  "modalDetails": { "message": "Detaljer" },
+  "tapeLoading": { "message": "Laster Screener-overvåking..." },
+
+  "notifAboveTitle": { "message": "Kursalarm! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ over ₹$PRICE$ (nå: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Kursalarm! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ under ₹$PRICE$ (nå: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Kursalarm Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ nådde målet ditt $TARGET$ (nå: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Legg til \"%s\" i Screener-overvåking" },
+  "ctxAddedTitle": { "message": "Screener-overvåking" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ lagt til i overvåkingen din!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

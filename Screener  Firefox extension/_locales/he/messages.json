@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "רשימת מעקב חיה למניות הודו והעולם, תיקים נגררים וסרט נע. תמיכה: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "פתח רשימת Screener" },
+  "commandDesc": { "message": "פתח את פאנל הצד של Screener" },
+
+  "speedTitle": {
+    "message": "מהירות הסרט: $SPEED$ (לחץ לכוונון 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "מהירות הסרט: 1.0x (לחץ לכוונון 0.5x – 3.0x)" },
+  "speedLabel": { "message": "מהירות הסרט" },
+  "speedDecrease": { "message": "הפחת 0.1x" },
+  "speedIncrease": { "message": "הגבר 0.1x" },
+  "speedCustom": { "message": "מותאם:" },
+  "speedExample": { "message": "למשל 2.3" },
+
+  "pauseTape": { "message": "השהה סרט מחירים" },
+  "resumeTape": { "message": "המשך סרט מחירים" },
+  "hideTape": { "message": "הסתר סרט מחירים" },
+  "showTape": { "message": "הצג סרט מחירים" },
+  "domainDisableSite": { "message": "כבה באתר זה" },
+  "domainDisable": {
+    "message": "כבה ב-$DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "הפעל ב-$DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "עבור למצב בהיר" },
+  "themeToDark": { "message": "עבור למצב כהה" },
+  "aboutSupport": { "message": "אודות ותמיכה" },
+
+  "tabDashboard": { "message": "לוח מחוונים" },
+  "tabMarkets": { "message": "שווקים" },
+  "tabNews": { "message": "חדשות" },
+
+  "searchPlaceholder": { "message": "חפש טיקר לניתוח או הוספה..." },
+  "searchButton": { "message": "חפש" },
+  "clocksLabel": { "message": "שעוני שווקי העולם" },
+  "clockOpen": { "message": "● פתוח" },
+  "clockClosed": { "message": "● סגור" },
+
+  "watchlistTitle": { "message": "רשימת המעקב שלך" },
+  "liveBadge": { "message": "חי" },
+  "watchlistEmpty": { "message": "הרשימה ריקה. חפש והוסף טיקר למעלה!" },
+  "colSymbol": { "message": "סימול" },
+  "colTrend": { "message": "מגמת 1Y" },
+  "colPrice": { "message": "מחיר" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "שווי שוק" },
+  "colActions": { "message": "פעולות" },
+  "sortByPrice": { "message": "מיין לפי מחיר" },
+  "sortByMCap": { "message": "מיין לפי שווי שוק" },
+  "dragHint": { "message": "גרור לסידור מחדש" },
+  "trendReturnTitle": { "message": "תשואה בתקופה המוצגת" },
+  "setAlertTitle": { "message": "צור התראה" },
+  "deleteTitle": { "message": "מחק" },
+  "renameTitle": { "message": "שנה שם תיק" },
+  "newTitle": { "message": "תיק חדש" },
+  "exportTitle": { "message": "ייצא ל-Excel" },
+
+  "portfolioExists": { "message": "כבר קיים תיק בשם זה!" },
+  "renamePrompt": {
+    "message": "שנה שם תיק \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "שם התיק החדש" },
+
+  "verdictLabel": { "message": "פסק AI:" },
+  "verdictNoData": { "message": "אין מספיק נתונים לפסק." },
+  "verdictGem": { "message": "[מוערכת בחסר] פנינה עם תשואת הון יעילה ביותר." },
+  "verdictExpensive": { "message": "[יקרה] עסק חזק, אבל בפרמיה גבוהה." },
+  "verdictRisk": { "message": "[סיכון גבוה] מוערכת ביתר עם יעילות הון ירודה." },
+  "verdictSolid": { "message": "[איתנה] יסודות מעולים במחיר סביר." },
+  "verdictAvg": { "message": "[ממוצעת] יסודות רגילים. עקוב אחר זרזים." },
+  "verdictIndex": { "message": "[מדד] מדד הייחוס המרכזי." },
+
+  "scrapingData": { "message": "מביא נתונים..." },
+  "backButton": { "message": "← חזרה" },
+  "addToWatchlist": { "message": "+ הוסף לרשימה" },
+  "addedButton": { "message": "נוסף!" },
+  "alreadyButton": { "message": "כבר ברשימה" },
+  "customizeScreener": { "message": "⚙ התאם פרמטרים ב-Screener.in" },
+  "peerTitle": { "message": "השוואת עמיתות" },
+  "annTitle": { "message": "הודעות החברה" },
+  "fetchFailed": { "message": "לא ניתן להביא נתונים." },
+  "fetchError": { "message": "שגיאה." },
+
+  "marketIndices": { "message": "מדדי שוק" },
+  "clickEditCard": {
+    "message": "לחץ לעריכת $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "הוסף טיקר" },
+  "addNewSlot": { "message": "הוסף מדד או מניה" },
+  "loadingPrice": { "message": "טוען..." },
+  "editCardTitle": { "message": "ערוך כרטיס שוק" },
+  "displayNameLabel": { "message": "שם תצוגה:" },
+  "displayNamePh": { "message": "למשל NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "סימול (Yahoo/NSE):" },
+  "symbolPh": { "message": "למשל ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "הסר" },
+  "cancelBtn": { "message": "בטל" },
+  "saveBtn": { "message": "שמור" },
+  "saveCardBtn": { "message": "שמור כרטיס" },
+  "needBoth": { "message": "הזן שם תצוגה וסימול." },
+
+  "alertPrefix": { "message": "צור התראה עבור" },
+  "aboveLabel": { "message": "התראה אם המחיר מעל (₹):" },
+  "abovePh": { "message": "למשל 3000" },
+  "belowLabel": { "message": "התראה אם המחיר מתחת (₹):" },
+  "belowPh": { "message": "למשל 2500" },
+
+  "aboutTagline": { "message": "פיד חי רב-שווקי" },
+  "aboutDesc": { "message": "רשימה, סרט ויחסים בזמן אמת דרך Screener.in ו-Yahoo Finance." },
+  "buyCoffee": { "message": "קנה לי קפה" },
+  "scanSupport": { "message": "סרוק לתמיכה ☕" },
+  "closeBtn": { "message": "סגור" },
+  "qrAlt": { "message": "סרוק לתמיכה דרך Buy Me a Coffee" },
+
+  "macroTitle": { "message": "ערוך מדד" },
+  "macroTileOf": {
+    "message": "אריח $N$ מתוך 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "מדד:" },
+  "wbLink": { "message": "צפה בבנק העולמי" },
+  "macroInflation": { "message": "אינפלציה (CPI)" },
+  "macroUnemployment": { "message": "אבטלה" },
+  "macroGdp": { "message": "צמיחת תמ״ג" },
+  "macroGdppc": { "message": "תמ״ג לנפש" },
+  "macroGdptotal": { "message": "תמ״ג כולל" },
+  "macroTrade": { "message": "סחר (% מהתמ״ג)" },
+  "macroReserves": { "message": "עתודות מט״ח" },
+  "macroPopulation": { "message": "אוכלוסייה" },
+
+  "overviewTitle": { "message": "סקירת שוק" },
+  "selectMarket": { "message": "בחר שוק:" },
+  "refreshBtn": { "message": "↻ רענן" },
+  "refreshTitle": { "message": "רענן סקירה" },
+  "indicatorsTitle": { "message": "מדדים כלכליים" },
+  "loadingMarkets": {
+    "message": "טוען שווקי $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "טוען מדדים..." },
+  "indicatorsDown": { "message": "מדדים אינם זמינים." },
+  "clickAnalyze": {
+    "message": "$NAME$ — לחץ לניתוח",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — לחץ לעריכה",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ העולות המובילות" },
+  "losersTitle": { "message": "▼ היורדות המובילות" },
+  "noGainers": { "message": "אין עולות היום" },
+  "noLosers": { "message": "אין יורדות היום" },
+  "updatedAt": {
+    "message": "עודכן $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "הטעינה נכשלה. רענן." },
+  "latestLabel": { "message": "עדכני" },
+  "loadingWord": { "message": "טוען..." },
+
+  "newsLoading": { "message": "טוען חדשות אחרונות..." },
+  "macroNewsTitle": { "message": "חדשות מאקרו ארה״ב" },
+  "fetchingMacroNews": { "message": "מביא חדשות מאקרו ארה״ב..." },
+  "noPortfolioNews": { "message": "אין מניות בתיק זה לחדשות." },
+  "fetchingNews": { "message": "מביא חדשות פיננסיות..." },
+  "tickerNewsTitle": {
+    "message": "חדשות $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "אין חדשות עדכניות לתיק שלך." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "הנחיה" },
+  "promptOk": { "message": "אישור" },
+
+  "typeIndian": { "message": "מניה הודית" },
+  "typeIndex": { "message": "מדד" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "מניית $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "מניה" },
+
+  "ratioCurrentPrice": { "message": "מחיר נוכחי" },
+  "ratioDayRange": { "message": "טווח יומי" },
+  "ratio52W": { "message": "טווח 52ש" },
+  "ratioVolume": { "message": "מחזור" },
+  "ratioType": { "message": "סוג" },
+  "ratioExchange": { "message": "בורסה" },
+  "ratioMCap": { "message": "שווי שוק" },
+  "ratioPE": { "message": "מכפיל מניה" },
+  "ratioDiv": { "message": "תשואת דיבידנד" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "גלול סרט שמאלה" },
+  "tapeScrollRight": { "message": "גלול סרט ימינה" },
+  "chartNoData": { "message": "אין נתוני גרף" },
+  "chartLoading": { "message": "טוען גרף..." },
+  "ret1M": { "message": "תשואת 1M" },
+  "ret6M": { "message": "תשואת 6M" },
+  "ret1Y": { "message": "תשואת 1Y" },
+  "ret3Y": { "message": "תשואת 3Y" },
+  "ret5Y": { "message": "תשואת 5Y" },
+  "ret10Y": { "message": "תשואת 10Y" },
+  "retMax": { "message": "תשואה כוללת" },
+  "metricLastPrice": { "message": "מחיר אחרון" },
+  "metricDivYield": { "message": "תשואת דיב." },
+  "metricPERatio": { "message": "יחס P/E" },
+  "viewDetails": { "message": "צפה בפרטים" },
+  "modalSubtitleIndex": {
+    "message": "מדד שוק • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "מניות" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "עולמי" },
+  "modalDetails": { "message": "פרטים" },
+  "tapeLoading": { "message": "טוען רשימת Screener..." },
+
+  "notifAboveTitle": { "message": "התראת מחיר! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ מעל ₹$PRICE$ (נוכחי: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "התראת מחיר! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ מתחת ל-₹$PRICE$ (נוכחי: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "התראת מחיר Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ הגיע ליעד $TARGET$ שלך (נוכחי: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "הוסף \"%s\" לרשימת Screener" },
+  "ctxAddedTitle": { "message": "רשימת Screener" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ נוסף לרשימה שלך!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

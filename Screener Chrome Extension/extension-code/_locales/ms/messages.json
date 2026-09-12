@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Senarai pantau saham India & global secara langsung, portfolio boleh seret, dan pita ticker. Sokongan: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Buka senarai pantau Screener" },
+  "commandDesc": { "message": "Buka panel sisi Screener" },
+
+  "speedTitle": {
+    "message": "Kelajuan pita: $SPEED$ (klik untuk laras 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Kelajuan pita: 1.0x (klik untuk laras 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Kelajuan pita" },
+  "speedDecrease": { "message": "Kurangkan 0.1x" },
+  "speedIncrease": { "message": "Tambah 0.1x" },
+  "speedCustom": { "message": "Tersuai:" },
+  "speedExample": { "message": "cth. 2.3" },
+
+  "pauseTape": { "message": "Jeda pita ticker" },
+  "resumeTape": { "message": "Sambung pita ticker" },
+  "hideTape": { "message": "Sembunyi pita ticker" },
+  "showTape": { "message": "Tunjuk pita ticker" },
+  "domainDisableSite": { "message": "Lumpuhkan di tapak ini" },
+  "domainDisable": {
+    "message": "Lumpuhkan di $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Aktifkan di $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Tukar ke mod cerah" },
+  "themeToDark": { "message": "Tukar ke mod gelap" },
+  "aboutSupport": { "message": "Perihal & sokongan" },
+
+  "tabDashboard": { "message": "Papan pemuka" },
+  "tabMarkets": { "message": "Pasaran" },
+  "tabNews": { "message": "Berita" },
+
+  "searchPlaceholder": { "message": "Cari ticker untuk dianalisis atau ditambah..." },
+  "searchButton": { "message": "Cari" },
+  "clocksLabel": { "message": "Jam pasaran dunia" },
+  "clockOpen": { "message": "● Buka" },
+  "clockClosed": { "message": "● Tutup" },
+
+  "watchlistTitle": { "message": "Senarai pantau anda" },
+  "liveBadge": { "message": "Langsung" },
+  "watchlistEmpty": { "message": "Senarai kosong. Cari dan tambah ticker di atas!" },
+  "colSymbol": { "message": "Simbol" },
+  "colTrend": { "message": "Trend 1T" },
+  "colPrice": { "message": "Harga" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "M. Cap" },
+  "colActions": { "message": "Tindakan" },
+  "sortByPrice": { "message": "Isih ikut harga" },
+  "sortByMCap": { "message": "Isih ikut permodalan" },
+  "dragHint": { "message": "Seret untuk susun semula" },
+  "trendReturnTitle": { "message": "Pulangan tempoh dipapar" },
+  "setAlertTitle": { "message": "Cipta amaran" },
+  "deleteTitle": { "message": "Padam" },
+  "renameTitle": { "message": "Namakan semula portfolio" },
+  "newTitle": { "message": "Portfolio baharu" },
+  "exportTitle": { "message": "Eksport ke Excel" },
+
+  "portfolioExists": { "message": "Portfolio dengan nama ini sudah wujud!" },
+  "renamePrompt": {
+    "message": "Namakan semula portfolio \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Nama portfolio baharu" },
+
+  "verdictLabel": { "message": "Keputusan AI:" },
+  "verdictNoData": { "message": "Data tidak cukup untuk keputusan." },
+  "verdictGem": { "message": "[Murah] Permata dengan pulangan modal sangat cekap." },
+  "verdictExpensive": { "message": "[Mahal] Perniagaan kukuh, tetapi pada premium tinggi." },
+  "verdictRisk": { "message": "[Risiko tinggi] Terlebih nilai dengan kecekapan modal lemah." },
+  "verdictSolid": { "message": "[Kukuh] Fundamental hebat pada harga munasabah." },
+  "verdictAvg": { "message": "[Sederhana] Fundamental standard. Pantau pemangkin." },
+  "verdictIndex": { "message": "[Indeks] Penanda aras utama pasaran." },
+
+  "scrapingData": { "message": "Mengambil data..." },
+  "backButton": { "message": "← Kembali" },
+  "addToWatchlist": { "message": "+ Tambah ke senarai" },
+  "addedButton": { "message": "Ditambah!" },
+  "alreadyButton": { "message": "Sudah ada dalam senarai" },
+  "customizeScreener": { "message": "⚙ Sesuaikan parameter di Screener.in" },
+  "peerTitle": { "message": "Perbandingan setara" },
+  "annTitle": { "message": "Pengumuman syarikat" },
+  "fetchFailed": { "message": "Gagal mendapatkan data." },
+  "fetchError": { "message": "Ralat." },
+
+  "marketIndices": { "message": "Indeks pasaran" },
+  "clickEditCard": {
+    "message": "Klik untuk edit $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Tambah ticker" },
+  "addNewSlot": { "message": "Tambah indeks atau saham" },
+  "loadingPrice": { "message": "Memuatkan..." },
+  "editCardTitle": { "message": "Edit kad pasaran" },
+  "displayNameLabel": { "message": "Nama paparan:" },
+  "displayNamePh": { "message": "cth. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Simbol (Yahoo/NSE):" },
+  "symbolPh": { "message": "cth. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Buang" },
+  "cancelBtn": { "message": "Batal" },
+  "saveBtn": { "message": "Simpan" },
+  "saveCardBtn": { "message": "Simpan kad" },
+  "needBoth": { "message": "Sila masukkan nama paparan dan simbol." },
+
+  "alertPrefix": { "message": "Cipta amaran untuk" },
+  "aboveLabel": { "message": "Amaran jika harga melebihi (₹):" },
+  "abovePh": { "message": "cth. 3000" },
+  "belowLabel": { "message": "Amaran jika harga di bawah (₹):" },
+  "belowPh": { "message": "cth. 2500" },
+
+  "aboutTagline": { "message": "Suapan langsung pelbagai pasaran" },
+  "aboutDesc": { "message": "Senarai pantau, pita ticker dan nisbah masa nyata via Screener.in & Yahoo Finance." },
+  "buyCoffee": { "message": "Belanja saya kopi" },
+  "scanSupport": { "message": "Imbas untuk menyokong ☕" },
+  "closeBtn": { "message": "Tutup" },
+  "qrAlt": { "message": "Imbas untuk menyokong via Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Edit penunjuk" },
+  "macroTileOf": {
+    "message": "Jubin $N$ dari 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Penunjuk:" },
+  "wbLink": { "message": "Lihat di Bank Dunia" },
+  "macroInflation": { "message": "Inflasi (CPI)" },
+  "macroUnemployment": { "message": "Pengangguran" },
+  "macroGdp": { "message": "Pertumbuhan KDNK" },
+  "macroGdppc": { "message": "KDNK per kapita" },
+  "macroGdptotal": { "message": "Jumlah KDNK" },
+  "macroTrade": { "message": "Perdagangan (% KDNK)" },
+  "macroReserves": { "message": "Rizab asing" },
+  "macroPopulation": { "message": "Penduduk" },
+
+  "overviewTitle": { "message": "Gambaran pasaran" },
+  "selectMarket": { "message": "Pilih pasaran:" },
+  "refreshBtn": { "message": "↻ Segar semula" },
+  "refreshTitle": { "message": "Segar semula gambaran" },
+  "indicatorsTitle": { "message": "PENUNJUK EKONOMI" },
+  "loadingMarkets": {
+    "message": "Memuatkan pasaran $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Memuatkan penunjuk..." },
+  "indicatorsDown": { "message": "Penunjuk tiada." },
+  "clickAnalyze": {
+    "message": "$NAME$ — klik untuk menganalisis",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — klik untuk mengedit",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ UNTUNG TERTINGGI" },
+  "losersTitle": { "message": "▼ RUGI TERTINGGI" },
+  "noGainers": { "message": "Tiada kenaikan hari ini" },
+  "noLosers": { "message": "Tiada kejatuhan hari ini" },
+  "updatedAt": {
+    "message": "Dikemas kini $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Gagal memuat. Cuba segar semula." },
+  "latestLabel": { "message": "Terkini" },
+  "loadingWord": { "message": "memuatkan..." },
+
+  "newsLoading": { "message": "Memuatkan berita terkini..." },
+  "macroNewsTitle": { "message": "BERITA MAKRO AS" },
+  "fetchingMacroNews": { "message": "Mengambil berita makro AS..." },
+  "noPortfolioNews": { "message": "Tiada saham dalam portfolio ini untuk berita." },
+  "fetchingNews": { "message": "Mengambil berita kewangan..." },
+  "tickerNewsTitle": {
+    "message": "BERITA $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Tiada berita terkini untuk portfolio anda." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Gesaan" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Saham India" },
+  "typeIndex": { "message": "Indeks" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "Saham $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Saham" },
+
+  "ratioCurrentPrice": { "message": "Harga semasa" },
+  "ratioDayRange": { "message": "Julat harian" },
+  "ratio52W": { "message": "Julat 52M" },
+  "ratioVolume": { "message": "Volum" },
+  "ratioType": { "message": "Jenis" },
+  "ratioExchange": { "message": "Bursa" },
+  "ratioMCap": { "message": "Permodalan" },
+  "ratioPE": { "message": "P/E saham" },
+  "ratioDiv": { "message": "Hasil dividen" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Tatal pita ke kiri" },
+  "tapeScrollRight": { "message": "Tatal pita ke kanan" },
+  "chartNoData": { "message": "Tiada data carta" },
+  "chartLoading": { "message": "Memuatkan carta..." },
+  "ret1M": { "message": "Pulangan 1B" },
+  "ret6M": { "message": "Pulangan 6B" },
+  "ret1Y": { "message": "Pulangan 1T" },
+  "ret3Y": { "message": "Pulangan 3T" },
+  "ret5Y": { "message": "Pulangan 5T" },
+  "ret10Y": { "message": "Pulangan 10T" },
+  "retMax": { "message": "Jumlah pulangan" },
+  "metricLastPrice": { "message": "Harga terakhir" },
+  "metricDivYield": { "message": "Hasil div." },
+  "metricPERatio": { "message": "Nisbah P/E" },
+  "viewDetails": { "message": "Lihat butiran" },
+  "modalSubtitleIndex": {
+    "message": "Indeks pasaran • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Ekuiti" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Global" },
+  "modalDetails": { "message": "Butiran" },
+  "tapeLoading": { "message": "Memuatkan senarai Screener..." },
+
+  "notifAboveTitle": { "message": "Amaran harga! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ melepasi ₹$PRICE$ (semasa: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Amaran harga! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ di bawah ₹$PRICE$ (semasa: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Amaran harga Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ mencapai sasaran $TARGET$ anda (semasa: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Tambah \"%s\" ke senarai Screener" },
+  "ctxAddedTitle": { "message": "Senarai Screener" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ ditambah ke senarai anda!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

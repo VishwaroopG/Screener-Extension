@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "インド・世界のライブ株式ウォッチリスト、ドラッグ可能なポートフォリオ、ティッカーテープ。サポート: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Screenerウォッチリストを開く" },
+  "commandDesc": { "message": "Screenerサイドパネルを開く" },
+
+  "speedTitle": {
+    "message": "テープ速度: $SPEED$（0.5x～3.0xに調整するにはクリック）",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "テープ速度: 1.0x（0.5x～3.0xに調整するにはクリック）" },
+  "speedLabel": { "message": "テープ速度" },
+  "speedDecrease": { "message": "0.1x下げる" },
+  "speedIncrease": { "message": "0.1x上げる" },
+  "speedCustom": { "message": "カスタム:" },
+  "speedExample": { "message": "例 2.3" },
+
+  "pauseTape": { "message": "ティッカーテープを一時停止" },
+  "resumeTape": { "message": "ティッカーテープを再開" },
+  "hideTape": { "message": "ティッカーテープを非表示" },
+  "showTape": { "message": "ティッカーテープを表示" },
+  "domainDisableSite": { "message": "このサイトで無効化" },
+  "domainDisable": {
+    "message": "$DOMAIN$で無効化",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "$DOMAIN$で有効化",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "ライトモードに切替" },
+  "themeToDark": { "message": "ダークモードに切替" },
+  "aboutSupport": { "message": "概要とサポート" },
+
+  "tabDashboard": { "message": "ダッシュボード" },
+  "tabMarkets": { "message": "マーケット" },
+  "tabNews": { "message": "ニュース" },
+
+  "searchPlaceholder": { "message": "分析・追加するティッカーを検索..." },
+  "searchButton": { "message": "検索" },
+  "clocksLabel": { "message": "世界の市場時計" },
+  "clockOpen": { "message": "● 開場中" },
+  "clockClosed": { "message": "● 閉場中" },
+
+  "watchlistTitle": { "message": "あなたのウォッチリスト" },
+  "liveBadge": { "message": "ライブ" },
+  "watchlistEmpty": { "message": "ウォッチリストは空です。上でティッカーを検索して追加！" },
+  "colSymbol": { "message": "シンボル" },
+  "colTrend": { "message": "1Yトレンド" },
+  "colPrice": { "message": "価格" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "時価総額" },
+  "colActions": { "message": "操作" },
+  "sortByPrice": { "message": "価格で並べ替え" },
+  "sortByMCap": { "message": "時価総額で並べ替え" },
+  "dragHint": { "message": "ドラッグで並べ替え" },
+  "trendReturnTitle": { "message": "表示期間のリターン" },
+  "setAlertTitle": { "message": "アラート設定" },
+  "deleteTitle": { "message": "削除" },
+  "renameTitle": { "message": "ポートフォリオ名を変更" },
+  "newTitle": { "message": "新規ポートフォリオ" },
+  "exportTitle": { "message": "Excelにエクスポート" },
+
+  "portfolioExists": { "message": "その名前のポートフォリオは既にあります！" },
+  "renamePrompt": {
+    "message": "ポートフォリオ「$NAME$」の名前を変更",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "新規ポートフォリオ名" },
+
+  "verdictLabel": { "message": "AI判定:" },
+  "verdictNoData": { "message": "判定に十分なデータがありません。" },
+  "verdictGem": { "message": "[割安] 資本効率の極めて高い優良銘柄。" },
+  "verdictExpensive": { "message": "[割高] 優良企業だがプレミアム価格。" },
+  "verdictRisk": { "message": "[高リスク] 資本効率が低く過大評価。" },
+  "verdictSolid": { "message": "[堅実] 適正価格の優れたファンダメンタルズ。" },
+  "verdictAvg": { "message": "[平均] 標準的な内容。成長材料に注目。" },
+  "verdictIndex": { "message": "[指数] 市場を代表するベンチマーク。" },
+
+  "scrapingData": { "message": "データ取得中..." },
+  "backButton": { "message": "← 戻る" },
+  "addToWatchlist": { "message": "+ ウォッチリストに追加" },
+  "addedButton": { "message": "追加しました！" },
+  "alreadyButton": { "message": "既にウォッチリストにあります" },
+  "customizeScreener": { "message": "⚙ Screener.inでパラメータをカスタマイズ" },
+  "peerTitle": { "message": "同業他社比較" },
+  "annTitle": { "message": "企業発表" },
+  "fetchFailed": { "message": "データを取得できませんでした。" },
+  "fetchError": { "message": "エラー。" },
+
+  "marketIndices": { "message": "市場指数" },
+  "clickEditCard": {
+    "message": "$NAME$を編集するにはクリック",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "ティッカーを追加" },
+  "addNewSlot": { "message": "指数または株式を追加" },
+  "loadingPrice": { "message": "読み込み中..." },
+  "editCardTitle": { "message": "マーケットカードを編集" },
+  "displayNameLabel": { "message": "表示名:" },
+  "displayNamePh": { "message": "例 NIFTY IT、Apple、Reliance" },
+  "symbolLabel": { "message": "シンボル (Yahoo/NSE):" },
+  "symbolPh": { "message": "例 ^CNXIT、AAPL、RELIANCE.NS" },
+  "removeBtn": { "message": "削除" },
+  "cancelBtn": { "message": "キャンセル" },
+  "saveBtn": { "message": "保存" },
+  "saveCardBtn": { "message": "カードを保存" },
+  "needBoth": { "message": "表示名とシンボルの両方を入力してください。" },
+
+  "alertPrefix": { "message": "アラート設定:" },
+  "aboveLabel": { "message": "価格が上回ったら通知 (₹):" },
+  "abovePh": { "message": "例 3000" },
+  "belowLabel": { "message": "価格が下回ったら通知 (₹):" },
+  "belowPh": { "message": "例 2500" },
+
+  "aboutTagline": { "message": "マルチマーケット・ライブフィード" },
+  "aboutDesc": { "message": "Screener.inとYahoo Financeによるリアルタイムのウォッチリスト、ティッカー、指標。" },
+  "buyCoffee": { "message": "コーヒーをおごる" },
+  "scanSupport": { "message": "支援はスキャンで ☕" },
+  "closeBtn": { "message": "閉じる" },
+  "qrAlt": { "message": "Buy Me a Coffee支援用にスキャン" },
+
+  "macroTitle": { "message": "指標を編集" },
+  "macroTileOf": {
+    "message": "4枚中$N$枚目",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "指標:" },
+  "wbLink": { "message": "世界銀行で見る" },
+  "macroInflation": { "message": "インフレ (CPI)" },
+  "macroUnemployment": { "message": "失業率" },
+  "macroGdp": { "message": "GDP成長率" },
+  "macroGdppc": { "message": "一人当たりGDP" },
+  "macroGdptotal": { "message": "GDP総額" },
+  "macroTrade": { "message": "貿易 (GDP比%)" },
+  "macroReserves": { "message": "外貨準備高" },
+  "macroPopulation": { "message": "人口" },
+
+  "overviewTitle": { "message": "マーケット概要" },
+  "selectMarket": { "message": "市場を選択:" },
+  "refreshBtn": { "message": "↻ 更新" },
+  "refreshTitle": { "message": "概要を更新" },
+  "indicatorsTitle": { "message": "経済指標" },
+  "loadingMarkets": {
+    "message": "$ECO$市場を読み込み中...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "指標を読み込み中..." },
+  "indicatorsDown": { "message": "指標を利用できません。" },
+  "clickAnalyze": {
+    "message": "$NAME$ — 分析はクリック",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — 編集はクリック",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ 上昇上位" },
+  "losersTitle": { "message": "▼ 下落上位" },
+  "noGainers": { "message": "本日の上昇なし" },
+  "noLosers": { "message": "本日の下落なし" },
+  "updatedAt": {
+    "message": "更新: $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "読込失敗。更新してください。" },
+  "latestLabel": { "message": "最新" },
+  "loadingWord": { "message": "読み込み中..." },
+
+  "newsLoading": { "message": "最新ニュースを読み込み中..." },
+  "macroNewsTitle": { "message": "米国マクロニュース" },
+  "fetchingMacroNews": { "message": "米国マクロニュース取得中..." },
+  "noPortfolioNews": { "message": "このポートフォリオにニュース対象の株式がありません。" },
+  "fetchingNews": { "message": "金融ニュース取得中..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ニュース",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "ポートフォリオの最新ニュースがありません。" },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "入力" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "インド株" },
+  "typeIndex": { "message": "指数" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$株",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "株式" },
+
+  "ratioCurrentPrice": { "message": "現在価格" },
+  "ratioDayRange": { "message": "日中レンジ" },
+  "ratio52W": { "message": "52Wレンジ" },
+  "ratioVolume": { "message": "出来高" },
+  "ratioType": { "message": "種別" },
+  "ratioExchange": { "message": "取引所" },
+  "ratioMCap": { "message": "時価総額" },
+  "ratioPE": { "message": "株価PER" },
+  "ratioDiv": { "message": "配当利回り" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "テープを左へスクロール" },
+  "tapeScrollRight": { "message": "テープを右へスクロール" },
+  "chartNoData": { "message": "チャートデータなし" },
+  "chartLoading": { "message": "チャート読み込み中..." },
+  "ret1M": { "message": "1Mリターン" },
+  "ret6M": { "message": "6Mリターン" },
+  "ret1Y": { "message": "1Yリターン" },
+  "ret3Y": { "message": "3Yリターン" },
+  "ret5Y": { "message": "5Yリターン" },
+  "ret10Y": { "message": "10Yリターン" },
+  "retMax": { "message": "全期間リターン" },
+  "metricLastPrice": { "message": "直近価格" },
+  "metricDivYield": { "message": "配当利回り" },
+  "metricPERatio": { "message": "PER" },
+  "viewDetails": { "message": "詳細を見る" },
+  "modalSubtitleIndex": {
+    "message": "市場指数 • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "株式" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "グローバル" },
+  "modalDetails": { "message": "詳細" },
+  "tapeLoading": { "message": "Screenerウォッチリスト読み込み中..." },
+
+  "notifAboveTitle": { "message": "価格アラート! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$が₹$PRICE$を上回りました（現在: ₹$CUR$）",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "価格アラート! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$が₹$PRICE$を下回りました（現在: ₹$CUR$）",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Screener価格アラート" },
+  "notifGeneric": {
+    "message": "$TICKER$が目標$TARGET$に到達（現在: $CUR$）",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "「%s」をScreenerウォッチリストに追加" },
+  "ctxAddedTitle": { "message": "Screenerウォッチリスト" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$をウォッチリストに追加しました！",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

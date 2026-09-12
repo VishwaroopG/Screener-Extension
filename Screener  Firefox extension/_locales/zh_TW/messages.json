@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "印度和全球股票即時觀察清單、可拖曳投資組合和跑馬燈。贊助：buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "開啟 Screener 觀察清單" },
+  "commandDesc": { "message": "開啟 Screener 側邊欄" },
+
+  "speedTitle": {
+    "message": "跑馬燈速度：$SPEED$（點擊可在 0.5x – 3.0x 間調節）",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "跑馬燈速度：1.0x（點擊可在 0.5x – 3.0x 間調節）" },
+  "speedLabel": { "message": "跑馬燈速度" },
+  "speedDecrease": { "message": "降低 0.1x" },
+  "speedIncrease": { "message": "提高 0.1x" },
+  "speedCustom": { "message": "自訂：" },
+  "speedExample": { "message": "例如 2.3" },
+
+  "pauseTape": { "message": "暫停股票跑馬燈" },
+  "resumeTape": { "message": "恢復股票跑馬燈" },
+  "hideTape": { "message": "隱藏股票跑馬燈" },
+  "showTape": { "message": "顯示股票跑馬燈" },
+  "domainDisableSite": { "message": "在此網站停用" },
+  "domainDisable": {
+    "message": "在 $DOMAIN$ 停用",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "在 $DOMAIN$ 啟用",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "切換到淺色模式" },
+  "themeToDark": { "message": "切換到深色模式" },
+  "aboutSupport": { "message": "關於與支援" },
+
+  "tabDashboard": { "message": "總覽" },
+  "tabMarkets": { "message": "市場" },
+  "tabNews": { "message": "新聞" },
+
+  "searchPlaceholder": { "message": "搜尋要分析或加入的代碼..." },
+  "searchButton": { "message": "搜尋" },
+  "clocksLabel": { "message": "全球市場時鐘" },
+  "clockOpen": { "message": "● 開盤" },
+  "clockClosed": { "message": "● 閉盤" },
+
+  "watchlistTitle": { "message": "我的觀察清單" },
+  "liveBadge": { "message": "即時" },
+  "watchlistEmpty": { "message": "觀察清單是空的。在上方搜尋並加入代碼吧！" },
+  "colSymbol": { "message": "代碼" },
+  "colTrend": { "message": "1Y走勢" },
+  "colPrice": { "message": "價格" },
+  "colPE": { "message": "本益比" },
+  "colMCap": { "message": "市值" },
+  "colActions": { "message": "操作" },
+  "sortByPrice": { "message": "按價格排序" },
+  "sortByMCap": { "message": "按市值排序" },
+  "dragHint": { "message": "拖曳以重新排序" },
+  "trendReturnTitle": { "message": "所示期間報酬" },
+  "setAlertTitle": { "message": "設定提醒" },
+  "deleteTitle": { "message": "刪除" },
+  "renameTitle": { "message": "重新命名組合" },
+  "newTitle": { "message": "新增組合" },
+  "exportTitle": { "message": "匯出到 Excel" },
+
+  "portfolioExists": { "message": "已存在同名組合！" },
+  "renamePrompt": {
+    "message": "重新命名組合「$NAME$」",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "新組合名稱" },
+
+  "verdictLabel": { "message": "AI 結論：" },
+  "verdictNoData": { "message": "資料不足，無法給出結論。" },
+  "verdictGem": { "message": "[低估] 資本回報效率極高的明珠。" },
+  "verdictExpensive": { "message": "[昂貴] 企業優秀，但溢價過高。" },
+  "verdictRisk": { "message": "[高風險] 高估且資本效率低下。" },
+  "verdictSolid": { "message": "[穩健] 價格合理的基本面優秀。" },
+  "verdictAvg": { "message": "[一般] 基本面普通。關注成長催化劑。" },
+  "verdictIndex": { "message": "[市場指數] 關鍵市場基準。" },
+
+  "scrapingData": { "message": "正在取得資料..." },
+  "backButton": { "message": "← 返回" },
+  "addToWatchlist": { "message": "+ 加入觀察清單" },
+  "addedButton": { "message": "已加入！" },
+  "alreadyButton": { "message": "已在觀察清單中" },
+  "customizeScreener": { "message": "⚙ 在 Screener.in 自訂參數" },
+  "peerTitle": { "message": "同業對比" },
+  "annTitle": { "message": "公司公告" },
+  "fetchFailed": { "message": "未能取得資料。" },
+  "fetchError": { "message": "出錯。" },
+
+  "marketIndices": { "message": "市場指數" },
+  "clickEditCard": {
+    "message": "點擊編輯 $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "加入代碼" },
+  "addNewSlot": { "message": "加入指數或股票" },
+  "loadingPrice": { "message": "載入中..." },
+  "editCardTitle": { "message": "編輯市場卡片" },
+  "displayNameLabel": { "message": "顯示名稱：" },
+  "displayNamePh": { "message": "例如 NIFTY IT、Apple、Reliance" },
+  "symbolLabel": { "message": "代碼 (Yahoo/NSE)：" },
+  "symbolPh": { "message": "例如 ^CNXIT、AAPL、RELIANCE.NS" },
+  "removeBtn": { "message": "移除" },
+  "cancelBtn": { "message": "取消" },
+  "saveBtn": { "message": "儲存" },
+  "saveCardBtn": { "message": "儲存卡片" },
+  "needBoth": { "message": "請輸入顯示名稱和代碼。" },
+
+  "alertPrefix": { "message": "設定提醒：" },
+  "aboveLabel": { "message": "價格高於時提醒 (₹)：" },
+  "abovePh": { "message": "例如 3000" },
+  "belowLabel": { "message": "價格低於時提醒 (₹)：" },
+  "belowPh": { "message": "例如 2500" },
+
+  "aboutTagline": { "message": "多市場即時推送" },
+  "aboutDesc": { "message": "由 Screener.in 和 Yahoo Finance 驅動的即時觀察清單、跑馬燈和比率。" },
+  "buyCoffee": { "message": "請我喝杯咖啡" },
+  "scanSupport": { "message": "掃碼支持 ☕" },
+  "closeBtn": { "message": "關閉" },
+  "qrAlt": { "message": "掃碼透過 Buy Me a Coffee 支持" },
+
+  "macroTitle": { "message": "編輯指標" },
+  "macroTileOf": {
+    "message": "第 $N$ 塊，共 4 塊",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "指標：" },
+  "wbLink": { "message": "在世界銀行查看" },
+  "macroInflation": { "message": "通膨 (CPI)" },
+  "macroUnemployment": { "message": "失業率" },
+  "macroGdp": { "message": "GDP 成長" },
+  "macroGdppc": { "message": "人均 GDP" },
+  "macroGdptotal": { "message": "GDP 總量" },
+  "macroTrade": { "message": "貿易 (佔 GDP %)" },
+  "macroReserves": { "message": "外匯存底" },
+  "macroPopulation": { "message": "人口" },
+
+  "overviewTitle": { "message": "市場概覽" },
+  "selectMarket": { "message": "選擇市場：" },
+  "refreshBtn": { "message": "↻ 重新整理" },
+  "refreshTitle": { "message": "重新整理概覽" },
+  "indicatorsTitle": { "message": "經濟指標" },
+  "loadingMarkets": {
+    "message": "正在載入 $ECO$ 市場...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "正在載入指標..." },
+  "indicatorsDown": { "message": "指標無法使用。" },
+  "clickAnalyze": {
+    "message": "$NAME$ — 點擊分析",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — 點擊編輯",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ 漲幅前列" },
+  "losersTitle": { "message": "▼ 跌幅前列" },
+  "noGainers": { "message": "今日無上漲" },
+  "noLosers": { "message": "今日無下跌" },
+  "updatedAt": {
+    "message": "更新於 $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "載入失敗，請重新整理。" },
+  "latestLabel": { "message": "最新" },
+  "loadingWord": { "message": "載入中..." },
+
+  "newsLoading": { "message": "正在載入最新新聞..." },
+  "macroNewsTitle": { "message": "美國總經新聞" },
+  "fetchingMacroNews": { "message": "正在取得美國總經新聞..." },
+  "noPortfolioNews": { "message": "該組合中沒有可取得新聞的股票。" },
+  "fetchingNews": { "message": "正在取得財經新聞..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ 新聞",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "組合暫無近期新聞。" },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "提示" },
+  "promptOk": { "message": "確定" },
+
+  "typeIndian": { "message": "印度股票" },
+  "typeIndex": { "message": "指數" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ 股票",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "股票" },
+
+  "ratioCurrentPrice": { "message": "目前價格" },
+  "ratioDayRange": { "message": "日內區間" },
+  "ratio52W": { "message": "52週區間" },
+  "ratioVolume": { "message": "成交量" },
+  "ratioType": { "message": "類型" },
+  "ratioExchange": { "message": "交易所" },
+  "ratioMCap": { "message": "市值" },
+  "ratioPE": { "message": "股票本益比" },
+  "ratioDiv": { "message": "股息率" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "跑馬燈向左捲動" },
+  "tapeScrollRight": { "message": "跑馬燈向右捲動" },
+  "chartNoData": { "message": "無圖表資料" },
+  "chartLoading": { "message": "圖表載入中..." },
+  "ret1M": { "message": "1個月報酬" },
+  "ret6M": { "message": "6個月報酬" },
+  "ret1Y": { "message": "1年報酬" },
+  "ret3Y": { "message": "3年報酬" },
+  "ret5Y": { "message": "5年報酬" },
+  "ret10Y": { "message": "10年報酬" },
+  "retMax": { "message": "總報酬" },
+  "metricLastPrice": { "message": "最新價" },
+  "metricDivYield": { "message": "股息率" },
+  "metricPERatio": { "message": "本益比" },
+  "viewDetails": { "message": "查看詳情" },
+  "modalSubtitleIndex": {
+    "message": "市場指數 • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "股票" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "全球" },
+  "modalDetails": { "message": "詳情" },
+  "tapeLoading": { "message": "正在載入 Screener 觀察清單..." },
+
+  "notifAboveTitle": { "message": "價格提醒！📈" },
+  "notifAbove": {
+    "message": "$TICKER$ 已漲破 ₹$PRICE$（現價：₹$CUR$）",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "價格提醒！📉" },
+  "notifBelow": {
+    "message": "$TICKER$ 已跌破 ₹$PRICE$（現價：₹$CUR$）",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Screener 價格提醒" },
+  "notifGeneric": {
+    "message": "$TICKER$ 已達到目標 $TARGET$（現價：$CUR$）",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "將「%s」加入 Screener 觀察清單" },
+  "ctxAddedTitle": { "message": "Screener 觀察清單" },
+  "ctxAddedMsg": {
+    "message": "已將 $TICKER$ 加入觀察清單！",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

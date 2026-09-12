@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Живий вотчлист індійських і світових акцій, портфелі з перетягуванням і стрічка котирувань. Підтримка: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Відкрити вотчлист Screener" },
+  "commandDesc": { "message": "Відкрити бічну панель Screener" },
+
+  "speedTitle": {
+    "message": "Швидкість стрічки: $SPEED$ (натисніть, щоб налаштувати 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Швидкість стрічки: 1.0x (натисніть, щоб налаштувати 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Швидкість стрічки" },
+  "speedDecrease": { "message": "Зменшити на 0.1x" },
+  "speedIncrease": { "message": "Збільшити на 0.1x" },
+  "speedCustom": { "message": "Своя:" },
+  "speedExample": { "message": "напр. 2.3" },
+
+  "pauseTape": { "message": "Призупинити стрічку" },
+  "resumeTape": { "message": "Продовжити стрічку" },
+  "hideTape": { "message": "Сховати стрічку" },
+  "showTape": { "message": "Показати стрічку" },
+  "domainDisableSite": { "message": "Вимкнути на цьому сайті" },
+  "domainDisable": {
+    "message": "Вимкнути на $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Увімкнути на $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Перейти на світлу тему" },
+  "themeToDark": { "message": "Перейти на темну тему" },
+  "aboutSupport": { "message": "Про нас і підтримка" },
+
+  "tabDashboard": { "message": "Дашборд" },
+  "tabMarkets": { "message": "Ринки" },
+  "tabNews": { "message": "Новини" },
+
+  "searchPlaceholder": { "message": "Знайти тікер для аналізу чи додавання..." },
+  "searchButton": { "message": "Знайти" },
+  "clocksLabel": { "message": "Годинники світових ринків" },
+  "clockOpen": { "message": "● Відкрито" },
+  "clockClosed": { "message": "● Закрито" },
+
+  "watchlistTitle": { "message": "Ваш вотчлист" },
+  "liveBadge": { "message": "Лайв" },
+  "watchlistEmpty": { "message": "Вотчлист порожній. Знайдіть і додайте тікер вище!" },
+  "colSymbol": { "message": "Тікер" },
+  "colTrend": { "message": "Тренд 1Р" },
+  "colPrice": { "message": "Ціна" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Капітал." },
+  "colActions": { "message": "Дії" },
+  "sortByPrice": { "message": "Сортувати за ціною" },
+  "sortByMCap": { "message": "Сортувати за капіталізацією" },
+  "dragHint": { "message": "Тягніть для сортування" },
+  "trendReturnTitle": { "message": "Дохідність за показаний період" },
+  "setAlertTitle": { "message": "Створити алерт" },
+  "deleteTitle": { "message": "Видалити" },
+  "renameTitle": { "message": "Перейменувати портфель" },
+  "newTitle": { "message": "Новий портфель" },
+  "exportTitle": { "message": "Експорт в Excel" },
+
+  "portfolioExists": { "message": "Портфель з такою назвою вже існує!" },
+  "renamePrompt": {
+    "message": "Перейменувати портфель \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Назва нового портфеля" },
+
+  "verdictLabel": { "message": "Вердикт ШІ:" },
+  "verdictNoData": { "message": "Недостатньо даних для вердикту." },
+  "verdictGem": { "message": "[Недооцінена] Перлина з дуже ефективною віддачею на капітал." },
+  "verdictExpensive": { "message": "[Дорога] Сильний бізнес, але з високою премією." },
+  "verdictRisk": { "message": "[Високий ризик] Переоцінена за слабкої ефективності капіталу." },
+  "verdictSolid": { "message": "[Міцна] Чудові фундаментальні показники за розумною ціною." },
+  "verdictAvg": { "message": "[Середня] Стандартні показники. Стежте за драйверами." },
+  "verdictIndex": { "message": "[Індекс] Ключовий бенчмарк ринку." },
+
+  "scrapingData": { "message": "Завантаження даних..." },
+  "backButton": { "message": "← Назад" },
+  "addToWatchlist": { "message": "+ Додати у вотчлист" },
+  "addedButton": { "message": "Додано!" },
+  "alreadyButton": { "message": "Вже у вотчлисті" },
+  "customizeScreener": { "message": "⚙ Налаштувати параметри на Screener.in" },
+  "peerTitle": { "message": "Порівняння з аналогами" },
+  "annTitle": { "message": "Новини компанії" },
+  "fetchFailed": { "message": "Не вдалося отримати дані." },
+  "fetchError": { "message": "Помилка." },
+
+  "marketIndices": { "message": "Ринкові індекси" },
+  "clickEditCard": {
+    "message": "Натисніть, щоб змінити $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Додати тікер" },
+  "addNewSlot": { "message": "Додати індекс або акцію" },
+  "loadingPrice": { "message": "Завантаження..." },
+  "editCardTitle": { "message": "Змінити картку ринку" },
+  "displayNameLabel": { "message": "Відображуване ім'я:" },
+  "displayNamePh": { "message": "напр. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Символ (Yahoo/NSE):" },
+  "symbolPh": { "message": "напр. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Прибрати" },
+  "cancelBtn": { "message": "Скасувати" },
+  "saveBtn": { "message": "Зберегти" },
+  "saveCardBtn": { "message": "Зберегти картку" },
+  "needBoth": { "message": "Введіть відображуване ім'я та символ." },
+
+  "alertPrefix": { "message": "Створити алерт для" },
+  "aboveLabel": { "message": "Алерт, якщо ціна вище (₹):" },
+  "abovePh": { "message": "напр. 3000" },
+  "belowLabel": { "message": "Алерт, якщо ціна нижче (₹):" },
+  "belowPh": { "message": "напр. 2500" },
+
+  "aboutTagline": { "message": "Мультиринковий лайв-фід" },
+  "aboutDesc": { "message": "Вотчлист, стрічка та коефіцієнти в реальному часі через Screener.in і Yahoo Finance." },
+  "buyCoffee": { "message": "Пригостіть мене кавою" },
+  "scanSupport": { "message": "Скануйте, щоб підтримати ☕" },
+  "closeBtn": { "message": "Закрити" },
+  "qrAlt": { "message": "Скануйте, щоб підтримати через Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Змінити індикатор" },
+  "macroTileOf": {
+    "message": "Плитка $N$ з 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Індикатор:" },
+  "wbLink": { "message": "Дивитися на сайті Світового банку" },
+  "macroInflation": { "message": "Інфляція (CPI)" },
+  "macroUnemployment": { "message": "Безробіття" },
+  "macroGdp": { "message": "Зростання ВВП" },
+  "macroGdppc": { "message": "ВВП на душу" },
+  "macroGdptotal": { "message": "ВВП загалом" },
+  "macroTrade": { "message": "Торгівля (% ВВП)" },
+  "macroReserves": { "message": "Валютні резерви" },
+  "macroPopulation": { "message": "Населення" },
+
+  "overviewTitle": { "message": "Огляд ринку" },
+  "selectMarket": { "message": "Оберіть ринок:" },
+  "refreshBtn": { "message": "↻ Оновити" },
+  "refreshTitle": { "message": "Оновити огляд" },
+  "indicatorsTitle": { "message": "ЕКОНОМІЧНІ ІНДИКАТОРИ" },
+  "loadingMarkets": {
+    "message": "Завантаження ринків $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Завантаження індикаторів..." },
+  "indicatorsDown": { "message": "Індикатори недоступні." },
+  "clickAnalyze": {
+    "message": "$NAME$ — натисніть для аналізу",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — натисніть для зміни",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ ЛІДЕРИ ЗРОСТАННЯ" },
+  "losersTitle": { "message": "▼ ЛІДЕРИ ПАДІННЯ" },
+  "noGainers": { "message": "Сьогодні зростання немає" },
+  "noLosers": { "message": "Сьогодні падіння немає" },
+  "updatedAt": {
+    "message": "Оновлено $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Не вдалося завантажити. Оновіть." },
+  "latestLabel": { "message": "Свіже" },
+  "loadingWord": { "message": "завантаження..." },
+
+  "newsLoading": { "message": "Завантаження останніх новин..." },
+  "macroNewsTitle": { "message": "МАКРОНОВИНИ США" },
+  "fetchingMacroNews": { "message": "Завантаження макроновин США..." },
+  "noPortfolioNews": { "message": "У цьому портфелі немає акцій для новин." },
+  "fetchingNews": { "message": "Завантаження фінансових новин..." },
+  "tickerNewsTitle": {
+    "message": "НОВИНИ $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Свіжих новин для портфеля немає." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Запит" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Індійська акція" },
+  "typeIndex": { "message": "Індекс" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "Акція $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Акція" },
+
+  "ratioCurrentPrice": { "message": "Поточна ціна" },
+  "ratioDayRange": { "message": "Денний діапазон" },
+  "ratio52W": { "message": "Діапазон 52Т" },
+  "ratioVolume": { "message": "Обсяг" },
+  "ratioType": { "message": "Тип" },
+  "ratioExchange": { "message": "Біржа" },
+  "ratioMCap": { "message": "Капіталізація" },
+  "ratioPE": { "message": "P/E акції" },
+  "ratioDiv": { "message": "Дивдохідність" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Прокрутити стрічку вліво" },
+  "tapeScrollRight": { "message": "Прокрутити стрічку вправо" },
+  "chartNoData": { "message": "Немає даних графіка" },
+  "chartLoading": { "message": "Завантаження графіка..." },
+  "ret1M": { "message": "Дох. 1М" },
+  "ret6M": { "message": "Дох. 6М" },
+  "ret1Y": { "message": "Дох. 1Р" },
+  "ret3Y": { "message": "Дох. 3Р" },
+  "ret5Y": { "message": "Дох. 5Р" },
+  "ret10Y": { "message": "Дох. 10Р" },
+  "retMax": { "message": "Загальна дох." },
+  "metricLastPrice": { "message": "Ост. ціна" },
+  "metricDivYield": { "message": "Див. дох." },
+  "metricPERatio": { "message": "Коеф. P/E" },
+  "viewDetails": { "message": "Детальніше" },
+  "modalSubtitleIndex": {
+    "message": "Ринковий індекс • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Акції" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Світ" },
+  "modalDetails": { "message": "Деталі" },
+  "tapeLoading": { "message": "Завантаження вотчлиста Screener..." },
+
+  "notifAboveTitle": { "message": "Ціновий алерт! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ вище ₹$PRICE$ (поточна: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Ціновий алерт! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ нижче ₹$PRICE$ (поточна: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Ціновий алерт Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ досяг вашої цілі $TARGET$ (поточна: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Додати «%s» у вотчлист Screener" },
+  "ctxAddedTitle": { "message": "Вотчлист Screener" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ додано у ваш вотчлист!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

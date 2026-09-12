@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Ζωντανή λίστα ινδικών & παγκόσμιων μετοχών, χαρτοφυλάκια με μεταφορά και ταινία τιμών. Υποστήριξη: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Άνοιγμα λίστας Screener" },
+  "commandDesc": { "message": "Άνοιγμα πλευρικού πίνακα Screener" },
+
+  "speedTitle": {
+    "message": "Ταχύτητα ταινίας: $SPEED$ (κλικ για ρύθμιση 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Ταχύτητα ταινίας: 1.0x (κλικ για ρύθμιση 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Ταχύτητα ταινίας" },
+  "speedDecrease": { "message": "Μείωση 0.1x" },
+  "speedIncrease": { "message": "Αύξηση 0.1x" },
+  "speedCustom": { "message": "Προσαρμοσμένο:" },
+  "speedExample": { "message": "π.χ. 2.3" },
+
+  "pauseTape": { "message": "Παύση ταινίας τιμών" },
+  "resumeTape": { "message": "Συνέχεια ταινίας τιμών" },
+  "hideTape": { "message": "Απόκρυψη ταινίας τιμών" },
+  "showTape": { "message": "Εμφάνιση ταινίας τιμών" },
+  "domainDisableSite": { "message": "Απενεργοποίηση σε αυτόν τον ιστότοπο" },
+  "domainDisable": {
+    "message": "Απενεργοποίηση σε $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Ενεργοποίηση σε $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Μετάβαση σε φωτεινό θέμα" },
+  "themeToDark": { "message": "Μετάβαση σε σκοτεινό θέμα" },
+  "aboutSupport": { "message": "Πληροφορίες & υποστήριξη" },
+
+  "tabDashboard": { "message": "Πίνακας" },
+  "tabMarkets": { "message": "Αγορές" },
+  "tabNews": { "message": "Νέα" },
+
+  "searchPlaceholder": { "message": "Αναζήτηση ticker για ανάλυση ή προσθήκη..." },
+  "searchButton": { "message": "Αναζήτηση" },
+  "clocksLabel": { "message": "Ρολόγια παγκόσμιων αγορών" },
+  "clockOpen": { "message": "● Ανοιχτή" },
+  "clockClosed": { "message": "● Κλειστή" },
+
+  "watchlistTitle": { "message": "Η λίστα σας" },
+  "liveBadge": { "message": "Ζωντανά" },
+  "watchlistEmpty": { "message": "Η λίστα είναι άδεια. Αναζητήστε και προσθέστε ticker παραπάνω!" },
+  "colSymbol": { "message": "Σύμβολο" },
+  "colTrend": { "message": "Τάση 1E" },
+  "colPrice": { "message": "Τιμή" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Κεφαλαιοπ." },
+  "colActions": { "message": "Ενέργειες" },
+  "sortByPrice": { "message": "Ταξινόμηση κατά τιμή" },
+  "sortByMCap": { "message": "Ταξινόμηση κατά κεφαλαιοποίηση" },
+  "dragHint": { "message": "Σύρετε για αναδιάταξη" },
+  "trendReturnTitle": { "message": "Απόδοση εμφανιζόμενης περιόδου" },
+  "setAlertTitle": { "message": "Δημιουργία ειδοποίησης" },
+  "deleteTitle": { "message": "Διαγραφή" },
+  "renameTitle": { "message": "Μετονομασία χαρτοφυλακίου" },
+  "newTitle": { "message": "Νέο χαρτοφυλάκιο" },
+  "exportTitle": { "message": "Εξαγωγή σε Excel" },
+
+  "portfolioExists": { "message": "Υπάρχει ήδη χαρτοφυλάκιο με αυτό το όνομα!" },
+  "renamePrompt": {
+    "message": "Μετονομασία χαρτοφυλακίου \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Όνομα νέου χαρτοφυλακίου" },
+
+  "verdictLabel": { "message": "Ετυμηγορία AI:" },
+  "verdictNoData": { "message": "Ανεπαρκή δεδομένα για ετυμηγορία." },
+  "verdictGem": { "message": "[Υποτιμημένη] Διαμάντι με πολύ αποδοτική απόδοση κεφαλαίου." },
+  "verdictExpensive": { "message": "[Ακριβή] Ισχυρή επιχείρηση, αλλά με ακριβό premium." },
+  "verdictRisk": { "message": "[Υψηλός κίνδυνος] Υπερτιμημένη με ασθενή αποδοτικότητα κεφαλαίου." },
+  "verdictSolid": { "message": "[Στιβαρή] Εξαιρετικά θεμελιώδη σε λογική τιμή." },
+  "verdictAvg": { "message": "[Μέτρια] Τυπικά θεμελιώδη. Παρακολουθήστε καταλύτες." },
+  "verdictIndex": { "message": "[Δείκτης] Βασικό σημείο αναφοράς." },
+
+  "scrapingData": { "message": "Λήψη δεδομένων..." },
+  "backButton": { "message": "← Πίσω" },
+  "addToWatchlist": { "message": "+ Προσθήκη στη λίστα" },
+  "addedButton": { "message": "Προστέθηκε!" },
+  "alreadyButton": { "message": "Ήδη στη λίστα" },
+  "customizeScreener": { "message": "⚙ Προσαρμογή παραμέτρων στο Screener.in" },
+  "peerTitle": { "message": "Σύγκριση με ομοειδείς" },
+  "annTitle": { "message": "Ανακοινώσεις εταιρείας" },
+  "fetchFailed": { "message": "Αδυναμία λήψης δεδομένων." },
+  "fetchError": { "message": "Σφάλμα." },
+
+  "marketIndices": { "message": "Δείκτες αγοράς" },
+  "clickEditCard": {
+    "message": "Κλικ για επεξεργασία $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Προσθήκη ticker" },
+  "addNewSlot": { "message": "Προσθήκη δείκτη ή μετοχής" },
+  "loadingPrice": { "message": "Φόρτωση..." },
+  "editCardTitle": { "message": "Επεξεργασία κάρτας αγοράς" },
+  "displayNameLabel": { "message": "Εμφανιζόμενο όνομα:" },
+  "displayNamePh": { "message": "π.χ. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Σύμβολο (Yahoo/NSE):" },
+  "symbolPh": { "message": "π.χ. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Αφαίρεση" },
+  "cancelBtn": { "message": "Άκυρο" },
+  "saveBtn": { "message": "Αποθήκευση" },
+  "saveCardBtn": { "message": "Αποθήκευση κάρτας" },
+  "needBoth": { "message": "Εισαγάγετε εμφανιζόμενο όνομα και σύμβολο." },
+
+  "alertPrefix": { "message": "Δημιουργία ειδοποίησης για" },
+  "aboveLabel": { "message": "Ειδοποίηση αν η τιμή ξεπεράσει (₹):" },
+  "abovePh": { "message": "π.χ. 3000" },
+  "belowLabel": { "message": "Ειδοποίηση αν η τιμή πέσει κάτω (₹):" },
+  "belowPh": { "message": "π.χ. 2500" },
+
+  "aboutTagline": { "message": "Ζωντανή ροή πολλαπλών αγορών" },
+  "aboutDesc": { "message": "Λίστα, ταινία και δείκτες σε πραγματικό χρόνο μέσω Screener.in & Yahoo Finance." },
+  "buyCoffee": { "message": "Κέρασε με έναν καφέ" },
+  "scanSupport": { "message": "Σκανάρετε για υποστήριξη ☕" },
+  "closeBtn": { "message": "Κλείσιμο" },
+  "qrAlt": { "message": "Σκανάρετε για υποστήριξη μέσω Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Επεξεργασία δείκτη" },
+  "macroTileOf": {
+    "message": "Πλακίδιο $N$ από 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Δείκτης:" },
+  "wbLink": { "message": "Προβολή στην Παγκόσμια Τράπεζα" },
+  "macroInflation": { "message": "Πληθωρισμός (CPI)" },
+  "macroUnemployment": { "message": "Ανεργία" },
+  "macroGdp": { "message": "Ανάπτυξη ΑΕΠ" },
+  "macroGdppc": { "message": "Κατά κεφαλήν ΑΕΠ" },
+  "macroGdptotal": { "message": "Συνολικό ΑΕΠ" },
+  "macroTrade": { "message": "Εμπόριο (% ΑΕΠ)" },
+  "macroReserves": { "message": "Συναλλαγματικά αποθέματα" },
+  "macroPopulation": { "message": "Πληθυσμός" },
+
+  "overviewTitle": { "message": "Επισκόπηση αγοράς" },
+  "selectMarket": { "message": "Επιλέξτε αγορά:" },
+  "refreshBtn": { "message": "↻ Ανανέωση" },
+  "refreshTitle": { "message": "Ανανέωση επισκόπησης" },
+  "indicatorsTitle": { "message": "ΟΙΚΟΝΟΜΙΚΟΙ ΔΕΙΚΤΕΣ" },
+  "loadingMarkets": {
+    "message": "Φόρτωση αγορών $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Φόρτωση δεικτών..." },
+  "indicatorsDown": { "message": "Οι δείκτες δεν είναι διαθέσιμοι." },
+  "clickAnalyze": {
+    "message": "$NAME$ — κλικ για ανάλυση",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — κλικ για επεξεργασία",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ ΚΟΡΥΦΑΙΑ ΚΕΡΔΗ" },
+  "losersTitle": { "message": "▼ ΚΟΡΥΦΑΙΕΣ ΖΗΜΙΕΣ" },
+  "noGainers": { "message": "Καμία άνοδος σήμερα" },
+  "noLosers": { "message": "Καμία πτώση σήμερα" },
+  "updatedAt": {
+    "message": "Ενημερώθηκε $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Η φόρτωση απέτυχε. Ανανεώστε." },
+  "latestLabel": { "message": "Πρόσφατο" },
+  "loadingWord": { "message": "φόρτωση..." },
+
+  "newsLoading": { "message": "Φόρτωση τελευταίων νέων..." },
+  "macroNewsTitle": { "message": "ΜΑΚΡΟ ΝΕΑ ΗΠΑ" },
+  "fetchingMacroNews": { "message": "Λήψη μάκρο νέων ΗΠΑ..." },
+  "noPortfolioNews": { "message": "Χωρίς μετοχές σε αυτό το χαρτοφυλάκιο για νέα." },
+  "fetchingNews": { "message": "Λήψη οικονομικών νέων..." },
+  "tickerNewsTitle": {
+    "message": "ΝΕΑ $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Χωρίς πρόσφατα νέα για το χαρτοφυλάκιό σας." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Προτροπή" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Ινδική μετοχή" },
+  "typeIndex": { "message": "Δείκτης" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "Μετοχή $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Μετοχή" },
+
+  "ratioCurrentPrice": { "message": "Τρέχουσα τιμή" },
+  "ratioDayRange": { "message": "Ημερήσιο εύρος" },
+  "ratio52W": { "message": "Εύρος 52Ε" },
+  "ratioVolume": { "message": "Όγκος" },
+  "ratioType": { "message": "Τύπος" },
+  "ratioExchange": { "message": "Χρηματιστήριο" },
+  "ratioMCap": { "message": "Κεφαλαιοποίηση" },
+  "ratioPE": { "message": "P/E μετοχής" },
+  "ratioDiv": { "message": "Μερισματική απόδοση" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Κύλιση ταινίας αριστερά" },
+  "tapeScrollRight": { "message": "Κύλιση ταινίας δεξιά" },
+  "chartNoData": { "message": "Χωρίς δεδομένα γραφήματος" },
+  "chartLoading": { "message": "Φόρτωση γραφήματος..." },
+  "ret1M": { "message": "Απόδ. 1M" },
+  "ret6M": { "message": "Απόδ. 6M" },
+  "ret1Y": { "message": "Απόδ. 1Y" },
+  "ret3Y": { "message": "Απόδ. 3Y" },
+  "ret5Y": { "message": "Απόδ. 5Y" },
+  "ret10Y": { "message": "Απόδ. 10Y" },
+  "retMax": { "message": "Συνολική απόδ." },
+  "metricLastPrice": { "message": "Τελευταία τιμή" },
+  "metricDivYield": { "message": "Μερισμ. απόδ." },
+  "metricPERatio": { "message": "Δείκτης P/E" },
+  "viewDetails": { "message": "Προβολή λεπτομερειών" },
+  "modalSubtitleIndex": {
+    "message": "Δείκτης αγοράς • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Μετοχές" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Παγκόσμια" },
+  "modalDetails": { "message": "Λεπτομέρειες" },
+  "tapeLoading": { "message": "Φόρτωση λίστας Screener..." },
+
+  "notifAboveTitle": { "message": "Ειδοποίηση τιμής! 📈" },
+  "notifAbove": {
+    "message": "Το $TICKER$ ξεπέρασε τα ₹$PRICE$ (τρέχουσα: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Ειδοποίηση τιμής! 📉" },
+  "notifBelow": {
+    "message": "Το $TICKER$ έπεσε κάτω από τα ₹$PRICE$ (τρέχουσα: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Ειδοποίηση τιμής Screener" },
+  "notifGeneric": {
+    "message": "Το $TICKER$ έφτασε τον στόχο $TARGET$ (τρέχουσα: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Προσθήκη \"%s\" στη λίστα Screener" },
+  "ctxAddedTitle": { "message": "Λίστα Screener" },
+  "ctxAddedMsg": {
+    "message": "Το $TICKER$ προστέθηκε στη λίστα σας!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "قائمة مراقبة مباشرة للأسهم الهندية والعالمية، محافظ قابلة للسحب، وشريط أسعار. الدعم: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "فتح قائمة سكرينر" },
+  "commandDesc": { "message": "فتح اللوحة الجانبية لسكرينر" },
+
+  "speedTitle": {
+    "message": "سرعة الشريط: $SPEED$ (انقر للضبط من 0.5x إلى 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "سرعة الشريط: 1.0x (انقر للضبط من 0.5x إلى 3.0x)" },
+  "speedLabel": { "message": "سرعة الشريط" },
+  "speedDecrease": { "message": "إنقاص 0.1x" },
+  "speedIncrease": { "message": "زيادة 0.1x" },
+  "speedCustom": { "message": "مخصص:" },
+  "speedExample": { "message": "مثال 2.3" },
+
+  "pauseTape": { "message": "إيقاف شريط الأسعار مؤقتًا" },
+  "resumeTape": { "message": "استئناف شريط الأسعار" },
+  "hideTape": { "message": "إخفاء شريط الأسعار" },
+  "showTape": { "message": "إظهار شريط الأسعار" },
+  "domainDisableSite": { "message": "تعطيل على هذا الموقع" },
+  "domainDisable": {
+    "message": "تعطيل على $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "تفعيل على $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "التبديل إلى الوضع الفاتح" },
+  "themeToDark": { "message": "التبديل إلى الوضع الداكن" },
+  "aboutSupport": { "message": "حول والدعم" },
+
+  "tabDashboard": { "message": "لوحة التحكم" },
+  "tabMarkets": { "message": "الأسواق" },
+  "tabNews": { "message": "الأخبار" },
+
+  "searchPlaceholder": { "message": "ابحث عن رمز لتحليله أو إضافته..." },
+  "searchButton": { "message": "بحث" },
+  "clocksLabel": { "message": "ساعات الأسواق العالمية" },
+  "clockOpen": { "message": "● مفتوح" },
+  "clockClosed": { "message": "● مغلق" },
+
+  "watchlistTitle": { "message": "قائمة المراقبة الخاصة بك" },
+  "liveBadge": { "message": "مباشر" },
+  "watchlistEmpty": { "message": "القائمة فارغة. ابحث وأضف رمزًا أعلاه!" },
+  "colSymbol": { "message": "الرمز" },
+  "colTrend": { "message": "اتجاه 1Y" },
+  "colPrice": { "message": "السعر" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "القيمة السوقية" },
+  "colActions": { "message": "إجراءات" },
+  "sortByPrice": { "message": "ترتيب حسب السعر" },
+  "sortByMCap": { "message": "ترتيب حسب القيمة السوقية" },
+  "dragHint": { "message": "اسحب لإعادة الترتيب" },
+  "trendReturnTitle": { "message": "العائد خلال الفترة المعروضة" },
+  "setAlertTitle": { "message": "إنشاء تنبيه" },
+  "deleteTitle": { "message": "حذف" },
+  "renameTitle": { "message": "إعادة تسمية المحفظة" },
+  "newTitle": { "message": "محفظة جديدة" },
+  "exportTitle": { "message": "تصدير إلى Excel" },
+
+  "portfolioExists": { "message": "توجد محفظة بهذا الاسم مسبقًا!" },
+  "renamePrompt": {
+    "message": "إعادة تسمية المحفظة \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "اسم المحفظة الجديدة" },
+
+  "verdictLabel": { "message": "حكم الذكاء الاصطناعي:" },
+  "verdictNoData": { "message": "لا توجد بيانات كافية للحكم." },
+  "verdictGem": { "message": "[مقومة بأقل من قيمتها] جوهرة بعائد فعال للغاية على رأس المال." },
+  "verdictExpensive": { "message": "[غالية] شركة قوية، لكن بعلاوة مرتفعة." },
+  "verdictRisk": { "message": "[خطر مرتفع] مقومة بأعلى من قيمتها مع كفاءة ضعيفة لرأس المال." },
+  "verdictSolid": { "message": "[قوية] أساسيات ممتازة بسعر معقول." },
+  "verdictAvg": { "message": "[متوسطة] أساسيات عادية. راقب المحفزات." },
+  "verdictIndex": { "message": "[مؤشر السوق] المعيار الرئيسي للسوق." },
+
+  "scrapingData": { "message": "جارٍ جلب البيانات..." },
+  "backButton": { "message": "← رجوع" },
+  "addToWatchlist": { "message": "+ إضافة إلى القائمة" },
+  "addedButton": { "message": "تمت الإضافة!" },
+  "alreadyButton": { "message": "موجودة مسبقًا في القائمة" },
+  "customizeScreener": { "message": "⚙ تخصيص المعايير على Screener.in" },
+  "peerTitle": { "message": "مقارنة مع النظراء" },
+  "annTitle": { "message": "إعلانات الشركة" },
+  "fetchFailed": { "message": "تعذر جلب البيانات." },
+  "fetchError": { "message": "خطأ." },
+
+  "marketIndices": { "message": "مؤشرات السوق" },
+  "clickEditCard": {
+    "message": "انقر لتحرير $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "إضافة رمز" },
+  "addNewSlot": { "message": "إضافة مؤشر أو سهم جديد" },
+  "loadingPrice": { "message": "جارٍ التحميل..." },
+  "editCardTitle": { "message": "تحرير بطاقة السوق" },
+  "displayNameLabel": { "message": "الاسم المعروض:" },
+  "displayNamePh": { "message": "مثال NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "الرمز (Yahoo/NSE):" },
+  "symbolPh": { "message": "مثال ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "إزالة" },
+  "cancelBtn": { "message": "إلغاء" },
+  "saveBtn": { "message": "حفظ" },
+  "saveCardBtn": { "message": "حفظ البطاقة" },
+  "needBoth": { "message": "يرجى إدخال الاسم المعروض والرمز معًا." },
+
+  "alertPrefix": { "message": "إنشاء تنبيه لـ" },
+  "aboveLabel": { "message": "تنبيه إذا تجاوز السعر (₹):" },
+  "abovePh": { "message": "مثال 3000" },
+  "belowLabel": { "message": "تنبيه إذا انخفض السعر عن (₹):" },
+  "belowPh": { "message": "مثال 2500" },
+
+  "aboutTagline": { "message": "بث مباشر متعدد الأسواق" },
+  "aboutDesc": { "message": "قائمة مراقبة وشريط أسعار ونسب لحظية عبر Screener.in وYahoo Finance." },
+  "buyCoffee": { "message": "ادعمني بقهوة" },
+  "scanSupport": { "message": "امسح للدعم ☕" },
+  "closeBtn": { "message": "إغلاق" },
+  "qrAlt": { "message": "امسح للدعم عبر Buy Me a Coffee" },
+
+  "macroTitle": { "message": "تحرير المؤشر" },
+  "macroTileOf": {
+    "message": "مربع $N$ من 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "المؤشر:" },
+  "wbLink": { "message": "عرض على البنك الدولي" },
+  "macroInflation": { "message": "التضخم (CPI)" },
+  "macroUnemployment": { "message": "البطالة" },
+  "macroGdp": { "message": "نمو الناتج المحلي" },
+  "macroGdppc": { "message": "نصيب الفرد من الناتج" },
+  "macroGdptotal": { "message": "إجمالي الناتج المحلي" },
+  "macroTrade": { "message": "التجارة (% من الناتج)" },
+  "macroReserves": { "message": "احتياطيات النقد الأجنبي" },
+  "macroPopulation": { "message": "السكان" },
+
+  "overviewTitle": { "message": "نظرة على السوق" },
+  "selectMarket": { "message": "اختر السوق:" },
+  "refreshBtn": { "message": "↻ تحديث" },
+  "refreshTitle": { "message": "تحديث النظرة" },
+  "indicatorsTitle": { "message": "المؤشرات الاقتصادية" },
+  "loadingMarkets": {
+    "message": "جارٍ تحميل أسواق $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "جارٍ تحميل المؤشرات..." },
+  "indicatorsDown": { "message": "المؤشرات غير متوفرة." },
+  "clickAnalyze": {
+    "message": "$NAME$ — انقر للتحليل",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — انقر للتحرير",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ أكبر الرابحين" },
+  "losersTitle": { "message": "▼ أكبر الخاسرين" },
+  "noGainers": { "message": "لا رابحون اليوم" },
+  "noLosers": { "message": "لا خاسرون اليوم" },
+  "updatedAt": {
+    "message": "حُدث $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "تعذر تحميل البيانات. حدّث الصفحة." },
+  "latestLabel": { "message": "الأحدث" },
+  "loadingWord": { "message": "جارٍ التحميل..." },
+
+  "newsLoading": { "message": "جارٍ تحميل آخر الأخبار..." },
+  "macroNewsTitle": { "message": "أخبار الاقتصاد الأمريكي" },
+  "fetchingMacroNews": { "message": "جارٍ جلب أخبار الاقتصاد الأمريكي..." },
+  "noPortfolioNews": { "message": "لا أسهم في هذه المحفظة للأخبار." },
+  "fetchingNews": { "message": "جارٍ جلب الأخبار المالية..." },
+  "tickerNewsTitle": {
+    "message": "أخبار $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "لا أخبار حديثة لمحفظتك." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "موجه" },
+  "promptOk": { "message": "موافق" },
+
+  "typeIndian": { "message": "سهم هندي" },
+  "typeIndex": { "message": "مؤشر" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "سهم $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "سهم" },
+
+  "ratioCurrentPrice": { "message": "السعر الحالي" },
+  "ratioDayRange": { "message": "نطاق اليوم" },
+  "ratio52W": { "message": "نطاق 52 أسبوع" },
+  "ratioVolume": { "message": "الحجم" },
+  "ratioType": { "message": "النوع" },
+  "ratioExchange": { "message": "البورصة" },
+  "ratioMCap": { "message": "القيمة السوقية" },
+  "ratioPE": { "message": "مكرر السهم" },
+  "ratioDiv": { "message": "عائد التوزيعات" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "تمرير الشريط لليسار" },
+  "tapeScrollRight": { "message": "تمرير الشريط لليمين" },
+  "chartNoData": { "message": "لا توجد بيانات رسم" },
+  "chartLoading": { "message": "جارٍ تحميل الرسم..." },
+  "ret1M": { "message": "عائد 1M" },
+  "ret6M": { "message": "عائد 6M" },
+  "ret1Y": { "message": "عائد 1Y" },
+  "ret3Y": { "message": "عائد 3Y" },
+  "ret5Y": { "message": "عائد 5Y" },
+  "ret10Y": { "message": "عائد 10Y" },
+  "retMax": { "message": "العائد الكلي" },
+  "metricLastPrice": { "message": "آخر سعر" },
+  "metricDivYield": { "message": "عائد التوزيعات" },
+  "metricPERatio": { "message": "مكرر الربحية" },
+  "viewDetails": { "message": "عرض التفاصيل" },
+  "modalSubtitleIndex": {
+    "message": "مؤشر السوق • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "أسهم" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "عالمي" },
+  "modalDetails": { "message": "التفاصيل" },
+  "tapeLoading": { "message": "جارٍ تحميل قائمة سكرينر..." },
+
+  "notifAboveTitle": { "message": "تنبيه سعري! 📈" },
+  "notifAbove": {
+    "message": "تجاوز $TICKER$ مستوى ₹$PRICE$ (الحالي: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "تنبيه سعري! 📉" },
+  "notifBelow": {
+    "message": "انخفض $TICKER$ عن ₹$PRICE$ (الحالي: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "تنبيه سكرينر السعري" },
+  "notifGeneric": {
+    "message": "تجاوز $TICKER$ هدفك $TARGET$ (الحالي: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "إضافة \"%s\" إلى قائمة سكرينر" },
+  "ctxAddedTitle": { "message": "قائمة سكرينر" },
+  "ctxAddedMsg": {
+    "message": "تمت إضافة $TICKER$ إلى قائمتك!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

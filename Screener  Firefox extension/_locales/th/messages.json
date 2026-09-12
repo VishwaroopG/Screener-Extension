@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "วอทช์ลิสต์หุ้นอินเดียและทั่วโลกแบบสด พอร์ตโฟลิโอแบบลากได้ และทิกเกอร์เทป สนับสนุน: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "เปิดวอทช์ลิสต์ Screener" },
+  "commandDesc": { "message": "เปิดแผงข้าง Screener" },
+
+  "speedTitle": {
+    "message": "ความเร็วเทป: $SPEED$ (คลิกเพื่อปรับ 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "ความเร็วเทป: 1.0x (คลิกเพื่อปรับ 0.5x – 3.0x)" },
+  "speedLabel": { "message": "ความเร็วเทป" },
+  "speedDecrease": { "message": "ลด 0.1x" },
+  "speedIncrease": { "message": "เพิ่ม 0.1x" },
+  "speedCustom": { "message": "กำหนดเอง:" },
+  "speedExample": { "message": "เช่น 2.3" },
+
+  "pauseTape": { "message": "หยุดทิกเกอร์เทปชั่วคราว" },
+  "resumeTape": { "message": "เล่นทิกเกอร์เทปต่อ" },
+  "hideTape": { "message": "ซ่อนทิกเกอร์เทป" },
+  "showTape": { "message": "แสดงทิกเกอร์เทป" },
+  "domainDisableSite": { "message": "ปิดบนไซต์นี้" },
+  "domainDisable": {
+    "message": "ปิดบน $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "เปิดบน $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "เปลี่ยนเป็นโหมดสว่าง" },
+  "themeToDark": { "message": "เปลี่ยนเป็นโหมดมืด" },
+  "aboutSupport": { "message": "เกี่ยวกับ & สนับสนุน" },
+
+  "tabDashboard": { "message": "แดชบอร์ด" },
+  "tabMarkets": { "message": "ตลาด" },
+  "tabNews": { "message": "ข่าว" },
+
+  "searchPlaceholder": { "message": "ค้นหาทิกเกอร์เพื่อวิเคราะห์หรือเพิ่ม..." },
+  "searchButton": { "message": "ค้นหา" },
+  "clocksLabel": { "message": "นาฬิกาตลาดโลก" },
+  "clockOpen": { "message": "● เปิด" },
+  "clockClosed": { "message": "● ปิด" },
+
+  "watchlistTitle": { "message": "วอทช์ลิสต์ของคุณ" },
+  "liveBadge": { "message": "สด" },
+  "watchlistEmpty": { "message": "วอทช์ลิสต์ว่างเปล่า ค้นหาและเพิ่มทิกเกอร์ด้านบน!" },
+  "colSymbol": { "message": "สัญลักษณ์" },
+  "colTrend": { "message": "แนวโน้ม 1Y" },
+  "colPrice": { "message": "ราคา" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "มูลค่าตลาด" },
+  "colActions": { "message": "การกระทำ" },
+  "sortByPrice": { "message": "เรียงตามราคา" },
+  "sortByMCap": { "message": "เรียงตามมูลค่าตลาด" },
+  "dragHint": { "message": "ลากเพื่อจัดลำดับใหม่" },
+  "trendReturnTitle": { "message": "ผลตอบแทนช่วงที่แสดง" },
+  "setAlertTitle": { "message": "สร้างการแจ้งเตือน" },
+  "deleteTitle": { "message": "ลบ" },
+  "renameTitle": { "message": "เปลี่ยนชื่อพอร์ต" },
+  "newTitle": { "message": "พอร์ตใหม่" },
+  "exportTitle": { "message": "ส่งออกไป Excel" },
+
+  "portfolioExists": { "message": "มีพอร์ตชื่อนี้อยู่แล้ว!" },
+  "renamePrompt": {
+    "message": "เปลี่ยนชื่อพอร์ต \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "ชื่อพอร์ตใหม่" },
+
+  "verdictLabel": { "message": "คำวินิจฉัย AI:" },
+  "verdictNoData": { "message": "ข้อมูลไม่พอสำหรับคำวินิจฉัย" },
+  "verdictGem": { "message": "[ถูก] เพชรที่ให้ผลตอบแทนทุนมีประสิทธิภาพสูง" },
+  "verdictExpensive": { "message": "[แพง] ธุรกิจแข็งแกร่ง แต่ราคาพรีเมียม" },
+  "verdictRisk": { "message": "[เสี่ยงสูง] ราคาแพงเกิน ประสิทธิภาพทุนต่ำ" },
+  "verdictSolid": { "message": "[แข็งแกร่ง] พื้นฐานดีเยี่ยมในราคาสมเหตุสมผล" },
+  "verdictAvg": { "message": "[ปานกลาง] พื้นฐานทั่วไป จับตาปัจจัยหนุน" },
+  "verdictIndex": { "message": "[ดัชนี] ดัชนีอ้างอิงหลักของตลาด" },
+
+  "scrapingData": { "message": "กำลังดึงข้อมูล..." },
+  "backButton": { "message": "← กลับ" },
+  "addToWatchlist": { "message": "+ เพิ่มในวอทช์ลิสต์" },
+  "addedButton": { "message": "เพิ่มแล้ว!" },
+  "alreadyButton": { "message": "มีในวอทช์ลิสต์แล้ว" },
+  "customizeScreener": { "message": "⚙ ปรับพารามิเตอร์บน Screener.in" },
+  "peerTitle": { "message": "เปรียบเทียบคู่แข่ง" },
+  "annTitle": { "message": "ประกาศบริษัท" },
+  "fetchFailed": { "message": "ดึงข้อมูลไม่ได้" },
+  "fetchError": { "message": "ผิดพลาด" },
+
+  "marketIndices": { "message": "ดัชนีตลาด" },
+  "clickEditCard": {
+    "message": "คลิกเพื่อแก้ $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "เพิ่มทิกเกอร์" },
+  "addNewSlot": { "message": "เพิ่มดัชนีหรือหุ้น" },
+  "loadingPrice": { "message": "กำลังโหลด..." },
+  "editCardTitle": { "message": "แก้การ์ดตลาด" },
+  "displayNameLabel": { "message": "ชื่อที่แสดง:" },
+  "displayNamePh": { "message": "เช่น NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "สัญลักษณ์ (Yahoo/NSE):" },
+  "symbolPh": { "message": "เช่น ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "ลบออก" },
+  "cancelBtn": { "message": "ยกเลิก" },
+  "saveBtn": { "message": "บันทึก" },
+  "saveCardBtn": { "message": "บันทึกการ์ด" },
+  "needBoth": { "message": "กรุณาใส่ชื่อที่แสดงและสัญลักษณ์" },
+
+  "alertPrefix": { "message": "สร้างการแจ้งเตือนสำหรับ" },
+  "aboveLabel": { "message": "เตือนเมื่อราคาสูงกว่า (₹):" },
+  "abovePh": { "message": "เช่น 3000" },
+  "belowLabel": { "message": "เตือนเมื่อราคาต่ำกว่า (₹):" },
+  "belowPh": { "message": "เช่น 2500" },
+
+  "aboutTagline": { "message": "ฟีดสดหลายตลาด" },
+  "aboutDesc": { "message": "วอทช์ลิสต์ ทิกเกอร์เทป และอัตราส่วนเรียลไทม์ผ่าน Screener.in และ Yahoo Finance" },
+  "buyCoffee": { "message": "เลี้ยงกาแฟหน่อย" },
+  "scanSupport": { "message": "สแกนเพื่อสนับสนุน ☕" },
+  "closeBtn": { "message": "ปิด" },
+  "qrAlt": { "message": "สแกนเพื่อสนับสนุนผ่าน Buy Me a Coffee" },
+
+  "macroTitle": { "message": "แก้ตัวชี้วัด" },
+  "macroTileOf": {
+    "message": "ไทล์ $N$ จาก 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "ตัวชี้วัด:" },
+  "wbLink": { "message": "ดูบนธนาคารโลก" },
+  "macroInflation": { "message": "เงินเฟ้อ (CPI)" },
+  "macroUnemployment": { "message": "ว่างงาน" },
+  "macroGdp": { "message": "GDP เติบโต" },
+  "macroGdppc": { "message": "GDP ต่อหัว" },
+  "macroGdptotal": { "message": "GDP รวม" },
+  "macroTrade": { "message": "การค้า (% ของ GDP)" },
+  "macroReserves": { "message": "ทุนสำรองเงินตรา" },
+  "macroPopulation": { "message": "ประชากร" },
+
+  "overviewTitle": { "message": "ภาพรวมตลาด" },
+  "selectMarket": { "message": "เลือกตลาด:" },
+  "refreshBtn": { "message": "↻ รีเฟรช" },
+  "refreshTitle": { "message": "รีเฟรชภาพรวม" },
+  "indicatorsTitle": { "message": "ตัวชี้วัดเศรษฐกิจ" },
+  "loadingMarkets": {
+    "message": "กำลังโหลดตลาด $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "กำลังโหลดตัวชี้วัด..." },
+  "indicatorsDown": { "message": "ไม่มีตัวชี้วัด" },
+  "clickAnalyze": {
+    "message": "$NAME$ — คลิกเพื่อวิเคราะห์",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — คลิกเพื่อแก้",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ ขึ้นแรงสุด" },
+  "losersTitle": { "message": "▼ ลงแรงสุด" },
+  "noGainers": { "message": "วันนี้ไม่มีตัวขึ้น" },
+  "noLosers": { "message": "วันนี้ไม่มีตัวลง" },
+  "updatedAt": {
+    "message": "อัปเดต $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "โหลดล้มเหลว ลองรีเฟรช" },
+  "latestLabel": { "message": "ล่าสุด" },
+  "loadingWord": { "message": "กำลังโหลด..." },
+
+  "newsLoading": { "message": "กำลังโหลดข่าวล่าสุด..." },
+  "macroNewsTitle": { "message": "ข่าวมาโครสหรัฐ" },
+  "fetchingMacroNews": { "message": "กำลังดึงข่าวมาโครสหรัฐ..." },
+  "noPortfolioNews": { "message": "พอร์ตนี้ไม่มีหุ้นสำหรับข่าว" },
+  "fetchingNews": { "message": "กำลังดึงข่าวการเงิน..." },
+  "tickerNewsTitle": {
+    "message": "ข่าว $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "ไม่มีข่าวล่าสุดสำหรับพอร์ตของคุณ" },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "พร้อมต์" },
+  "promptOk": { "message": "ตกลง" },
+
+  "typeIndian": { "message": "หุ้นอินเดีย" },
+  "typeIndex": { "message": "ดัชนี" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "หุ้น $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "หุ้น" },
+
+  "ratioCurrentPrice": { "message": "ราคาปัจจุบัน" },
+  "ratioDayRange": { "message": "ช่วงรายวัน" },
+  "ratio52W": { "message": "ช่วง 52W" },
+  "ratioVolume": { "message": "ปริมาณ" },
+  "ratioType": { "message": "ประเภท" },
+  "ratioExchange": { "message": "ตลาด" },
+  "ratioMCap": { "message": "มูลค่าตลาด" },
+  "ratioPE": { "message": "P/E หุ้น" },
+  "ratioDiv": { "message": "ยีลด์ปันผล" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "เลื่อนเทปซ้าย" },
+  "tapeScrollRight": { "message": "เลื่อนเทปขวา" },
+  "chartNoData": { "message": "ไม่มีข้อมูลกราฟ" },
+  "chartLoading": { "message": "กำลังโหลดกราฟ..." },
+  "ret1M": { "message": "ผลตอบแทน 1M" },
+  "ret6M": { "message": "ผลตอบแทน 6M" },
+  "ret1Y": { "message": "ผลตอบแทน 1Y" },
+  "ret3Y": { "message": "ผลตอบแทน 3Y" },
+  "ret5Y": { "message": "ผลตอบแทน 5Y" },
+  "ret10Y": { "message": "ผลตอบแทน 10Y" },
+  "retMax": { "message": "ผลตอบแทนรวม" },
+  "metricLastPrice": { "message": "ราคาล่าสุด" },
+  "metricDivYield": { "message": "ยีลด์ปันผล" },
+  "metricPERatio": { "message": "อัตราส่วน P/E" },
+  "viewDetails": { "message": "ดูรายละเอียด" },
+  "modalSubtitleIndex": {
+    "message": "ดัชนีตลาด • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "หุ้น" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "ทั่วโลก" },
+  "modalDetails": { "message": "รายละเอียด" },
+  "tapeLoading": { "message": "กำลังโหลดวอทช์ลิสต์ Screener..." },
+
+  "notifAboveTitle": { "message": "แจ้งเตือนราคา! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ ทะลุ ₹$PRICE$ (ปัจจุบัน: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "แจ้งเตือนราคา! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ ต่ำกว่า ₹$PRICE$ (ปัจจุบัน: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "แจ้งเตือนราคา Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ ถึงเป้า $TARGET$ ของคุณ (ปัจจุบัน: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "เพิ่ม \"%s\" ในวอทช์ลิสต์ Screener" },
+  "ctxAddedTitle": { "message": "วอทช์ลิสต์ Screener" },
+  "ctxAddedMsg": {
+    "message": "เพิ่ม $TICKER$ ในวอทช์ลิสต์แล้ว!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

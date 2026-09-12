@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "واچ‌لیست زنده سهام هند و جهان، پورتفولیوهای قابل جابه‌جایی و نوار قیمت. حمایت: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "باز کردن واچ‌لیست Screener" },
+  "commandDesc": { "message": "باز کردن پنل کناری Screener" },
+
+  "speedTitle": {
+    "message": "سرعت نوار: $SPEED$ (برای تنظیم 0.5x تا 3.0x کلیک کنید)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "سرعت نوار: 1.0x (برای تنظیم 0.5x تا 3.0x کلیک کنید)" },
+  "speedLabel": { "message": "سرعت نوار" },
+  "speedDecrease": { "message": "کاهش 0.1x" },
+  "speedIncrease": { "message": "افزایش 0.1x" },
+  "speedCustom": { "message": "دلخواه:" },
+  "speedExample": { "message": "مثلاً 2.3" },
+
+  "pauseTape": { "message": "توقف نوار قیمت" },
+  "resumeTape": { "message": "ادامه نوار قیمت" },
+  "hideTape": { "message": "پنهان کردن نوار قیمت" },
+  "showTape": { "message": "نمایش نوار قیمت" },
+  "domainDisableSite": { "message": "غیرفعال در این سایت" },
+  "domainDisable": {
+    "message": "غیرفعال در $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "فعال در $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "رفتن به حالت روشن" },
+  "themeToDark": { "message": "رفتن به حالت تیره" },
+  "aboutSupport": { "message": "درباره و حمایت" },
+
+  "tabDashboard": { "message": "داشبورد" },
+  "tabMarkets": { "message": "بازارها" },
+  "tabNews": { "message": "اخبار" },
+
+  "searchPlaceholder": { "message": "نماد برای تحلیل یا افزودن جستجو کنید..." },
+  "searchButton": { "message": "جستجو" },
+  "clocksLabel": { "message": "ساعت‌های بازار جهانی" },
+  "clockOpen": { "message": "● باز" },
+  "clockClosed": { "message": "● بسته" },
+
+  "watchlistTitle": { "message": "واچ‌لیست شما" },
+  "liveBadge": { "message": "زنده" },
+  "watchlistEmpty": { "message": "واچ‌لیست خالی است. بالا نمادی جستجو و اضافه کنید!" },
+  "colSymbol": { "message": "نماد" },
+  "colTrend": { "message": "روند 1Y" },
+  "colPrice": { "message": "قیمت" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "ارزش بازار" },
+  "colActions": { "message": "اقدامات" },
+  "sortByPrice": { "message": "مرتب‌سازی بر اساس قیمت" },
+  "sortByMCap": { "message": "مرتب‌سازی بر اساس ارزش بازار" },
+  "dragHint": { "message": "برای مرتب‌سازی بکشید" },
+  "trendReturnTitle": { "message": "بازده دوره نمایش‌داده‌شده" },
+  "setAlertTitle": { "message": "ایجاد هشدار" },
+  "deleteTitle": { "message": "حذف" },
+  "renameTitle": { "message": "تغییر نام پورتفولیو" },
+  "newTitle": { "message": "پورتفولیوی جدید" },
+  "exportTitle": { "message": "خروجی به Excel" },
+
+  "portfolioExists": { "message": "پورتفولیویی با این نام وجود دارد!" },
+  "renamePrompt": {
+    "message": "تغییر نام پورتفولیوی \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "نام پورتفولیوی جدید" },
+
+  "verdictLabel": { "message": "رأی هوش مصنوعی:" },
+  "verdictNoData": { "message": "داده کافی برای رأی نیست." },
+  "verdictGem": { "message": "[ارزان] گوهری با بازده سرمایه بسیار کارآمد." },
+  "verdictExpensive": { "message": "[گران] کسب‌وکار قوی، اما با قیمتی بالا." },
+  "verdictRisk": { "message": "[ریسک بالا] بیش‌ارزش‌گذاری‌شده با کارایی ضعیف سرمایه." },
+  "verdictSolid": { "message": "[محکم] بنیادهای عالی با قیمت مناسب." },
+  "verdictAvg": { "message": "[متوسط] بنیادهای استاندارد. کاتالیزورها را رصد کنید." },
+  "verdictIndex": { "message": "[شاخص] معیار کلیدی بازار." },
+
+  "scrapingData": { "message": "در حال دریافت داده‌ها..." },
+  "backButton": { "message": "← بازگشت" },
+  "addToWatchlist": { "message": "+ افزودن به واچ‌لیست" },
+  "addedButton": { "message": "اضافه شد!" },
+  "alreadyButton": { "message": "قبلاً در واچ‌لیست است" },
+  "customizeScreener": { "message": "⚙ سفارشی‌سازی پارامترها در Screener.in" },
+  "peerTitle": { "message": "مقایسه با همتایان" },
+  "annTitle": { "message": "اطلاعیه‌های شرکت" },
+  "fetchFailed": { "message": "دریافت داده ممکن نشد." },
+  "fetchError": { "message": "خطا." },
+
+  "marketIndices": { "message": "شاخص‌های بازار" },
+  "clickEditCard": {
+    "message": "برای ویرایش $NAME$ کلیک کنید",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "افزودن نماد" },
+  "addNewSlot": { "message": "افزودن شاخص یا سهم" },
+  "loadingPrice": { "message": "در حال بارگذاری..." },
+  "editCardTitle": { "message": "ویرایش کارت بازار" },
+  "displayNameLabel": { "message": "نام نمایشی:" },
+  "displayNamePh": { "message": "مثلاً NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "نماد (Yahoo/NSE):" },
+  "symbolPh": { "message": "مثلاً ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "حذف" },
+  "cancelBtn": { "message": "لغو" },
+  "saveBtn": { "message": "ذخیره" },
+  "saveCardBtn": { "message": "ذخیره کارت" },
+  "needBoth": { "message": "لطفاً نام نمایشی و نماد را وارد کنید." },
+
+  "alertPrefix": { "message": "ایجاد هشدار برای" },
+  "aboveLabel": { "message": "هشدار اگر قیمت بالاتر از (₹):" },
+  "abovePh": { "message": "مثلاً 3000" },
+  "belowLabel": { "message": "هشدار اگر قیمت پایین‌تر از (₹):" },
+  "belowPh": { "message": "مثلاً 2500" },
+
+  "aboutTagline": { "message": "فید زنده چندبازاری" },
+  "aboutDesc": { "message": "واچ‌لیست، نوار قیمت و نسبت‌های بلادرنگ از طریق Screener.in و Yahoo Finance." },
+  "buyCoffee": { "message": "یک قهوه مهمانم کن" },
+  "scanSupport": { "message": "برای حمایت اسکن کنید ☕" },
+  "closeBtn": { "message": "بستن" },
+  "qrAlt": { "message": "برای حمایت از طریق Buy Me a Coffee اسکن کنید" },
+
+  "macroTitle": { "message": "ویرایش شاخص" },
+  "macroTileOf": {
+    "message": "کاشی $N$ از 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "شاخص:" },
+  "wbLink": { "message": "مشاهده در بانک جهانی" },
+  "macroInflation": { "message": "تورم (CPI)" },
+  "macroUnemployment": { "message": "بیکاری" },
+  "macroGdp": { "message": "رشد GDP" },
+  "macroGdppc": { "message": "سرانه GDP" },
+  "macroGdptotal": { "message": "GDP کل" },
+  "macroTrade": { "message": "تجارت (% GDP)" },
+  "macroReserves": { "message": "ذخایر ارزی" },
+  "macroPopulation": { "message": "جمعیت" },
+
+  "overviewTitle": { "message": "نمای بازار" },
+  "selectMarket": { "message": "انتخاب بازار:" },
+  "refreshBtn": { "message": "↻ به‌روزرسانی" },
+  "refreshTitle": { "message": "به‌روزرسانی نما" },
+  "indicatorsTitle": { "message": "شاخص‌های اقتصادی" },
+  "loadingMarkets": {
+    "message": "در حال بارگذاری بازارهای $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "در حال بارگذاری شاخص‌ها..." },
+  "indicatorsDown": { "message": "شاخص‌ها در دسترس نیستند." },
+  "clickAnalyze": {
+    "message": "$NAME$ — برای تحلیل کلیک کنید",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — برای ویرایش کلیک کنید",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ برترین رشدها" },
+  "losersTitle": { "message": "▼ برترین افت‌ها" },
+  "noGainers": { "message": "امروز رشدی نیست" },
+  "noLosers": { "message": "امروز افتی نیست" },
+  "updatedAt": {
+    "message": "به‌روزرسانی $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "بارگذاری ناموفق. تازه‌سازی کنید." },
+  "latestLabel": { "message": "تازه‌ترین" },
+  "loadingWord": { "message": "در حال بارگذاری..." },
+
+  "newsLoading": { "message": "در حال بارگذاری آخرین اخبار..." },
+  "macroNewsTitle": { "message": "اخبار ماکروی آمریکا" },
+  "fetchingMacroNews": { "message": "در حال دریافت اخبار ماکروی آمریکا..." },
+  "noPortfolioNews": { "message": "سهامی در این پورتفولیو برای اخبار نیست." },
+  "fetchingNews": { "message": "در حال دریافت اخبار مالی..." },
+  "tickerNewsTitle": {
+    "message": "اخبار $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "خبر تازه‌ای برای پورتفولیوی شما نیست." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "اعلان" },
+  "promptOk": { "message": "تأیید" },
+
+  "typeIndian": { "message": "سهم هندی" },
+  "typeIndex": { "message": "شاخص" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "سهم $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "سهم" },
+
+  "ratioCurrentPrice": { "message": "قیمت جاری" },
+  "ratioDayRange": { "message": "بازه روزانه" },
+  "ratio52W": { "message": "بازه 52H" },
+  "ratioVolume": { "message": "حجم" },
+  "ratioType": { "message": "نوع" },
+  "ratioExchange": { "message": "بورس" },
+  "ratioMCap": { "message": "ارزش بازار" },
+  "ratioPE": { "message": "P/E سهم" },
+  "ratioDiv": { "message": "بازده سود" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "اسکرول نوار به چپ" },
+  "tapeScrollRight": { "message": "اسکرول نوار به راست" },
+  "chartNoData": { "message": "داده نمودار نیست" },
+  "chartLoading": { "message": "در حال بارگذاری نمودار..." },
+  "ret1M": { "message": "بازده 1M" },
+  "ret6M": { "message": "بازده 6M" },
+  "ret1Y": { "message": "بازده 1Y" },
+  "ret3Y": { "message": "بازده 3Y" },
+  "ret5Y": { "message": "بازده 5Y" },
+  "ret10Y": { "message": "بازده 10Y" },
+  "retMax": { "message": "بازده کل" },
+  "metricLastPrice": { "message": "آخرین قیمت" },
+  "metricDivYield": { "message": "بازده سود" },
+  "metricPERatio": { "message": "نسبت P/E" },
+  "viewDetails": { "message": "مشاهده جزئیات" },
+  "modalSubtitleIndex": {
+    "message": "شاخص بازار • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "سهام" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "جهانی" },
+  "modalDetails": { "message": "جزئیات" },
+  "tapeLoading": { "message": "در حال بارگذاری واچ‌لیست Screener..." },
+
+  "notifAboveTitle": { "message": "هشدار قیمت! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ بالای ₹$PRICE$ رفت (فعلی: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "هشدار قیمت! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ زیر ₹$PRICE$ رفت (فعلی: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "هشدار قیمت Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ به هدف $TARGET$ شما رسید (فعلی: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "افزودن \"%s\" به واچ‌لیست Screener" },
+  "ctxAddedTitle": { "message": "واچ‌لیست Screener" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ به واچ‌لیست شما اضافه شد!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

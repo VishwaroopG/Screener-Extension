@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "بھارتی اور عالمی اسٹاک کی لائیو واچ لسٹ، ڈریگ والے پورٹ فولیو اور ٹکر ٹیپ۔ تعاون: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "اسکرینر واچ لسٹ کھولیں" },
+  "commandDesc": { "message": "اسکرینر سائیڈ پینل کھولیں" },
+
+  "speedTitle": {
+    "message": "ٹیپ رفتار: $SPEED$ (0.5x – 3.0x بدلنے کے لیے کلک کریں)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "ٹیپ رفتار: 1.0x (0.5x – 3.0x بدلنے کے لیے کلک کریں)" },
+  "speedLabel": { "message": "ٹیپ رفتار" },
+  "speedDecrease": { "message": "0.1x کم کریں" },
+  "speedIncrease": { "message": "0.1x بڑھائیں" },
+  "speedCustom": { "message": "کسٹم:" },
+  "speedExample": { "message": "مثلاً 2.3" },
+
+  "pauseTape": { "message": "ٹکر ٹیپ روکیں" },
+  "resumeTape": { "message": "ٹکر ٹیپ جاری رکھیں" },
+  "hideTape": { "message": "ٹکر ٹیپ چھپائیں" },
+  "showTape": { "message": "ٹکر ٹیپ دکھائیں" },
+  "domainDisableSite": { "message": "اس سائٹ پر بند کریں" },
+  "domainDisable": {
+    "message": "$DOMAIN$ پر بند کریں",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "$DOMAIN$ پر آن کریں",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "لائٹ موڈ پر جائیں" },
+  "themeToDark": { "message": "ڈارک موڈ پر جائیں" },
+  "aboutSupport": { "message": "تعارف و تعاون" },
+
+  "tabDashboard": { "message": "ڈیش بورڈ" },
+  "tabMarkets": { "message": "منڈیاں" },
+  "tabNews": { "message": "خبریں" },
+
+  "searchPlaceholder": { "message": "تجزیے یا اضافے کے لیے ٹکر تلاش کریں..." },
+  "searchButton": { "message": "تلاش کریں" },
+  "clocksLabel": { "message": "عالمی منڈی گھڑیاں" },
+  "clockOpen": { "message": "● کھلا" },
+  "clockClosed": { "message": "● بند" },
+
+  "watchlistTitle": { "message": "آپ کی واچ لسٹ" },
+  "liveBadge": { "message": "لائیو" },
+  "watchlistEmpty": { "message": "واچ لسٹ خالی ہے۔ اوپر ٹکر تلاش کرکے شامل کریں!" },
+  "colSymbol": { "message": "سمبل" },
+  "colTrend": { "message": "1Y رجحان" },
+  "colPrice": { "message": "قیمت" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "M. کیپ" },
+  "colActions": { "message": "عمل" },
+  "sortByPrice": { "message": "قیمت کے لحاظ سے ترتیب" },
+  "sortByMCap": { "message": "مارکیٹ کیپ کے لحاظ سے ترتیب" },
+  "dragHint": { "message": "ترتیب بدلنے کے لیے گھسیٹیں" },
+  "trendReturnTitle": { "message": "دکھائی مدت کا منافع" },
+  "setAlertTitle": { "message": "الرٹ بنائیں" },
+  "deleteTitle": { "message": "حذف کریں" },
+  "renameTitle": { "message": "پورٹ فولیو کا نام بدلیں" },
+  "newTitle": { "message": "نیا پورٹ فولیو" },
+  "exportTitle": { "message": "Excel میں ایکسپورٹ کریں" },
+
+  "portfolioExists": { "message": "اس نام کا پورٹ فولیو پہلے سے موجود ہے!" },
+  "renamePrompt": {
+    "message": "پورٹ فولیو \"$NAME$\" کا نام بدلیں",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "نئے پورٹ فولیو کا نام" },
+
+  "verdictLabel": { "message": "AI فیصلہ:" },
+  "verdictNoData": { "message": "فیصلے کے لیے ناکافی ڈیٹا۔" },
+  "verdictGem": { "message": "[کم قیمت] سرمائے پر نہایت مؤثر منافع کا ہیرا۔" },
+  "verdictExpensive": { "message": "[مہنگا] مضبوط کاروبار، مگر مہنگے پریمیم پر۔" },
+  "verdictRisk": { "message": "[زیادہ خطرہ] کمزور سرمائی کارکردگی کے ساتھ زائد قیمت۔" },
+  "verdictSolid": { "message": "[مضبوط] مناسب قیمت پر بہترین بنیادیں۔" },
+  "verdictAvg": { "message": "[اوسط] معیاری بنیادیں۔ نمو کے اشارے دیکھیں۔" },
+  "verdictIndex": { "message": "[مارکیٹ انڈیکس] منڈی کا اہم بینچ مارک۔" },
+
+  "scrapingData": { "message": "ڈیٹا لایا جا رہا ہے..." },
+  "backButton": { "message": "← واپس" },
+  "addToWatchlist": { "message": "+ واچ لسٹ میں شامل کریں" },
+  "addedButton": { "message": "شامل ہوگیا!" },
+  "alreadyButton": { "message": "پہلے سے واچ لسٹ میں ہے" },
+  "customizeScreener": { "message": "⚙ Screener.in پر پیرامیٹرز کسٹمائز کریں" },
+  "peerTitle": { "message": "ہم عصر موازنہ" },
+  "annTitle": { "message": "کمپنی اعلانات" },
+  "fetchFailed": { "message": "ڈیٹا نہیں مل سکا۔" },
+  "fetchError": { "message": "خرابی۔" },
+
+  "marketIndices": { "message": "منڈی اشاریے" },
+  "clickEditCard": {
+    "message": "$NAME$ تدوین کے لیے کلک کریں",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "ٹکر شامل کریں" },
+  "addNewSlot": { "message": "نیا انڈیکس یا اسٹاک شامل کریں" },
+  "loadingPrice": { "message": "لوڈ ہو رہا ہے..." },
+  "editCardTitle": { "message": "مارکیٹ کارڈ تدوین کریں" },
+  "displayNameLabel": { "message": "ظاہری نام:" },
+  "displayNamePh": { "message": "مثلاً NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "سمبل (Yahoo/NSE):" },
+  "symbolPh": { "message": "مثلاً ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "ہٹائیں" },
+  "cancelBtn": { "message": "منسوخ کریں" },
+  "saveBtn": { "message": "محفوظ کریں" },
+  "saveCardBtn": { "message": "کارڈ محفوظ کریں" },
+  "needBoth": { "message": "براہ کرم ظاہری نام اور سمبل دونوں دیں۔" },
+
+  "alertPrefix": { "message": "الرٹ بنائیں:" },
+  "aboveLabel": { "message": "قیمت اوپر جائے تو الرٹ (₹):" },
+  "abovePh": { "message": "مثلاً 3000" },
+  "belowLabel": { "message": "قیمت نیچے جائے تو الرٹ (₹):" },
+  "belowPh": { "message": "مثلاً 2500" },
+
+  "aboutTagline": { "message": "ملٹی مارکیٹ لائیو فیڈ" },
+  "aboutDesc": { "message": "Screener.in اور Yahoo Finance سے ریئل ٹائم واچ لسٹ، ٹکر ٹیپ اور تناسب۔" },
+  "buyCoffee": { "message": "مجھے کافی پلائیں" },
+  "scanSupport": { "message": "تعاون کے لیے اسکین کریں ☕" },
+  "closeBtn": { "message": "بند کریں" },
+  "qrAlt": { "message": "Buy Me a Coffee تعاون کے لیے اسکین کریں" },
+
+  "macroTitle": { "message": "اشاریہ تدوین کریں" },
+  "macroTileOf": {
+    "message": "4 میں سے ٹائل $N$",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "اشاریہ:" },
+  "wbLink": { "message": "عالمی بینک پر دیکھیں" },
+  "macroInflation": { "message": "مہنگائی (CPI)" },
+  "macroUnemployment": { "message": "بے روزگاری" },
+  "macroGdp": { "message": "GDP نمو" },
+  "macroGdppc": { "message": "فی کس GDP" },
+  "macroGdptotal": { "message": "کل GDP" },
+  "macroTrade": { "message": "تجارت (GDP کا %)" },
+  "macroReserves": { "message": "زرمبادلہ ذخائر" },
+  "macroPopulation": { "message": "آبادی" },
+
+  "overviewTitle": { "message": "منڈی جائزہ" },
+  "selectMarket": { "message": "منڈی چنیں:" },
+  "refreshBtn": { "message": "↻ ریفریش" },
+  "refreshTitle": { "message": "جائزہ ریفریش کریں" },
+  "indicatorsTitle": { "message": "معاشی اشاریے" },
+  "loadingMarkets": {
+    "message": "$ECO$ منڈیاں لوڈ ہو رہی ہیں...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "اشاریے لوڈ ہو رہے ہیں..." },
+  "indicatorsDown": { "message": "اشاریے دستیاب نہیں۔" },
+  "clickAnalyze": {
+    "message": "$NAME$ — تجزیے کے لیے کلک کریں",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — تدوین کے لیے کلک کریں",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ سرفہرست اضافہ" },
+  "losersTitle": { "message": "▼ سرفہرست کمی" },
+  "noGainers": { "message": "آج کوئی اضافہ نہیں" },
+  "noLosers": { "message": "آج کوئی کمی نہیں" },
+  "updatedAt": {
+    "message": "اپ ڈیٹ: $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "لوڈ ناکام۔ ریفریش کریں۔" },
+  "latestLabel": { "message": "تازہ" },
+  "loadingWord": { "message": "لوڈ ہو رہا ہے..." },
+
+  "newsLoading": { "message": "تازہ خبریں لوڈ ہو رہی ہیں..." },
+  "macroNewsTitle": { "message": "US میکرو خبریں" },
+  "fetchingMacroNews": { "message": "US میکرو خبریں لائی جا رہی ہیں..." },
+  "noPortfolioNews": { "message": "اس پورٹ فولیو میں خبروں کے لیے اسٹاک نہیں۔" },
+  "fetchingNews": { "message": "تازہ مالی خبریں لائی جا رہی ہیں..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ خبریں",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "پورٹ فولیو کے لیے تازہ خبریں نہیں۔" },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "پرامپٹ" },
+  "promptOk": { "message": "ٹھیک" },
+
+  "typeIndian": { "message": "بھارتی اسٹاک" },
+  "typeIndex": { "message": "انڈیکس" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ اسٹاک",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "اسٹاک" },
+
+  "ratioCurrentPrice": { "message": "موجودہ قیمت" },
+  "ratioDayRange": { "message": "دن کی رینج" },
+  "ratio52W": { "message": "52W رینج" },
+  "ratioVolume": { "message": "والیوم" },
+  "ratioType": { "message": "قسم" },
+  "ratioExchange": { "message": "ایکسچینج" },
+  "ratioMCap": { "message": "مارکیٹ کیپ" },
+  "ratioPE": { "message": "اسٹاک P/E" },
+  "ratioDiv": { "message": "ڈویڈنڈ ییلڈ" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "ٹیپ بائیں اسکرول کریں" },
+  "tapeScrollRight": { "message": "ٹیپ دائیں اسکرول کریں" },
+  "chartNoData": { "message": "چارٹ ڈیٹا نہیں" },
+  "chartLoading": { "message": "چارٹ لوڈ ہو رہا ہے..." },
+  "ret1M": { "message": "1M منافع" },
+  "ret6M": { "message": "6M منافع" },
+  "ret1Y": { "message": "1Y منافع" },
+  "ret3Y": { "message": "3Y منافع" },
+  "ret5Y": { "message": "5Y منافع" },
+  "ret10Y": { "message": "10Y منافع" },
+  "retMax": { "message": "کل منافع" },
+  "metricLastPrice": { "message": "آخری قیمت" },
+  "metricDivYield": { "message": "ڈیو ییلڈ" },
+  "metricPERatio": { "message": "P/E تناسب" },
+  "viewDetails": { "message": "تفصیل دیکھیں" },
+  "modalSubtitleIndex": {
+    "message": "مارکیٹ انڈیکس • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "ایکویٹی" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "عالمی" },
+  "modalDetails": { "message": "تفصیل" },
+  "tapeLoading": { "message": "اسکرینر واچ لسٹ لوڈ ہو رہی ہے..." },
+
+  "notifAboveTitle": { "message": "قیمت الرٹ! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ ₹$PRICE$ سے اوپر گیا (موجودہ: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "قیمت الرٹ! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ ₹$PRICE$ سے نیچے گیا (موجودہ: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "اسکرینر قیمت الرٹ" },
+  "notifGeneric": {
+    "message": "$TICKER$ آپ کے ہدف $TARGET$ کو پہنچ گیا (موجودہ: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "\"%s\" اسکرینر واچ لسٹ میں شامل کریں" },
+  "ctxAddedTitle": { "message": "اسکرینر واچ لسٹ" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ آپ کی واچ لسٹ میں شامل ہوگیا!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Tiešsaistes Indijas un pasaules akciju uzraudzība, velkami portfeļi un cenu lente. Atbalsts: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Atvērt Screener uzraudzību" },
+  "commandDesc": { "message": "Atvērt Screener sānjoslu" },
+
+  "speedTitle": {
+    "message": "Lentes ātrums: $SPEED$ (noklikšķini, lai pielāgotu 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Lentes ātrums: 1.0x (noklikšķini, lai pielāgotu 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Lentes ātrums" },
+  "speedDecrease": { "message": "Samazināt par 0.1x" },
+  "speedIncrease": { "message": "Palielināt par 0.1x" },
+  "speedCustom": { "message": "Pielāgots:" },
+  "speedExample": { "message": "piem. 2.3" },
+
+  "pauseTape": { "message": "Apturēt cenu lenti" },
+  "resumeTape": { "message": "Turpināt cenu lenti" },
+  "hideTape": { "message": "Paslēpt cenu lenti" },
+  "showTape": { "message": "Rādīt cenu lenti" },
+  "domainDisableSite": { "message": "Atspējot šajā vietnē" },
+  "domainDisable": {
+    "message": "Atspējot: $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Iespējot: $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Pārslēgties uz gaišo režīmu" },
+  "themeToDark": { "message": "Pārslēgties uz tumšo režīmu" },
+  "aboutSupport": { "message": "Par mums un atbalsts" },
+
+  "tabDashboard": { "message": "Panelis" },
+  "tabMarkets": { "message": "Tirgi" },
+  "tabNews": { "message": "Ziņas" },
+
+  "searchPlaceholder": { "message": "Meklēt tikeru analīzei vai pievienošanai..." },
+  "searchButton": { "message": "Meklēt" },
+  "clocksLabel": { "message": "Pasaules tirgu pulksteņi" },
+  "clockOpen": { "message": "● Atvērts" },
+  "clockClosed": { "message": "● Slēgts" },
+
+  "watchlistTitle": { "message": "Jūsu uzraudzība" },
+  "liveBadge": { "message": "Tiešraidē" },
+  "watchlistEmpty": { "message": "Uzraudzība ir tukša. Meklējiet un pievienojiet tikeru augšā!" },
+  "colSymbol": { "message": "Simbols" },
+  "colTrend": { "message": "1G tends" },
+  "colPrice": { "message": "Cena" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Tirgus kap." },
+  "colActions": { "message": "Darbības" },
+  "sortByPrice": { "message": "Kārtot pēc cenas" },
+  "sortByMCap": { "message": "Kārtot pēc kapitalizācijas" },
+  "dragHint": { "message": "Velciet, lai pārkārtotu" },
+  "trendReturnTitle": { "message": "Parādītā perioda peļņa" },
+  "setAlertTitle": { "message": "Izveidot brīdinājumu" },
+  "deleteTitle": { "message": "Dzēst" },
+  "renameTitle": { "message": "Pārdēvēt portfeli" },
+  "newTitle": { "message": "Jauns portfelis" },
+  "exportTitle": { "message": "Eksportēt uz Excel" },
+
+  "portfolioExists": { "message": "Portfelis ar šādu nosaukumu jau pastāv!" },
+  "renamePrompt": {
+    "message": "Pārdēvēt portfeli \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Jaunā portfeļa nosaukums" },
+
+  "verdictLabel": { "message": "MI spriedums:" },
+  "verdictNoData": { "message": "Spriedumam nepietiek datu." },
+  "verdictGem": { "message": "[Nenovērtēta] Pērle ar ļoti efektīvu kapitāla atdevi." },
+  "verdictExpensive": { "message": "[Dārga] Spēcīgs bizness, bet ar dārgu prēmiju." },
+  "verdictRisk": { "message": "[Augsts risks] Pārvērtēta ar vāju kapitāla efektivitāti." },
+  "verdictSolid": { "message": "[Stabila] Izcili fundamenti par saprātīgu cenu." },
+  "verdictAvg": { "message": "[Vidēja] Standarta fundamenti. Vērojiet katalizatorus." },
+  "verdictIndex": { "message": "[Indekss] Galvenais tirgus etalons." },
+
+  "scrapingData": { "message": "Notiek datu iegūšana..." },
+  "backButton": { "message": "← Atpakaļ" },
+  "addToWatchlist": { "message": "+ Pievienot uzraudzībai" },
+  "addedButton": { "message": "Pievienots!" },
+  "alreadyButton": { "message": "Jau ir uzraudzībā" },
+  "customizeScreener": { "message": "⚙ Pielāgot parametrus vietnē Screener.in" },
+  "peerTitle": { "message": "Salīdzinājums ar konkurentiem" },
+  "annTitle": { "message": "Uzņēmuma paziņojumi" },
+  "fetchFailed": { "message": "Neizdevās iegūt datus." },
+  "fetchError": { "message": "Kļūda." },
+
+  "marketIndices": { "message": "Tirgus indeksi" },
+  "clickEditCard": {
+    "message": "Noklikšķiniet, lai rediģētu $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Pievienot tikeru" },
+  "addNewSlot": { "message": "Pievienot indeksu vai akciju" },
+  "loadingPrice": { "message": "Ielādē..." },
+  "editCardTitle": { "message": "Rediģēt tirgus kartīti" },
+  "displayNameLabel": { "message": "Parādāmais nosaukums:" },
+  "displayNamePh": { "message": "piem. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Simbols (Yahoo/NSE):" },
+  "symbolPh": { "message": "piem. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Noņemt" },
+  "cancelBtn": { "message": "Atcelt" },
+  "saveBtn": { "message": "Saglabāt" },
+  "saveCardBtn": { "message": "Saglabāt kartīti" },
+  "needBoth": { "message": "Ievadiet parādāmo nosaukumu un simbolu." },
+
+  "alertPrefix": { "message": "Izveidot brīdinājumu:" },
+  "aboveLabel": { "message": "Brīdināt ja cena pārsniedz (₹):" },
+  "abovePh": { "message": "piem. 3000" },
+  "belowLabel": { "message": "Brīdināt ja cena noslīd zem (₹):" },
+  "belowPh": { "message": "piem. 2500" },
+
+  "aboutTagline": { "message": "Vairāku tirgu tiešraide" },
+  "aboutDesc": { "message": "Reāllaika uzraudzība, lente un rādītāji caur Screener.in un Yahoo Finance." },
+  "buyCoffee": { "message": "Uzaicini mani uz kafiju" },
+  "scanSupport": { "message": "Skenējiet, lai atbalstītu ☕" },
+  "closeBtn": { "message": "Aizvērt" },
+  "qrAlt": { "message": "Skenējiet, lai atbalstītu caur Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Rediģēt indikatoru" },
+  "macroTileOf": {
+    "message": "Flīze $N$ no 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Indikators:" },
+  "wbLink": { "message": "Skatīt Pasaules Bankā" },
+  "macroInflation": { "message": "Inflācija (CPI)" },
+  "macroUnemployment": { "message": "Bezdarbs" },
+  "macroGdp": { "message": "IKP izaugsme" },
+  "macroGdppc": { "message": "IKP uz iedzīvotāju" },
+  "macroGdptotal": { "message": "Kopējais IKP" },
+  "macroTrade": { "message": "Tirdzniecība (% no IKP)" },
+  "macroReserves": { "message": "Valūtas rezerves" },
+  "macroPopulation": { "message": "Iedzīvotāji" },
+
+  "overviewTitle": { "message": "Tirgus pārskats" },
+  "selectMarket": { "message": "Izvēlieties tirgu:" },
+  "refreshBtn": { "message": "↻ Atsvaidzināt" },
+  "refreshTitle": { "message": "Atsvaidzināt pārskatu" },
+  "indicatorsTitle": { "message": "EKONOMISKIE RĀDĪTĀJI" },
+  "loadingMarkets": {
+    "message": "Notiek $ECO$ tirgu ielāde...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Notiek indikatoru ielāde..." },
+  "indicatorsDown": { "message": "Indikatori nav pieejami." },
+  "clickAnalyze": {
+    "message": "$NAME$ — noklikšķiniet, lai analizētu",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — noklikšķiniet, lai rediģētu",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ TOP KĀPĒJI" },
+  "losersTitle": { "message": "▼ TOP KRITĒJI" },
+  "noGainers": { "message": "Šodien kāpēju nav" },
+  "noLosers": { "message": "Šodien kritēju nav" },
+  "updatedAt": {
+    "message": "Atjaunināts $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Ielāde neizdevās. Atsvaidziniet." },
+  "latestLabel": { "message": "Jaunākais" },
+  "loadingWord": { "message": "ielādē..." },
+
+  "newsLoading": { "message": "Notiek jaunāko ziņu ielāde..." },
+  "macroNewsTitle": { "message": "ASV MAKRO ZIŅAS" },
+  "fetchingMacroNews": { "message": "Notiek ASV makro ziņu iegūšana..." },
+  "noPortfolioNews": { "message": "Šajā portfelī nav akciju ziņām." },
+  "fetchingNews": { "message": "Notiek finanšu ziņu iegūšana..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ ZIŅAS",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Jūsu portfelim nav svaigu ziņu." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Uzvedne" },
+  "promptOk": { "message": "Labi" },
+
+  "typeIndian": { "message": "Indijas akcija" },
+  "typeIndex": { "message": "Indekss" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ akcija",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Akcija" },
+
+  "ratioCurrentPrice": { "message": "Pašreizējā cena" },
+  "ratioDayRange": { "message": "Dienas diapazons" },
+  "ratio52W": { "message": "52N diapazons" },
+  "ratioVolume": { "message": "Apjoms" },
+  "ratioType": { "message": "Veids" },
+  "ratioExchange": { "message": "Birža" },
+  "ratioMCap": { "message": "Tirgus kap." },
+  "ratioPE": { "message": "Akcijas P/E" },
+  "ratioDiv": { "message": "Div. ienesīgums" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Ritināt lenti pa kreisi" },
+  "tapeScrollRight": { "message": "Ritināt lenti pa labi" },
+  "chartNoData": { "message": "Nav grafika datu" },
+  "chartLoading": { "message": "Notiek grafika ielāde..." },
+  "ret1M": { "message": "Peļņa 1M" },
+  "ret6M": { "message": "Peļņa 6M" },
+  "ret1Y": { "message": "Peļņa 1G" },
+  "ret3Y": { "message": "Peļņa 3G" },
+  "ret5Y": { "message": "Peļņa 5G" },
+  "ret10Y": { "message": "Peļņa 10G" },
+  "retMax": { "message": "Kopējā peļņa" },
+  "metricLastPrice": { "message": "Pēdējā cena" },
+  "metricDivYield": { "message": "Div. ienes." },
+  "metricPERatio": { "message": "P/E attiecība" },
+  "viewDetails": { "message": "Skatīt detaļas" },
+  "modalSubtitleIndex": {
+    "message": "Tirgus indekss • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Akcijas" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Pasaule" },
+  "modalDetails": { "message": "Detaļas" },
+  "tapeLoading": { "message": "Notiek Screener uzraudzības ielāde..." },
+
+  "notifAboveTitle": { "message": "Cenu brīdinājums! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ virs ₹$PRICE$ (pašlaik: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Cenu brīdinājums! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ zem ₹$PRICE$ (pašlaik: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Cenu brīdinājums Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ sasniedza jūsu mērķi $TARGET$ (pašlaik: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Pievienot „%s” Screener uzraudzībai" },
+  "ctxAddedTitle": { "message": "Screener uzraudzība" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ pievienots jūsu uzraudzībai!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

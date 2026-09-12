@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "লাইভ ভারতীয় ও বৈশ্বিক স্টক ওয়াচলিস্ট, ড্র্যাগযোগ্য পোর্টফোলিও এবং টিকার টেপ। সহায়তা: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "স্ক্রিনার ওয়াচলিস্ট খুলুন" },
+  "commandDesc": { "message": "স্ক্রিনার সাইড প্যানেল খুলুন" },
+
+  "speedTitle": {
+    "message": "টেপ গতি: $SPEED$ (0.5x – 3.0x বদলাতে ক্লিক করুন)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "টেপ গতি: 1.0x (0.5x – 3.0x বদলাতে ক্লিক করুন)" },
+  "speedLabel": { "message": "টেপ গতি" },
+  "speedDecrease": { "message": "0.1x কমান" },
+  "speedIncrease": { "message": "0.1x বাড়ান" },
+  "speedCustom": { "message": "কাস্টম:" },
+  "speedExample": { "message": "যেমন 2.3" },
+
+  "pauseTape": { "message": "টিকার টেপ থামান" },
+  "resumeTape": { "message": "টিকার টেপ চালান" },
+  "hideTape": { "message": "টিকার টেপ লুকান" },
+  "showTape": { "message": "টিকার টেপ দেখান" },
+  "domainDisableSite": { "message": "এই সাইটে বন্ধ করুন" },
+  "domainDisable": {
+    "message": "$DOMAIN$-এ বন্ধ করুন",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "$DOMAIN$-এ চালু করুন",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "লাইট মোডে যান" },
+  "themeToDark": { "message": "ডার্ক মোডে যান" },
+  "aboutSupport": { "message": "পরিচিতি ও সহায়তা" },
+
+  "tabDashboard": { "message": "ড্যাশবোর্ড" },
+  "tabMarkets": { "message": "বাজার" },
+  "tabNews": { "message": "খবর" },
+
+  "searchPlaceholder": { "message": "বিশ্লেষণ বা যোগ করতে টিকার খুঁজুন..." },
+  "searchButton": { "message": "খুঁজুন" },
+  "clocksLabel": { "message": "বিশ্ব বাজার ঘড়ি" },
+  "clockOpen": { "message": "● খোলা" },
+  "clockClosed": { "message": "● বন্ধ" },
+
+  "watchlistTitle": { "message": "আপনার ওয়াচলিস্ট" },
+  "liveBadge": { "message": "লাইভ" },
+  "watchlistEmpty": { "message": "ওয়াচলিস্ট খালি। উপরে টিকার খুঁজে যোগ করুন!" },
+  "colSymbol": { "message": "সিম্বল" },
+  "colTrend": { "message": "1Y ট্রেন্ড" },
+  "colPrice": { "message": "দাম" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "M. ক্যাপ" },
+  "colActions": { "message": "করণীয়" },
+  "sortByPrice": { "message": "দাম অনুযায়ী সাজান" },
+  "sortByMCap": { "message": "মার্কেট ক্যাপ অনুযায়ী সাজান" },
+  "dragHint": { "message": "সাজাতে টেনে আনুন" },
+  "trendReturnTitle": { "message": "দেখানো সময়ের রিটার্ন" },
+  "setAlertTitle": { "message": "অ্যালার্ট সেট করুন" },
+  "deleteTitle": { "message": "মুছুন" },
+  "renameTitle": { "message": "পোর্টফোলিওর নাম বদলান" },
+  "newTitle": { "message": "নতুন পোর্টফোলিও" },
+  "exportTitle": { "message": "Excel-এ এক্সপোর্ট করুন" },
+
+  "portfolioExists": { "message": "এই নামে পোর্টফোলিও আগেই আছে!" },
+  "renamePrompt": {
+    "message": "পোর্টফোলিও \"$NAME$\"-এর নাম বদলান",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "নতুন পোর্টফোলিওর নাম" },
+
+  "verdictLabel": { "message": "AI মতামত:" },
+  "verdictNoData": { "message": "মতামতের জন্য যথেষ্ট তথ্য নেই।" },
+  "verdictGem": { "message": "[অবমূল্যায়িত] মূলধনে অত্যন্ত দক্ষ রিটার্নের রত্ন।" },
+  "verdictExpensive": { "message": "[ব্যয়বহুল] শক্তিশালী ব্যবসা, তবে দামি প্রিমিয়ামে।" },
+  "verdictRisk": { "message": "[উচ্চ ঝুঁকি] দুর্বল মূলধন দক্ষতায় অতিমূল্যায়িত।" },
+  "verdictSolid": { "message": "[মজবুত] যুক্তিসঙ্গত দামে দুর্দান্ত ফান্ডামেন্টাল।" },
+  "verdictAvg": { "message": "[গড়] সাধারণ ফান্ডামেন্টাল। বৃদ্ধির ইঙ্গিতে নজর রাখুন।" },
+  "verdictIndex": { "message": "[মার্কেট ইনডেক্স] বাজারের মূল বেঞ্চমার্ক।" },
+
+  "scrapingData": { "message": "তথ্য আনা হচ্ছে..." },
+  "backButton": { "message": "← ফিরুন" },
+  "addToWatchlist": { "message": "+ ওয়াচলিস্টে যোগ করুন" },
+  "addedButton": { "message": "যোগ হয়েছে!" },
+  "alreadyButton": { "message": "আগেই ওয়াচলিস্টে আছে" },
+  "customizeScreener": { "message": "⚙ Screener.in-এ প্যারামিটার কাস্টমাইজ করুন" },
+  "peerTitle": { "message": "সমকক্ষ তুলনা" },
+  "annTitle": { "message": "কোম্পানির ঘোষণা" },
+  "fetchFailed": { "message": "তথ্য আনা যায়নি।" },
+  "fetchError": { "message": "ত্রুটি।" },
+
+  "marketIndices": { "message": "বাজার সূচক" },
+  "clickEditCard": {
+    "message": "$NAME$ সম্পাদনায় ক্লিক করুন",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "টিকার যোগ করুন" },
+  "addNewSlot": { "message": "নতুন ইনডেক্স বা স্টক যোগ করুন" },
+  "loadingPrice": { "message": "লোড হচ্ছে..." },
+  "editCardTitle": { "message": "মার্কেট কার্ড সম্পাদনা" },
+  "displayNameLabel": { "message": "প্রদর্শন নাম:" },
+  "displayNamePh": { "message": "যেমন NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "সিম্বল (Yahoo/NSE):" },
+  "symbolPh": { "message": "যেমন ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "সরান" },
+  "cancelBtn": { "message": "বাতিল" },
+  "saveBtn": { "message": "সেভ করুন" },
+  "saveCardBtn": { "message": "কার্ড সেভ করুন" },
+  "needBoth": { "message": "প্রদর্শন নাম ও সিম্বল দুটোই দিন।" },
+
+  "alertPrefix": { "message": "এর জন্য অ্যালার্ট সেট করুন" },
+  "aboveLabel": { "message": "দাম উপরে গেলে অ্যালার্ট (₹):" },
+  "abovePh": { "message": "যেমন 3000" },
+  "belowLabel": { "message": "দাম নিচে গেলে অ্যালার্ট (₹):" },
+  "belowPh": { "message": "যেমন 2500" },
+
+  "aboutTagline": { "message": "মাল্টি-মার্কেট লাইভ ফিড" },
+  "aboutDesc": { "message": "Screener.in ও Yahoo Finance চালিত রিয়েল-টাইম ওয়াচলিস্ট, টিকার টেপ ও অনুপাত।" },
+  "buyCoffee": { "message": "আমাকে কফি খাওয়ান" },
+  "scanSupport": { "message": "সহায়তায় স্ক্যান করুন ☕" },
+  "closeBtn": { "message": "বন্ধ করুন" },
+  "qrAlt": { "message": "Buy Me a Coffee সহায়তায় স্ক্যান করুন" },
+
+  "macroTitle": { "message": "সূচক সম্পাদনা" },
+  "macroTileOf": {
+    "message": "4-এর মধ্যে টাইল $N$",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "সূচক:" },
+  "wbLink": { "message": "বিশ্বব্যাংকে দেখুন" },
+  "macroInflation": { "message": "মুদ্রাস্ফীতি (CPI)" },
+  "macroUnemployment": { "message": "বেকারত্ব" },
+  "macroGdp": { "message": "GDP প্রবৃদ্ধি" },
+  "macroGdppc": { "message": "মাথাপিছু GDP" },
+  "macroGdptotal": { "message": "মোট GDP" },
+  "macroTrade": { "message": "বাণিজ্য (GDP-এর %)" },
+  "macroReserves": { "message": "বৈদেশিক মুদ্রা রিজার্ভ" },
+  "macroPopulation": { "message": "জনসংখ্যা" },
+
+  "overviewTitle": { "message": "বাজার সারসংক্ষেপ" },
+  "selectMarket": { "message": "বাজার বাছুন:" },
+  "refreshBtn": { "message": "↻ রিফ্রেশ" },
+  "refreshTitle": { "message": "সারসংক্ষেপ রিফ্রেশ করুন" },
+  "indicatorsTitle": { "message": "অর্থনৈতিক সূচক" },
+  "loadingMarkets": {
+    "message": "$ECO$ বাজার লোড হচ্ছে...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "সূচক লোড হচ্ছে..." },
+  "indicatorsDown": { "message": "সূচক পাওয়া যাচ্ছে না।" },
+  "clickAnalyze": {
+    "message": "$NAME$ — বিশ্লেষণে ক্লিক করুন",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — সম্পাদনায় ক্লিক করুন",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ শীর্ষ বৃদ্ধি" },
+  "losersTitle": { "message": "▼ শীর্ষ পতন" },
+  "noGainers": { "message": "আজ কোনো বৃদ্ধি নেই" },
+  "noLosers": { "message": "আজ কোনো পতন নেই" },
+  "updatedAt": {
+    "message": "হালনাগাদ: $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "বাজার তথ্য লোড হয়নি। রিফ্রেশ করুন।" },
+  "latestLabel": { "message": "সাম্প্রতিক" },
+  "loadingWord": { "message": "লোড হচ্ছে..." },
+
+  "newsLoading": { "message": "সাম্প্রতিক খবর লোড হচ্ছে..." },
+  "macroNewsTitle": { "message": "US ম্যাক্রো খবর" },
+  "fetchingMacroNews": { "message": "US ম্যাক্রো খবর আনা হচ্ছে..." },
+  "noPortfolioNews": { "message": "এই পোর্টফোলিওতে খবরের জন্য স্টক নেই।" },
+  "fetchingNews": { "message": "সাম্প্রতিক আর্থিক খবর আনা হচ্ছে..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ খবর",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "পোর্টফোলিওর জন্য সাম্প্রতিক খবর নেই।" },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "প্রম্পট" },
+  "promptOk": { "message": "ঠিক আছে" },
+
+  "typeIndian": { "message": "ভারতীয় স্টক" },
+  "typeIndex": { "message": "ইনডেক্স" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ স্টক",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "স্টক" },
+
+  "ratioCurrentPrice": { "message": "বর্তমান দাম" },
+  "ratioDayRange": { "message": "দিনের রেঞ্জ" },
+  "ratio52W": { "message": "52W রেঞ্জ" },
+  "ratioVolume": { "message": "ভলিউম" },
+  "ratioType": { "message": "ধরন" },
+  "ratioExchange": { "message": "এক্সচেঞ্জ" },
+  "ratioMCap": { "message": "মার্কেট ক্যাপ" },
+  "ratioPE": { "message": "স্টক P/E" },
+  "ratioDiv": { "message": "ডিভিডেন্ড ইল্ড" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "টেপ বামে স্ক্রল করুন" },
+  "tapeScrollRight": { "message": "টেপ ডানে স্ক্রল করুন" },
+  "chartNoData": { "message": "চার্ট তথ্য নেই" },
+  "chartLoading": { "message": "চার্ট লোড হচ্ছে..." },
+  "ret1M": { "message": "1M রিটার্ন" },
+  "ret6M": { "message": "6M রিটার্ন" },
+  "ret1Y": { "message": "1Y রিটার্ন" },
+  "ret3Y": { "message": "3Y রিটার্ন" },
+  "ret5Y": { "message": "5Y রিটার্ন" },
+  "ret10Y": { "message": "10Y রিটার্ন" },
+  "retMax": { "message": "মোট রিটার্ন" },
+  "metricLastPrice": { "message": "শেষ দাম" },
+  "metricDivYield": { "message": "ডিভ ইল্ড" },
+  "metricPERatio": { "message": "P/E অনুপাত" },
+  "viewDetails": { "message": "বিস্তারিত দেখুন" },
+  "modalSubtitleIndex": {
+    "message": "মার্কেট ইনডেক্স • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "ইকুইটি" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "গ্লোবাল" },
+  "modalDetails": { "message": "বিস্তারিত" },
+  "tapeLoading": { "message": "স্ক্রিনার ওয়াচলিস্ট লোড হচ্ছে..." },
+
+  "notifAboveTitle": { "message": "প্রাইস অ্যালার্ট! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ ₹$PRICE$-এর উপরে গেছে (বর্তমান: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "প্রাইস অ্যালার্ট! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ ₹$PRICE$-এর নিচে নেমেছে (বর্তমান: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "স্ক্রিনার প্রাইস অ্যালার্ট" },
+  "notifGeneric": {
+    "message": "$TICKER$ আপনার লক্ষ্য $TARGET$ পার করেছে (বর্তমান: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "\"%s\" স্ক্রিনার ওয়াচলিস্টে যোগ করুন" },
+  "ctxAddedTitle": { "message": "স্ক্রিনার ওয়াচলিস্ট" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ আপনার ওয়াচলিস্টে যোগ হয়েছে!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

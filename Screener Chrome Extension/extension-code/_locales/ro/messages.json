@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Listă live cu acțiuni indiene și globale, portofolii glisabile și bandă de cotații. Suport: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Deschide lista Screener" },
+  "commandDesc": { "message": "Deschide panoul lateral Screener" },
+
+  "speedTitle": {
+    "message": "Viteza benzii: $SPEED$ (clic pentru ajustare 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Viteza benzii: 1.0x (clic pentru ajustare 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Viteza benzii" },
+  "speedDecrease": { "message": "Scade cu 0.1x" },
+  "speedIncrease": { "message": "Crește cu 0.1x" },
+  "speedCustom": { "message": "Personalizat:" },
+  "speedExample": { "message": "ex. 2.3" },
+
+  "pauseTape": { "message": "Pune banda pe pauză" },
+  "resumeTape": { "message": "Reia banda" },
+  "hideTape": { "message": "Ascunde banda" },
+  "showTape": { "message": "Arată banda" },
+  "domainDisableSite": { "message": "Dezactivează pe acest site" },
+  "domainDisable": {
+    "message": "Dezactivează pe $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Activează pe $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Comută la modul luminos" },
+  "themeToDark": { "message": "Comută la modul întunecat" },
+  "aboutSupport": { "message": "Despre și suport" },
+
+  "tabDashboard": { "message": "Panou" },
+  "tabMarkets": { "message": "Piețe" },
+  "tabNews": { "message": "Știri" },
+
+  "searchPlaceholder": { "message": "Caută ticker pentru analiză sau adăugare..." },
+  "searchButton": { "message": "Caută" },
+  "clocksLabel": { "message": "Ceasurile piețelor mondiale" },
+  "clockOpen": { "message": "● Deschis" },
+  "clockClosed": { "message": "● Închis" },
+
+  "watchlistTitle": { "message": "Lista ta" },
+  "liveBadge": { "message": "Live" },
+  "watchlistEmpty": { "message": "Lista este goală. Caută și adaugă un ticker mai sus!" },
+  "colSymbol": { "message": "Simbol" },
+  "colTrend": { "message": "Trend 1A" },
+  "colPrice": { "message": "Preț" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Cap. piață" },
+  "colActions": { "message": "Acțiuni" },
+  "sortByPrice": { "message": "Sortează după preț" },
+  "sortByMCap": { "message": "Sortează după capitalizare" },
+  "dragHint": { "message": "Trage pentru reordonare" },
+  "trendReturnTitle": { "message": "Randamentul perioadei afișate" },
+  "setAlertTitle": { "message": "Creează alertă" },
+  "deleteTitle": { "message": "Șterge" },
+  "renameTitle": { "message": "Redenumește portofoliul" },
+  "newTitle": { "message": "Portofoliu nou" },
+  "exportTitle": { "message": "Exportă în Excel" },
+
+  "portfolioExists": { "message": "Există deja un portofoliu cu acest nume!" },
+  "renamePrompt": {
+    "message": "Redenumește portofoliul \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Numele noului portofoliu" },
+
+  "verdictLabel": { "message": "Verdict AI:" },
+  "verdictNoData": { "message": "Date insuficiente pentru verdict." },
+  "verdictGem": { "message": "[Subevaluată] Perlă cu randament al capitalului foarte eficient." },
+  "verdictExpensive": { "message": "[Scumpă] Afacere puternică, dar cu primă mare." },
+  "verdictRisk": { "message": "[Risc mare] Supraevaluată cu eficiență slabă a capitalului." },
+  "verdictSolid": { "message": "[Solidă] Fundamente excelente la preț rezonabil." },
+  "verdictAvg": { "message": "[Medie] Fundamente standard. Urmărește catalizatorii." },
+  "verdictIndex": { "message": "[Indice] Reperul principal al pieței." },
+
+  "scrapingData": { "message": "Se preiau datele..." },
+  "backButton": { "message": "← Înapoi" },
+  "addToWatchlist": { "message": "+ Adaugă în listă" },
+  "addedButton": { "message": "Adăugat!" },
+  "alreadyButton": { "message": "Deja este în listă" },
+  "customizeScreener": { "message": "⚙ Personalizează parametrii pe Screener.in" },
+  "peerTitle": { "message": "Comparație cu competitori" },
+  "annTitle": { "message": "Anunțurile companiei" },
+  "fetchFailed": { "message": "Datele nu au putut fi preluate." },
+  "fetchError": { "message": "Eroare." },
+
+  "marketIndices": { "message": "Indici de piață" },
+  "clickEditCard": {
+    "message": "Clic pentru a edita $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Adaugă ticker" },
+  "addNewSlot": { "message": "Adaugă indice sau acțiune" },
+  "loadingPrice": { "message": "Se încarcă..." },
+  "editCardTitle": { "message": "Editează cardul de piață" },
+  "displayNameLabel": { "message": "Nume afișat:" },
+  "displayNamePh": { "message": "ex. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Simbol (Yahoo/NSE):" },
+  "symbolPh": { "message": "ex. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Elimină" },
+  "cancelBtn": { "message": "Anulează" },
+  "saveBtn": { "message": "Salvează" },
+  "saveCardBtn": { "message": "Salvează cardul" },
+  "needBoth": { "message": "Introdu numele afișat și simbolul." },
+
+  "alertPrefix": { "message": "Creează alertă pentru" },
+  "aboveLabel": { "message": "Alertă dacă prețul depășește (₹):" },
+  "abovePh": { "message": "ex. 3000" },
+  "belowLabel": { "message": "Alertă dacă prețul scade sub (₹):" },
+  "belowPh": { "message": "ex. 2500" },
+
+  "aboutTagline": { "message": "Flux live multi-piață" },
+  "aboutDesc": { "message": "Listă, bandă și indicatori în timp real via Screener.in și Yahoo Finance." },
+  "buyCoffee": { "message": "Cumpără-mi o cafea" },
+  "scanSupport": { "message": "Scanează pentru susținere ☕" },
+  "closeBtn": { "message": "Închide" },
+  "qrAlt": { "message": "Scanează pentru susținere via Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Editează indicatorul" },
+  "macroTileOf": {
+    "message": "Card $N$ din 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Indicator:" },
+  "wbLink": { "message": "Vezi la Banca Mondială" },
+  "macroInflation": { "message": "Inflație (CPI)" },
+  "macroUnemployment": { "message": "Șomaj" },
+  "macroGdp": { "message": "Creștere PIB" },
+  "macroGdppc": { "message": "PIB pe cap de locuitor" },
+  "macroGdptotal": { "message": "PIB total" },
+  "macroTrade": { "message": "Comerț (% din PIB)" },
+  "macroReserves": { "message": "Rezerve valutare" },
+  "macroPopulation": { "message": "Populație" },
+
+  "overviewTitle": { "message": "Prezentare piață" },
+  "selectMarket": { "message": "Alege piața:" },
+  "refreshBtn": { "message": "↻ Reîmprospătează" },
+  "refreshTitle": { "message": "Reîmprospătează prezentarea" },
+  "indicatorsTitle": { "message": "INDICATORI ECONOMICI" },
+  "loadingMarkets": {
+    "message": "Se încarcă piețele $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Se încarcă indicatorii..." },
+  "indicatorsDown": { "message": "Indicatorii nu sunt disponibili." },
+  "clickAnalyze": {
+    "message": "$NAME$ — clic pentru analiză",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — clic pentru editare",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ TOP CREȘTERI" },
+  "losersTitle": { "message": "▼ TOP SCĂDERI" },
+  "noGainers": { "message": "Nicio creștere azi" },
+  "noLosers": { "message": "Nicio scădere azi" },
+  "updatedAt": {
+    "message": "Actualizat $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Încărcarea a eșuat. Reîmprospătează." },
+  "latestLabel": { "message": "Recent" },
+  "loadingWord": { "message": "se încarcă..." },
+
+  "newsLoading": { "message": "Se încarcă ultimele știri..." },
+  "macroNewsTitle": { "message": "ȘTIRI MACRO SUA" },
+  "fetchingMacroNews": { "message": "Se preiau știrile macro SUA..." },
+  "noPortfolioNews": { "message": "Nicio acțiune în acest portofoliu pentru știri." },
+  "fetchingNews": { "message": "Se preiau știrile financiare..." },
+  "tickerNewsTitle": {
+    "message": "ȘTIRI $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Nicio știre recentă pentru portofoliul tău." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Solicitare" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Acțiune indiană" },
+  "typeIndex": { "message": "Indice" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "Acțiune $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Acțiune" },
+
+  "ratioCurrentPrice": { "message": "Preț curent" },
+  "ratioDayRange": { "message": "Interval zilnic" },
+  "ratio52W": { "message": "Interval 52S" },
+  "ratioVolume": { "message": "Volum" },
+  "ratioType": { "message": "Tip" },
+  "ratioExchange": { "message": "Bursă" },
+  "ratioMCap": { "message": "Cap. piață" },
+  "ratioPE": { "message": "P/E acțiune" },
+  "ratioDiv": { "message": "Randament dividende" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Derulează banda la stânga" },
+  "tapeScrollRight": { "message": "Derulează banda la dreapta" },
+  "chartNoData": { "message": "Fără date grafic" },
+  "chartLoading": { "message": "Se încarcă graficul..." },
+  "ret1M": { "message": "Rand. 1L" },
+  "ret6M": { "message": "Rand. 6L" },
+  "ret1Y": { "message": "Rand. 1A" },
+  "ret3Y": { "message": "Rand. 3A" },
+  "ret5Y": { "message": "Rand. 5A" },
+  "ret10Y": { "message": "Rand. 10A" },
+  "retMax": { "message": "Rand. total" },
+  "metricLastPrice": { "message": "Ultimul preț" },
+  "metricDivYield": { "message": "Rand. div." },
+  "metricPERatio": { "message": "Raport P/E" },
+  "viewDetails": { "message": "Vezi detalii" },
+  "modalSubtitleIndex": {
+    "message": "Indice de piață • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Acțiuni" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Global" },
+  "modalDetails": { "message": "Detalii" },
+  "tapeLoading": { "message": "Se încarcă lista Screener..." },
+
+  "notifAboveTitle": { "message": "Alertă de preț! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ peste ₹$PRICE$ (curent: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Alertă de preț! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ sub ₹$PRICE$ (curent: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Alertă de preț Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ a atins ținta $TARGET$ (curent: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Adaugă „%s” în lista Screener" },
+  "ctxAddedTitle": { "message": "Lista Screener" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ adăugat în lista ta!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

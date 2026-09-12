@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Canlı Hint ve küresel hisse izleme listesi, sürüklenebilir portföyler ve haber bandı. Destek: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Screener izleme listesini aç" },
+  "commandDesc": { "message": "Screener yan panelini aç" },
+
+  "speedTitle": {
+    "message": "Bant hızı: $SPEED$ (0.5x – 3.0x ayarlamak için tıklayın)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Bant hızı: 1.0x (0.5x – 3.0x ayarlamak için tıklayın)" },
+  "speedLabel": { "message": "Bant hızı" },
+  "speedDecrease": { "message": "0.1x azalt" },
+  "speedIncrease": { "message": "0.1x artır" },
+  "speedCustom": { "message": "Özel:" },
+  "speedExample": { "message": "örn. 2.3" },
+
+  "pauseTape": { "message": "Fiyat bandını duraklat" },
+  "resumeTape": { "message": "Fiyat bandını sürdür" },
+  "hideTape": { "message": "Fiyat bandını gizle" },
+  "showTape": { "message": "Fiyat bandını göster" },
+  "domainDisableSite": { "message": "Bu sitede kapat" },
+  "domainDisable": {
+    "message": "$DOMAIN$ sitesinde kapat",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "$DOMAIN$ sitesinde aç",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Açık temaya geç" },
+  "themeToDark": { "message": "Koyu temaya geç" },
+  "aboutSupport": { "message": "Hakkında ve destek" },
+
+  "tabDashboard": { "message": "Panel" },
+  "tabMarkets": { "message": "Piyasalar" },
+  "tabNews": { "message": "Haberler" },
+
+  "searchPlaceholder": { "message": "Analiz etmek veya eklemek için sembol arayın..." },
+  "searchButton": { "message": "Ara" },
+  "clocksLabel": { "message": "Dünya piyasası saatleri" },
+  "clockOpen": { "message": "● Açık" },
+  "clockClosed": { "message": "● Kapalı" },
+
+  "watchlistTitle": { "message": "İzleme listeniz" },
+  "liveBadge": { "message": "Canlı" },
+  "watchlistEmpty": { "message": "İzleme listesi boş. Yukarıdan sembol arayıp ekleyin!" },
+  "colSymbol": { "message": "Sembol" },
+  "colTrend": { "message": "1Y Trend" },
+  "colPrice": { "message": "Fiyat" },
+  "colPE": { "message": "F/K" },
+  "colMCap": { "message": "P. Değ." },
+  "colActions": { "message": "İşlemler" },
+  "sortByPrice": { "message": "Fiyata göre sırala" },
+  "sortByMCap": { "message": "Piyasa değerine göre sırala" },
+  "dragHint": { "message": "Sıralamak için sürükleyin" },
+  "trendReturnTitle": { "message": "Gösterilen dönem getirisi" },
+  "setAlertTitle": { "message": "Alarm oluştur" },
+  "deleteTitle": { "message": "Sil" },
+  "renameTitle": { "message": "Portföyü yeniden adlandır" },
+  "newTitle": { "message": "Yeni portföy" },
+  "exportTitle": { "message": "Excel'e aktar" },
+
+  "portfolioExists": { "message": "Bu adda bir portföy zaten var!" },
+  "renamePrompt": {
+    "message": "\"$NAME$\" portföyünü yeniden adlandır",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Yeni portföy adı" },
+
+  "verdictLabel": { "message": "YZ Kararı:" },
+  "verdictNoData": { "message": "Karar için yeterli veri yok." },
+  "verdictGem": { "message": "[Ucuz] Sermaye getirisi çok verimli mücevher." },
+  "verdictExpensive": { "message": "[Pahalı] Güçlü şirket, ama primli fiyatta." },
+  "verdictRisk": { "message": "[Yüksek risk] Zayıf sermaye verimliliğiyle aşırı değerli." },
+  "verdictSolid": { "message": "[Sağlam] Makul fiyatta güçlü temeller." },
+  "verdictAvg": { "message": "[Ortalama] Standart temeller. Katalizörleri izleyin." },
+  "verdictIndex": { "message": "[Endeks] Piyasanın ana göstergesi." },
+
+  "scrapingData": { "message": "Veriler alınıyor..." },
+  "backButton": { "message": "← Geri" },
+  "addToWatchlist": { "message": "+ İzleme listesine ekle" },
+  "addedButton": { "message": "Eklendi!" },
+  "alreadyButton": { "message": "Zaten izleme listesinde" },
+  "customizeScreener": { "message": "⚙ Screener.in'de parametreleri özelleştir" },
+  "peerTitle": { "message": "Rakip karşılaştırması" },
+  "annTitle": { "message": "Şirket duyuruları" },
+  "fetchFailed": { "message": "Veri alınamadı." },
+  "fetchError": { "message": "Hata." },
+
+  "marketIndices": { "message": "Piyasa endeksleri" },
+  "clickEditCard": {
+    "message": "$NAME$ düzenlemek için tıklayın",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Sembol ekle" },
+  "addNewSlot": { "message": "Endeks veya hisse ekle" },
+  "loadingPrice": { "message": "Yükleniyor..." },
+  "editCardTitle": { "message": "Piyasa kartını düzenle" },
+  "displayNameLabel": { "message": "Görünen ad:" },
+  "displayNamePh": { "message": "örn. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Sembol (Yahoo/NSE):" },
+  "symbolPh": { "message": "örn. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Kaldır" },
+  "cancelBtn": { "message": "İptal" },
+  "saveBtn": { "message": "Kaydet" },
+  "saveCardBtn": { "message": "Kartı kaydet" },
+  "needBoth": { "message": "Lütfen görünen ad ve sembol girin." },
+
+  "alertPrefix": { "message": "Alarm oluştur:" },
+  "aboveLabel": { "message": "Fiyat üzerine çıkarsa uyar (₹):" },
+  "abovePh": { "message": "örn. 3000" },
+  "belowLabel": { "message": "Fiyat altına düşerse uyar (₹):" },
+  "belowPh": { "message": "örn. 2500" },
+
+  "aboutTagline": { "message": "Çoklu piyasa canlı akışı" },
+  "aboutDesc": { "message": "Screener.in ve Yahoo Finance ile gerçek zamanlı izleme listesi, bant ve rasyolar." },
+  "buyCoffee": { "message": "Bana bir kahve ısmarla" },
+  "scanSupport": { "message": "Destek için tara ☕" },
+  "closeBtn": { "message": "Kapat" },
+  "qrAlt": { "message": "Buy Me a Coffee ile destek için tara" },
+
+  "macroTitle": { "message": "Göstergeyi düzenle" },
+  "macroTileOf": {
+    "message": "4 karttan $N$.",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Gösterge:" },
+  "wbLink": { "message": "Dünya Bankası'nda görüntüle" },
+  "macroInflation": { "message": "Enflasyon (TÜFE)" },
+  "macroUnemployment": { "message": "İşsizlik" },
+  "macroGdp": { "message": "GSYH Büyümesi" },
+  "macroGdppc": { "message": "Kişi Başı GSYH" },
+  "macroGdptotal": { "message": "Toplam GSYH" },
+  "macroTrade": { "message": "Ticaret (GSYH %)" },
+  "macroReserves": { "message": "Döviz rezervleri" },
+  "macroPopulation": { "message": "Nüfus" },
+
+  "overviewTitle": { "message": "Piyasa özeti" },
+  "selectMarket": { "message": "Piyasa seçin:" },
+  "refreshBtn": { "message": "↻ Yenile" },
+  "refreshTitle": { "message": "Özeti yenile" },
+  "indicatorsTitle": { "message": "EKONOMİK GÖSTERGELER" },
+  "loadingMarkets": {
+    "message": "$ECO$ piyasaları yükleniyor...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Göstergeler yükleniyor..." },
+  "indicatorsDown": { "message": "Göstergeler kullanılamıyor." },
+  "clickAnalyze": {
+    "message": "$NAME$ — analiz için tıklayın",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — düzenlemek için tıklayın",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ EN ÇOK YÜKSELENLER" },
+  "losersTitle": { "message": "▼ EN ÇOK DÜŞENLER" },
+  "noGainers": { "message": "Bugün yükselen yok" },
+  "noLosers": { "message": "Bugün düşen yok" },
+  "updatedAt": {
+    "message": "Güncelleme $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Yüklenemedi. Yenileyin." },
+  "latestLabel": { "message": "Güncel" },
+  "loadingWord": { "message": "yükleniyor..." },
+
+  "newsLoading": { "message": "Son haberler yükleniyor..." },
+  "macroNewsTitle": { "message": "ABD MAKRO HABERLERİ" },
+  "fetchingMacroNews": { "message": "ABD makro haberleri alınıyor..." },
+  "noPortfolioNews": { "message": "Bu portföyde haberlik hisse yok." },
+  "fetchingNews": { "message": "Finans haberleri alınıyor..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ HABERLERİ",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Portföyünüz için güncel haber yok." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "İstem" },
+  "promptOk": { "message": "Tamam" },
+
+  "typeIndian": { "message": "Hint hissesi" },
+  "typeIndex": { "message": "Endeks" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ hissesi",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Hisse" },
+
+  "ratioCurrentPrice": { "message": "Güncel fiyat" },
+  "ratioDayRange": { "message": "Gün aralığı" },
+  "ratio52W": { "message": "52H aralığı" },
+  "ratioVolume": { "message": "Hacim" },
+  "ratioType": { "message": "Tür" },
+  "ratioExchange": { "message": "Borsa" },
+  "ratioMCap": { "message": "Piyasa değeri" },
+  "ratioPE": { "message": "Hisse F/K" },
+  "ratioDiv": { "message": "Temettü verimi" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Bandı sola kaydır" },
+  "tapeScrollRight": { "message": "Bandı sağa kaydır" },
+  "chartNoData": { "message": "Grafik verisi yok" },
+  "chartLoading": { "message": "Grafik yükleniyor..." },
+  "ret1M": { "message": "1A getiri" },
+  "ret6M": { "message": "6A getiri" },
+  "ret1Y": { "message": "1Y getiri" },
+  "ret3Y": { "message": "3Y getiri" },
+  "ret5Y": { "message": "5Y getiri" },
+  "ret10Y": { "message": "10Y getiri" },
+  "retMax": { "message": "Toplam getiri" },
+  "metricLastPrice": { "message": "Son fiyat" },
+  "metricDivYield": { "message": "Tem. verimi" },
+  "metricPERatio": { "message": "F/K oranı" },
+  "viewDetails": { "message": "Detayları gör" },
+  "modalSubtitleIndex": {
+    "message": "Piyasa endeksi • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Hisse" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Küresel" },
+  "modalDetails": { "message": "Detaylar" },
+  "tapeLoading": { "message": "Screener izleme listesi yükleniyor..." },
+
+  "notifAboveTitle": { "message": "Fiyat alarmı! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ ₹$PRICE$ üzerine çıktı (güncel: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Fiyat alarmı! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ ₹$PRICE$ altına düştü (güncel: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Screener fiyat alarmı" },
+  "notifGeneric": {
+    "message": "$TICKER$ hedefiniz $TARGET$ seviyesine ulaştı (güncel: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "\"%s\" Screener izleme listesine ekle" },
+  "ctxAddedTitle": { "message": "Screener izleme listesi" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ izleme listenize eklendi!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

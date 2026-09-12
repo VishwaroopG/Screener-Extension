@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "ప్రత్యక్ష భారత & ప్రపంచ స్టాక్ వాచ్‌లిస్ట్, లాగగలిగే పోర్ట్‌ఫోలియోలు, టిక్కర్ టేప్. మద్దతు: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "స్క్రీనర్ వాచ్‌లిస్ట్ తెరువు" },
+  "commandDesc": { "message": "స్క్రీనర్ సైడ్ ప్యానెల్ తెరువు" },
+
+  "speedTitle": {
+    "message": "టేప్ వేగం: $SPEED$ (0.5x – 3.0x మార్చడానికి క్లిక్ చేయండి)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "టేప్ వేగం: 1.0x (0.5x – 3.0x మార్చడానికి క్లిక్ చేయండి)" },
+  "speedLabel": { "message": "టేప్ వేగం" },
+  "speedDecrease": { "message": "0.1x తగ్గించు" },
+  "speedIncrease": { "message": "0.1x పెంచు" },
+  "speedCustom": { "message": "కస్టమ్:" },
+  "speedExample": { "message": "ఉదా. 2.3" },
+
+  "pauseTape": { "message": "టిక్కర్ టేప్ ఆపు" },
+  "resumeTape": { "message": "టిక్కర్ టేప్ కొనసాగించు" },
+  "hideTape": { "message": "టిక్కర్ టేప్ దాచు" },
+  "showTape": { "message": "టిక్కర్ టేప్ చూపు" },
+  "domainDisableSite": { "message": "ఈ సైట్‌లో ఆపివేయి" },
+  "domainDisable": {
+    "message": "$DOMAIN$ లో ఆపివేయి",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "$DOMAIN$ లో ఆన్ చేయి",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "లైట్ మోడ్‌కు మారు" },
+  "themeToDark": { "message": "డార్క్ మోడ్‌కు మారు" },
+  "aboutSupport": { "message": "గురించి & మద్దతు" },
+
+  "tabDashboard": { "message": "డాష్‌బోర్డ్" },
+  "tabMarkets": { "message": "మార్కెట్లు" },
+  "tabNews": { "message": "వార్తలు" },
+
+  "searchPlaceholder": { "message": "విశ్లేషించడానికి లేదా జోడించడానికి టిక్కర్ వెతకండి..." },
+  "searchButton": { "message": "వెతకు" },
+  "clocksLabel": { "message": "ప్రపంచ మార్కెట్ గడియారాలు" },
+  "clockOpen": { "message": "● తెరిచి ఉంది" },
+  "clockClosed": { "message": "● మూసి ఉంది" },
+
+  "watchlistTitle": { "message": "మీ వాచ్‌లిస్ట్" },
+  "liveBadge": { "message": "లైవ్" },
+  "watchlistEmpty": { "message": "వాచ్‌లిస్ట్ ఖాళీగా ఉంది. పైన టిక్కర్ వెతికి జోడించండి!" },
+  "colSymbol": { "message": "సింబల్" },
+  "colTrend": { "message": "1Y ట్రెండ్" },
+  "colPrice": { "message": "ధర" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "M. క్యాప్" },
+  "colActions": { "message": "చర్యలు" },
+  "sortByPrice": { "message": "ధర ప్రకారం క్రమబద్ధీకరించు" },
+  "sortByMCap": { "message": "మార్కెట్ క్యాప్ ప్రకారం క్రమబద్ధీకరించు" },
+  "dragHint": { "message": "క్రమం మార్చడానికి లాగండి" },
+  "trendReturnTitle": { "message": "చూపుతున్న కాలపు రాబడి" },
+  "setAlertTitle": { "message": "అలర్ట్ సెట్ చేయి" },
+  "deleteTitle": { "message": "తొలగించు" },
+  "renameTitle": { "message": "పోర్ట్‌ఫోలియో పేరు మార్చు" },
+  "newTitle": { "message": "కొత్త పోర్ట్‌ఫోలియో" },
+  "exportTitle": { "message": "Excelకు ఎగుమతి చేయి" },
+
+  "portfolioExists": { "message": "ఈ పేరుతో పోర్ట్‌ఫోలియో ఇప్పటికే ఉంది!" },
+  "renamePrompt": {
+    "message": "పోర్ట్‌ఫోలియో \"$NAME$\" పేరు మార్చు",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "కొత్త పోర్ట్‌ఫోలియో పేరు" },
+
+  "verdictLabel": { "message": "AI తీర్పు:" },
+  "verdictNoData": { "message": "తీర్పుకు తగినంత డేటా లేదు." },
+  "verdictGem": { "message": "[తక్కువ విలువ] మూలధనంపై సమర్థవంతమైన రాబడినిచ్చే రత్నం." },
+  "verdictExpensive": { "message": "[ఖరీదైనది] బలమైన వ్యాపారం, కానీ ప్రీమియం ధరలో." },
+  "verdictRisk": { "message": "[అధిక రిస్క్] బలహీన మూలధన సామర్థ్యంతో అధిక విలువ." },
+  "verdictSolid": { "message": "[బలమైనది] సరసమైన ధరకు అద్భుతమైన ప్రాథమికాలు." },
+  "verdictAvg": { "message": "[సగటు] ప్రామాణిక ప్రాథమికాలు. వృద్ధి సంకేతాలు గమనించండి." },
+  "verdictIndex": { "message": "[మార్కెట్ ఇండెక్స్] కీలక మార్కెట్ బెంచ్‌మార్క్." },
+
+  "scrapingData": { "message": "డేటా తెస్తున్నాం..." },
+  "backButton": { "message": "← వెనుకకు" },
+  "addToWatchlist": { "message": "+ వాచ్‌లిస్ట్‌లో చేర్చు" },
+  "addedButton": { "message": "చేరింది!" },
+  "alreadyButton": { "message": "ఇప్పటికే వాచ్‌లిస్ట్‌లో ఉంది" },
+  "customizeScreener": { "message": "⚙ Screener.inలో పారామితులు అనుకూలీకరించండి" },
+  "peerTitle": { "message": "తోటి కంపెనీల పోలిక" },
+  "annTitle": { "message": "కంపెనీ ప్రకటనలు" },
+  "fetchFailed": { "message": "డేటా తేలేకపోయింది." },
+  "fetchError": { "message": "లోపం." },
+
+  "marketIndices": { "message": "మార్కెట్ సూచీలు" },
+  "clickEditCard": {
+    "message": "$NAME$ సవరించడానికి క్లిక్ చేయండి",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "టిక్కర్ జోడించు" },
+  "addNewSlot": { "message": "కొత్త ఇండెక్స్ లేదా స్టాక్ జోడించు" },
+  "loadingPrice": { "message": "లోడవుతోంది..." },
+  "editCardTitle": { "message": "మార్కెట్ కార్డ్ సవరించు" },
+  "displayNameLabel": { "message": "ప్రదర్శన పేరు:" },
+  "displayNamePh": { "message": "ఉదా. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "సింబల్ (Yahoo/NSE):" },
+  "symbolPh": { "message": "ఉదా. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "తొలగించు" },
+  "cancelBtn": { "message": "రద్దు చేయి" },
+  "saveBtn": { "message": "సేవ్ చేయి" },
+  "saveCardBtn": { "message": "కార్డ్ సేవ్ చేయి" },
+  "needBoth": { "message": "ప్రదర్శన పేరు, సింబల్ రెండూ ఇవ్వండి." },
+
+  "alertPrefix": { "message": "అలర్ట్ సెట్ చేయి:" },
+  "aboveLabel": { "message": "ధర పైకి వెళ్తే అలర్ట్ (₹):" },
+  "abovePh": { "message": "ఉదా. 3000" },
+  "belowLabel": { "message": "ధర కిందకు వెళ్తే అలర్ట్ (₹):" },
+  "belowPh": { "message": "ఉదా. 2500" },
+
+  "aboutTagline": { "message": "మల్టీ-మార్కెట్ లైవ్ ఫీడ్" },
+  "aboutDesc": { "message": "Screener.in & Yahoo Finance ద్వారా రియల్-టైమ్ వాచ్‌లిస్ట్, టిక్కర్ టేప్, నిష్పత్తులు." },
+  "buyCoffee": { "message": "నాకు కాఫీ ఇవ్వండి" },
+  "scanSupport": { "message": "మద్దతుకు స్కాన్ చేయండి ☕" },
+  "closeBtn": { "message": "మూసివేయి" },
+  "qrAlt": { "message": "Buy Me a Coffee మద్దతుకు స్కాన్ చేయండి" },
+
+  "macroTitle": { "message": "సూచిక సవరించు" },
+  "macroTileOf": {
+    "message": "4లో టైల్ $N$",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "సూచిక:" },
+  "wbLink": { "message": "ప్రపంచ బ్యాంకులో చూడండి" },
+  "macroInflation": { "message": "ద్రవ్యోల్బణం (CPI)" },
+  "macroUnemployment": { "message": "నిరుద్యోగం" },
+  "macroGdp": { "message": "GDP వృద్ధి" },
+  "macroGdppc": { "message": "తలసరి GDP" },
+  "macroGdptotal": { "message": "మొత్తం GDP" },
+  "macroTrade": { "message": "వాణిజ్యం (GDPలో %)" },
+  "macroReserves": { "message": "విదేశీ మారక నిల్వలు" },
+  "macroPopulation": { "message": "జనాభా" },
+
+  "overviewTitle": { "message": "మార్కెట్ అవలోకనం" },
+  "selectMarket": { "message": "మార్కెట్ ఎంచుకోండి:" },
+  "refreshBtn": { "message": "↻ రిఫ్రెష్" },
+  "refreshTitle": { "message": "అవలోకనం రిఫ్రెష్ చేయి" },
+  "indicatorsTitle": { "message": "ఆర్థిక సూచికలు" },
+  "loadingMarkets": {
+    "message": "$ECO$ మార్కెట్లు లోడవుతున్నాయి...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "సూచికలు లోడవుతున్నాయి..." },
+  "indicatorsDown": { "message": "సూచికలు అందుబాటులో లేవు." },
+  "clickAnalyze": {
+    "message": "$NAME$ — విశ్లేషణకు క్లిక్ చేయండి",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — సవరణకు క్లిక్ చేయండి",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ అగ్ర లాభాలు" },
+  "losersTitle": { "message": "▼ అగ్ర నష్టాలు" },
+  "noGainers": { "message": "ఈరోజు లాభాలు లేవు" },
+  "noLosers": { "message": "ఈరోజు నష్టాలు లేవు" },
+  "updatedAt": {
+    "message": "నవీకరించింది: $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "మార్కెట్ డేటా లోడ్ కాలేదు. రిఫ్రెష్ చేయండి." },
+  "latestLabel": { "message": "తాజా" },
+  "loadingWord": { "message": "లోడవుతోంది..." },
+
+  "newsLoading": { "message": "తాజా వార్తలు లోడవుతున్నాయి..." },
+  "macroNewsTitle": { "message": "US మాక్రో వార్తలు" },
+  "fetchingMacroNews": { "message": "US మాక్రో వార్తలు తెస్తున్నాం..." },
+  "noPortfolioNews": { "message": "ఈ పోర్ట్‌ఫోలియోలో వార్తలకు స్టాకులు లేవు." },
+  "fetchingNews": { "message": "తాజా ఆర్థిక వార్తలు తెస్తున్నాం..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ వార్తలు",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "పోర్ట్‌ఫోలియోకు తాజా వార్తలు లేవు." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "సూచన" },
+  "promptOk": { "message": "సరే" },
+
+  "typeIndian": { "message": "భారత స్టాక్" },
+  "typeIndex": { "message": "ఇండెక్స్" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ స్టాక్",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "స్టాక్" },
+
+  "ratioCurrentPrice": { "message": "ప్రస్తుత ధర" },
+  "ratioDayRange": { "message": "రోజు శ్రేణి" },
+  "ratio52W": { "message": "52W శ్రేణి" },
+  "ratioVolume": { "message": "వాల్యూమ్" },
+  "ratioType": { "message": "రకం" },
+  "ratioExchange": { "message": "ఎక్స్ఛేంజ్" },
+  "ratioMCap": { "message": "మార్కెట్ క్యాప్" },
+  "ratioPE": { "message": "స్టాక్ P/E" },
+  "ratioDiv": { "message": "డివిడెండ్ యీల్డ్" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "టేప్ ఎడమకు స్క్రోల్ చేయి" },
+  "tapeScrollRight": { "message": "టేప్ కుడికి స్క్రోల్ చేయి" },
+  "chartNoData": { "message": "చార్ట్ డేటా లేదు" },
+  "chartLoading": { "message": "చార్ట్ లోడవుతోంది..." },
+  "ret1M": { "message": "1M రాబడి" },
+  "ret6M": { "message": "6M రాబడి" },
+  "ret1Y": { "message": "1Y రాబడి" },
+  "ret3Y": { "message": "3Y రాబడి" },
+  "ret5Y": { "message": "5Y రాబడి" },
+  "ret10Y": { "message": "10Y రాబడి" },
+  "retMax": { "message": "మొత్తం రాబడి" },
+  "metricLastPrice": { "message": "చివరి ధర" },
+  "metricDivYield": { "message": "డివ్ యీల్డ్" },
+  "metricPERatio": { "message": "P/E నిష్పత్తి" },
+  "viewDetails": { "message": "వివరాలు చూడండి" },
+  "modalSubtitleIndex": {
+    "message": "మార్కెట్ ఇండెక్స్ • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "ఈక్విటీ" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "గ్లోబల్" },
+  "modalDetails": { "message": "వివరాలు" },
+  "tapeLoading": { "message": "స్క్రీనర్ వాచ్‌లిస్ట్ లోడవుతోంది..." },
+
+  "notifAboveTitle": { "message": "ధర హెచ్చరిక! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ ₹$PRICE$ పైకి వెళింది (ప్రస్తుతం: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "ధర హెచ్చరిక! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ ₹$PRICE$ కిందకు వెళింది (ప్రస్తుతం: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "స్క్రీనర్ ధర హెచ్చరిక" },
+  "notifGeneric": {
+    "message": "$TICKER$ మీ లక్ష్యం $TARGET$ దాటింది (ప్రస్తుతం: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "\"%s\"ను స్క్రీనర్ వాచ్‌లిస్ట్‌లో చేర్చు" },
+  "ctxAddedTitle": { "message": "స్క్రీనర్ వాచ్‌లిస్ట్" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ మీ వాచ్‌లిస్ట్‌లో చేరింది!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

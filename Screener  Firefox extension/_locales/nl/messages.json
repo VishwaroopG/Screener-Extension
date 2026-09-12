@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Live Indiase & wereldwijde aandelen-watchlist, versleepbare portfolio's en tickertape. Support: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Screener-watchlist openen" },
+  "commandDesc": { "message": "Screener-zijpaneel openen" },
+
+  "speedTitle": {
+    "message": "Tapesnelheid: $SPEED$ (klik om aan te passen van 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Tapesnelheid: 1.0x (klik om aan te passen van 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Tapesnelheid" },
+  "speedDecrease": { "message": "Verlaag met 0.1x" },
+  "speedIncrease": { "message": "Verhoog met 0.1x" },
+  "speedCustom": { "message": "Aangepast:" },
+  "speedExample": { "message": "bijv. 2.3" },
+
+  "pauseTape": { "message": "Tickertape pauzeren" },
+  "resumeTape": { "message": "Tickertape hervatten" },
+  "hideTape": { "message": "Tickertape verbergen" },
+  "showTape": { "message": "Tickertape tonen" },
+  "domainDisableSite": { "message": "Uitschakelen op deze site" },
+  "domainDisable": {
+    "message": "Uitschakelen op $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Inschakelen op $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Overschakelen naar lichte modus" },
+  "themeToDark": { "message": "Overschakelen naar donkere modus" },
+  "aboutSupport": { "message": "Over & support" },
+
+  "tabDashboard": { "message": "Dashboard" },
+  "tabMarkets": { "message": "Markten" },
+  "tabNews": { "message": "Nieuws" },
+
+  "searchPlaceholder": { "message": "Ticker zoeken om te analyseren of toe te voegen..." },
+  "searchButton": { "message": "Zoeken" },
+  "clocksLabel": { "message": "Wereldmarktklokken" },
+  "clockOpen": { "message": "● Open" },
+  "clockClosed": { "message": "● Gesloten" },
+
+  "watchlistTitle": { "message": "Jouw watchlist" },
+  "liveBadge": { "message": "Live" },
+  "watchlistEmpty": { "message": "Watchlist is leeg. Zoek hierboven een ticker en voeg toe!" },
+  "colSymbol": { "message": "Symbool" },
+  "colTrend": { "message": "1J-trend" },
+  "colPrice": { "message": "Koers" },
+  "colPE": { "message": "K/W" },
+  "colMCap": { "message": "M.-cap" },
+  "colActions": { "message": "Acties" },
+  "sortByPrice": { "message": "Sorteren op koers" },
+  "sortByMCap": { "message": "Sorteren op marktkap." },
+  "dragHint": { "message": "Slepen om te sorteren" },
+  "trendReturnTitle": { "message": "Rendement over getoonde periode" },
+  "setAlertTitle": { "message": "Alarm instellen" },
+  "deleteTitle": { "message": "Verwijderen" },
+  "renameTitle": { "message": "Portfolio hernoemen" },
+  "newTitle": { "message": "Nieuw portfolio" },
+  "exportTitle": { "message": "Exporteren naar Excel" },
+
+  "portfolioExists": { "message": "Er bestaat al een portfolio met deze naam!" },
+  "renamePrompt": {
+    "message": "Portfolio \"$NAME$\" hernoemen",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Naam van nieuw portfolio" },
+
+  "verdictLabel": { "message": "AI-oordeel:" },
+  "verdictNoData": { "message": "Niet genoeg gegevens voor een oordeel." },
+  "verdictGem": { "message": "[Ondergewaardeerd] Parel met zeer efficiënt kapitaalrendement." },
+  "verdictExpensive": { "message": "[Duur] Sterk bedrijf, maar met dure premie." },
+  "verdictRisk": { "message": "[Hoog risico] Overgewaardeerd met zwakke kapitalefficiëntie." },
+  "verdictSolid": { "message": "[Solide] Sterke fundamentals tegen een redelijke prijs." },
+  "verdictAvg": { "message": "[Gemiddeld] Standaard fundamentals. Let op katalysatoren." },
+  "verdictIndex": { "message": "[Marktindex] Belangrijke marktbenchmark." },
+
+  "scrapingData": { "message": "Gegevens ophalen..." },
+  "backButton": { "message": "← Terug" },
+  "addToWatchlist": { "message": "+ Toevoegen aan watchlist" },
+  "addedButton": { "message": "Toegevoegd!" },
+  "alreadyButton": { "message": "Staat al in watchlist" },
+  "customizeScreener": { "message": "⚙ Parameters aanpassen op Screener.in" },
+  "peerTitle": { "message": "Peer-vergelijking" },
+  "annTitle": { "message": "Bedrijfsaankondigingen" },
+  "fetchFailed": { "message": "Gegevens konden niet worden opgehaald." },
+  "fetchError": { "message": "Fout." },
+
+  "marketIndices": { "message": "Marktindices" },
+  "clickEditCard": {
+    "message": "Klik om $NAME$ te bewerken",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Ticker toevoegen" },
+  "addNewSlot": { "message": "Index of aandeel toevoegen" },
+  "loadingPrice": { "message": "Laden..." },
+  "editCardTitle": { "message": "Marktkaart bewerken" },
+  "displayNameLabel": { "message": "Weergavenaam:" },
+  "displayNamePh": { "message": "bijv. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Symbool (Yahoo/NSE):" },
+  "symbolPh": { "message": "bijv. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Verwijderen" },
+  "cancelBtn": { "message": "Annuleren" },
+  "saveBtn": { "message": "Opslaan" },
+  "saveCardBtn": { "message": "Kaart opslaan" },
+  "needBoth": { "message": "Voer een weergavenaam en symbool in." },
+
+  "alertPrefix": { "message": "Alarm instellen voor" },
+  "aboveLabel": { "message": "Waarschuw bij koers boven (₹):" },
+  "abovePh": { "message": "bijv. 3000" },
+  "belowLabel": { "message": "Waarschuw bij koers onder (₹):" },
+  "belowPh": { "message": "bijv. 2500" },
+
+  "aboutTagline": { "message": "Multi-markt livefeed" },
+  "aboutDesc": { "message": "Realtime watchlist, tickertape en ratio's via Screener.in & Yahoo Finance." },
+  "buyCoffee": { "message": "Trakteer me op koffie" },
+  "scanSupport": { "message": "Scan om te steunen ☕" },
+  "closeBtn": { "message": "Sluiten" },
+  "qrAlt": { "message": "Scan om te steunen via Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Indicator bewerken" },
+  "macroTileOf": {
+    "message": "Tegel $N$ van 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Indicator:" },
+  "wbLink": { "message": "Bekijk op de Wereldbank" },
+  "macroInflation": { "message": "Inflatie (CPI)" },
+  "macroUnemployment": { "message": "Werkloosheid" },
+  "macroGdp": { "message": "BBP-groei" },
+  "macroGdppc": { "message": "BBP per hoofd" },
+  "macroGdptotal": { "message": "BBP totaal" },
+  "macroTrade": { "message": "Handel (% van BBP)" },
+  "macroReserves": { "message": "Valutareserves" },
+  "macroPopulation": { "message": "Bevolking" },
+
+  "overviewTitle": { "message": "Marktoverzicht" },
+  "selectMarket": { "message": "Kies markt:" },
+  "refreshBtn": { "message": "↻ Vernieuwen" },
+  "refreshTitle": { "message": "Overzicht vernieuwen" },
+  "indicatorsTitle": { "message": "ECONOMISCHE INDICATOREN" },
+  "loadingMarkets": {
+    "message": "$ECO$-markten laden...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Indicatoren laden..." },
+  "indicatorsDown": { "message": "Indicatoren niet beschikbaar." },
+  "clickAnalyze": {
+    "message": "$NAME$ — klik om te analyseren",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — klik om te bewerken",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ TOPSTIJGERS" },
+  "losersTitle": { "message": "▼ TOPDALERS" },
+  "noGainers": { "message": "Vandaag geen stijgers" },
+  "noLosers": { "message": "Vandaag geen dalers" },
+  "updatedAt": {
+    "message": "Bijgewerkt $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Marktdata mislukt. Vernieuw." },
+  "latestLabel": { "message": "Recent" },
+  "loadingWord": { "message": "laden..." },
+
+  "newsLoading": { "message": "Laatste nieuws laden..." },
+  "macroNewsTitle": { "message": "VS-MACRONIEUWS" },
+  "fetchingMacroNews": { "message": "VS-macronieuws ophalen..." },
+  "noPortfolioNews": { "message": "Geen aandelen in dit portfolio voor nieuws." },
+  "fetchingNews": { "message": "Financieel nieuws ophalen..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$-NIEUWS",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Geen recent nieuws voor je portfolio." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Prompt" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Indiaas aandeel" },
+  "typeIndex": { "message": "Index" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$-aandeel",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Aandeel" },
+
+  "ratioCurrentPrice": { "message": "Huidige koers" },
+  "ratioDayRange": { "message": "Dagbandbreedte" },
+  "ratio52W": { "message": "52W-bandbreedte" },
+  "ratioVolume": { "message": "Volume" },
+  "ratioType": { "message": "Type" },
+  "ratioExchange": { "message": "Beurs" },
+  "ratioMCap": { "message": "Marktkap." },
+  "ratioPE": { "message": "K/W aandeel" },
+  "ratioDiv": { "message": "Dividendrendement" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Tape naar links scrollen" },
+  "tapeScrollRight": { "message": "Tape naar rechts scrollen" },
+  "chartNoData": { "message": "Geen grafiekgegevens" },
+  "chartLoading": { "message": "Grafiek laden..." },
+  "ret1M": { "message": "1M-rend." },
+  "ret6M": { "message": "6M-rend." },
+  "ret1Y": { "message": "1J-rend." },
+  "ret3Y": { "message": "3J-rend." },
+  "ret5Y": { "message": "5J-rend." },
+  "ret10Y": { "message": "10J-rend." },
+  "retMax": { "message": "Totaalrend." },
+  "metricLastPrice": { "message": "Laatste koers" },
+  "metricDivYield": { "message": "Div.-rend." },
+  "metricPERatio": { "message": "K/W-ratio" },
+  "viewDetails": { "message": "Details bekijken" },
+  "modalSubtitleIndex": {
+    "message": "Marktindex • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Aandelen" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Wereldwijd" },
+  "modalDetails": { "message": "Details" },
+  "tapeLoading": { "message": "Screener-watchlist laden..." },
+
+  "notifAboveTitle": { "message": "Prijsalarm! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ boven ₹$PRICE$ (actueel: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Prijsalarm! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ onder ₹$PRICE$ (actueel: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Screener-prijsalarm" },
+  "notifGeneric": {
+    "message": "$TICKER$ heeft je doel van $TARGET$ bereikt (actueel: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "\"%s\" toevoegen aan Screener-watchlist" },
+  "ctxAddedTitle": { "message": "Screener-watchlist" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ toegevoegd aan je watchlist!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

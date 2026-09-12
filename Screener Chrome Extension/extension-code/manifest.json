@@ -1,0 +1,59 @@
+{
+  "manifest_version": 3,
+  "name": "Screener Pro – Live Watchlist & Ticker",
+  "version": "2.1.9",
+  "default_locale": "en",
+  "icons": {
+    "16": "icon_16.png",
+    "48": "icon_48.png",
+    "128": "icon_128.png"
+  },
+  "description": "__MSG_appDescription__",
+  "permissions": [
+    "sidePanel",
+    "storage",
+    "alarms",
+    "notifications",
+    "contextMenus",
+    "tabs"
+  ],
+  "host_permissions": [
+    "*://*.screener.in/*",
+    "*://*.yahoo.com/*",
+    "*://*.finviz.com/*",
+    "*://api.worldbank.org/*",
+    "*://news.google.com/*",
+    "https://www.nseindia.com/*"
+  ],
+  "action": {
+    "default_title": "__MSG_actionTitle__"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
+      },
+      "description": "__MSG_commandDesc__"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "ticker_tape.js"
+      ],
+      "css": [
+        "ticker_tape.css"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

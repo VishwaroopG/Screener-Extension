@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Llista de seguiment d'accions índies i globals en directe, carteres arrossegables i cinta de cotitzacions. Suport: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Obre la llista de Screener" },
+  "commandDesc": { "message": "Obre el panell lateral de Screener" },
+
+  "speedTitle": {
+    "message": "Velocitat de cinta: $SPEED$ (clica per ajustar de 0.5x a 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Velocitat de cinta: 1.0x (clica per ajustar de 0.5x a 3.0x)" },
+  "speedLabel": { "message": "Velocitat de cinta" },
+  "speedDecrease": { "message": "Redueix 0.1x" },
+  "speedIncrease": { "message": "Augmenta 0.1x" },
+  "speedCustom": { "message": "Personalitzat:" },
+  "speedExample": { "message": "p. ex. 2.3" },
+
+  "pauseTape": { "message": "Pausa la cinta de cotitzacions" },
+  "resumeTape": { "message": "Reprèn la cinta de cotitzacions" },
+  "hideTape": { "message": "Amaga la cinta de cotitzacions" },
+  "showTape": { "message": "Mostra la cinta de cotitzacions" },
+  "domainDisableSite": { "message": "Desactiva en aquest lloc" },
+  "domainDisable": {
+    "message": "Desactiva a $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Activa a $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Canvia al mode clar" },
+  "themeToDark": { "message": "Canvia al mode fosc" },
+  "aboutSupport": { "message": "Quant a i suport" },
+
+  "tabDashboard": { "message": "Tauler" },
+  "tabMarkets": { "message": "Mercats" },
+  "tabNews": { "message": "Notícies" },
+
+  "searchPlaceholder": { "message": "Cerca tíquer per analitzar o afegir..." },
+  "searchButton": { "message": "Cerca" },
+  "clocksLabel": { "message": "Rellotges dels mercats mundials" },
+  "clockOpen": { "message": "● Obert" },
+  "clockClosed": { "message": "● Tancat" },
+
+  "watchlistTitle": { "message": "La teva llista" },
+  "liveBadge": { "message": "En directe" },
+  "watchlistEmpty": { "message": "La llista és buida. Cerca i afegeix un tíquer a dalt!" },
+  "colSymbol": { "message": "Símbol" },
+  "colTrend": { "message": "Tend. 1A" },
+  "colPrice": { "message": "Preu" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Cap. M." },
+  "colActions": { "message": "Accions" },
+  "sortByPrice": { "message": "Ordena per preu" },
+  "sortByMCap": { "message": "Ordena per capitalització" },
+  "dragHint": { "message": "Arrossega per reordenar" },
+  "trendReturnTitle": { "message": "Rendibilitat del període mostrat" },
+  "setAlertTitle": { "message": "Crea una alerta" },
+  "deleteTitle": { "message": "Elimina" },
+  "renameTitle": { "message": "Reanomena la cartera" },
+  "newTitle": { "message": "Nova cartera" },
+  "exportTitle": { "message": "Exporta a Excel" },
+
+  "portfolioExists": { "message": "Ja existeix una cartera amb aquest nom!" },
+  "renamePrompt": {
+    "message": "Reanomena la cartera \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Nom de la nova cartera" },
+
+  "verdictLabel": { "message": "Veredicte IA:" },
+  "verdictNoData": { "message": "Dades insuficients per a un veredicte." },
+  "verdictGem": { "message": "[Infravalorada] Joia amb retorn del capital molt eficient." },
+  "verdictExpensive": { "message": "[Cara] Gran negoci, però amb prima elevada." },
+  "verdictRisk": { "message": "[Risc alt] Sobrevalorada amb baixa eficiència del capital." },
+  "verdictSolid": { "message": "[Sòlida] Grans fonaments a preu raonable." },
+  "verdictAvg": { "message": "[Mitjana] Fonaments estàndard. Vigila catalitzadors." },
+  "verdictIndex": { "message": "[Índex] Referència clau del mercat." },
+
+  "scrapingData": { "message": "Obtenint dades..." },
+  "backButton": { "message": "← Torna" },
+  "addToWatchlist": { "message": "+ Afegeix a la llista" },
+  "addedButton": { "message": "Afegit!" },
+  "alreadyButton": { "message": "Ja és a la llista" },
+  "customizeScreener": { "message": "⚙ Personalitza paràmetres a Screener.in" },
+  "peerTitle": { "message": "Comparació amb competidors" },
+  "annTitle": { "message": "Anuncis de l'empresa" },
+  "fetchFailed": { "message": "No s'han pogut obtenir dades." },
+  "fetchError": { "message": "Error." },
+
+  "marketIndices": { "message": "Índexs de mercat" },
+  "clickEditCard": {
+    "message": "Clica per editar $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Afegeix tíquer" },
+  "addNewSlot": { "message": "Afegeix índex o acció" },
+  "loadingPrice": { "message": "Carregant..." },
+  "editCardTitle": { "message": "Edita la targeta de mercat" },
+  "displayNameLabel": { "message": "Nom visible:" },
+  "displayNamePh": { "message": "p. ex. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Símbol (Yahoo/NSE):" },
+  "symbolPh": { "message": "p. ex. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Treu" },
+  "cancelBtn": { "message": "Cancel·la" },
+  "saveBtn": { "message": "Desa" },
+  "saveCardBtn": { "message": "Desa la targeta" },
+  "needBoth": { "message": "Introdueix nom visible i símbol." },
+
+  "alertPrefix": { "message": "Crea una alerta per a" },
+  "aboveLabel": { "message": "Alerta si el preu supera (₹):" },
+  "abovePh": { "message": "p. ex. 3000" },
+  "belowLabel": { "message": "Alerta si el preu baixa de (₹):" },
+  "belowPh": { "message": "p. ex. 2500" },
+
+  "aboutTagline": { "message": "Feed en directe multimercat" },
+  "aboutDesc": { "message": "Llista en directe, cinta i ràtios en temps real via Screener.in i Yahoo Finance." },
+  "buyCoffee": { "message": "Convida'm a un cafè" },
+  "scanSupport": { "message": "Escaneja per donar suport ☕" },
+  "closeBtn": { "message": "Tanca" },
+  "qrAlt": { "message": "Escaneja per donar suport via Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Edita l'indicador" },
+  "macroTileOf": {
+    "message": "Mosaic $N$ de 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Indicador:" },
+  "wbLink": { "message": "Ves al Banc Mundial" },
+  "macroInflation": { "message": "Inflació (IPC)" },
+  "macroUnemployment": { "message": "Atur" },
+  "macroGdp": { "message": "Creixement del PIB" },
+  "macroGdppc": { "message": "PIB per càpita" },
+  "macroGdptotal": { "message": "PIB total" },
+  "macroTrade": { "message": "Comerç (% del PIB)" },
+  "macroReserves": { "message": "Reserves de divises" },
+  "macroPopulation": { "message": "Població" },
+
+  "overviewTitle": { "message": "Resum del mercat" },
+  "selectMarket": { "message": "Tria mercat:" },
+  "refreshBtn": { "message": "↻ Actualitza" },
+  "refreshTitle": { "message": "Actualitza el resum" },
+  "indicatorsTitle": { "message": "INDICADORS ECONÒMICS" },
+  "loadingMarkets": {
+    "message": "Carregant mercats de $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Carregant indicadors..." },
+  "indicatorsDown": { "message": "Indicadors no disponibles." },
+  "clickAnalyze": {
+    "message": "$NAME$ — clica per analitzar",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — clica per editar",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ MAJORS PUJADES" },
+  "losersTitle": { "message": "▼ MAJORS BAIXADES" },
+  "noGainers": { "message": "Sense pujades avui" },
+  "noLosers": { "message": "Sense baixades avui" },
+  "updatedAt": {
+    "message": "Actualitzat $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Càrrega fallida. Actualitza." },
+  "latestLabel": { "message": "Recent" },
+  "loadingWord": { "message": "carregant..." },
+
+  "newsLoading": { "message": "Carregant últimes notícies..." },
+  "macroNewsTitle": { "message": "NOTÍCIES MACRO EUA" },
+  "fetchingMacroNews": { "message": "Obtenint notícies macro dels EUA..." },
+  "noPortfolioNews": { "message": "Sense accions en aquesta cartera per a notícies." },
+  "fetchingNews": { "message": "Obtenint notícies financeres..." },
+  "tickerNewsTitle": {
+    "message": "NOTÍCIES DE $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Sense notícies recents per a la teva cartera." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Avís" },
+  "promptOk": { "message": "D'acord" },
+
+  "typeIndian": { "message": "Acció índia" },
+  "typeIndex": { "message": "Índex" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "Acció $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Acció" },
+
+  "ratioCurrentPrice": { "message": "Preu actual" },
+  "ratioDayRange": { "message": "Rang del dia" },
+  "ratio52W": { "message": "Rang 52S" },
+  "ratioVolume": { "message": "Volum" },
+  "ratioType": { "message": "Tipus" },
+  "ratioExchange": { "message": "Borsa" },
+  "ratioMCap": { "message": "Cap. mercat" },
+  "ratioPE": { "message": "P/E acció" },
+  "ratioDiv": { "message": "Rend. dividend" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Desplaça la cinta a l'esquerra" },
+  "tapeScrollRight": { "message": "Desplaça la cinta a la dreta" },
+  "chartNoData": { "message": "Sense dades de gràfic" },
+  "chartLoading": { "message": "Carregant gràfic..." },
+  "ret1M": { "message": "Rend. 1M" },
+  "ret6M": { "message": "Rend. 6M" },
+  "ret1Y": { "message": "Rend. 1A" },
+  "ret3Y": { "message": "Rend. 3A" },
+  "ret5Y": { "message": "Rend. 5A" },
+  "ret10Y": { "message": "Rend. 10A" },
+  "retMax": { "message": "Rend. total" },
+  "metricLastPrice": { "message": "Últim preu" },
+  "metricDivYield": { "message": "Rend. div." },
+  "metricPERatio": { "message": "Ràtio P/E" },
+  "viewDetails": { "message": "Ves detalls" },
+  "modalSubtitleIndex": {
+    "message": "Índex de mercat • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Renda variable" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Global" },
+  "modalDetails": { "message": "Detalls" },
+  "tapeLoading": { "message": "Carregant llista de Screener..." },
+
+  "notifAboveTitle": { "message": "Alerta de preu! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ per sobre de ₹$PRICE$ (actual: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Alerta de preu! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ per sota de ₹$PRICE$ (actual: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Alerta de preu Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ ha assolit el teu objectiu de $TARGET$ (actual: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Afegeix \"%s\" a la llista de Screener" },
+  "ctxAddedTitle": { "message": "Llista de Screener" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ afegit a la teva llista!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

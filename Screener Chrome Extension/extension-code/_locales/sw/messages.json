@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Orodha ya moja kwa moja ya hisa za India na dunia, portfolio zinazoweza kuburuzwa, na ticker tape. Msaada: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Fungua orodha ya Screener" },
+  "commandDesc": { "message": "Fungua paneli ya kando ya Screener" },
+
+  "speedTitle": {
+    "message": "Kasi ya tape: $SPEED$ (bonyeza kurekebisha 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Kasi ya tape: 1.0x (bonyeza kurekebisha 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Kasi ya tape" },
+  "speedDecrease": { "message": "Punguza 0.1x" },
+  "speedIncrease": { "message": "Ongeza 0.1x" },
+  "speedCustom": { "message": "Maalum:" },
+  "speedExample": { "message": "mf. 2.3" },
+
+  "pauseTape": { "message": "Sitisha ticker tape" },
+  "resumeTape": { "message": "Endelea ticker tape" },
+  "hideTape": { "message": "Ficha ticker tape" },
+  "showTape": { "message": "Onesha ticker tape" },
+  "domainDisableSite": { "message": "Zima kwenye tovuti hii" },
+  "domainDisable": {
+    "message": "Zima kwenye $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Washa kwenye $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Badili hadi modi ya mwanga" },
+  "themeToDark": { "message": "Badili hadi modi ya giza" },
+  "aboutSupport": { "message": "Kuhusu na msaada" },
+
+  "tabDashboard": { "message": "Dashibodi" },
+  "tabMarkets": { "message": "Masoko" },
+  "tabNews": { "message": "Habari" },
+
+  "searchPlaceholder": { "message": "Tafuta ticker ya kuchambua au kuongeza..." },
+  "searchButton": { "message": "Tafuta" },
+  "clocksLabel": { "message": "Saa za masoko ya dunia" },
+  "clockOpen": { "message": "● Wazi" },
+  "clockClosed": { "message": "● Imefungwa" },
+
+  "watchlistTitle": { "message": "Orodha yako" },
+  "liveBadge": { "message": "Moja kwa moja" },
+  "watchlistEmpty": { "message": "Orodha tupu. Tafuta na uongeze ticker hapo juu!" },
+  "colSymbol": { "message": "Alama" },
+  "colTrend": { "message": "Mwelekeo 1M" },
+  "colPrice": { "message": "Bei" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Mtaji S." },
+  "colActions": { "message": "Vitendo" },
+  "sortByPrice": { "message": "Panga kwa bei" },
+  "sortByMCap": { "message": "Panga kwa mtaji" },
+  "dragHint": { "message": "Buruta ili kupanga upya" },
+  "trendReturnTitle": { "message": "Faida ya kipindi kinachoonyeshwa" },
+  "setAlertTitle": { "message": "Weka arifa" },
+  "deleteTitle": { "message": "Futa" },
+  "renameTitle": { "message": "Badilisha jina la portfolio" },
+  "newTitle": { "message": "Portfolio mpya" },
+  "exportTitle": { "message": "Hamisha kwenda Excel" },
+
+  "portfolioExists": { "message": "Portfolio yenye jina hili tayari ipo!" },
+  "renamePrompt": {
+    "message": "Badilisha jina la portfolio \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Jina la portfolio mpya" },
+
+  "verdictLabel": { "message": "Uamuzi wa AI:" },
+  "verdictNoData": { "message": "Data haitoshi kwa uamuzi." },
+  "verdictGem": { "message": "[Bei nafuu] Almasi yenye faida bora ya mtaji." },
+  "verdictExpensive": { "message": "[Ghali] Biashara imara, lakini kwa malipo makubwa." },
+  "verdictRisk": { "message": "[Hatari kubwa] Bei ghali na ufanisi duni wa mtaji." },
+  "verdictSolid": { "message": "[Imara] Misingi mizuri kwa bei nzuri." },
+  "verdictAvg": { "message": "[Wastani] Misingi ya kawaida. Angalia vichocheo." },
+  "verdictIndex": { "message": "[Indeks] Kipimo kikuu cha soko." },
+
+  "scrapingData": { "message": "Inaleta data..." },
+  "backButton": { "message": "← Rudi" },
+  "addToWatchlist": { "message": "+ Ongeza kwenye orodha" },
+  "addedButton": { "message": "Imeongezwa!" },
+  "alreadyButton": { "message": "Tayari ipo kwenye orodha" },
+  "customizeScreener": { "message": "⚙ Geuza kukufaa vigezo kwenye Screener.in" },
+  "peerTitle": { "message": "Ulinganisho wa rika" },
+  "annTitle": { "message": "Matangazo ya kampuni" },
+  "fetchFailed": { "message": "Imeshindwa kupata data." },
+  "fetchError": { "message": "Hitilafu." },
+
+  "marketIndices": { "message": "Indeksi za soko" },
+  "clickEditCard": {
+    "message": "Bonyeza kuhariri $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Ongeza ticker" },
+  "addNewSlot": { "message": "Ongeza indeks au hisa" },
+  "loadingPrice": { "message": "Inapakia..." },
+  "editCardTitle": { "message": "Hariri kadi ya soko" },
+  "displayNameLabel": { "message": "Jina linaloonyeshwa:" },
+  "displayNamePh": { "message": "mf. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Alama (Yahoo/NSE):" },
+  "symbolPh": { "message": "mf. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Ondoa" },
+  "cancelBtn": { "message": "Ghairi" },
+  "saveBtn": { "message": "Hifadhi" },
+  "saveCardBtn": { "message": "Hifadhi kadi" },
+  "needBoth": { "message": "Weka jina linaloonyeshwa na alama." },
+
+  "alertPrefix": { "message": "Weka arifa kwa" },
+  "aboveLabel": { "message": "Arifa bei ikipanda (₹):" },
+  "abovePh": { "message": "mf. 3000" },
+  "belowLabel": { "message": "Arifa bei ikishuka (₹):" },
+  "belowPh": { "message": "mf. 2500" },
+
+  "aboutTagline": { "message": "Mlisho wa moja kwa moja wa masoko mengi" },
+  "aboutDesc": { "message": "Orodha, ticker tape na vipimo moja kwa moja kupitia Screener.in & Yahoo Finance." },
+  "buyCoffee": { "message": "Ninunulie kahawa" },
+  "scanSupport": { "message": "Skana kusaidia ☕" },
+  "closeBtn": { "message": "Funga" },
+  "qrAlt": { "message": "Skana kusaidia kupitia Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Hariri kiashiria" },
+  "macroTileOf": {
+    "message": "Kigae $N$ kati ya 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Kiashiria:" },
+  "wbLink": { "message": "Tazama kwenye Benki ya Dunia" },
+  "macroInflation": { "message": "Mfumuko (CPI)" },
+  "macroUnemployment": { "message": "Ukosefu wa ajira" },
+  "macroGdp": { "message": "Ukuaji wa Pato" },
+  "macroGdppc": { "message": "Pato kwa mtu" },
+  "macroGdptotal": { "message": "Jumla ya Pato" },
+  "macroTrade": { "message": "Biashara (% ya Pato)" },
+  "macroReserves": { "message": "Akiba za fedha za kigeni" },
+  "macroPopulation": { "message": "Idadi ya watu" },
+
+  "overviewTitle": { "message": "Muhtasari wa soko" },
+  "selectMarket": { "message": "Chagua soko:" },
+  "refreshBtn": { "message": "↻ Onyesha upya" },
+  "refreshTitle": { "message": "Onyesha upya muhtasari" },
+  "indicatorsTitle": { "message": "VIASHIRIA VYA UCHUMI" },
+  "loadingMarkets": {
+    "message": "Inapakia masoko ya $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Inapakia viashiria..." },
+  "indicatorsDown": { "message": "Viashiria havipatikani." },
+  "clickAnalyze": {
+    "message": "$NAME$ — bonyeza kuchambua",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — bonyeza kuhariri",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ WANAOPANDA ZAIDI" },
+  "losersTitle": { "message": "▼ WANAOSHUKA ZAIDI" },
+  "noGainers": { "message": "Hakuna wanaopanda leo" },
+  "noLosers": { "message": "Hakuna wanaoshuka leo" },
+  "updatedAt": {
+    "message": "Imesasishwa $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Upakiaji umeshindwa. Onyesha upya." },
+  "latestLabel": { "message": "Mpya" },
+  "loadingWord": { "message": "inapakia..." },
+
+  "newsLoading": { "message": "Inapakia habari mpya..." },
+  "macroNewsTitle": { "message": "HABARI KUU MAREKANI" },
+  "fetchingMacroNews": { "message": "Inaleta habari kuu Marekani..." },
+  "noPortfolioNews": { "message": "Hakuna hisa kwenye portfolio hii kwa habari." },
+  "fetchingNews": { "message": "Inaleta habari za fedha..." },
+  "tickerNewsTitle": {
+    "message": "HABARI ZA $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Hakuna habari mpya kwa portfolio yako." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Arifa" },
+  "promptOk": { "message": "Sawa" },
+
+  "typeIndian": { "message": "Hisa ya India" },
+  "typeIndex": { "message": "Indeks" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "Hisa ya $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Hisa" },
+
+  "ratioCurrentPrice": { "message": "Bei ya sasa" },
+  "ratioDayRange": { "message": "Masafa ya siku" },
+  "ratio52W": { "message": "Masafa 52W" },
+  "ratioVolume": { "message": "Kiasi" },
+  "ratioType": { "message": "Aina" },
+  "ratioExchange": { "message": "Soko" },
+  "ratioMCap": { "message": "Mtaji soko" },
+  "ratioPE": { "message": "P/E ya hisa" },
+  "ratioDiv": { "message": "Faida ya mgao" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Sogeza tape kushoto" },
+  "tapeScrollRight": { "message": "Sogeza tape kulia" },
+  "chartNoData": { "message": "Hakuna data ya chati" },
+  "chartLoading": { "message": "Inapakia chati..." },
+  "ret1M": { "message": "Faida 1M" },
+  "ret6M": { "message": "Faida 6M" },
+  "ret1Y": { "message": "Faida 1M" },
+  "ret3Y": { "message": "Faida 3M" },
+  "ret5Y": { "message": "Faida 5M" },
+  "ret10Y": { "message": "Faida 10M" },
+  "retMax": { "message": "Jumla ya faida" },
+  "metricLastPrice": { "message": "Bei ya mwisho" },
+  "metricDivYield": { "message": "Faida mgao" },
+  "metricPERatio": { "message": "Uwiano P/E" },
+  "viewDetails": { "message": "Tazama maelezo" },
+  "modalSubtitleIndex": {
+    "message": "Indeks ya soko • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Hisa" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Dunia" },
+  "modalDetails": { "message": "Maelezo" },
+  "tapeLoading": { "message": "Inapakia orodha ya Screener..." },
+
+  "notifAboveTitle": { "message": "Arifa ya bei! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ imevuka ₹$PRICE$ (sasa: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Arifa ya bei! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ imeshuka chini ya ₹$PRICE$ (sasa: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Arifa ya bei Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ imefikia lengo lako $TARGET$ (sasa: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Ongeza \"%s\" kwenye orodha ya Screener" },
+  "ctxAddedTitle": { "message": "Orodha ya Screener" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ imeongezwa kwenye orodha yako!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

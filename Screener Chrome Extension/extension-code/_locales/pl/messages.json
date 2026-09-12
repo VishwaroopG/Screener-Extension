@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Watchlista akcji indyjskich i globalnych na żywo, przeciągane portfele i pasek notowań. Wsparcie: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Otwórz watchlistę Screener" },
+  "commandDesc": { "message": "Otwórz panel boczny Screener" },
+
+  "speedTitle": {
+    "message": "Prędkość paska: $SPEED$ (kliknij, aby dostosować 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Prędkość paska: 1.0x (kliknij, aby dostosować 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Prędkość paska" },
+  "speedDecrease": { "message": "Zmniejsz o 0.1x" },
+  "speedIncrease": { "message": "Zwiększ o 0.1x" },
+  "speedCustom": { "message": "Własna:" },
+  "speedExample": { "message": "np. 2.3" },
+
+  "pauseTape": { "message": "Wstrzymaj pasek notowań" },
+  "resumeTape": { "message": "Wznów pasek notowań" },
+  "hideTape": { "message": "Ukryj pasek notowań" },
+  "showTape": { "message": "Pokaż pasek notowań" },
+  "domainDisableSite": { "message": "Wyłącz na tej stronie" },
+  "domainDisable": {
+    "message": "Wyłącz na $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Włącz na $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Przełącz na jasny motyw" },
+  "themeToDark": { "message": "Przełącz na ciemny motyw" },
+  "aboutSupport": { "message": "O nas i wsparcie" },
+
+  "tabDashboard": { "message": "Panel" },
+  "tabMarkets": { "message": "Rynki" },
+  "tabNews": { "message": "Wiadomości" },
+
+  "searchPlaceholder": { "message": "Znajdź ticker do analizy lub dodania..." },
+  "searchButton": { "message": "Szukaj" },
+  "clocksLabel": { "message": "Zegary rynków świata" },
+  "clockOpen": { "message": "● Otwarte" },
+  "clockClosed": { "message": "● Zamknięte" },
+
+  "watchlistTitle": { "message": "Twoja watchlista" },
+  "liveBadge": { "message": "Na żywo" },
+  "watchlistEmpty": { "message": "Watchlista jest pusta. Znajdź i dodaj ticker powyżej!" },
+  "colSymbol": { "message": "Symbol" },
+  "colTrend": { "message": "Trend 1R" },
+  "colPrice": { "message": "Cena" },
+  "colPE": { "message": "C/Z" },
+  "colMCap": { "message": "Kap. rynk." },
+  "colActions": { "message": "Akcje" },
+  "sortByPrice": { "message": "Sortuj po cenie" },
+  "sortByMCap": { "message": "Sortuj po kapitalizacji" },
+  "dragHint": { "message": "Przeciągnij, aby zmienić kolejność" },
+  "trendReturnTitle": { "message": "Stopa zwrotu za pokazany okres" },
+  "setAlertTitle": { "message": "Utwórz alert" },
+  "deleteTitle": { "message": "Usuń" },
+  "renameTitle": { "message": "Zmień nazwę portfela" },
+  "newTitle": { "message": "Nowy portfel" },
+  "exportTitle": { "message": "Eksportuj do Excel" },
+
+  "portfolioExists": { "message": "Portfel o tej nazwie już istnieje!" },
+  "renamePrompt": {
+    "message": "Zmień nazwę portfela \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Nazwa nowego portfela" },
+
+  "verdictLabel": { "message": "Werdykt AI:" },
+  "verdictNoData": { "message": "Za mało danych na werdykt." },
+  "verdictGem": { "message": "[Niedowartościowana] Perełka o bardzo efektywnym zwrocie z kapitału." },
+  "verdictExpensive": { "message": "[Droga] Silna spółka, ale z wysoką premią." },
+  "verdictRisk": { "message": "[Wysokie ryzyko] Przewartościowana przy słabej efektywności kapitału." },
+  "verdictSolid": { "message": "[Solidna] Świetne fundamenty w rozsądnej cenie." },
+  "verdictAvg": { "message": "[Średnia] Standardowe fundamenty. Obserwuj katalizatory." },
+  "verdictIndex": { "message": "[Indeks] Kluczowy benchmark rynku." },
+
+  "scrapingData": { "message": "Pobieranie danych..." },
+  "backButton": { "message": "← Wróć" },
+  "addToWatchlist": { "message": "+ Dodaj do watchlisty" },
+  "addedButton": { "message": "Dodano!" },
+  "alreadyButton": { "message": "Już jest na watchliście" },
+  "customizeScreener": { "message": "⚙ Dostosuj parametry na Screener.in" },
+  "peerTitle": { "message": "Porównanie z branżą" },
+  "annTitle": { "message": "Komunikaty spółki" },
+  "fetchFailed": { "message": "Nie udało się pobrać danych." },
+  "fetchError": { "message": "Błąd." },
+
+  "marketIndices": { "message": "Indeksy rynkowe" },
+  "clickEditCard": {
+    "message": "Kliknij, aby edytować $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Dodaj ticker" },
+  "addNewSlot": { "message": "Dodaj indeks lub akcję" },
+  "loadingPrice": { "message": "Ładowanie..." },
+  "editCardTitle": { "message": "Edytuj kartę rynku" },
+  "displayNameLabel": { "message": "Wyświetlana nazwa:" },
+  "displayNamePh": { "message": "np. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Symbol (Yahoo/NSE):" },
+  "symbolPh": { "message": "np. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Usuń" },
+  "cancelBtn": { "message": "Anuluj" },
+  "saveBtn": { "message": "Zapisz" },
+  "saveCardBtn": { "message": "Zapisz kartę" },
+  "needBoth": { "message": "Podaj wyświetlaną nazwę i symbol." },
+
+  "alertPrefix": { "message": "Utwórz alert dla" },
+  "aboveLabel": { "message": "Alert przy cenie powyżej (₹):" },
+  "abovePh": { "message": "np. 3000" },
+  "belowLabel": { "message": "Alert przy cenie poniżej (₹):" },
+  "belowPh": { "message": "np. 2500" },
+
+  "aboutTagline": { "message": "Multi-rynkowy feed na żywo" },
+  "aboutDesc": { "message": "Watchlista, pasek notowań i wskaźniki na żywo via Screener.in i Yahoo Finance." },
+  "buyCoffee": { "message": "Postaw mi kawę" },
+  "scanSupport": { "message": "Zeskanuj, aby wesprzeć ☕" },
+  "closeBtn": { "message": "Zamknij" },
+  "qrAlt": { "message": "Zeskanuj, aby wesprzeć via Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Edytuj wskaźnik" },
+  "macroTileOf": {
+    "message": "Kafelek $N$ z 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Wskaźnik:" },
+  "wbLink": { "message": "Zobacz na stronie Banku Światowego" },
+  "macroInflation": { "message": "Inflacja (CPI)" },
+  "macroUnemployment": { "message": "Bezrobocie" },
+  "macroGdp": { "message": "Wzrost PKB" },
+  "macroGdppc": { "message": "PKB per capita" },
+  "macroGdptotal": { "message": "PKB ogółem" },
+  "macroTrade": { "message": "Handel (% PKB)" },
+  "macroReserves": { "message": "Rezerwy walutowe" },
+  "macroPopulation": { "message": "Populacja" },
+
+  "overviewTitle": { "message": "Przegląd rynku" },
+  "selectMarket": { "message": "Wybierz rynek:" },
+  "refreshBtn": { "message": "↻ Odśwież" },
+  "refreshTitle": { "message": "Odśwież przegląd" },
+  "indicatorsTitle": { "message": "WSKAŹNIKI EKONOMICZNE" },
+  "loadingMarkets": {
+    "message": "Ładowanie rynków $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Ładowanie wskaźników..." },
+  "indicatorsDown": { "message": "Wskaźniki niedostępne." },
+  "clickAnalyze": {
+    "message": "$NAME$ — kliknij, aby analizować",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — kliknij, aby edytować",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ TOP WZROSTY" },
+  "losersTitle": { "message": "▼ TOP SPADKI" },
+  "noGainers": { "message": "Dziś brak wzrostów" },
+  "noLosers": { "message": "Dziś brak spadków" },
+  "updatedAt": {
+    "message": "Zaktualizowano $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Ładowanie nieudane. Odśwież." },
+  "latestLabel": { "message": "Najnowsze" },
+  "loadingWord": { "message": "ładowanie..." },
+
+  "newsLoading": { "message": "Ładowanie najnowszych wiadomości..." },
+  "macroNewsTitle": { "message": "MAKRO WIADOMOŚCI USA" },
+  "fetchingMacroNews": { "message": "Pobieranie makro wiadomości USA..." },
+  "noPortfolioNews": { "message": "Brak akcji w tym portfelu dla wiadomości." },
+  "fetchingNews": { "message": "Pobieranie wiadomości finansowych..." },
+  "tickerNewsTitle": {
+    "message": "WIADOMOŚCI $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Brak świeżych wiadomości dla portfela." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Monit" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Akcja indyjska" },
+  "typeIndex": { "message": "Indeks" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "Akcja $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Akcja" },
+
+  "ratioCurrentPrice": { "message": "Aktualna cena" },
+  "ratioDayRange": { "message": "Zakres dzienny" },
+  "ratio52W": { "message": "Zakres 52T" },
+  "ratioVolume": { "message": "Wolumen" },
+  "ratioType": { "message": "Typ" },
+  "ratioExchange": { "message": "Giełda" },
+  "ratioMCap": { "message": "Kap. rynkowa" },
+  "ratioPE": { "message": "C/Z akcji" },
+  "ratioDiv": { "message": "Stopa dywidendy" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Przewiń pasek w lewo" },
+  "tapeScrollRight": { "message": "Przewiń pasek w prawo" },
+  "chartNoData": { "message": "Brak danych wykresu" },
+  "chartLoading": { "message": "Ładowanie wykresu..." },
+  "ret1M": { "message": "Zwrot 1M" },
+  "ret6M": { "message": "Zwrot 6M" },
+  "ret1Y": { "message": "Zwrot 1R" },
+  "ret3Y": { "message": "Zwrot 3L" },
+  "ret5Y": { "message": "Zwrot 5L" },
+  "ret10Y": { "message": "Zwrot 10L" },
+  "retMax": { "message": "Zwrot całk." },
+  "metricLastPrice": { "message": "Ost. cena" },
+  "metricDivYield": { "message": "Stopa dyw." },
+  "metricPERatio": { "message": "Wskaźnik C/Z" },
+  "viewDetails": { "message": "Zobacz szczegóły" },
+  "modalSubtitleIndex": {
+    "message": "Indeks rynkowy • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Akcje" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Globalnie" },
+  "modalDetails": { "message": "Szczegóły" },
+  "tapeLoading": { "message": "Ładowanie watchlisty Screener..." },
+
+  "notifAboveTitle": { "message": "Alert cenowy! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ powyżej ₹$PRICE$ (aktualnie: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Alert cenowy! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ poniżej ₹$PRICE$ (aktualnie: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Alert cenowy Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ osiągnął Twój cel $TARGET$ (aktualnie: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Dodaj „%s” do watchlisty Screener" },
+  "ctxAddedTitle": { "message": "Watchlista Screener" },
+  "ctxAddedMsg": {
+    "message": "Dodano $TICKER$ do Twojej watchlisty!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

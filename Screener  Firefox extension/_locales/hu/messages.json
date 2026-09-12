@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Élő indiai és globális részvényfigyelő, húzható portfóliók és árfolyamszalag. Támogatás: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Screener figyelő megnyitása" },
+  "commandDesc": { "message": "Screener oldalsáv megnyitása" },
+
+  "speedTitle": {
+    "message": "Szalagsebesség: $SPEED$ (kattints 0.5x – 3.0x állításhoz)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Szalagsebesség: 1.0x (kattints 0.5x – 3.0x állításhoz)" },
+  "speedLabel": { "message": "Szalagsebesség" },
+  "speedDecrease": { "message": "Csökkentés 0.1x" },
+  "speedIncrease": { "message": "Növelés 0.1x" },
+  "speedCustom": { "message": "Egyéni:" },
+  "speedExample": { "message": "pl. 2.3" },
+
+  "pauseTape": { "message": "Árfolyamszalag szüneteltetése" },
+  "resumeTape": { "message": "Árfolyamszalag folytatása" },
+  "hideTape": { "message": "Árfolyamszalag elrejtése" },
+  "showTape": { "message": "Árfolyamszalag megjelenítése" },
+  "domainDisableSite": { "message": "Kikapcsolás ezen az oldalon" },
+  "domainDisable": {
+    "message": "Kikapcsolás: $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Bekapcsolás: $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Váltás világos módra" },
+  "themeToDark": { "message": "Váltás sötét módra" },
+  "aboutSupport": { "message": "Névjegy és támogatás" },
+
+  "tabDashboard": { "message": "Irányítópult" },
+  "tabMarkets": { "message": "Piacok" },
+  "tabNews": { "message": "Hírek" },
+
+  "searchPlaceholder": { "message": "Ticker keresése elemzéshez vagy hozzáadáshoz..." },
+  "searchButton": { "message": "Keresés" },
+  "clocksLabel": { "message": "Világpiaci órák" },
+  "clockOpen": { "message": "● Nyitva" },
+  "clockClosed": { "message": "● Zárva" },
+
+  "watchlistTitle": { "message": "Figyelőlistád" },
+  "liveBadge": { "message": "Élő" },
+  "watchlistEmpty": { "message": "A figyelő üres. Keress és adj hozzá tickert fent!" },
+  "colSymbol": { "message": "Szimbólum" },
+  "colTrend": { "message": "1É trend" },
+  "colPrice": { "message": "Ár" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Piaci kap." },
+  "colActions": { "message": "Műveletek" },
+  "sortByPrice": { "message": "Rendezés ár szerint" },
+  "sortByMCap": { "message": "Rendezés piaci kap. szerint" },
+  "dragHint": { "message": "Húzd az átrendezéshez" },
+  "trendReturnTitle": { "message": "Megjelenített időszak hozama" },
+  "setAlertTitle": { "message": "Riasztás létrehozása" },
+  "deleteTitle": { "message": "Törlés" },
+  "renameTitle": { "message": "Portfólió átnevezése" },
+  "newTitle": { "message": "Új portfólió" },
+  "exportTitle": { "message": "Exportálás Excelbe" },
+
+  "portfolioExists": { "message": "Ilyen nevű portfólió már létezik!" },
+  "renamePrompt": {
+    "message": "\"$NAME$\" portfólió átnevezése",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Új portfólió neve" },
+
+  "verdictLabel": { "message": "MI ítélet:" },
+  "verdictNoData": { "message": "Nincs elég adat az ítélethez." },
+  "verdictGem": { "message": "[Alulértékelt] Gyöngyszem rendkívül hatékony tőkehozammal." },
+  "verdictExpensive": { "message": "[Drága] Erős cég, de drága prémiummal." },
+  "verdictRisk": { "message": "[Magas kockázat] Túlértékelt, gyenge tőkehatékonysággal." },
+  "verdictSolid": { "message": "[Szilárd] Kiváló fundamentumok méltányos áron." },
+  "verdictAvg": { "message": "[Átlagos] Szokásos fundamentumok. Figyeld a katalizátorokat." },
+  "verdictIndex": { "message": "[Index] A piac kulcsbenchmarkje." },
+
+  "scrapingData": { "message": "Adatok lekérése..." },
+  "backButton": { "message": "← Vissza" },
+  "addToWatchlist": { "message": "+ Hozzáadás a figyelőhöz" },
+  "addedButton": { "message": "Hozzáadva!" },
+  "alreadyButton": { "message": "Már a figyelőben van" },
+  "customizeScreener": { "message": "⚙ Paraméterek testreszabása a Screener.in oldalon" },
+  "peerTitle": { "message": "Versenytárs-összehasonlítás" },
+  "annTitle": { "message": "Céges közlemények" },
+  "fetchFailed": { "message": "Nem sikerült lekérni az adatokat." },
+  "fetchError": { "message": "Hiba." },
+
+  "marketIndices": { "message": "Piaci indexek" },
+  "clickEditCard": {
+    "message": "Kattints $NAME$ szerkesztéséhez",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Ticker hozzáadása" },
+  "addNewSlot": { "message": "Index vagy részvény hozzáadása" },
+  "loadingPrice": { "message": "Betöltés..." },
+  "editCardTitle": { "message": "Piaci kártya szerkesztése" },
+  "displayNameLabel": { "message": "Megjelenített név:" },
+  "displayNamePh": { "message": "pl. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Szimbólum (Yahoo/NSE):" },
+  "symbolPh": { "message": "pl. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Eltávolítás" },
+  "cancelBtn": { "message": "Mégse" },
+  "saveBtn": { "message": "Mentés" },
+  "saveCardBtn": { "message": "Kártya mentése" },
+  "needBoth": { "message": "Add meg a megjelenített nevet és a szimbólumot." },
+
+  "alertPrefix": { "message": "Riasztás létrehozása:" },
+  "aboveLabel": { "message": "Riasztás ha az ár meghaladja (₹):" },
+  "abovePh": { "message": "pl. 3000" },
+  "belowLabel": { "message": "Riasztás ha az ár ez alá esik (₹):" },
+  "belowPh": { "message": "pl. 2500" },
+
+  "aboutTagline": { "message": "Többpiacos élő hírfolyam" },
+  "aboutDesc": { "message": "Valós idejű figyelő, szalag és mutatók a Screener.in és Yahoo Finance révén." },
+  "buyCoffee": { "message": "Hívj meg egy kávéra" },
+  "scanSupport": { "message": "Szkenneld a támogatáshoz ☕" },
+  "closeBtn": { "message": "Bezárás" },
+  "qrAlt": { "message": "Szkenneld a támogatáshoz Buy Me a Coffee-n keresztül" },
+
+  "macroTitle": { "message": "Indikátor szerkesztése" },
+  "macroTileOf": {
+    "message": "$N$. csempe a 4-ből",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Indikátor:" },
+  "wbLink": { "message": "Megtekintés a Világbanknál" },
+  "macroInflation": { "message": "Infláció (CPI)" },
+  "macroUnemployment": { "message": "Munkanélküliség" },
+  "macroGdp": { "message": "GDP-növekedés" },
+  "macroGdppc": { "message": "Egy főre jutó GDP" },
+  "macroGdptotal": { "message": "Teljes GDP" },
+  "macroTrade": { "message": "Kereskedelem (GDP %-a)" },
+  "macroReserves": { "message": "Devizatartalékok" },
+  "macroPopulation": { "message": "Népesség" },
+
+  "overviewTitle": { "message": "Piaci áttekintés" },
+  "selectMarket": { "message": "Válassz piacot:" },
+  "refreshBtn": { "message": "↻ Frissítés" },
+  "refreshTitle": { "message": "Áttekintés frissítése" },
+  "indicatorsTitle": { "message": "GAZDASÁGI MUTATÓK" },
+  "loadingMarkets": {
+    "message": "$ECO$-piacok betöltése...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Mutatók betöltése..." },
+  "indicatorsDown": { "message": "A mutatók nem érhetők el." },
+  "clickAnalyze": {
+    "message": "$NAME$ — kattints az elemzéshez",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — kattints a szerkesztéshez",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ TOP EMELKEDŐK" },
+  "losersTitle": { "message": "▼ TOP ESŐK" },
+  "noGainers": { "message": "Ma nincs emelkedő" },
+  "noLosers": { "message": "Ma nincs eső" },
+  "updatedAt": {
+    "message": "Frissítve $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Betöltés sikertelen. Frissíts." },
+  "latestLabel": { "message": "Legfrissebb" },
+  "loadingWord": { "message": "betöltés..." },
+
+  "newsLoading": { "message": "Legfrissebb hírek betöltése..." },
+  "macroNewsTitle": { "message": "USA MAKRÓHÍREK" },
+  "fetchingMacroNews": { "message": "USA makróhírek lekérése..." },
+  "noPortfolioNews": { "message": "Nincs részvény ebben a portfólióban hírekhez." },
+  "fetchingNews": { "message": "Pénzügyi hírek lekérése..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ HÍREK",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Nincs friss hír a portfóliódhoz." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Parancs" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Indiai részvény" },
+  "typeIndex": { "message": "Index" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ részvény",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Részvény" },
+
+  "ratioCurrentPrice": { "message": "Aktuális ár" },
+  "ratioDayRange": { "message": "Napi sáv" },
+  "ratio52W": { "message": "52H sáv" },
+  "ratioVolume": { "message": "Forgalom" },
+  "ratioType": { "message": "Típus" },
+  "ratioExchange": { "message": "Tőzsde" },
+  "ratioMCap": { "message": "Piaci kap." },
+  "ratioPE": { "message": "Részvény P/E" },
+  "ratioDiv": { "message": "Osztalékhozam" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Szalag görgetése balra" },
+  "tapeScrollRight": { "message": "Szalag görgetése jobbra" },
+  "chartNoData": { "message": "Nincs grafikonadat" },
+  "chartLoading": { "message": "Grafikon betöltése..." },
+  "ret1M": { "message": "1H hozam" },
+  "ret6M": { "message": "6H hozam" },
+  "ret1Y": { "message": "1É hozam" },
+  "ret3Y": { "message": "3É hozam" },
+  "ret5Y": { "message": "5É hozam" },
+  "ret10Y": { "message": "10É hozam" },
+  "retMax": { "message": "Teljes hozam" },
+  "metricLastPrice": { "message": "Utolsó ár" },
+  "metricDivYield": { "message": "Osztalékhozam" },
+  "metricPERatio": { "message": "P/E ráta" },
+  "viewDetails": { "message": "Részletek" },
+  "modalSubtitleIndex": {
+    "message": "Piaci index • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Részvények" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Globális" },
+  "modalDetails": { "message": "Részletek" },
+  "tapeLoading": { "message": "Screener figyelő betöltése..." },
+
+  "notifAboveTitle": { "message": "Árriasztás! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ ₹$PRICE$ fölé ment (aktuális: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Árriasztás! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ ₹$PRICE$ alá esett (aktuális: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Screener árriasztás" },
+  "notifGeneric": {
+    "message": "$TICKER$ elérte a $TARGET$ célodat (aktuális: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "\"%s\" hozzáadása a Screener figyelőhöz" },
+  "ctxAddedTitle": { "message": "Screener figyelő" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ hozzáadva a figyelődhöz!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "लाइव भारतीय और ग्लोबल स्टॉक वॉचलिस्ट, ड्रैग करने योग्य पोर्टफोलियो और टिकर टेप। सहयोग: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "स्क्रीनर वॉचलिस्ट खोलें" },
+  "commandDesc": { "message": "स्क्रीनर साइड पैनल खोलें" },
+
+  "speedTitle": {
+    "message": "टेप गति: $SPEED$ (0.5x – 3.0x तक बदलने के लिए क्लिक करें)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "टेप गति: 1.0x (0.5x – 3.0x तक बदलने के लिए क्लिक करें)" },
+  "speedLabel": { "message": "टेप गति" },
+  "speedDecrease": { "message": "0.1x घटाएं" },
+  "speedIncrease": { "message": "0.1x बढ़ाएं" },
+  "speedCustom": { "message": "कस्टम:" },
+  "speedExample": { "message": "जैसे 2.3" },
+
+  "pauseTape": { "message": "टिकर टेप रोकें" },
+  "resumeTape": { "message": "टिकर टेप चलाएं" },
+  "hideTape": { "message": "टिकर टेप छिपाएं" },
+  "showTape": { "message": "टिकर टेप दिखाएं" },
+  "domainDisableSite": { "message": "इस साइट पर बंद करें" },
+  "domainDisable": {
+    "message": "$DOMAIN$ पर बंद करें",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "$DOMAIN$ पर चालू करें",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "लाइट मोड पर जाएं" },
+  "themeToDark": { "message": "डार्क मोड पर जाएं" },
+  "aboutSupport": { "message": "परिचय और सहयोग" },
+
+  "tabDashboard": { "message": "डैशबोर्ड" },
+  "tabMarkets": { "message": "बाज़ार" },
+  "tabNews": { "message": "समाचार" },
+
+  "searchPlaceholder": { "message": "विश्लेषण या जोड़ने के लिए टिकर खोजें..." },
+  "searchButton": { "message": "खोजें" },
+  "clocksLabel": { "message": "विश्व बाज़ार घड़ियां" },
+  "clockOpen": { "message": "● खुला" },
+  "clockClosed": { "message": "● बंद" },
+
+  "watchlistTitle": { "message": "आपकी वॉचलिस्ट" },
+  "liveBadge": { "message": "लाइव" },
+  "watchlistEmpty": { "message": "वॉचलिस्ट खाली है। ऊपर टिकर खोजकर जोड़ें!" },
+  "colSymbol": { "message": "सिंबल" },
+  "colTrend": { "message": "1Y ट्रेंड" },
+  "colPrice": { "message": "भाव" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "M. कैप" },
+  "colActions": { "message": "एक्शन" },
+  "sortByPrice": { "message": "भाव के अनुसार छांटें" },
+  "sortByMCap": { "message": "मार्केट कैप के अनुसार छांटें" },
+  "dragHint": { "message": "क्रम बदलने के लिए खींचें" },
+  "trendReturnTitle": { "message": "दिखाई अवधि का रिटर्न" },
+  "setAlertTitle": { "message": "अलर्ट सेट करें" },
+  "deleteTitle": { "message": "हटाएं" },
+  "renameTitle": { "message": "पोर्टफोलियो का नाम बदलें" },
+  "newTitle": { "message": "नया पोर्टफोलियो" },
+  "exportTitle": { "message": "Excel में एक्सपोर्ट करें" },
+
+  "portfolioExists": { "message": "इस नाम का पोर्टफोलियो पहले से मौजूद है!" },
+  "renamePrompt": {
+    "message": "पोर्टफोलियो \"$NAME$\" का नाम बदलें",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "नए पोर्टफोलियो का नाम" },
+
+  "verdictLabel": { "message": "AI मत:" },
+  "verdictNoData": { "message": "मत देने के लिए पर्याप्त डेटा नहीं है।" },
+  "verdictGem": { "message": "[अंडरवैल्यूड] पूंजी पर बेहद कुशल रिटर्न वाला रत्न।" },
+  "verdictExpensive": { "message": "[महंगा] मज़बूत बिज़नेस, लेकिन महंगे प्रीमियम पर कारोबार।" },
+  "verdictRisk": { "message": "[उच्च जोखिम] खराब पूंजी दक्षता के साथ ओवरवैल्यूड।" },
+  "verdictSolid": { "message": "[मज़बूत] उचित भाव पर शानदार फंडामेंटल।" },
+  "verdictAvg": { "message": "[औसत] सामान्य फंडामेंटल। ग्रोथ के संकेतों पर नज़र रखें।" },
+  "verdictIndex": { "message": "[मार्केट इंडेक्स] बाज़ार प्रदर्शन का प्रमुख बेंचमार्क।" },
+
+  "scrapingData": { "message": "डेटा लिया जा रहा है..." },
+  "backButton": { "message": "← वापस" },
+  "addToWatchlist": { "message": "+ वॉचलिस्ट में जोड़ें" },
+  "addedButton": { "message": "जुड़ गया!" },
+  "alreadyButton": { "message": "पहले से वॉचलिस्ट में है" },
+  "customizeScreener": { "message": "⚙ Screener.in पर पैरामीटर कस्टमाइज़ करें" },
+  "peerTitle": { "message": "सहकर्मी तुलना" },
+  "annTitle": { "message": "कंपनी घोषणाएं" },
+  "fetchFailed": { "message": "डेटा नहीं मिल सका।" },
+  "fetchError": { "message": "त्रुटि।" },
+
+  "marketIndices": { "message": "बाज़ार सूचकांक" },
+  "clickEditCard": {
+    "message": "$NAME$ संपादित करने के लिए क्लिक करें",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "टिकर जोड़ें" },
+  "addNewSlot": { "message": "नया इंडेक्स या स्टॉक जोड़ें" },
+  "loadingPrice": { "message": "लोड हो रहा है..." },
+  "editCardTitle": { "message": "मार्केट कार्ड संपादित करें" },
+  "displayNameLabel": { "message": "प्रदर्शित नाम:" },
+  "displayNamePh": { "message": "जैसे NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "सिंबल (Yahoo/NSE):" },
+  "symbolPh": { "message": "जैसे ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "हटाएं" },
+  "cancelBtn": { "message": "रद्द करें" },
+  "saveBtn": { "message": "सेव करें" },
+  "saveCardBtn": { "message": "कार्ड सेव करें" },
+  "needBoth": { "message": "कृपया प्रदर्शित नाम और सिंबल दोनों दर्ज करें।" },
+
+  "alertPrefix": { "message": "के लिए अलर्ट सेट करें" },
+  "aboveLabel": { "message": "भाव ऊपर जाने पर अलर्ट (₹):" },
+  "abovePh": { "message": "जैसे 3000" },
+  "belowLabel": { "message": "भाव नीचे जाने पर अलर्ट (₹):" },
+  "belowPh": { "message": "जैसे 2500" },
+
+  "aboutTagline": { "message": "मल्टी-मार्केट लाइव फीड" },
+  "aboutDesc": { "message": "Screener.in और Yahoo Finance द्वारा संचालित रीयल-टाइम वॉचलिस्ट, टिकर टेप और अनुपात।" },
+  "buyCoffee": { "message": "मुझे एक कॉफी पिलाएं" },
+  "scanSupport": { "message": "सहयोग के लिए स्कैन करें ☕" },
+  "closeBtn": { "message": "बंद करें" },
+  "qrAlt": { "message": "Buy Me a Coffee से सहयोग के लिए स्कैन करें" },
+
+  "macroTitle": { "message": "संकेतक संपादित करें" },
+  "macroTileOf": {
+    "message": "4 में से टाइल $N$",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "संकेतक:" },
+  "wbLink": { "message": "विश्व बैंक पर देखें" },
+  "macroInflation": { "message": "मुद्रास्फीति (CPI)" },
+  "macroUnemployment": { "message": "बेरोज़गारी" },
+  "macroGdp": { "message": "GDP वृद्धि" },
+  "macroGdppc": { "message": "प्रति व्यक्ति GDP" },
+  "macroGdptotal": { "message": "कुल GDP" },
+  "macroTrade": { "message": "व्यापार (GDP का %)" },
+  "macroReserves": { "message": "विदेशी मुद्रा भंडार" },
+  "macroPopulation": { "message": "जनसंख्या" },
+
+  "overviewTitle": { "message": "बाज़ार अवलोकन" },
+  "selectMarket": { "message": "बाज़ार चुनें:" },
+  "refreshBtn": { "message": "↻ रीफ्रेश" },
+  "refreshTitle": { "message": "अवलोकन रीफ्रेश करें" },
+  "indicatorsTitle": { "message": "अर्थव्यवस्था संकेतक" },
+  "loadingMarkets": {
+    "message": "$ECO$ बाज़ार लोड हो रहे हैं...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "संकेतक लोड हो रहे हैं..." },
+  "indicatorsDown": { "message": "संकेतक उपलब्ध नहीं हैं।" },
+  "clickAnalyze": {
+    "message": "$NAME$ — विश्लेषण के लिए क्लिक करें",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — संपादित करने के लिए क्लिक करें",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ शीर्ष बढ़त" },
+  "losersTitle": { "message": "▼ शीर्ष गिरावट" },
+  "noGainers": { "message": "आज कोई बढ़त नहीं" },
+  "noLosers": { "message": "आज कोई गिरावट नहीं" },
+  "updatedAt": {
+    "message": "अपडेट: $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "बाज़ार डेटा लोड नहीं हो सका। रीफ्रेश आज़माएं।" },
+  "latestLabel": { "message": "ताज़ा" },
+  "loadingWord": { "message": "लोड हो रहा है..." },
+
+  "newsLoading": { "message": "ताज़ा समाचार लोड हो रहे हैं..." },
+  "macroNewsTitle": { "message": "US मैक्रो समाचार" },
+  "fetchingMacroNews": { "message": "US मैक्रो समाचार लाए जा रहे हैं..." },
+  "noPortfolioNews": { "message": "इस पोर्टफोलियो में समाचार के लिए कोई स्टॉक नहीं है।" },
+  "fetchingNews": { "message": "ताज़ा वित्तीय समाचार लाए जा रहे हैं..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ समाचार",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "आपके पोर्टफोलियो के लिए कोई ताज़ा समाचार नहीं मिला।" },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "प्रॉम्प्ट" },
+  "promptOk": { "message": "ठीक" },
+
+  "typeIndian": { "message": "भारतीय स्टॉक" },
+  "typeIndex": { "message": "इंडेक्स" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ स्टॉक",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "स्टॉक" },
+
+  "ratioCurrentPrice": { "message": "वर्तमान भाव" },
+  "ratioDayRange": { "message": "दिन की रेंज" },
+  "ratio52W": { "message": "52W रेंज" },
+  "ratioVolume": { "message": "वॉल्यूम" },
+  "ratioType": { "message": "प्रकार" },
+  "ratioExchange": { "message": "एक्सचेंज" },
+  "ratioMCap": { "message": "मार्केट कैप" },
+  "ratioPE": { "message": "स्टॉक P/E" },
+  "ratioDiv": { "message": "डिविडेंड यील्ड" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "टेप बाईं ओर स्क्रॉल करें" },
+  "tapeScrollRight": { "message": "टेप दाईं ओर स्क्रॉल करें" },
+  "chartNoData": { "message": "कोई चार्ट डेटा नहीं" },
+  "chartLoading": { "message": "चार्ट लोड हो रहा है..." },
+  "ret1M": { "message": "1M रिटर्न" },
+  "ret6M": { "message": "6M रिटर्न" },
+  "ret1Y": { "message": "1Y रिटर्न" },
+  "ret3Y": { "message": "3Y रिटर्न" },
+  "ret5Y": { "message": "5Y रिटर्न" },
+  "ret10Y": { "message": "10Y रिटर्न" },
+  "retMax": { "message": "कुल रिटर्न" },
+  "metricLastPrice": { "message": "अंतिम भाव" },
+  "metricDivYield": { "message": "डिव यील्ड" },
+  "metricPERatio": { "message": "P/E अनुपात" },
+  "viewDetails": { "message": "विवरण देखें" },
+  "modalSubtitleIndex": {
+    "message": "मार्केट इंडेक्स • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "इक्विटी" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "ग्लोबल" },
+  "modalDetails": { "message": "विवरण" },
+  "tapeLoading": { "message": "स्क्रीनर वॉचलिस्ट लोड हो रही है..." },
+
+  "notifAboveTitle": { "message": "प्राइस अलर्ट! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ ₹$PRICE$ से ऊपर गया (वर्तमान: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "प्राइस अलर्ट! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ ₹$PRICE$ से नीचे गिरा (वर्तमान: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "स्क्रीनर प्राइस अलर्ट" },
+  "notifGeneric": {
+    "message": "$TICKER$ आपके लक्ष्य $TARGET$ को पार कर गया (वर्तमान: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "\"%s\" को स्क्रीनर वॉचलिस्ट में जोड़ें" },
+  "ctxAddedTitle": { "message": "स्क्रीनर वॉचलिस्ट" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ आपकी वॉचलिस्ट में जुड़ गया!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

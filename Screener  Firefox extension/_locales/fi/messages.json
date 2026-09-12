@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Liveseuranta intialaisille ja globaaleille osakkeille, raahattavat salkut sekä hintanauha. Tuki: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Avaa Screener-seuranta" },
+  "commandDesc": { "message": "Avaa Screener-sivupaneeli" },
+
+  "speedTitle": {
+    "message": "Nauhan nopeus: $SPEED$ (napsauta säätääksesi 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Nauhan nopeus: 1.0x (napsauta säätääksesi 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Nauhan nopeus" },
+  "speedDecrease": { "message": "Pienennä 0.1x" },
+  "speedIncrease": { "message": "Suurenna 0.1x" },
+  "speedCustom": { "message": "Mukautettu:" },
+  "speedExample": { "message": "esim. 2.3" },
+
+  "pauseTape": { "message": "Keskeytä hintanauha" },
+  "resumeTape": { "message": "Jatka hintanauhaa" },
+  "hideTape": { "message": "Piilota hintanauha" },
+  "showTape": { "message": "Näytä hintanauha" },
+  "domainDisableSite": { "message": "Poista käytöstä tällä sivustolla" },
+  "domainDisable": {
+    "message": "Poista käytöstä: $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Ota käyttöön: $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Vaihda vaaleaan tilaan" },
+  "themeToDark": { "message": "Vaihda tummaan tilaan" },
+  "aboutSupport": { "message": "Tietoa ja tuki" },
+
+  "tabDashboard": { "message": "Katsaus" },
+  "tabMarkets": { "message": "Markkinat" },
+  "tabNews": { "message": "Uutiset" },
+
+  "searchPlaceholder": { "message": "Hae tunnus analysoitavaksi tai lisättäväksi..." },
+  "searchButton": { "message": "Hae" },
+  "clocksLabel": { "message": "Maailmanmarkkinoiden kellot" },
+  "clockOpen": { "message": "● Auki" },
+  "clockClosed": { "message": "● Kiinni" },
+
+  "watchlistTitle": { "message": "Seurantalistasi" },
+  "liveBadge": { "message": "Live" },
+  "watchlistEmpty": { "message": "Seuranta on tyhjä. Hae ja lisää tunnus yllä!" },
+  "colSymbol": { "message": "Tunnus" },
+  "colTrend": { "message": "1V trendi" },
+  "colPrice": { "message": "Hinta" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Markk.-arvo" },
+  "colActions": { "message": "Toiminnot" },
+  "sortByPrice": { "message": "Järjestä hinnan mukaan" },
+  "sortByMCap": { "message": "Järjestä markkina-arvon mukaan" },
+  "dragHint": { "message": "Raahaa järjestääksesi" },
+  "trendReturnTitle": { "message": "Näytetyn jakson tuotto" },
+  "setAlertTitle": { "message": "Luo hälytys" },
+  "deleteTitle": { "message": "Poista" },
+  "renameTitle": { "message": "Nimeä salkku uudelleen" },
+  "newTitle": { "message": "Uusi salkku" },
+  "exportTitle": { "message": "Vie Exceliin" },
+
+  "portfolioExists": { "message": "Salkku tällä nimellä on jo olemassa!" },
+  "renamePrompt": {
+    "message": "Nimeä salkku \"$NAME$\" uudelleen",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Uuden salkun nimi" },
+
+  "verdictLabel": { "message": "AI-tuomio:" },
+  "verdictNoData": { "message": "Ei riittävästi dataa tuomioon." },
+  "verdictGem": { "message": "[Alahinnoiteltu] Helmi erittäin tehokkaalla pääomantuotolla." },
+  "verdictExpensive": { "message": "[Kallis] Vahva liiketoiminta, mutta kallis preemio." },
+  "verdictRisk": { "message": "[Korkea riski] Ylihinnoiteltu heikolla pääomatehokkuudella." },
+  "verdictSolid": { "message": "[Vankka] Erinomaiset fundamentit kohtuuhintaan." },
+  "verdictAvg": { "message": "[Keskiverto] Tavalliset fundamentit. Seuraa katalyyttejä." },
+  "verdictIndex": { "message": "[Indeksi] Markkinoiden avainbenchmark." },
+
+  "scrapingData": { "message": "Haetaan dataa..." },
+  "backButton": { "message": "← Takaisin" },
+  "addToWatchlist": { "message": "+ Lisää seurantaan" },
+  "addedButton": { "message": "Lisätty!" },
+  "alreadyButton": { "message": "Jo seurannassa" },
+  "customizeScreener": { "message": "⚙ Muokkaa parametreja Screener.inissä" },
+  "peerTitle": { "message": "Verrokkivertailu" },
+  "annTitle": { "message": "Yhtiön tiedotteet" },
+  "fetchFailed": { "message": "Datan haku epäonnistui." },
+  "fetchError": { "message": "Virhe." },
+
+  "marketIndices": { "message": "Markkinaindeksit" },
+  "clickEditCard": {
+    "message": "Napsauta muokataksesi $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Lisää tunnus" },
+  "addNewSlot": { "message": "Lisää indeksi tai osake" },
+  "loadingPrice": { "message": "Ladataan..." },
+  "editCardTitle": { "message": "Muokkaa markkinakorttia" },
+  "displayNameLabel": { "message": "Näyttönimi:" },
+  "displayNamePh": { "message": "esim. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Tunnus (Yahoo/NSE):" },
+  "symbolPh": { "message": "esim. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Poista" },
+  "cancelBtn": { "message": "Peruuta" },
+  "saveBtn": { "message": "Tallenna" },
+  "saveCardBtn": { "message": "Tallenna kortti" },
+  "needBoth": { "message": "Anna näyttönimi ja tunnus." },
+
+  "alertPrefix": { "message": "Luo hälytys:" },
+  "aboveLabel": { "message": "Hälytä jos hinta ylittää (₹):" },
+  "abovePh": { "message": "esim. 3000" },
+  "belowLabel": { "message": "Hälytä jos hinta alittaa (₹):" },
+  "belowPh": { "message": "esim. 2500" },
+
+  "aboutTagline": { "message": "Usean markkinan livesyöte" },
+  "aboutDesc": { "message": "Reaaliaikainen seuranta, hintanauha ja tunnusluvut palveluista Screener.in & Yahoo Finance." },
+  "buyCoffee": { "message": "Tarjoa minulle kahvi" },
+  "scanSupport": { "message": "Skannaa tukeaksesi ☕" },
+  "closeBtn": { "message": "Sulje" },
+  "qrAlt": { "message": "Skannaa tukeaksesi Buy Me a Coffeen kautta" },
+
+  "macroTitle": { "message": "Muokkaa indikaattoria" },
+  "macroTileOf": {
+    "message": "Ruutu $N$ / 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Indikaattori:" },
+  "wbLink": { "message": "Katso Maailmanpankissa" },
+  "macroInflation": { "message": "Inflaatio (CPI)" },
+  "macroUnemployment": { "message": "Työttömyys" },
+  "macroGdp": { "message": "BKT:n kasvu" },
+  "macroGdppc": { "message": "BKT per capita" },
+  "macroGdptotal": { "message": "BKT yhteensä" },
+  "macroTrade": { "message": "Kauppa (% BKT:sta)" },
+  "macroReserves": { "message": "Valuuttavarannot" },
+  "macroPopulation": { "message": "Väestö" },
+
+  "overviewTitle": { "message": "Markkinakatsaus" },
+  "selectMarket": { "message": "Valitse markkina:" },
+  "refreshBtn": { "message": "↻ Päivitä" },
+  "refreshTitle": { "message": "Päivitä katsaus" },
+  "indicatorsTitle": { "message": "TALOUSINDIKAATTORIT" },
+  "loadingMarkets": {
+    "message": "Ladataan $ECO$-markkinoita...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Ladataan indikaattoreita..." },
+  "indicatorsDown": { "message": "Indikaattorit eivät saatavilla." },
+  "clickAnalyze": {
+    "message": "$NAME$ — napsauta analysoidaksesi",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — napsauta muokataksesi",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ TOP NOUSIJAT" },
+  "losersTitle": { "message": "▼ TOP LASKIJAT" },
+  "noGainers": { "message": "Ei nousijoita tänään" },
+  "noLosers": { "message": "Ei laskijoita tänään" },
+  "updatedAt": {
+    "message": "Päivitetty $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Lataus epäonnistui. Päivitä." },
+  "latestLabel": { "message": "Uusin" },
+  "loadingWord": { "message": "ladataan..." },
+
+  "newsLoading": { "message": "Ladataan tuoreimpia uutisia..." },
+  "macroNewsTitle": { "message": "USA MAKROUUTISET" },
+  "fetchingMacroNews": { "message": "Haetaan USA-makrouutisia..." },
+  "noPortfolioNews": { "message": "Tässä salkussa ei osakkeita uutisia varten." },
+  "fetchingNews": { "message": "Haetaan talousuutisia..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$-UUTISET",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Ei tuoreita uutisia salkullesi." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Kehote" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Intialainen osake" },
+  "typeIndex": { "message": "Indeksi" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$-osake",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Osake" },
+
+  "ratioCurrentPrice": { "message": "Nykyhinta" },
+  "ratioDayRange": { "message": "Päivän vaihteluväli" },
+  "ratio52W": { "message": "52V vaihteluväli" },
+  "ratioVolume": { "message": "Volyymi" },
+  "ratioType": { "message": "Tyyppi" },
+  "ratioExchange": { "message": "Pörssi" },
+  "ratioMCap": { "message": "Markkina-arvo" },
+  "ratioPE": { "message": "Osakkeen P/E" },
+  "ratioDiv": { "message": "Osinkotuotto" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Vieritä nauhaa vasemmalle" },
+  "tapeScrollRight": { "message": "Vieritä nauhaa oikealle" },
+  "chartNoData": { "message": "Ei kaaviodataa" },
+  "chartLoading": { "message": "Ladataan kaaviota..." },
+  "ret1M": { "message": "Tuotto 1K" },
+  "ret6M": { "message": "Tuotto 6K" },
+  "ret1Y": { "message": "Tuotto 1V" },
+  "ret3Y": { "message": "Tuotto 3V" },
+  "ret5Y": { "message": "Tuotto 5V" },
+  "ret10Y": { "message": "Tuotto 10V" },
+  "retMax": { "message": "Kokonaistuotto" },
+  "metricLastPrice": { "message": "Viimeisin hinta" },
+  "metricDivYield": { "message": "Osinkotuotto" },
+  "metricPERatio": { "message": "P/E-luku" },
+  "viewDetails": { "message": "Näytä tiedot" },
+  "modalSubtitleIndex": {
+    "message": "Markkinaindeksi • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Osakkeet" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Globaali" },
+  "modalDetails": { "message": "Tiedot" },
+  "tapeLoading": { "message": "Ladataan Screener-seurantaa..." },
+
+  "notifAboveTitle": { "message": "Hintahälytys! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ yli ₹$PRICE$ (nyt: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Hintahälytys! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ alle ₹$PRICE$ (nyt: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Hintahälytys Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ saavutti tavoitteesi $TARGET$ (nyt: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Lisää \"%s\" Screener-seurantaan" },
+  "ctxAddedTitle": { "message": "Screener-seuranta" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ lisätty seurantaasi!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

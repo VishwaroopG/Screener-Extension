@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Наблюдение на живо на индийски и световни акции, преместваеми портфейли и тикер лента. Подкрепа: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Отвори Screener наблюдение" },
+  "commandDesc": { "message": "Отвори страничния панел на Screener" },
+
+  "speedTitle": {
+    "message": "Скорост на лентата: $SPEED$ (кликнете за настройка 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Скорост на лентата: 1.0x (кликнете за настройка 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Скорост на лентата" },
+  "speedDecrease": { "message": "Намали с 0.1x" },
+  "speedIncrease": { "message": "Увеличи с 0.1x" },
+  "speedCustom": { "message": "Персонално:" },
+  "speedExample": { "message": "напр. 2.3" },
+
+  "pauseTape": { "message": "Паузирай тикер лентата" },
+  "resumeTape": { "message": "Продължи тикер лентата" },
+  "hideTape": { "message": "Скрий тикер лентата" },
+  "showTape": { "message": "Покажи тикер лентата" },
+  "domainDisableSite": { "message": "Изключи на този сайт" },
+  "domainDisable": {
+    "message": "Изключи на $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Включи на $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Премини на светла тема" },
+  "themeToDark": { "message": "Премини на тъмна тема" },
+  "aboutSupport": { "message": "За нас и подкрепа" },
+
+  "tabDashboard": { "message": "Табло" },
+  "tabMarkets": { "message": "Пазари" },
+  "tabNews": { "message": "Новини" },
+
+  "searchPlaceholder": { "message": "Търси тикер за анализ или добавяне..." },
+  "searchButton": { "message": "Търси" },
+  "clocksLabel": { "message": "Часовници на световните пазари" },
+  "clockOpen": { "message": "● Отворен" },
+  "clockClosed": { "message": "● Затворен" },
+
+  "watchlistTitle": { "message": "Вашето наблюдение" },
+  "liveBadge": { "message": "На живо" },
+  "watchlistEmpty": { "message": "Наблюдението е празно. Търсете и добавете тикер по-горе!" },
+  "colSymbol": { "message": "Символ" },
+  "colTrend": { "message": "Тренд 1Г" },
+  "colPrice": { "message": "Цена" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Пазар. кап." },
+  "colActions": { "message": "Действия" },
+  "sortByPrice": { "message": "Сортирай по цена" },
+  "sortByMCap": { "message": "Сортирай по капитализация" },
+  "dragHint": { "message": "Влачете за пренареждане" },
+  "trendReturnTitle": { "message": "Възвръщаемост за показания период" },
+  "setAlertTitle": { "message": "Създай известие" },
+  "deleteTitle": { "message": "Изтрий" },
+  "renameTitle": { "message": "Преименувай портфейл" },
+  "newTitle": { "message": "Нов портфейл" },
+  "exportTitle": { "message": "Експорт в Excel" },
+
+  "portfolioExists": { "message": "Вече има портфейл с това име!" },
+  "renamePrompt": {
+    "message": "Преименувай портфейл \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Име на новия портфейл" },
+
+  "verdictLabel": { "message": "Присъда на AI:" },
+  "verdictNoData": { "message": "Няма достатъчно данни за присъда." },
+  "verdictGem": { "message": "[Подценена] Перла с много ефективна възвръщаемост на капитала." },
+  "verdictExpensive": { "message": "[Скъпа] Силен бизнес, но със скъпа премия." },
+  "verdictRisk": { "message": "[Висок риск] Надценена при слаба капиталова ефективност." },
+  "verdictSolid": { "message": "[Солидна] Отлични фундаменти на разумна цена." },
+  "verdictAvg": { "message": "[Средна] Стандартни фундаменти. Следете катализаторите." },
+  "verdictIndex": { "message": "[Индекс] Ключов пазарен бенчмарк." },
+
+  "scrapingData": { "message": "Извличане на данни..." },
+  "backButton": { "message": "← Назад" },
+  "addToWatchlist": { "message": "+ Добави в наблюдението" },
+  "addedButton": { "message": "Добавено!" },
+  "alreadyButton": { "message": "Вече е в наблюдението" },
+  "customizeScreener": { "message": "⚙ Персонализирай параметрите в Screener.in" },
+  "peerTitle": { "message": "Сравнение с конкуренти" },
+  "annTitle": { "message": "Съобщения на компанията" },
+  "fetchFailed": { "message": "Данните не могат да бъдат извлечени." },
+  "fetchError": { "message": "Грешка." },
+
+  "marketIndices": { "message": "Пазарни индекси" },
+  "clickEditCard": {
+    "message": "Кликнете за редакция на $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Добави тикер" },
+  "addNewSlot": { "message": "Добави индекс или акция" },
+  "loadingPrice": { "message": "Зареждане..." },
+  "editCardTitle": { "message": "Редактирай пазарна карта" },
+  "displayNameLabel": { "message": "Показвано име:" },
+  "displayNamePh": { "message": "напр. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Символ (Yahoo/NSE):" },
+  "symbolPh": { "message": "напр. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Премахни" },
+  "cancelBtn": { "message": "Отказ" },
+  "saveBtn": { "message": "Запази" },
+  "saveCardBtn": { "message": "Запази картата" },
+  "needBoth": { "message": "Въведете показвано име и символ." },
+
+  "alertPrefix": { "message": "Създай известие за" },
+  "aboveLabel": { "message": "Известие при цена над (₹):" },
+  "abovePh": { "message": "напр. 3000" },
+  "belowLabel": { "message": "Известие при цена под (₹):" },
+  "belowPh": { "message": "напр. 2500" },
+
+  "aboutTagline": { "message": "Мултипазарен емисия на живо" },
+  "aboutDesc": { "message": "Наблюдение, тикер лента и коефициенти в реално време чрез Screener.in и Yahoo Finance." },
+  "buyCoffee": { "message": "Почерпете ме с кафе" },
+  "scanSupport": { "message": "Сканирайте за подкрепа ☕" },
+  "closeBtn": { "message": "Затвори" },
+  "qrAlt": { "message": "Сканирайте за подкрепа чрез Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Редактирай индикатор" },
+  "macroTileOf": {
+    "message": "Плочка $N$ от 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Индикатор:" },
+  "wbLink": { "message": "Виж в Световната банка" },
+  "macroInflation": { "message": "Инфлация (CPI)" },
+  "macroUnemployment": { "message": "Безработица" },
+  "macroGdp": { "message": "Ръст на БВП" },
+  "macroGdppc": { "message": "БВП на глава" },
+  "macroGdptotal": { "message": "Общ БВП" },
+  "macroTrade": { "message": "Търговия (% от БВП)" },
+  "macroReserves": { "message": "Валутни резерви" },
+  "macroPopulation": { "message": "Население" },
+
+  "overviewTitle": { "message": "Преглед на пазара" },
+  "selectMarket": { "message": "Изберете пазар:" },
+  "refreshBtn": { "message": "↻ Опресни" },
+  "refreshTitle": { "message": "Опресни прегледа" },
+  "indicatorsTitle": { "message": "ИКОНОМИЧЕСКИ ИНДИКАТОРИ" },
+  "loadingMarkets": {
+    "message": "Зареждане на пазари $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Зареждане на индикатори..." },
+  "indicatorsDown": { "message": "Индикаторите не са налични." },
+  "clickAnalyze": {
+    "message": "$NAME$ — кликнете за анализ",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — кликнете за редакция",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ ТОП ПЕЧЕЛИВШИ" },
+  "losersTitle": { "message": "▼ ТОП ГУБЕЩИ" },
+  "noGainers": { "message": "Днес няма печеливши" },
+  "noLosers": { "message": "Днес няма губещи" },
+  "updatedAt": {
+    "message": "Обновено $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Зареждането се провали. Опреснете." },
+  "latestLabel": { "message": "Най-ново" },
+  "loadingWord": { "message": "зареждане..." },
+
+  "newsLoading": { "message": "Зареждане на последните новини..." },
+  "macroNewsTitle": { "message": "МАКРО НОВИНИ САЩ" },
+  "fetchingMacroNews": { "message": "Извличане на макро новини от САЩ..." },
+  "noPortfolioNews": { "message": "Няма акции в този портфейл за новини." },
+  "fetchingNews": { "message": "Извличане на финансови новини..." },
+  "tickerNewsTitle": {
+    "message": "НОВИНИ $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Няма скорошни новини за портфейла ви." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Подкана" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Индийска акция" },
+  "typeIndex": { "message": "Индекс" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "Акция $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Акция" },
+
+  "ratioCurrentPrice": { "message": "Текуща цена" },
+  "ratioDayRange": { "message": "Дневен диапазон" },
+  "ratio52W": { "message": "Диапазон 52С" },
+  "ratioVolume": { "message": "Обем" },
+  "ratioType": { "message": "Тип" },
+  "ratioExchange": { "message": "Борса" },
+  "ratioMCap": { "message": "Пазарна кап." },
+  "ratioPE": { "message": "P/E акция" },
+  "ratioDiv": { "message": "Дивидентна доходност" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Превърти лентата наляво" },
+  "tapeScrollRight": { "message": "Превърти лентата надясно" },
+  "chartNoData": { "message": "Няма данни за графика" },
+  "chartLoading": { "message": "Зареждане на графика..." },
+  "ret1M": { "message": "Възвр. 1М" },
+  "ret6M": { "message": "Възвр. 6М" },
+  "ret1Y": { "message": "Възвр. 1Г" },
+  "ret3Y": { "message": "Възвр. 3Г" },
+  "ret5Y": { "message": "Възвр. 5Г" },
+  "ret10Y": { "message": "Възвр. 10Г" },
+  "retMax": { "message": "Обща възвр." },
+  "metricLastPrice": { "message": "Посл. цена" },
+  "metricDivYield": { "message": "Див. дох." },
+  "metricPERatio": { "message": "Коеф. P/E" },
+  "viewDetails": { "message": "Виж детайли" },
+  "modalSubtitleIndex": {
+    "message": "Пазарен индекс • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Акции" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Свят" },
+  "modalDetails": { "message": "Детайли" },
+  "tapeLoading": { "message": "Зареждане на Screener наблюдение..." },
+
+  "notifAboveTitle": { "message": "Ценово известие! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ над ₹$PRICE$ (текуща: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Ценово известие! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ под ₹$PRICE$ (текуща: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Ценово известие Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ достигна целта ви $TARGET$ (текуща: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Добави „%s” в Screener наблюдение" },
+  "ctxAddedTitle": { "message": "Screener наблюдение" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ е добавен във вашето наблюдение!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

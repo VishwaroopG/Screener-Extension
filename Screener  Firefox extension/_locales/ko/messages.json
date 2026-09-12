@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "인도 및 글로벌 주식 실시간 관심목록, 드래그 가능한 포트폴리오, 티커 테이프. 후원: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Screener 관심목록 열기" },
+  "commandDesc": { "message": "Screener 사이드 패널 열기" },
+
+  "speedTitle": {
+    "message": "테이프 속도: $SPEED$ (0.5x – 3.0x 조절하려면 클릭)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "테이프 속도: 1.0x (0.5x – 3.0x 조절하려면 클릭)" },
+  "speedLabel": { "message": "테이프 속도" },
+  "speedDecrease": { "message": "0.1x 낮추기" },
+  "speedIncrease": { "message": "0.1x 높이기" },
+  "speedCustom": { "message": "사용자 설정:" },
+  "speedExample": { "message": "예: 2.3" },
+
+  "pauseTape": { "message": "티커 테이프 일시정지" },
+  "resumeTape": { "message": "티커 테이프 재개" },
+  "hideTape": { "message": "티커 테이프 숨기기" },
+  "showTape": { "message": "티커 테이프 표시" },
+  "domainDisableSite": { "message": "이 사이트에서 비활성화" },
+  "domainDisable": {
+    "message": "$DOMAIN$에서 비활성화",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "$DOMAIN$에서 활성화",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "라이트 모드로 전환" },
+  "themeToDark": { "message": "다크 모드로 전환" },
+  "aboutSupport": { "message": "정보 및 후원" },
+
+  "tabDashboard": { "message": "대시보드" },
+  "tabMarkets": { "message": "시장" },
+  "tabNews": { "message": "뉴스" },
+
+  "searchPlaceholder": { "message": "분석하거나 추가할 티커 검색..." },
+  "searchButton": { "message": "검색" },
+  "clocksLabel": { "message": "세계 시장 시계" },
+  "clockOpen": { "message": "● 개장" },
+  "clockClosed": { "message": "● 폐장" },
+
+  "watchlistTitle": { "message": "내 관심목록" },
+  "liveBadge": { "message": "실시간" },
+  "watchlistEmpty": { "message": "관심목록이 비어 있습니다. 위에서 티커를 검색해 추가하세요!" },
+  "colSymbol": { "message": "심볼" },
+  "colTrend": { "message": "1Y 추세" },
+  "colPrice": { "message": "가격" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "시가총액" },
+  "colActions": { "message": "작업" },
+  "sortByPrice": { "message": "가격순 정렬" },
+  "sortByMCap": { "message": "시가총액순 정렬" },
+  "dragHint": { "message": "드래그하여 순서 변경" },
+  "trendReturnTitle": { "message": "표시 기간 수익률" },
+  "setAlertTitle": { "message": "알림 설정" },
+  "deleteTitle": { "message": "삭제" },
+  "renameTitle": { "message": "포트폴리오 이름 변경" },
+  "newTitle": { "message": "새 포트폴리오" },
+  "exportTitle": { "message": "Excel로 내보내기" },
+
+  "portfolioExists": { "message": "같은 이름의 포트폴리오가 이미 있습니다!" },
+  "renamePrompt": {
+    "message": "포트폴리오 \"$NAME$\" 이름 변경",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "새 포트폴리오 이름" },
+
+  "verdictLabel": { "message": "AI 판단:" },
+  "verdictNoData": { "message": "판단할 데이터가 부족합니다." },
+  "verdictGem": { "message": "[저평가] 자본 효율이 뛰어난 우량주." },
+  "verdictExpensive": { "message": "[고평가] 우량 기업이나 프리미엄 가격." },
+  "verdictRisk": { "message": "[고위험] 자본 효율이 낮고 과대평가됨." },
+  "verdictSolid": { "message": "[우량] 적정 가격의 탄탄한 펀더멘털." },
+  "verdictAvg": { "message": "[보통] 일반적인 펀더멘털. 성장 동력 주시." },
+  "verdictIndex": { "message": "[지수] 시장의 핵심 벤치마크." },
+
+  "scrapingData": { "message": "데이터 가져오는 중..." },
+  "backButton": { "message": "← 뒤로" },
+  "addToWatchlist": { "message": "+ 관심목록에 추가" },
+  "addedButton": { "message": "추가됨!" },
+  "alreadyButton": { "message": "이미 관심목록에 있음" },
+  "customizeScreener": { "message": "⚙ Screener.in에서 지표 사용자 설정" },
+  "peerTitle": { "message": "동종업체 비교" },
+  "annTitle": { "message": "기업 공시" },
+  "fetchFailed": { "message": "데이터를 가져오지 못했습니다." },
+  "fetchError": { "message": "오류." },
+
+  "marketIndices": { "message": "시장 지수" },
+  "clickEditCard": {
+    "message": "$NAME$ 편집하려면 클릭",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "티커 추가" },
+  "addNewSlot": { "message": "지수 또는 주식 추가" },
+  "loadingPrice": { "message": "로딩 중..." },
+  "editCardTitle": { "message": "시장 카드 편집" },
+  "displayNameLabel": { "message": "표시 이름:" },
+  "displayNamePh": { "message": "예: NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "심볼 (Yahoo/NSE):" },
+  "symbolPh": { "message": "예: ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "제거" },
+  "cancelBtn": { "message": "취소" },
+  "saveBtn": { "message": "저장" },
+  "saveCardBtn": { "message": "카드 저장" },
+  "needBoth": { "message": "표시 이름과 심볼을 모두 입력하세요." },
+
+  "alertPrefix": { "message": "알림 설정:" },
+  "aboveLabel": { "message": "가격이 위로 돌파 시 알림 (₹):" },
+  "abovePh": { "message": "예: 3000" },
+  "belowLabel": { "message": "가격이 아래로 돌파 시 알림 (₹):" },
+  "belowPh": { "message": "예: 2500" },
+
+  "aboutTagline": { "message": "멀티마켓 실시간 피드" },
+  "aboutDesc": { "message": "Screener.in과 Yahoo Finance 기반 실시간 관심목록, 티커 테이프, 지표." },
+  "buyCoffee": { "message": "커피 한 잔 사주기" },
+  "scanSupport": { "message": "후원은 스캔으로 ☕" },
+  "closeBtn": { "message": "닫기" },
+  "qrAlt": { "message": "Buy Me a Coffee 후원을 위해 스캔" },
+
+  "macroTitle": { "message": "지표 편집" },
+  "macroTileOf": {
+    "message": "4개 중 $N$번째",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "지표:" },
+  "wbLink": { "message": "세계은행에서 보기" },
+  "macroInflation": { "message": "인플레이션 (CPI)" },
+  "macroUnemployment": { "message": "실업률" },
+  "macroGdp": { "message": "GDP 성장률" },
+  "macroGdppc": { "message": "1인당 GDP" },
+  "macroGdptotal": { "message": "GDP 총액" },
+  "macroTrade": { "message": "무역 (GDP 대비 %)" },
+  "macroReserves": { "message": "외환보유고" },
+  "macroPopulation": { "message": "인구" },
+
+  "overviewTitle": { "message": "시장 개요" },
+  "selectMarket": { "message": "시장 선택:" },
+  "refreshBtn": { "message": "↻ 새로고침" },
+  "refreshTitle": { "message": "개요 새로고침" },
+  "indicatorsTitle": { "message": "경제 지표" },
+  "loadingMarkets": {
+    "message": "$ECO$ 시장 로딩 중...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "지표 로딩 중..." },
+  "indicatorsDown": { "message": "지표를 사용할 수 없음." },
+  "clickAnalyze": {
+    "message": "$NAME$ — 분석하려면 클릭",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — 편집하려면 클릭",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ 상승 상위" },
+  "losersTitle": { "message": "▼ 하락 상위" },
+  "noGainers": { "message": "오늘 상승 없음" },
+  "noLosers": { "message": "오늘 하락 없음" },
+  "updatedAt": {
+    "message": "업데이트: $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "불러오기 실패. 새로고침하세요." },
+  "latestLabel": { "message": "최신" },
+  "loadingWord": { "message": "로딩 중..." },
+
+  "newsLoading": { "message": "최신 뉴스 로딩 중..." },
+  "macroNewsTitle": { "message": "미국 매크로 뉴스" },
+  "fetchingMacroNews": { "message": "미국 매크로 뉴스 가져오는 중..." },
+  "noPortfolioNews": { "message": "이 포트폴리오에 뉴스 대상 종목이 없습니다." },
+  "fetchingNews": { "message": "금융 뉴스 가져오는 중..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$ 뉴스",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "포트폴리오의 최신 뉴스가 없습니다." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "입력" },
+  "promptOk": { "message": "확인" },
+
+  "typeIndian": { "message": "인도 주식" },
+  "typeIndex": { "message": "지수" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$ 주식",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "주식" },
+
+  "ratioCurrentPrice": { "message": "현재가" },
+  "ratioDayRange": { "message": "당일 범위" },
+  "ratio52W": { "message": "52주 범위" },
+  "ratioVolume": { "message": "거래량" },
+  "ratioType": { "message": "유형" },
+  "ratioExchange": { "message": "거래소" },
+  "ratioMCap": { "message": "시가총액" },
+  "ratioPE": { "message": "주식 P/E" },
+  "ratioDiv": { "message": "배당수익률" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "테이프 왼쪽으로 스크롤" },
+  "tapeScrollRight": { "message": "테이프 오른쪽으로 스크롤" },
+  "chartNoData": { "message": "차트 데이터 없음" },
+  "chartLoading": { "message": "차트 로딩 중..." },
+  "ret1M": { "message": "1M 수익률" },
+  "ret6M": { "message": "6M 수익률" },
+  "ret1Y": { "message": "1Y 수익률" },
+  "ret3Y": { "message": "3Y 수익률" },
+  "ret5Y": { "message": "5Y 수익률" },
+  "ret10Y": { "message": "10Y 수익률" },
+  "retMax": { "message": "전체 수익률" },
+  "metricLastPrice": { "message": "최근 가격" },
+  "metricDivYield": { "message": "배당수익률" },
+  "metricPERatio": { "message": "P/E 비율" },
+  "viewDetails": { "message": "자세히 보기" },
+  "modalSubtitleIndex": {
+    "message": "시장 지수 • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "주식" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "글로벌" },
+  "modalDetails": { "message": "상세" },
+  "tapeLoading": { "message": "Screener 관심목록 로딩 중..." },
+
+  "notifAboveTitle": { "message": "가격 알림! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$가 ₹$PRICE$를 돌파했습니다 (현재: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "가격 알림! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$가 ₹$PRICE$ 아래로 떨어졌습니다 (현재: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Screener 가격 알림" },
+  "notifGeneric": {
+    "message": "$TICKER$가 목표 $TARGET$에 도달했습니다 (현재: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "\"%s\"을(를) Screener 관심목록에 추가" },
+  "ctxAddedTitle": { "message": "Screener 관심목록" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$을(를) 관심목록에 추가했습니다!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

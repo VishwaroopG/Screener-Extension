@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Danh sách theo dõi cổ phiếu Ấn Độ & toàn cầu trực tiếp, danh mục kéo-thả và bảng giá chạy. Hỗ trợ: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Mở danh sách Screener" },
+  "commandDesc": { "message": "Mở thanh bên Screener" },
+
+  "speedTitle": {
+    "message": "Tốc độ bảng giá: $SPEED$ (nhấn để chỉnh 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Tốc độ bảng giá: 1.0x (nhấn để chỉnh 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Tốc độ bảng giá" },
+  "speedDecrease": { "message": "Giảm 0.1x" },
+  "speedIncrease": { "message": "Tăng 0.1x" },
+  "speedCustom": { "message": "Tùy chỉnh:" },
+  "speedExample": { "message": "vd. 2.3" },
+
+  "pauseTape": { "message": "Tạm dừng bảng giá" },
+  "resumeTape": { "message": "Tiếp tục bảng giá" },
+  "hideTape": { "message": "Ẩn bảng giá" },
+  "showTape": { "message": "Hiện bảng giá" },
+  "domainDisableSite": { "message": "Tắt trên trang này" },
+  "domainDisable": {
+    "message": "Tắt trên $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Bật trên $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Chuyển sang chế độ sáng" },
+  "themeToDark": { "message": "Chuyển sang chế độ tối" },
+  "aboutSupport": { "message": "Giới thiệu & hỗ trợ" },
+
+  "tabDashboard": { "message": "Tổng quan" },
+  "tabMarkets": { "message": "Thị trường" },
+  "tabNews": { "message": "Tin tức" },
+
+  "searchPlaceholder": { "message": "Tìm mã để phân tích hoặc thêm..." },
+  "searchButton": { "message": "Tìm" },
+  "clocksLabel": { "message": "Đồng hồ thị trường thế giới" },
+  "clockOpen": { "message": "● Đang mở" },
+  "clockClosed": { "message": "● Đã đóng" },
+
+  "watchlistTitle": { "message": "Danh sách của bạn" },
+  "liveBadge": { "message": "Trực tiếp" },
+  "watchlistEmpty": { "message": "Danh sách trống. Tìm và thêm mã ở trên!" },
+  "colSymbol": { "message": "Mã" },
+  "colTrend": { "message": "Xu hướng 1N" },
+  "colPrice": { "message": "Giá" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Vốn hóa" },
+  "colActions": { "message": "Thao tác" },
+  "sortByPrice": { "message": "Sắp xếp theo giá" },
+  "sortByMCap": { "message": "Sắp xếp theo vốn hóa" },
+  "dragHint": { "message": "Kéo để sắp xếp lại" },
+  "trendReturnTitle": { "message": "Lợi nhuận kỳ hiển thị" },
+  "setAlertTitle": { "message": "Tạo cảnh báo" },
+  "deleteTitle": { "message": "Xóa" },
+  "renameTitle": { "message": "Đổi tên danh mục" },
+  "newTitle": { "message": "Danh mục mới" },
+  "exportTitle": { "message": "Xuất ra Excel" },
+
+  "portfolioExists": { "message": "Đã có danh mục tên này!" },
+  "renamePrompt": {
+    "message": "Đổi tên danh mục \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Tên danh mục mới" },
+
+  "verdictLabel": { "message": "Nhận định AI:" },
+  "verdictNoData": { "message": "Không đủ dữ liệu để nhận định." },
+  "verdictGem": { "message": "[Định giá thấp] Viên ngọc với hiệu quả vốn xuất sắc." },
+  "verdictExpensive": { "message": "[Đắt] Doanh nghiệp mạnh nhưng giá cao." },
+  "verdictRisk": { "message": "[Rủi ro cao] Định giá quá cao, hiệu quả vốn kém." },
+  "verdictSolid": { "message": "[Vững] Nền tảng tốt với giá hợp lý." },
+  "verdictAvg": { "message": "[Trung bình] Nền tảng thường. Theo dõi chất xúc tác." },
+  "verdictIndex": { "message": "[Chỉ số] Chuẩn chính của thị trường." },
+
+  "scrapingData": { "message": "Đang lấy dữ liệu..." },
+  "backButton": { "message": "← Quay lại" },
+  "addToWatchlist": { "message": "+ Thêm vào danh sách" },
+  "addedButton": { "message": "Đã thêm!" },
+  "alreadyButton": { "message": "Đã có trong danh sách" },
+  "customizeScreener": { "message": "⚙ Tùy chỉnh tham số trên Screener.in" },
+  "peerTitle": { "message": "So sánh cùng ngành" },
+  "annTitle": { "message": "Thông báo công ty" },
+  "fetchFailed": { "message": "Không lấy được dữ liệu." },
+  "fetchError": { "message": "Lỗi." },
+
+  "marketIndices": { "message": "Chỉ số thị trường" },
+  "clickEditCard": {
+    "message": "Nhấn để sửa $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Thêm mã" },
+  "addNewSlot": { "message": "Thêm chỉ số hoặc cổ phiếu" },
+  "loadingPrice": { "message": "Đang tải..." },
+  "editCardTitle": { "message": "Sửa thẻ thị trường" },
+  "displayNameLabel": { "message": "Tên hiển thị:" },
+  "displayNamePh": { "message": "vd. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Mã (Yahoo/NSE):" },
+  "symbolPh": { "message": "vd. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Gỡ" },
+  "cancelBtn": { "message": "Hủy" },
+  "saveBtn": { "message": "Lưu" },
+  "saveCardBtn": { "message": "Lưu thẻ" },
+  "needBoth": { "message": "Vui lòng nhập tên hiển thị và mã." },
+
+  "alertPrefix": { "message": "Tạo cảnh báo cho" },
+  "aboveLabel": { "message": "Báo khi giá vượt (₹):" },
+  "abovePh": { "message": "vd. 3000" },
+  "belowLabel": { "message": "Báo khi giá dưới (₹):" },
+  "belowPh": { "message": "vd. 2500" },
+
+  "aboutTagline": { "message": "Dữ liệu trực tiếp đa thị trường" },
+  "aboutDesc": { "message": "Danh sách, bảng giá và chỉ số thời gian thực qua Screener.in & Yahoo Finance." },
+  "buyCoffee": { "message": "Mời tôi cà phê" },
+  "scanSupport": { "message": "Quét để ủng hộ ☕" },
+  "closeBtn": { "message": "Đóng" },
+  "qrAlt": { "message": "Quét để ủng hộ qua Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Sửa chỉ báo" },
+  "macroTileOf": {
+    "message": "Ô $N$ / 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Chỉ báo:" },
+  "wbLink": { "message": "Xem trên Ngân hàng Thế giới" },
+  "macroInflation": { "message": "Lạm phát (CPI)" },
+  "macroUnemployment": { "message": "Thất nghiệp" },
+  "macroGdp": { "message": "Tăng trưởng GDP" },
+  "macroGdppc": { "message": "GDP bình quân" },
+  "macroGdptotal": { "message": "Tổng GDP" },
+  "macroTrade": { "message": "Thương mại (% GDP)" },
+  "macroReserves": { "message": "Dự trữ ngoại hối" },
+  "macroPopulation": { "message": "Dân số" },
+
+  "overviewTitle": { "message": "Tổng quan thị trường" },
+  "selectMarket": { "message": "Chọn thị trường:" },
+  "refreshBtn": { "message": "↻ Làm mới" },
+  "refreshTitle": { "message": "Làm mới tổng quan" },
+  "indicatorsTitle": { "message": "CHỈ BÁO KINH TẾ" },
+  "loadingMarkets": {
+    "message": "Đang tải thị trường $ECO$...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Đang tải chỉ báo..." },
+  "indicatorsDown": { "message": "Không có chỉ báo." },
+  "clickAnalyze": {
+    "message": "$NAME$ — nhấn để phân tích",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — nhấn để sửa",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ TĂNG MẠNH NHẤT" },
+  "losersTitle": { "message": "▼ GIẢM MẠNH NHẤT" },
+  "noGainers": { "message": "Hôm nay không có mã tăng" },
+  "noLosers": { "message": "Hôm nay không có mã giảm" },
+  "updatedAt": {
+    "message": "Cập nhật $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Tải thất bại. Hãy làm mới." },
+  "latestLabel": { "message": "Mới nhất" },
+  "loadingWord": { "message": "đang tải..." },
+
+  "newsLoading": { "message": "Đang tải tin mới nhất..." },
+  "macroNewsTitle": { "message": "TIN VĨ MÔ MỸ" },
+  "fetchingMacroNews": { "message": "Đang lấy tin vĩ mô Mỹ..." },
+  "noPortfolioNews": { "message": "Danh mục này không có mã để lấy tin." },
+  "fetchingNews": { "message": "Đang lấy tin tài chính..." },
+  "tickerNewsTitle": {
+    "message": "TIN $TICKER$",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Không có tin mới cho danh mục của bạn." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Nhắc" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Cổ phiếu Ấn Độ" },
+  "typeIndex": { "message": "Chỉ số" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "Cổ phiếu $EX$",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Cổ phiếu" },
+
+  "ratioCurrentPrice": { "message": "Giá hiện tại" },
+  "ratioDayRange": { "message": "Biên độ ngày" },
+  "ratio52W": { "message": "Biên độ 52T" },
+  "ratioVolume": { "message": "Khối lượng" },
+  "ratioType": { "message": "Loại" },
+  "ratioExchange": { "message": "Sàn" },
+  "ratioMCap": { "message": "Vốn hóa" },
+  "ratioPE": { "message": "P/E cổ phiếu" },
+  "ratioDiv": { "message": "Suất cổ tức" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Cuộn bảng giá sang trái" },
+  "tapeScrollRight": { "message": "Cuộn bảng giá sang phải" },
+  "chartNoData": { "message": "Không có dữ liệu biểu đồ" },
+  "chartLoading": { "message": "Đang tải biểu đồ..." },
+  "ret1M": { "message": "Lợi nhuận 1T" },
+  "ret6M": { "message": "Lợi nhuận 6T" },
+  "ret1Y": { "message": "Lợi nhuận 1N" },
+  "ret3Y": { "message": "Lợi nhuận 3N" },
+  "ret5Y": { "message": "Lợi nhuận 5N" },
+  "ret10Y": { "message": "Lợi nhuận 10N" },
+  "retMax": { "message": "Tổng lợi nhuận" },
+  "metricLastPrice": { "message": "Giá mới nhất" },
+  "metricDivYield": { "message": "Suất cổ tức" },
+  "metricPERatio": { "message": "Tỷ số P/E" },
+  "viewDetails": { "message": "Xem chi tiết" },
+  "modalSubtitleIndex": {
+    "message": "Chỉ số thị trường • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Cổ phiếu" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Toàn cầu" },
+  "modalDetails": { "message": "Chi tiết" },
+  "tapeLoading": { "message": "Đang tải danh sách Screener..." },
+
+  "notifAboveTitle": { "message": "Cảnh báo giá! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ đã vượt ₹$PRICE$ (hiện tại: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Cảnh báo giá! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ đã dưới ₹$PRICE$ (hiện tại: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Cảnh báo giá Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ đã chạm mục tiêu $TARGET$ của bạn (hiện tại: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Thêm \"%s\" vào danh sách Screener" },
+  "ctxAddedTitle": { "message": "Danh sách Screener" },
+  "ctxAddedMsg": {
+    "message": "Đã thêm $TICKER$ vào danh sách của bạn!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}

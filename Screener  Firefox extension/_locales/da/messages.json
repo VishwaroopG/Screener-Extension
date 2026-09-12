@@ -1,0 +1,250 @@
+{
+  "appDescription": { "message": "Liveovervågning af indiske og globale aktier, porteføljer der kan trækkes, og tickerbånd. Støtte: buymeacoffee.com/vgexperiments" },
+  "actionTitle": { "message": "Åbn Screener-overvågning" },
+  "commandDesc": { "message": "Åbn Screener-sidepanelet" },
+
+  "speedTitle": {
+    "message": "Båndhastighed: $SPEED$ (klik for at justere 0.5x – 3.0x)",
+    "placeholders": { "speed": { "content": "$1" } }
+  },
+  "speedTitleDefault": { "message": "Båndhastighed: 1.0x (klik for at justere 0.5x – 3.0x)" },
+  "speedLabel": { "message": "Båndhastighed" },
+  "speedDecrease": { "message": "Sænk med 0.1x" },
+  "speedIncrease": { "message": "Øg med 0.1x" },
+  "speedCustom": { "message": "Brugerdef.:" },
+  "speedExample": { "message": "f.eks. 2.3" },
+
+  "pauseTape": { "message": "Sæt tickerbånd på pause" },
+  "resumeTape": { "message": "Genoptag tickerbånd" },
+  "hideTape": { "message": "Skjul tickerbånd" },
+  "showTape": { "message": "Vis tickerbånd" },
+  "domainDisableSite": { "message": "Deaktiver på dette websted" },
+  "domainDisable": {
+    "message": "Deaktiver på $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "domainEnable": {
+    "message": "Aktiver på $DOMAIN$",
+    "placeholders": { "domain": { "content": "$1" } }
+  },
+  "themeToLight": { "message": "Skift til lys tilstand" },
+  "themeToDark": { "message": "Skift til mørk tilstand" },
+  "aboutSupport": { "message": "Om & støtte" },
+
+  "tabDashboard": { "message": "Dashboard" },
+  "tabMarkets": { "message": "Markeder" },
+  "tabNews": { "message": "Nyheder" },
+
+  "searchPlaceholder": { "message": "Søg ticker til analyse eller tilføjelse..." },
+  "searchButton": { "message": "Søg" },
+  "clocksLabel": { "message": "Verdensmarkedsure" },
+  "clockOpen": { "message": "● Åben" },
+  "clockClosed": { "message": "● Lukket" },
+
+  "watchlistTitle": { "message": "Din overvågning" },
+  "liveBadge": { "message": "Live" },
+  "watchlistEmpty": { "message": "Overvågningen er tom. Søg og tilføj en ticker ovenfor!" },
+  "colSymbol": { "message": "Symbol" },
+  "colTrend": { "message": "1Å-trend" },
+  "colPrice": { "message": "Kurs" },
+  "colPE": { "message": "P/E" },
+  "colMCap": { "message": "Markedsv." },
+  "colActions": { "message": "Handlinger" },
+  "sortByPrice": { "message": "Sorter efter kurs" },
+  "sortByMCap": { "message": "Sorter efter markedsværdi" },
+  "dragHint": { "message": "Træk for at ændre rækkefølge" },
+  "trendReturnTitle": { "message": "Afkast i vist periode" },
+  "setAlertTitle": { "message": "Opret alarm" },
+  "deleteTitle": { "message": "Slet" },
+  "renameTitle": { "message": "Omdøb portefølje" },
+  "newTitle": { "message": "Ny portefølje" },
+  "exportTitle": { "message": "Eksporter til Excel" },
+
+  "portfolioExists": { "message": "Der findes allerede en portefølje med dette navn!" },
+  "renamePrompt": {
+    "message": "Omdøb porteføljen \"$NAME$\"",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "newPrompt": { "message": "Navn på ny portefølje" },
+
+  "verdictLabel": { "message": "AI-dom:" },
+  "verdictNoData": { "message": "Ikke nok data til en dom." },
+  "verdictGem": { "message": "[Undervurderet] Perle med meget effektivt kapitalafkast." },
+  "verdictExpensive": { "message": "[Dyr] Stærk virksomhed, men med dyr præmie." },
+  "verdictRisk": { "message": "[Høj risiko] Overvurderet med svag kapitaleffektivitet." },
+  "verdictSolid": { "message": "[Solid] Fremragende fundamentale til rimelig pris." },
+  "verdictAvg": { "message": "[Middel] Standard fundamentale. Hold øje med katalysatorer." },
+  "verdictIndex": { "message": "[Indeks] Markedets nøglebenchmark." },
+
+  "scrapingData": { "message": "Henter data..." },
+  "backButton": { "message": "← Tilbage" },
+  "addToWatchlist": { "message": "+ Tilføj til overvågning" },
+  "addedButton": { "message": "Tilføjet!" },
+  "alreadyButton": { "message": "Er allerede i overvågningen" },
+  "customizeScreener": { "message": "⚙ Tilpas parametre på Screener.in" },
+  "peerTitle": { "message": "Sammenligning med peers" },
+  "annTitle": { "message": "Selskabsmeddelelser" },
+  "fetchFailed": { "message": "Kunne ikke hente data." },
+  "fetchError": { "message": "Fejl." },
+
+  "marketIndices": { "message": "Markedsindeks" },
+  "clickEditCard": {
+    "message": "Klik for at redigere $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "addTicker": { "message": "Tilføj ticker" },
+  "addNewSlot": { "message": "Tilføj indeks eller aktie" },
+  "loadingPrice": { "message": "Indlæser..." },
+  "editCardTitle": { "message": "Rediger markedskort" },
+  "displayNameLabel": { "message": "Vist navn:" },
+  "displayNamePh": { "message": "f.eks. NIFTY IT, Apple, Reliance" },
+  "symbolLabel": { "message": "Symbol (Yahoo/NSE):" },
+  "symbolPh": { "message": "f.eks. ^CNXIT, AAPL, RELIANCE.NS" },
+  "removeBtn": { "message": "Fjern" },
+  "cancelBtn": { "message": "Annuller" },
+  "saveBtn": { "message": "Gem" },
+  "saveCardBtn": { "message": "Gem kort" },
+  "needBoth": { "message": "Indtast vist navn og symbol." },
+
+  "alertPrefix": { "message": "Opret alarm for" },
+  "aboveLabel": { "message": "Alarm ved kurs over (₹):" },
+  "abovePh": { "message": "f.eks. 3000" },
+  "belowLabel": { "message": "Alarm ved kurs under (₹):" },
+  "belowPh": { "message": "f.eks. 2500" },
+
+  "aboutTagline": { "message": "Multi-marked livefeed" },
+  "aboutDesc": { "message": "Overvågning, tickerbånd og nøgletal i realtid via Screener.in & Yahoo Finance." },
+  "buyCoffee": { "message": "Giv mig en kop kaffe" },
+  "scanSupport": { "message": "Scan for at støtte ☕" },
+  "closeBtn": { "message": "Luk" },
+  "qrAlt": { "message": "Scan for at støtte via Buy Me a Coffee" },
+
+  "macroTitle": { "message": "Rediger indikator" },
+  "macroTileOf": {
+    "message": "Felt $N$ af 4",
+    "placeholders": { "n": { "content": "$1" } }
+  },
+  "indicatorLabel": { "message": "Indikator:" },
+  "wbLink": { "message": "Se på Verdensbanken" },
+  "macroInflation": { "message": "Inflation (CPI)" },
+  "macroUnemployment": { "message": "Arbejdsløshed" },
+  "macroGdp": { "message": "BNP-vækst" },
+  "macroGdppc": { "message": "BNP pr. indbygger" },
+  "macroGdptotal": { "message": "BNP i alt" },
+  "macroTrade": { "message": "Handel (% af BNP)" },
+  "macroReserves": { "message": "Valutareserver" },
+  "macroPopulation": { "message": "Befolkning" },
+
+  "overviewTitle": { "message": "Markedsoversigt" },
+  "selectMarket": { "message": "Vælg marked:" },
+  "refreshBtn": { "message": "↻ Opdater" },
+  "refreshTitle": { "message": "Opdater oversigt" },
+  "indicatorsTitle": { "message": "ØKONOMISKE INDIKATORER" },
+  "loadingMarkets": {
+    "message": "Indlæser $ECO$-markeder...",
+    "placeholders": { "eco": { "content": "$1" } }
+  },
+  "loadingIndicators": { "message": "Indlæser indikatorer..." },
+  "indicatorsDown": { "message": "Indikatorer ikke tilgængelige." },
+  "clickAnalyze": {
+    "message": "$NAME$ — klik for at analysere",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "macroEditTitle": {
+    "message": "$LABEL$$YEAR$ — klik for at redigere",
+    "placeholders": { "label": { "content": "$1" }, "year": { "content": "$2" } }
+  },
+  "gainersTitle": { "message": "▲ TOPSTIGNINGER" },
+  "losersTitle": { "message": "▼ TOPFALD" },
+  "noGainers": { "message": "Ingen stigninger i dag" },
+  "noLosers": { "message": "Ingen fald i dag" },
+  "updatedAt": {
+    "message": "Opdateret $TIME$",
+    "placeholders": { "time": { "content": "$1" } }
+  },
+  "marketDataError": { "message": "Indlæsning mislykkedes. Opdater." },
+  "latestLabel": { "message": "Seneste" },
+  "loadingWord": { "message": "indlæser..." },
+
+  "newsLoading": { "message": "Indlæser seneste nyheder..." },
+  "macroNewsTitle": { "message": "USA MAKRONYHEDER" },
+  "fetchingMacroNews": { "message": "Henter USA-makronyheder..." },
+  "noPortfolioNews": { "message": "Ingen aktier i denne portefølje til nyheder." },
+  "fetchingNews": { "message": "Henter finansnyheder..." },
+  "tickerNewsTitle": {
+    "message": "$TICKER$-NYHEDER",
+    "placeholders": { "ticker": { "content": "$1" } }
+  },
+  "noRecentNews": { "message": "Ingen friske nyheder til din portefølje." },
+  "newsSourceDefault": { "message": "Google News" },
+
+  "promptTitle": { "message": "Prompt" },
+  "promptOk": { "message": "OK" },
+
+  "typeIndian": { "message": "Indisk aktie" },
+  "typeIndex": { "message": "Indeks" },
+  "typeETF": { "message": "ETF" },
+  "typeExchangeStock": {
+    "message": "$EX$-aktie",
+    "placeholders": { "ex": { "content": "$1" } }
+  },
+  "typeDefault": { "message": "Aktie" },
+
+  "ratioCurrentPrice": { "message": "Aktuel kurs" },
+  "ratioDayRange": { "message": "Dagsinterval" },
+  "ratio52W": { "message": "52U-interval" },
+  "ratioVolume": { "message": "Volumen" },
+  "ratioType": { "message": "Type" },
+  "ratioExchange": { "message": "Børs" },
+  "ratioMCap": { "message": "Markedsværdi" },
+  "ratioPE": { "message": "P/E-aktie" },
+  "ratioDiv": { "message": "Udbytteafkast" },
+  "ratioROCE": { "message": "ROCE" },
+
+  "tapeScrollLeft": { "message": "Rul bånd til venstre" },
+  "tapeScrollRight": { "message": "Rul bånd til højre" },
+  "chartNoData": { "message": "Ingen grafdata" },
+  "chartLoading": { "message": "Indlæser graf..." },
+  "ret1M": { "message": "Afk. 1M" },
+  "ret6M": { "message": "Afk. 6M" },
+  "ret1Y": { "message": "Afk. 1Å" },
+  "ret3Y": { "message": "Afk. 3Å" },
+  "ret5Y": { "message": "Afk. 5Å" },
+  "ret10Y": { "message": "Afk. 10Å" },
+  "retMax": { "message": "Samlet afk." },
+  "metricLastPrice": { "message": "Seneste kurs" },
+  "metricDivYield": { "message": "Udbytteafk." },
+  "metricPERatio": { "message": "P/E-forhold" },
+  "viewDetails": { "message": "Se detaljer" },
+  "modalSubtitleIndex": {
+    "message": "Markedsindeks • $SYM$",
+    "placeholders": { "sym": { "content": "$1" } }
+  },
+  "modalSectorDefault": { "message": "Aktier" },
+  "modalExchangeDefault": { "message": "NSE/BSE" },
+  "modalGlobal": { "message": "Global" },
+  "modalDetails": { "message": "Detaljer" },
+  "tapeLoading": { "message": "Indlæser Screener-overvågning..." },
+
+  "notifAboveTitle": { "message": "Kursalarm! 📈" },
+  "notifAbove": {
+    "message": "$TICKER$ over ₹$PRICE$ (aktuel: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifBelowTitle": { "message": "Kursalarm! 📉" },
+  "notifBelow": {
+    "message": "$TICKER$ under ₹$PRICE$ (aktuel: ₹$CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "notifGenericTitle": { "message": "Kursalarm Screener" },
+  "notifGeneric": {
+    "message": "$TICKER$ nåede dit mål $TARGET$ (aktuel: $CUR$)",
+    "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
+  },
+  "ctxAdd": { "message": "Tilføj \"%s\" til Screener-overvågning" },
+  "ctxAddedTitle": { "message": "Screener-overvågning" },
+  "ctxAddedMsg": {
+    "message": "$TICKER$ tilføjet til din overvågning!",
+    "placeholders": { "ticker": { "content": "$1" } }
+  }
+}
