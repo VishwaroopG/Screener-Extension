@@ -55,6 +55,7 @@
   <!-- Tabs -->
   <div class="screener-tabs">
     <div id="tab-search" class="screener-tab active">Dashboard</div>
+    <div id="tab-markets" class="screener-tab">Markets</div>
     <div id="tab-news" class="screener-tab">News</div>
   </div>
 
@@ -65,6 +66,7 @@
       <button id="btn-search" class="screener-btn">Search</button>
       <div id="search-suggestions" class="screener-suggestions"></div>
     </div>
+    <div id="world-clocks" class="world-clocks" role="region" aria-label="World market clocks"></div>
     <div id="results-search" class="screener-results"></div>
 
     <h3 style="margin:12px 0 8px 0; padding-top:10px; border-top:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;" class="dashboard-section-title"><span>Your Watchlist</span><span style="font-size:11px; font-weight:500; color:#188038; display:flex; align-items:center; gap:5px;"><span class="screener-live-dot"></span> Live</span></h3>
@@ -77,6 +79,11 @@
       <button id="btn-export-csv" class="screener-btn" style="background:#188038; padding:8px 12px; border-radius:16px; font-size:12px; flex-shrink:0; line-height:1;" title="Export to Excel">CSV</button>
     </div>
     <div id="wl-items-container" class="screener-watchlist-items"></div>
+  </div>
+
+  <!-- Markets View (Top Gainers / Losers + Index Heatmap) -->
+  <div id="view-markets" class="screener-view">
+    <div id="market-overview" style="padding-top:8px;"></div>
   </div>
 
   <!-- News View -->
@@ -106,17 +113,6 @@
     </div>
   </div>
 
-  <!-- Note Modal -->
-  <div id="note-modal" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
-    <div class="screener-watchlist-card" style="width: 250px; padding: 20px;">
-      <h3 style="margin-top:0;">Note for <span id="note-ticker"></span></h3>
-      <textarea id="note-text" class="screener-input" style="height: 80px; resize:none;" placeholder="Write a trading note..."></textarea>
-      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px;">
-        <button id="btn-note-cancel" class="screener-btn screener-btn-secondary">Cancel</button>
-        <button id="btn-note-save" class="screener-btn">Save</button>
-      </div>
-    </div>
-  </div>
   <!-- About & Support Modal -->
   <div id="about-modal" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
     <div class="screener-watchlist-card" style="width: 270px; padding: 22px 18px; text-align: center; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
@@ -139,91 +135,16 @@
   <div id="edit-pinned-modal" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
     <div class="screener-watchlist-card" style="width: 285px; padding: 20px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
       <h3 style="margin:0 0 12px 0; font-size:15px; font-weight:600; color:var(--text-color);">Edit Market Card</h3>
-      
-      <datalist id="preset-names">
-        <option value="NIFTY 50">
-        <option value="BANK NIFTY">
-        <option value="SENSEX">
-        <option value="NIFTY IT">
-        <option value="FIN NIFTY">
-        <option value="NIFTY MIDCAP 50">
-        <option value="NIFTY AUTO">
-        <option value="NIFTY ENERGY">
-        <option value="NIFTY FMCG">
-        <option value="NIFTY PHARMA">
-        <option value="S&P 500">
-        <option value="NASDAQ">
-        <option value="DOW JONES">
-        <option value="RUSSELL 2000">
-        <option value="FTSE 100">
-        <option value="NIKKEI 225">
-        <option value="HANG SENG">
-        <option value="GOLD Futures">
-        <option value="SILVER Futures">
-        <option value="CRUDE OIL">
-        <option value="Bitcoin">
-        <option value="Ethereum">
-        <option value="Singapore (STI)">
-        <option value="NIFTY METAL">
-        <option value="NIFTY REALTY">
-        <option value="NIFTY PSU BANK">
-        <option value="NIFTY MEDIA">
-        <option value="INDIA VIX">
-        <option value="VIX">
-        <option value="DAX">
-        <option value="CAC 40">
-        <option value="ASX 200">
-        <option value="USD/INR">
-        <option value="EUR/USD">
-        <option value="GBP/USD">
-      </datalist>
-
-      <datalist id="preset-symbols">
-        <option value="^NSEI">
-        <option value="^NSEBANK">
-        <option value="^BSESN">
-        <option value="^CNXIT">
-        <option value="NIFTY_FIN_SERVICE.NS">
-        <option value="^NSEMDCP50">
-        <option value="^CNXAUTO">
-        <option value="^CNXENERGY">
-        <option value="^CNXFMCG">
-        <option value="^CNXPHARMA">
-        <option value="^GSPC">
-        <option value="^IXIC">
-        <option value="^DJI">
-        <option value="^RUT">
-        <option value="^FTSE">
-        <option value="^N225">
-        <option value="^HSI">
-        <option value="GC=F">
-        <option value="SI=F">
-        <option value="CL=F">
-        <option value="BTC-USD">
-        <option value="ETH-USD">
-        <option value="^STI">
-        <option value="^CNXMETAL">
-        <option value="^CNXREALTY">
-        <option value="^CNXPSUBANK">
-        <option value="^CNXMEDIA">
-        <option value="^INDIAVIX">
-        <option value="^VIX">
-        <option value="^GDAXI">
-        <option value="^FCHI">
-        <option value="^AXJO">
-        <option value="INR=X">
-        <option value="EURUSD=X">
-        <option value="GBPUSD=X">
-      </datalist>
-
-      <div style="margin-bottom: 10px;">
+      <div style="margin-bottom: 10px; position:relative;">
         <label style="display:block; font-size:11px; font-weight:500; color:var(--label-color); margin-bottom:4px;">Display Name:</label>
-        <input type="text" id="pinned-display-name" list="preset-names" class="screener-input" placeholder="e.g. NIFTY IT, Apple, Reliance" style="width:100%; padding:7px 10px; border-radius:4px; font-size:12px;">
+        <input type="text" id="pinned-display-name" class="screener-input" autocomplete="off" placeholder="e.g. NIFTY IT, Apple, Reliance" style="width:100%; padding:7px 10px; border-radius:4px; font-size:12px;">
+        <div id="pinned-name-suggestions" class="screener-suggestions-container" style="display:none; position:absolute; top:50px; left:0; width:100%; max-height:200px; overflow-y:auto; z-index:1100;"></div>
       </div>
 
-      <div style="margin-bottom: 10px;">
+      <div style="margin-bottom: 10px; position:relative;">
         <label style="display:block; font-size:11px; font-weight:500; color:var(--label-color); margin-bottom:4px;">Symbol (Yahoo/NSE):</label>
-        <input type="text" id="pinned-symbol" list="preset-symbols" class="screener-input" placeholder="e.g. ^CNXIT, AAPL, RELIANCE.NS" style="width:100%; padding:7px 10px; border-radius:4px; font-size:12px;">
+        <input type="text" id="pinned-symbol" class="screener-input" autocomplete="off" placeholder="e.g. ^CNXIT, AAPL, RELIANCE.NS" style="width:100%; padding:7px 10px; border-radius:4px; font-size:12px;">
+        <div id="pinned-symbol-suggestions" class="screener-suggestions-container" style="display:none; position:absolute; top:50px; left:0; width:100%; max-height:200px; overflow-y:auto; z-index:1100;"></div>
       </div>
 
       <div style="display:flex; justify-content:space-between; gap:8px; margin-top:20px;">
@@ -231,6 +152,24 @@
         <div style="display:flex; gap:8px;">
           <button id="btn-pinned-cancel" class="screener-btn screener-btn-secondary" style="padding:6px 14px; font-size:12px;">Cancel</button>
           <button id="btn-pinned-save" class="screener-btn" style="padding:6px 16px; font-size:12px;">Save Card</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Edit Macro Indicator Modal -->
+  <div id="edit-macro-modal" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
+    <div class="screener-watchlist-card" style="width: 285px; padding: 20px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+      <h3 style="margin:0 0 4px 0; font-size:15px; font-weight:600; color:var(--text-color);">Edit Indicator</h3>
+      <div id="edit-macro-subtitle" style="font-size:11px; color:var(--label-color); margin-bottom:12px;"></div>
+      <div style="margin-bottom: 10px;">
+        <label style="display:block; font-size:11px; font-weight:500; color:var(--label-color); margin-bottom:4px;">Indicator:</label>
+        <select id="macro-indicator-select" class="screener-input" style="width:100%; padding:8px 10px; border-radius:4px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); cursor:pointer;"></select>
+      </div>
+      <div style="display:flex; justify-content:space-between; gap:8px; margin-top:20px; align-items:center;">
+        <a id="btn-macro-wb-link" href="#" target="_blank" style="font-size:11px; color:var(--link-color, #1a73e8); text-decoration:none;">View on World Bank</a>
+        <div style="display:flex; gap:8px;">
+          <button id="btn-macro-cancel" class="screener-btn screener-btn-secondary" style="padding:6px 14px; font-size:12px;">Cancel</button>
+          <button id="btn-macro-save" class="screener-btn" style="padding:6px 16px; font-size:12px;">Save</button>
         </div>
       </div>
     </div>

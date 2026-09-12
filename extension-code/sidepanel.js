@@ -2,8 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Elements
   const tabSearch = document.getElementById('tab-search');
   const tabWatchlist = null;
+  const tabMarkets = document.getElementById('tab-markets');
   const tabNews = document.getElementById('tab-news');
   const viewSearch = document.getElementById('view-search');
+  const viewMarkets = document.getElementById('view-markets');
   const viewNews = document.getElementById('view-news');
   const btnSearch = document.getElementById('btn-search');
   const inputSearch = document.getElementById('input-search');
@@ -25,6 +27,73 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let activePortfolio = 'Sample';
 
+  const WORLD_CLOCKS = [
+    { city: 'New York', tz: 'America/New_York', sessions: [[9 * 60 + 30, 16 * 60]] },
+    { city: 'London', tz: 'Europe/London', sessions: [[8 * 60, 16 * 60 + 30]] },
+    { city: 'Mumbai', tz: 'Asia/Kolkata', sessions: [[9 * 60 + 15, 15 * 60 + 30]] },
+    { city: 'Hong Kong', tz: 'Asia/Hong_Kong', sessions: [[9 * 60 + 30, 12 * 60], [13 * 60, 16 * 60]] },
+    { city: 'Singapore', tz: 'Asia/Singapore', sessions: [[9 * 60, 12 * 60], [13 * 60, 17 * 60]] }
+  ];
+
+  function getClockParts(tz) {
+    const parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: tz,
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      weekday: 'short'
+    }).formatToParts(new Date());
+    const get = (type) => parts.find((p) => p.type === type)?.value || '';
+    let hour = parseInt(get('hour'), 10);
+    if (hour === 24) hour = 0;
+    const minute = parseInt(get('minute'), 10);
+    return {
+      hour,
+      minute,
+      weekday: get('weekday'),
+      time: `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
+    };
+  }
+
+  function isMarketOpen(tz, sessions) {
+    const { hour, minute, weekday } = getClockParts(tz);
+    if (weekday === 'Sat' || weekday === 'Sun') return false;
+    const mins = hour * 60 + minute;
+    return sessions.some(([start, end]) => mins >= start && mins < end);
+  }
+
+  function initWorldClocks() {
+    const root = document.getElementById('world-clocks');
+    if (!root) return;
+
+    root.innerHTML = WORLD_CLOCKS.map((c, i) => `
+      <div class="world-clock is-closed" data-clock-index="${i}" title="${c.city}">
+        <div class="world-clock-city">${c.city}</div>
+        <div class="world-clock-time">--:--</div>
+        <div class="world-clock-status">● Closed</div>
+      </div>`).join('');
+
+    function tick() {
+      WORLD_CLOCKS.forEach((c, i) => {
+        const card = root.querySelector(`[data-clock-index="${i}"]`);
+        if (!card) return;
+        const open = isMarketOpen(c.tz, c.sessions);
+        const { time } = getClockParts(c.tz);
+        const timeEl = card.querySelector('.world-clock-time');
+        const statusEl = card.querySelector('.world-clock-status');
+        if (timeEl) timeEl.textContent = time;
+        if (statusEl) statusEl.textContent = open ? '● Open' : '● Closed';
+        card.classList.toggle('is-open', open);
+        card.classList.toggle('is-closed', !open);
+      });
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  }
+
+  initWorldClocks();
+
   if (extensionVersion) {
     extensionVersion.textContent = `v${chrome.runtime.getManifest().version}`;
   }
@@ -40,17 +109,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   // Tab Switching Logic
   function switchTab(activeTab, activeView) {
-    [tabSearch, tabNews].forEach(t => t && t.classList.remove('active'));
-    [viewSearch, viewNews].forEach(v => v && v.classList.remove('active'));
-    
+    [tabSearch, tabMarkets, tabNews].forEach(t => t && t.classList.remove('active'));
+    [viewSearch, viewMarkets, viewNews].forEach(v => v && v.classList.remove('active'));
+
     activeTab.classList.add('active');
     activeView.classList.add('active');
-    
+
     if (activeTab === tabSearch) renderWatchlist();
+    if (activeTab === tabMarkets) {
+      if (typeof renderOverviewShell === 'function' && !document.getElementById('overview-body')) {
+        renderOverviewShell();
+      }
+      if (typeof fetchMacroStats === 'function') fetchMacroStats(activeEconomy);
+      if (typeof fetchOverview === 'function') fetchOverview(activeEconomy);
+    }
     if (activeTab === tabNews) renderNews();
   }
 
   tabSearch.addEventListener('click', () => switchTab(tabSearch, viewSearch));
+  if (tabMarkets) tabMarkets.addEventListener('click', () => switchTab(tabMarkets, viewMarkets));
   tabNews.addEventListener('click', () => switchTab(tabNews, viewNews));
   // --- Google Material Design 3 Header Controls ---
   const svgMoon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>`;
@@ -494,6 +571,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadPortfolios(() => {
     renderDefaultSearch();
     renderWatchlist(); // Instantly render watchlist from cache with zero delay!
+    initMarketOverview();
   });
 
   portfolioSelect.addEventListener('change', (e) => {
@@ -853,39 +931,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  const noteModal = document.getElementById('note-modal');
-  const btnNoteCancel = document.getElementById('btn-note-cancel');
-  const btnNoteSave = document.getElementById('btn-note-save');
-  const inputNoteText = document.getElementById('note-text');
-  let currentNoteTicker = '';
-
-  window.openNoteModal = function(ticker) {
-    currentNoteTicker = ticker;
-    document.getElementById('note-ticker').textContent = ticker;
-    chrome.storage.local.get(['notes'], (res) => {
-      const notes = res.notes || {};
-      inputNoteText.value = notes[ticker] || '';
-      noteModal.style.display = 'flex';
-    });
-  };
-
-  btnNoteCancel.onclick = () => noteModal.style.display = 'none';
-  btnNoteSave.onclick = () => {
-    chrome.storage.local.get(['notes'], (res) => {
-      const notes = res.notes || {};
-      const txt = inputNoteText.value.trim();
-      if (txt) {
-        notes[currentNoteTicker] = txt;
-      } else {
-        delete notes[currentNoteTicker];
-      }
-      chrome.storage.local.set({ notes }, () => {
-        noteModal.style.display = 'none';
-        renderWatchlist();
-      });
-    });
-  };
-
   function createSparkline(data) {
     if (!data || data.length < 2) return '';
     const min = Math.min(...data);
@@ -925,11 +970,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isDragging) return; // Do not interrupt drag and drop
 
     // Single consolidated fetch for instant rendering with zero network delay
-    chrome.storage.local.get(['portfolios', 'screenerWatchlist', 'cachedData', 'notes', 'alerts'], (res) => {
+    chrome.storage.local.get(['portfolios', 'screenerWatchlist', 'cachedData', 'alerts'], (res) => {
       const ports = res.portfolios || {};
       let list = ports[activePortfolio] || res.screenerWatchlist || [];
       const cached = res.cachedData || {};
-      const notesObj = res.notes || {};
       const alertsObj = res.alerts || {};
 
       if (list.length === 0) {
@@ -948,19 +992,19 @@ document.addEventListener('DOMContentLoaded', () => {
           let valB = 0;
           
           if (currentSortBy === 'price') {
-            valA = parseFloat((dA.ratios['Current Price'] || '0').replace(/[^\d.-]/g, '')) || 0;
-            valB = parseFloat((dB.ratios['Current Price'] || '0').replace(/[^\d.-]/g, '')) || 0;
+            valA = parseFloat(((dA.ratios || {})['Current Price'] || '0').replace(/[^\d.-]/g, '')) || 0;
+            valB = parseFloat(((dB.ratios || {})['Current Price'] || '0').replace(/[^\d.-]/g, '')) || 0;
           } else if (currentSortBy === 'mcap') {
             const parseMcap = (str) => {
               const num = parseFloat((str || '0').replace(/[^\d.-]/g, '')) || 0;
-              if (str.includes('T')) return num * 1000;
-              if (str.includes('B')) return num;
-              if (str.includes('M')) return num / 1000;
-              if (str.includes('Cr')) return num * 10; // Rs Crores ~ 10M
+              if ((str || '').includes('T')) return num * 1000;
+              if ((str || '').includes('B')) return num;
+              if ((str || '').includes('M')) return num / 1000;
+              if ((str || '').includes('Cr')) return num * 10; // Rs Crores ~ 10M
               return num;
             };
-            valA = parseMcap(dA.ratios['Market Cap'] || '');
-            valB = parseMcap(dB.ratios['Market Cap'] || '');
+            valA = parseMcap((dA.ratios || {})['Market Cap'] || '');
+            valB = parseMcap((dB.ratios || {})['Market Cap'] || '');
           }
           
           return currentSortDesc ? valB - valA : valA - valB;
@@ -985,9 +1029,10 @@ document.addEventListener('DOMContentLoaded', () => {
         for (const ticker of list) {
           const data = cached[ticker];
           
-          if (!data) {
+          if (!data || data.success === false || !data.ratios) {
+             const msg = data && data.success === false ? `Could not fetch ${ticker}. Retrying...` : `Waiting for sync (${ticker})...`;
              html += `<tr style="background:${idx % 2 === 0 ? 'var(--row-even)' : 'var(--row-odd)'}; border-bottom:1px solid var(--border-color);">
-               <td colspan="6" style="padding:10px; text-align:left;">Waiting for sync (${ticker})...</td>
+               <td colspan="6" style="padding:10px; text-align:left;">${msg}</td>
              </tr>`;
           } else {
             let pctHtml = '';
@@ -997,26 +1042,24 @@ document.addEventListener('DOMContentLoaded', () => {
               const sign = data.changeDir === 'up' ? '\u25B2' : '\u25BC';
               pctHtml = `<span style="color:${color}; font-size:11px;">${sign} ${data.changePct}</span>`;
             }
-            flashClass = data.flash && (Date.now() - (data.flashTime || 0) < 5000) ? (data.flash === 'up' ? 'screener-flash-up' : 'screener-flash-down') : '';
+            flashClass = data.flash && (Date.now() - (data.flashTime || 0) < 1500) ? (data.flash === 'up' ? 'screener-flash-up' : 'screener-flash-down') : '';
 
-            const noteTxt = notesObj[ticker] || '';
             const hasAlert = !!(alertsObj[ticker] && (alertsObj[ticker].above || alertsObj[ticker].below));
-            
+            const ratios = data.ratios || {};
+
             const spark = createSparkline(data.sparkline);
 
             html += `
               <tr class="watchlist-row" draggable="true" data-ticker="${ticker}" style="background:${idx % 2 === 0 ? 'var(--row-even)' : 'var(--row-odd)'}; border-bottom:1px solid var(--border-color); cursor:grab;">
                 <td style="text-align:left; padding:10px; font-weight:500;">
                   <span style="color:#aaa; margin-right:4px; font-size:10px;" title="Drag to reorder">⣿</span>
-                  <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + ticker + '/'}" target="_blank" title="${data.companyName}" style="color:var(--link-green); text-decoration:none;">${ticker}</a>
-                  ${noteTxt ? `<div style="font-size:10px; color:#5f6368; font-weight:normal; max-width:100px; white-space:normal; margin-top:4px;">\uD83D\uDCDD ${noteTxt}</div>` : ''}
+                  <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + ticker + '/'}" target="_blank" title="${data.companyName || ticker}" style="color:var(--link-green); text-decoration:none;">${ticker}</a>
                 </td>
                 <td style="padding:10px;">${spark}</td>
-                <td class="${flashClass}" style="padding:10px;">${data.ratios['Current Price']||'-'}<br/>${pctHtml}</td>
-                <td style="padding:10px;">${data.ratios['Stock P/E']||'-'}</td>
-                <td style="padding:10px;">${formatMarketCap(data.ratios['Market Cap'] || '-')}</td>
+                <td class="${flashClass}" style="padding:10px;">${ratios['Current Price']||'-'}<br/>${pctHtml}</td>
+                <td style="padding:10px;">${ratios['Stock P/E']||'-'}</td>
+                <td style="padding:10px;">${formatMarketCap(ratios['Market Cap'] || '-')}</td>
                 <td style="padding:10px; text-align:center;">
-                  <button class="screener-note-btn" data-ticker="${ticker}" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px;" title="Add Note">\uD83D\uDCDD</button>
                   <button class="screener-alert-btn" data-ticker="${ticker}" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px;" title="Set Alert">${hasAlert ? '\uD83D\uDD14' : '\u23F0'}</button>
                   <button class="screener-del-btn" data-ticker="${ticker}" style="background:none; border:none; color:#d93025; cursor:pointer; font-size:14px; padding:2px;" title="Delete">&#128465;</button>
                 </td>
@@ -1035,9 +1078,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sortPrice) sortPrice.onclick = () => handleSort('price');
         if (sortMcap) sortMcap.onclick = () => handleSort('mcap');
 
-        // Wire up buttons
+        // Wire up row action buttons (alert + delete)
         wlItemsContainer.querySelectorAll('.screener-del-btn').forEach(b => b.onclick = () => removeTicker(b.getAttribute('data-ticker')));
-        wlItemsContainer.querySelectorAll('.screener-note-btn').forEach(b => b.onclick = () => openNoteModal(b.getAttribute('data-ticker')));
         wlItemsContainer.querySelectorAll('.screener-alert-btn').forEach(b => b.onclick = () => openAlertModal(b.getAttribute('data-ticker')));
 
         // Wire up Drag and Drop
@@ -1132,7 +1174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const changeVal = parseFloat(data.changePct || '0');
         const changeColor = changeVal > 0 ? '#188038' : (changeVal < 0 ? '#d93025' : 'var(--label-color)');
         const changeSign = changeVal > 0 ? '&#9650;' : (changeVal < 0 ? '&#9660;' : '');
-        const flashClass = data.flash && (Date.now() - (data.flashTime || 0) < 5000) ? (data.flash === 'up' ? 'screener-flash-up' : 'screener-flash-down') : '';
+        const flashClass = data.flash && (Date.now() - (data.flashTime || 0) < 1500) ? (data.flash === 'up' ? 'screener-flash-up' : 'screener-flash-down') : '';
 
         const displayPrice = data.price || 'Loading...';
         const displayPct = data.changePct ? `${Math.abs(changeVal).toFixed(2)}%` : '0.00%';
@@ -1192,7 +1234,11 @@ document.addEventListener('DOMContentLoaded', () => {
       pinnedDisplayName.value = cur.key || '';
       pinnedSymbol.value = cur.symbol || '';
       if (editPinnedModal) editPinnedModal.style.display = 'flex';
-      setTimeout(() => pinnedDisplayName.focus(), 50);
+      // Show full indices list by default
+      setTimeout(() => {
+        showPinnedSuggestions(pinnedDisplayName.value || '');
+        pinnedDisplayName.focus();
+      }, 50);
     });
   }
 
@@ -1234,12 +1280,50 @@ document.addEventListener('DOMContentLoaded', () => {
     'GBP/USD': 'GBPUSD=X'
   };
 
+  const pinnedNameSuggestions = document.getElementById('pinned-name-suggestions');
+
+  function showPinnedSuggestions(query) {
+    if (!pinnedNameSuggestions) return;
+    const trimmed = (query || '').trim().toLowerCase();
+    // Empty query => show full list by default
+    const matches = trimmed.length === 0
+      ? Object.entries(presetMap)
+      : Object.entries(presetMap).filter(([name]) =>
+          name.toLowerCase().includes(trimmed)
+        );
+    if (matches.length === 0) {
+      pinnedNameSuggestions.style.display = 'none';
+      return;
+    }
+    pinnedNameSuggestions.innerHTML = matches.map(([name, symbol]) => `
+      <div class="screener-suggestion-item" data-name="${name}" data-symbol="${symbol}">
+        <span class="suggestion-name">${name}</span>
+        <span class="suggestion-symbol">${symbol}</span>
+      </div>
+    `).join('');
+    pinnedNameSuggestions.style.display = 'block';
+
+    pinnedNameSuggestions.querySelectorAll('.screener-suggestion-item').forEach(item => {
+      item.addEventListener('click', () => {
+        pinnedDisplayName.value = item.getAttribute('data-name');
+        pinnedSymbol.value = item.getAttribute('data-symbol');
+        pinnedNameSuggestions.style.display = 'none';
+      });
+    });
+  }
+
   if (pinnedDisplayName) {
     pinnedDisplayName.addEventListener('input', () => {
       const val = pinnedDisplayName.value;
       if (presetMap[val]) {
         pinnedSymbol.value = presetMap[val];
+        pinnedNameSuggestions.style.display = 'none';
+      } else {
+        showPinnedSuggestions(val);
       }
+    });
+    pinnedDisplayName.addEventListener('focus', () => {
+      showPinnedSuggestions(pinnedDisplayName.value || '');
     });
   }
 
@@ -1256,14 +1340,24 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnPinnedCancel && editPinnedModal) {
     btnPinnedCancel.addEventListener('click', () => {
       editPinnedModal.style.display = 'none';
+      if (pinnedNameSuggestions) pinnedNameSuggestions.style.display = 'none';
     });
   }
 
   if (editPinnedModal) {
     editPinnedModal.addEventListener('click', (e) => {
-      if (e.target === editPinnedModal) editPinnedModal.style.display = 'none';
+      if (e.target === editPinnedModal) {
+        editPinnedModal.style.display = 'none';
+        if (pinnedNameSuggestions) pinnedNameSuggestions.style.display = 'none';
+      }
     });
   }
+
+  document.addEventListener('click', (e) => {
+    if (pinnedNameSuggestions && !pinnedNameSuggestions.contains(e.target) && e.target !== pinnedDisplayName) {
+      pinnedNameSuggestions.style.display = 'none';
+    }
+  });
 
   if (btnPinnedRemove) {
     btnPinnedRemove.addEventListener('click', () => {
@@ -1280,6 +1374,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         chrome.storage.local.set({ pinnedIndices: pinned, marketIndices }, () => {
           if (editPinnedModal) editPinnedModal.style.display = 'none';
+          if (pinnedNameSuggestions) pinnedNameSuggestions.style.display = 'none';
           renderDefaultSearch();
           chrome.runtime.sendMessage({ type: 'POLL_NOW' });
         });
@@ -1309,10 +1404,461 @@ document.addEventListener('DOMContentLoaded', () => {
 
         chrome.storage.local.set({ pinnedIndices: pinned, marketIndices }, () => {
           if (editPinnedModal) editPinnedModal.style.display = 'none';
+          if (pinnedNameSuggestions) pinnedNameSuggestions.style.display = 'none';
           renderDefaultSearch();
           chrome.runtime.sendMessage({ type: 'POLL_NOW' });
         });
       });
+    });
+  }
+
+  // --- Market Overview (Top Gainers / Losers + Index Heatmap per economy) ---
+  const MARKET_ECONOMIES = {
+    'USA': {
+      curr: 'USD',
+      indices: [
+        { key: 'S&P 500', symbol: '^GSPC' },
+        { key: 'NASDAQ', symbol: '^IXIC' },
+        { key: 'DOW', symbol: '^DJI' },
+        { key: 'RUSSELL 2000', symbol: '^RUT' }
+      ],
+      stocks: [
+        { key: 'Apple', symbol: 'AAPL' },
+        { key: 'Microsoft', symbol: 'MSFT' },
+        { key: 'NVIDIA', symbol: 'NVDA' },
+        { key: 'Tesla', symbol: 'TSLA' },
+        { key: 'Amazon', symbol: 'AMZN' },
+        { key: 'Meta', symbol: 'META' },
+        { key: 'Alphabet', symbol: 'GOOGL' },
+        { key: 'AMD', symbol: 'AMD' }
+      ]
+    },
+    'India': {
+      curr: 'INR',
+      indices: [
+        { key: 'NIFTY 50', symbol: '^NSEI' },
+        { key: 'SENSEX', symbol: '^BSESN' },
+        { key: 'BANK NIFTY', symbol: '^NSEBANK' },
+        { key: 'NIFTY IT', symbol: '^CNXIT' }
+      ],
+      stocks: [
+        { key: 'Reliance', symbol: 'RELIANCE.NS' },
+        { key: 'TCS', symbol: 'TCS.NS' },
+        { key: 'HDFC Bank', symbol: 'HDFCBANK.NS' },
+        { key: 'Infosys', symbol: 'INFY.NS' },
+        { key: 'ICICI Bank', symbol: 'ICICIBANK.NS' },
+        { key: 'SBI', symbol: 'SBIN.NS' },
+        { key: 'Tata Motors PV', symbol: 'TMPV.NS' },
+        { key: 'Axis Bank', symbol: 'AXISBANK.NS' }
+      ]
+    },
+    'UK': {
+      curr: 'GBP',
+      indices: [
+        { key: 'FTSE 100', symbol: '^FTSE' },
+        { key: 'FTSE 250', symbol: '^FTMC' }
+      ],
+      stocks: [
+        { key: 'HSBC', symbol: 'HSBA.L' },
+        { key: 'Shell', symbol: 'SHEL.L' },
+        { key: 'AstraZeneca', symbol: 'AZN.L' },
+        { key: 'BP', symbol: 'BP.L' },
+        { key: 'Unilever', symbol: 'ULVR.L' },
+        { key: 'Lloyds', symbol: 'LLOY.L' },
+        { key: 'Barclays', symbol: 'BARC.L' },
+        { key: 'Vodafone', symbol: 'VOD.L' }
+      ]
+    },
+    'Singapore': {
+      curr: 'SGD',
+      indices: [
+        { key: 'STI', symbol: '^STI' }
+      ],
+      stocks: [
+        { key: 'DBS', symbol: 'D05.SI' },
+        { key: 'OCBC', symbol: 'O39.SI' },
+        { key: 'UOB', symbol: 'U11.SI' },
+        { key: 'Singtel', symbol: 'Z74.SI' },
+        { key: 'SIA', symbol: 'C6L.SI' },
+        { key: 'Wilmar', symbol: 'F34.SI' },
+        { key: 'Keppel', symbol: 'BN4.SI' },
+        { key: 'CapLand IntCom', symbol: 'C38U.SI' }
+      ]
+    },
+    'Japan': {
+      curr: 'JPY',
+      indices: [
+        { key: 'NIKKEI 225', symbol: '^N225' }
+      ],
+      stocks: [
+        { key: 'Toyota', symbol: '7203.T' },
+        { key: 'Sony Group', symbol: '6758.T' },
+        { key: 'SoftBank Group', symbol: '9984.T' },
+        { key: 'Mitsubishi UFJ', symbol: '8306.T' },
+        { key: 'Fast Retailing', symbol: '9983.T' },
+        { key: 'NTT', symbol: '9432.T' }
+      ]
+    },
+    'Hong Kong': {
+      curr: 'HKD',
+      indices: [
+        { key: 'HANG SENG', symbol: '^HSI' }
+      ],
+      stocks: [
+        { key: 'Tencent', symbol: '0700.HK' },
+        { key: 'HSBC', symbol: '0005.HK' },
+        { key: 'China Mobile', symbol: '0941.HK' },
+        { key: 'AIA', symbol: '1299.HK' },
+        { key: 'CCB', symbol: '0939.HK' },
+        { key: 'Ping An', symbol: '2318.HK' },
+        { key: 'Meituan', symbol: '3690.HK' },
+        { key: 'Xiaomi', symbol: '1810.HK' }
+      ]
+    },
+    'Germany': {
+      curr: 'EUR',
+      indices: [
+        { key: 'DAX', symbol: '^GDAXI' }
+      ],
+      stocks: [
+        { key: 'SAP', symbol: 'SAP.DE' },
+        { key: 'Siemens', symbol: 'SIE.DE' },
+        { key: 'Allianz', symbol: 'ALV.DE' },
+        { key: 'Deutsche Telekom', symbol: 'DTE.DE' },
+        { key: 'Mercedes-Benz', symbol: 'MBG.DE' },
+        { key: 'BMW', symbol: 'BMW.DE' },
+        { key: 'BASF', symbol: 'BAS.DE' },
+        { key: 'Deutsche Bank', symbol: 'DBK.DE' }
+      ]
+    },
+    'France': {
+      curr: 'EUR',
+      indices: [
+        { key: 'CAC 40', symbol: '^FCHI' }
+      ],
+      stocks: [
+        { key: 'LVMH', symbol: 'MC.PA' },
+        { key: 'L\u2019Oreal', symbol: 'OR.PA' },
+        { key: 'TotalEnergies', symbol: 'TTE.PA' },
+        { key: 'Sanofi', symbol: 'SAN.PA' },
+        { key: 'Airbus', symbol: 'AIR.PA' },
+        { key: 'BNP Paribas', symbol: 'BNP.PA' }
+      ]
+    },
+    'Australia': {
+      curr: 'AUD',
+      indices: [
+        { key: 'ASX 200', symbol: '^AXJO' }
+      ],
+      stocks: [
+        { key: 'CBA', symbol: 'CBA.AX' },
+        { key: 'BHP', symbol: 'BHP.AX' },
+        { key: 'CSL', symbol: 'CSL.AX' },
+        { key: 'NAB', symbol: 'NAB.AX' },
+        { key: 'Westpac', symbol: 'WBC.AX' },
+        { key: 'ANZ', symbol: 'ANZ.AX' }
+      ]
+    },
+    'Canada': {
+      curr: 'CAD',
+      indices: [
+        { key: 'TSX Composite', symbol: '^GSPTSE' }
+      ],
+      stocks: [
+        { key: 'RBC', symbol: 'RY.TO' },
+        { key: 'TD Bank', symbol: 'TD.TO' },
+        { key: 'Shopify', symbol: 'SHOP.TO' },
+        { key: 'Enbridge', symbol: 'ENB.TO' },
+        { key: 'Scotiabank', symbol: 'BNS.TO' },
+        { key: 'BMO', symbol: 'BMO.TO' }
+      ]
+    }
+  };
+
+  let activeEconomy = 'USA';
+  const overviewCache = {};
+  const overviewUpdatedAt = {};
+  const overviewContainer = document.getElementById('market-overview');
+
+  function renderOverviewShell() {
+    if (!overviewContainer) return;
+    const options = Object.keys(MARKET_ECONOMIES).map(name => `
+      <option value="${name}"${name === activeEconomy ? ' selected' : ''}>${name}</option>
+    `).join('');
+    overviewContainer.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:10px;">
+        <span style="color:var(--label-color); font-size:13px; font-weight:500;">Market Overview</span>
+        <button id="btn-overview-refresh" title="Refresh overview" style="background:none; border:1px solid var(--border-color); border-radius:6px; color:var(--label-color); cursor:pointer; font-size:12px; padding:3px 9px;">&#8635; Refresh</button>
+      </div>
+      <div style="margin-bottom:10px;">
+        <label style="display:block; font-size:11px; font-weight:500; color:var(--label-color); margin-bottom:4px;">Select Market:</label>
+        <select id="overview-economy-select" class="screener-input" style="width:100%; padding:8px 10px; border-radius:4px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); cursor:pointer;">${options}</select>
+      </div>
+      <div id="overview-body"><div class="screener-loading" style="padding:16px;">Loading ${activeEconomy} markets...</div></div>
+      <div style="font-size:11px; font-weight:600; color:var(--label-color); margin:12px 0 6px 0; letter-spacing:0.03em;">ECONOMY INDICATORS</div>
+      <div id="macro-body" style="margin-bottom:10px;"><div class="screener-loading" style="padding:10px;">Loading indicators...</div></div>
+    `;
+    const economySelect = document.getElementById('overview-economy-select');
+    if (economySelect) {
+      economySelect.addEventListener('change', () => {
+        const eco = economySelect.value;
+        if (eco && eco !== activeEconomy && MARKET_ECONOMIES[eco]) {
+          activeEconomy = eco;
+          chrome.storage.local.set({ overviewEconomy: eco });
+          fetchMacroStats(eco);
+          fetchOverview(eco);
+        }
+      });
+    }
+    const refreshBtn = document.getElementById('btn-overview-refresh');
+    if (refreshBtn) refreshBtn.addEventListener('click', () => {
+      fetchMacroStats(activeEconomy, true);
+      fetchOverview(activeEconomy, true);
+    });
+  }
+
+  // World Bank country codes per market
+  const ECONOMY_WB_COUNTRY = { 'USA': 'USA', 'India': 'IND', 'UK': 'GBR', 'Singapore': 'SGP', 'Japan': 'JPN', 'Hong Kong': 'HKG', 'Germany': 'DEU', 'France': 'FRA', 'Australia': 'AUS', 'Canada': 'CAN' };
+  // Indicator catalog (mirrors background MACRO_INDICATOR_DEFS labels)
+  const MACRO_CATALOG = [
+    { key: 'inflation', label: 'Inflation (CPI)' },
+    { key: 'unemployment', label: 'Unemployment' },
+    { key: 'gdp', label: 'GDP Growth' },
+    { key: 'gdppc', label: 'GDP per Capita' },
+    { key: 'gdptotal', label: 'GDP Total' },
+    { key: 'trade', label: 'Trade (% of GDP)' },
+    { key: 'reserves', label: 'Forex Reserves' },
+    { key: 'population', label: 'Population' }
+  ];
+  const DEFAULT_MACRO_TILES = ['inflation', 'unemployment', 'gdp', 'gdppc'];
+  let macroTilesConfig = {};
+  const macroCache = {};
+
+  function activeMacroTiles() {
+    const cfg = macroTilesConfig[activeEconomy];
+    if (Array.isArray(cfg) && cfg.length === 4 && cfg.every(k => MACRO_CATALOG.some(c => c.key === k))) {
+      return cfg;
+    }
+    return DEFAULT_MACRO_TILES;
+  }
+
+  function fetchMacroStats(economy, force) {
+    const body = document.getElementById('macro-body');
+    const country = ECONOMY_WB_COUNTRY[economy];
+    if (!country) return;
+    if (!force && macroCache[economy]) {
+      renderMacroStats(macroCache[economy]);
+      return;
+    }
+    if (body) body.innerHTML = '<div class="screener-loading" style="padding:10px;">Loading indicators...</div>';
+    chrome.runtime.sendMessage({ type: 'FETCH_MACRO_STATS', country }, (res) => {
+      const stats = (res && res.stats) || {};
+      macroCache[economy] = stats;
+      if (economy === activeEconomy) renderMacroStats(stats);
+    });
+  }
+
+  function renderMacroStats(stats) {
+    const body = document.getElementById('macro-body');
+    if (!body) return;
+    const order = activeMacroTiles();
+    const tiles = order
+      .map((k, slot) => {
+        const s = stats[k];
+        const label = s ? s.label : (MACRO_CATALOG.find(c => c.key === k) || {}).label || k;
+        return `
+          <div class="overview-heat-tile overview-macro-tile" data-slot="${slot}" title="${label}${s ? ` (${s.year})` : ''} — click to edit">
+            <div class="overview-heat-name">${label}</div>
+            <div class="overview-heat-price">${s ? s.value : '—'}</div>
+            <div style="font-size:10px; color:var(--label-color);">${s ? s.year : 'loading...'}</div>
+          </div>`;
+      }).join('');
+    body.innerHTML = tiles
+      ? `<div class="overview-heatmap">${tiles}</div>`
+      : '<div style="font-size:12px; color:var(--label-color); padding:6px 0;">Indicators unavailable.</div>';
+
+    body.querySelectorAll('.overview-macro-tile').forEach(tile => {
+      tile.addEventListener('click', () => {
+        openEditMacroModal(parseInt(tile.getAttribute('data-slot'), 10));
+      });
+    });
+  }
+
+  // --- Edit Macro Indicator Modal Logic ---
+  let editingMacroSlot = 0;
+  const editMacroModal = document.getElementById('edit-macro-modal');
+  const macroIndicatorSelect = document.getElementById('macro-indicator-select');
+  const editMacroSubtitle = document.getElementById('edit-macro-subtitle');
+  const btnMacroWbLink = document.getElementById('btn-macro-wb-link');
+  const btnMacroCancel = document.getElementById('btn-macro-cancel');
+  const btnMacroSave = document.getElementById('btn-macro-save');
+
+  function openEditMacroModal(slot) {
+    editingMacroSlot = slot;
+    const tiles = activeMacroTiles();
+    const cur = tiles[slot] || DEFAULT_MACRO_TILES[slot];
+    if (macroIndicatorSelect) {
+      macroIndicatorSelect.innerHTML = MACRO_CATALOG.map(c => `
+        <option value="${c.key}"${c.key === cur ? ' selected' : ''}>${c.label}</option>
+      `).join('');
+    }
+    if (editMacroSubtitle) editMacroSubtitle.textContent = `${activeEconomy} • Tile ${slot + 1} of 4`;
+    const stats = macroCache[activeEconomy] || {};
+    const curStat = stats[cur];
+    if (btnMacroWbLink) {
+      if (curStat && curStat.link) {
+        btnMacroWbLink.href = curStat.link;
+        btnMacroWbLink.style.display = '';
+      } else {
+        btnMacroWbLink.style.display = 'none';
+      }
+    }
+    if (editMacroModal) editMacroModal.style.display = 'flex';
+  }
+
+  function closeEditMacroModal() {
+    if (editMacroModal) editMacroModal.style.display = 'none';
+  }
+
+  if (btnMacroCancel) btnMacroCancel.addEventListener('click', closeEditMacroModal);
+  if (editMacroModal) {
+    editMacroModal.addEventListener('click', (e) => {
+      if (e.target === editMacroModal) closeEditMacroModal();
+    });
+  }
+
+  if (btnMacroSave) {
+    btnMacroSave.addEventListener('click', () => {
+      const picked = macroIndicatorSelect ? macroIndicatorSelect.value : null;
+      if (!picked) return;
+      const tiles = [...activeMacroTiles()];
+      // Swap if the picked indicator already occupies another tile
+      const existingIdx = tiles.indexOf(picked);
+      if (existingIdx >= 0 && existingIdx !== editingMacroSlot) {
+        tiles[existingIdx] = tiles[editingMacroSlot];
+      }
+      tiles[editingMacroSlot] = picked;
+      macroTilesConfig[activeEconomy] = tiles;
+      chrome.storage.local.set({ macroTiles: macroTilesConfig }, () => {
+        closeEditMacroModal();
+        renderMacroStats(macroCache[activeEconomy] || {});
+      });
+    });
+  }
+
+  function fetchOverview(economy, force) {
+    const body = document.getElementById('overview-body');
+    const cfg = MARKET_ECONOMIES[economy];
+    if (!cfg) return;
+    if (!force && overviewCache[economy]) {
+      renderOverviewBody(overviewCache[economy]);
+      return;
+    }
+    if (body) body.innerHTML = `<div class="screener-loading" style="padding:16px;">Loading ${economy} markets...</div>`;
+    const items = [
+      ...cfg.indices.map(i => ({ ...i, kind: 'index', curr: cfg.curr })),
+      ...cfg.stocks.map(s => ({ ...s, kind: 'stock', curr: cfg.curr }))
+    ];
+    chrome.runtime.sendMessage({ type: 'FETCH_OVERVIEW', items }, (res) => {
+      const quotes = (res && res.quotes) || [];
+      if (quotes.length === 0) {
+        if (body) body.innerHTML = '<div class="screener-error">Could not load market data. Try Refresh.</div>';
+        return;
+      }
+      const byKey = {};
+      quotes.forEach(q => { byKey[q.symbol] = q; });
+      const data = {
+        indices: cfg.indices.map(i => byKey[i.symbol] || { ...i, price: '-', changePct: '0.00%', pctNum: 0, changeDir: 'up' }),
+        stocks: cfg.stocks.map(s => byKey[s.symbol] || { ...s, price: '-', changePct: '0.00%', pctNum: 0, changeDir: 'up' })
+      };
+      overviewCache[economy] = data;
+      overviewUpdatedAt[economy] = Date.now();
+      if (economy === activeEconomy) renderOverviewBody(data);
+    });
+  }
+
+  function renderOverviewBody(data) {
+    const body = document.getElementById('overview-body');
+    if (!body) return;
+    const updatedAt = overviewUpdatedAt[activeEconomy];
+    const updatedStr = updatedAt ? new Date(updatedAt).toLocaleTimeString() : '';
+    const heatTiles = data.indices.map(q => {
+      const up = q.changeDir === 'up';
+      const pctColor = up ? '#188038' : '#d93025';
+      const sign = up ? '\u25B2' : '\u25BC';
+      return `
+        <div class="overview-heat-tile" data-symbol="${q.symbol}" title="${q.key} — click to analyze">
+          <div class="overview-heat-name">${q.key}</div>
+          <div class="overview-heat-price">${q.price}</div>
+          <div style="font-size:11px; font-weight:600; color:${pctColor};">${sign} ${q.changePct}</div>
+        </div>`;
+    }).join('');
+
+    const gainers = [...data.stocks]
+      .filter(q => (q.pctNum || 0) > 0)
+      .sort((a, b) => (b.pctNum || 0) - (a.pctNum || 0))
+      .slice(0, 4);
+    const losers = [...data.stocks]
+      .filter(q => (q.pctNum || 0) < 0)
+      .sort((a, b) => (a.pctNum || 0) - (b.pctNum || 0))
+      .slice(0, 4);
+
+    const moverRow = (q) => {
+      const up = q.changeDir === 'up';
+      const pctColor = up ? '#188038' : '#d93025';
+      const sign = up ? '\u25B2' : '\u25BC';
+      return `
+        <div class="overview-mover-row" data-symbol="${q.symbol}" title="${q.key} — click to analyze">
+          <div style="min-width:0; flex:1; margin-right:8px;">
+            <div style="font-weight:500; font-size:13px; color:var(--text-color); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${q.key}</div>
+            <div style="font-size:10px; color:var(--label-color);">${q.symbol}</div>
+          </div>
+          <div style="text-align:right; flex-shrink:0;">
+            <div style="font-size:13px; font-weight:600; color:var(--text-color);">${q.price}</div>
+            <div style="font-size:11px; font-weight:600; color:${pctColor};">${sign} ${q.changePct}</div>
+          </div>
+        </div>`;
+    };
+
+    body.innerHTML = `
+      <div style="font-size:11px; font-weight:600; color:var(--label-color); margin-bottom:6px; letter-spacing:0.03em;">INDEX HEATMAP</div>
+      <div class="overview-heatmap">${heatTiles}</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+        <div>
+          <div style="font-size:11px; font-weight:600; color:#188038; margin-bottom:6px; letter-spacing:0.03em;">\u25B2 TOP GAINERS</div>
+          <div class="overview-movers">${gainers.length ? gainers.map(moverRow).join('') : '<div style="padding:10px; font-size:12px; color:var(--label-color);">No gainers today</div>'}</div>
+        </div>
+        <div>
+          <div style="font-size:11px; font-weight:600; color:#d93025; margin-bottom:6px; letter-spacing:0.03em;">\u25BC TOP LOSERS</div>
+          <div class="overview-movers">${losers.length ? losers.map(moverRow).join('') : '<div style="padding:10px; font-size:12px; color:var(--label-color);">No losers today</div>'}</div>
+        </div>
+      </div>
+      ${updatedStr ? `<div style="font-size:10px; color:var(--label-color); text-align:right; margin-top:8px;">Updated ${updatedStr}</div>` : ''}
+    `;
+
+    body.querySelectorAll('.overview-heat-tile, .overview-mover-row').forEach(el => {
+      el.addEventListener('click', () => {
+        const sym = el.getAttribute('data-symbol');
+        if (sym && inputSearch && btnSearch) {
+          if (typeof switchTab === 'function' && tabSearch && viewSearch) switchTab(tabSearch, viewSearch);
+          inputSearch.value = sym;
+          btnSearch.click();
+        }
+      });
+    });
+  }
+
+  function initMarketOverview() {
+    chrome.storage.local.get(['overviewEconomy', 'macroTiles'], (res) => {
+      if (res.overviewEconomy && MARKET_ECONOMIES[res.overviewEconomy]) {
+        activeEconomy = res.overviewEconomy;
+      }
+      if (res.macroTiles && typeof res.macroTiles === 'object') {
+        macroTilesConfig = res.macroTiles;
+      }
+      renderOverviewShell();
+      fetchMacroStats(activeEconomy);
+      fetchOverview(activeEconomy);
     });
   }
 

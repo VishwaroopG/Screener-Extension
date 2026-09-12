@@ -180,6 +180,75 @@ body {
   position: relative;
 }
 
+.world-clocks {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0 0 10px 0;
+}
+
+.world-clock {
+  background: var(--verdict-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 4px 7px;
+  text-align: center;
+  min-width: 0;
+}
+
+.world-clock-city {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--label-color);
+  letter-spacing: 0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 3px;
+}
+
+.world-clock,
+.world-clock * {
+  transition: none !important;
+}
+
+.world-clock-time {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-color);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  margin-bottom: 3px;
+}
+
+.world-clock-status {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.world-clock.is-open .world-clock-status {
+  color: #188038;
+}
+
+.world-clock.is-closed .world-clock-status {
+  color: #d93025;
+}
+
+body.dark-mode .world-clock.is-open .world-clock-status {
+  color: #85d996;
+}
+
+body.dark-mode .world-clock.is-closed .world-clock-status {
+  color: #f28b82;
+}
+
+@media (max-width: 360px) {
+  .world-clocks {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 /* Google-like Input Pill */
 .screener-input {
   flex-grow: 1;
@@ -778,6 +847,114 @@ body.dark-mode .md-icon-btn.tape-is-paused {
   color: #fdd663 !important;
   background-color: rgba(253, 214, 99, 0.15) !important;
   border-color: rgba(253, 214, 99, 0.35) !important;
+}
+
+/* Market Overview Section */
+.overview-heatmap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.overview-heat-tile {
+  background: var(--verdict-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.overview-heat-tile:hover {
+  border-color: var(--accent-color, #1a73e8);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.overview-heat-name {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 4px;
+}
+.overview-heat-price {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-color);
+  margin-bottom: 2px;
+}
+.overview-movers {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.overview-mover-row {
+  padding: 8px 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--row-odd);
+  border-bottom: 1px solid var(--border-light);
+  transition: background-color 0.12s ease;
+}
+.overview-mover-row:nth-child(even) {
+  background: var(--row-even);
+}
+.overview-mover-row:last-child {
+  border-bottom: none;
+}
+.overview-mover-row:hover {
+  background: var(--row-hover);
+}
+
+/* Edit Pinned Modal Suggestions */
+.screener-suggestions-container {
+  background: white;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+body.dark-mode .screener-suggestions-container {
+  background-color: #353a45;
+  border-color: #484f5f;
+}
+.screener-suggestion-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text-color);
+  border-bottom: 1px solid #f1f3f4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.screener-suggestion-item:last-child {
+  border-bottom: none;
+}
+.screener-suggestion-item:hover {
+  background-color: #f8f9fa;
+}
+body.dark-mode .screener-suggestion-item {
+  border-bottom-color: #484f5f;
+}
+body.dark-mode .screener-suggestion-item:hover {
+  background-color: #414856;
+}
+.screener-suggestion-item .suggestion-name {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 8px;
+}
+.screener-suggestion-item .suggestion-symbol {
+  font-size: 10px;
+  color: var(--label-color);
+  flex-shrink: 0;
+  background: var(--verdict-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 

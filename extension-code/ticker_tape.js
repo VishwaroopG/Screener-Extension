@@ -43,7 +43,15 @@
       </div>
       <div class="screener-modal-body">
         <div class="screener-modal-desc" id="screener-modal-desc"></div>
-        <div class="screener-sparkline-title">1Y Price Trend</div>
+        <div class="screener-chart-periods" id="screener-chart-periods">
+          <button class="screener-period-btn active" data-range="1mo" data-interval="1d">1M</button>
+          <button class="screener-period-btn" data-range="6mo" data-interval="1d">6M</button>
+          <button class="screener-period-btn" data-range="1y" data-interval="1d">1Y</button>
+          <button class="screener-period-btn" data-range="3y" data-interval="1wk">3Y</button>
+          <button class="screener-period-btn" data-range="5y" data-interval="1wk">5Y</button>
+          <button class="screener-period-btn" data-range="10y" data-interval="1mo">10Y</button>
+          <button class="screener-period-btn" data-range="max" data-interval="1mo">MAX</button>
+        </div>
         <div class="screener-sparkline-container" id="screener-sparkline-container"></div>
         <div class="screener-metrics-grid" id="screener-metrics-grid"></div>
       </div>
@@ -69,31 +77,221 @@
     }
   });
 
-  function drawSparkline(containerEl, dataPoints, color) {
-    if (!Array.isArray(dataPoints) || dataPoints.length < 2) {
+  function drawSparkline(containerEl, chartData, color) {
+    const points = chartData?.data || (Array.isArray(chartData) ? chartData : []);
+    const timestamps = chartData?.timestamps || [];
+    if (points.length < 2) {
       containerEl.innerHTML = '<span style="color:#9aa0a6;font-size:12px;">No chart data</span>';
       return;
     }
-    const min = Math.min(...dataPoints);
-    const max = Math.max(...dataPoints);
+    const min = Math.min(...points);
+    const max = Math.max(...points);
     const padding = (max - min) * 0.1 || (min * 0.01) || 1;
     const yMin = min - padding;
     const yMax = max + padding;
-    const w = 300, h = 80;
     
+    // Canvas dimensions (no axes / grid — clean line only)
+    const w = 340, h = 120;
+    const marginL = 4, marginR = 4, marginT = 8, marginB = 8;
+    const graphW = w - marginL - marginR;
+    const graphH = h - marginT - marginB;
+
     let pathD = '';
-    dataPoints.forEach((val, i) => {
-      const x = (i / (dataPoints.length - 1)) * w;
-      const y = h - ((val - yMin) / (yMax - yMin)) * h;
+    points.forEach((val, i) => {
+      const x = marginL + (i / (points.length - 1)) * graphW;
+      const y = marginT + graphH - ((val - yMin) / (yMax - yMin)) * graphH;
       pathD += (i === 0 ? `M ${x} ${y}` : ` L ${x} ${y}`);
     });
-    
+
+    // Pre-compute SVG coords for hover lookup
+    const coords = points.map((val, i) => ({
+      x: marginL + (i / (points.length - 1)) * graphW,
+      y: marginT + graphH - ((val - yMin) / (yMax - yMin)) * graphH,
+      val
+    }));
+
+    const formatFullDate = (ts) => {
+      if (!ts) return '';
+      const d = new Date(ts * 1000);
+      return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    };
+    const formatPrice = (v) => Number(v).toLocaleString(currentModalLocale, { maximumFractionDigits: 2 });
+
     containerEl.innerHTML = `
-      <svg width="100%" height="100%" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+      <svg width="100%" height="100%" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" class="screener-chart-svg" style="display:block; cursor:crosshair;">
+        <!-- Data line -->
         <path d="${pathD}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Hover crosshair + dot (hidden by default) -->
+        <line class="screener-hover-line" y1="${marginT}" y2="${marginT + graphH}" stroke="${color}" stroke-width="1" stroke-dasharray="3,2" opacity="0.7" style="display:none;"/>
+        <circle class="screener-hover-dot" r="4" fill="${color}" stroke="#fff" stroke-width="2" style="display:none;"/>
+        <!-- Transparent capture layer -->
+        <rect class="screener-hover-capture" x="${marginL}" y="${marginT}" width="${graphW}" height="${graphH}" fill="transparent"/>
       </svg>
+      <div class="screener-chart-tip" style="display:none; position:absolute; pointer-events:none; background:#202124; color:#fff; font-size:11px; font-weight:600; padding:4px 8px; border-radius:6px; white-space:nowrap; z-index:5; transform:translate(-50%, -110%); box-shadow:0 2px 8px rgba(0,0,0,0.3);"></div>
     `;
+
+    // Wire up hover-to-see-price
+    try {
+      const svg = containerEl.querySelector('.screener-chart-svg');
+      const hoverLine = containerEl.querySelector('.screener-hover-line');
+      const hoverDot = containerEl.querySelector('.screener-hover-dot');
+      const capture = containerEl.querySelector('.screener-hover-capture');
+      const tip = containerEl.querySelector('.screener-chart-tip');
+      if (!svg || !capture || !tip) return;
+
+      capture.addEventListener('mousemove', (e) => {
+        const rect = svg.getBoundingClientRect();
+        if (!rect.width) return;
+        // Convert client X to viewBox X (handles preserveAspectRatio="none" stretch)
+        const vbX = marginL + ((e.clientX - rect.left) / rect.width) * w - marginL;
+        let frac = (vbX - marginL) / graphW;
+        frac = Math.max(0, Math.min(1, frac));
+        const idx = Math.round(frac * (coords.length - 1));
+        const pt = coords[idx];
+        if (!pt) return;
+
+        hoverLine.setAttribute('x1', pt.x);
+        hoverLine.setAttribute('x2', pt.x);
+        hoverLine.style.display = 'block';
+        hoverDot.setAttribute('cx', pt.x);
+        hoverDot.setAttribute('cy', pt.y);
+        hoverDot.style.display = 'block';
+
+        const dateStr = formatFullDate(timestamps[idx]);
+        tip.textContent = '';
+        const priceLine = document.createElement('div');
+        priceLine.textContent = `${currentModalCurrPrefix}${formatPrice(pt.val)}`;
+        tip.appendChild(priceLine);
+        if (dateStr) {
+          const dateLine = document.createElement('div');
+          dateLine.textContent = dateStr;
+          dateLine.style.cssText = 'font-weight:400; opacity:0.8; font-size:10px;';
+          tip.appendChild(dateLine);
+        }
+        tip.style.display = 'block';
+        // Position tip using % of container (matches viewBox proportionally)
+        const leftPct = (pt.x / w) * 100;
+        const topPct = (pt.y / h) * 100;
+        tip.style.left = leftPct + '%';
+        tip.style.top = topPct + '%';
+        // Keep tooltip inside container horizontally
+        if (leftPct < 18) tip.style.transform = 'translate(0%, -110%)';
+        else if (leftPct > 82) tip.style.transform = 'translate(-100%, -110%)';
+        else tip.style.transform = 'translate(-50%, -110%)';
+      });
+      capture.addEventListener('mouseleave', () => {
+        hoverLine.style.display = 'none';
+        hoverDot.style.display = 'none';
+        tip.style.display = 'none';
+      });
+    } catch (err) {}
   }
+
+  // --- Multi-Period Chart Support ---
+  let currentModalSymbol = '';
+  let currentModalIsIndex = false;
+  let currentModalChangeDir = 'up';
+  let currentModalFallback = [];
+  let currentModalCurrPrefix = '₹';
+  let currentModalLocale = 'en-IN';
+
+  function prefixForCurrencyCode(code) {
+    switch ((code || '').toUpperCase()) {
+      case 'INR': return { prefix: '₹', locale: 'en-IN' };
+      case 'USD': return { prefix: '$', locale: 'en-US' };
+      case 'GBP': return { prefix: '£', locale: 'en-GB' };
+      case 'EUR': return { prefix: '€', locale: 'de-DE' };
+      case 'JPY': return { prefix: '¥', locale: 'ja-JP' };
+      case 'SGD': return { prefix: 'S$', locale: 'en-SG' };
+      default: return code ? { prefix: code + ' ', locale: 'en-US' } : null;
+    }
+  }
+
+  function extractPrefix(formatted) {
+    if (!formatted) return null;
+    const m = String(formatted).match(/^[^\d\-+.,\s]+/);
+    return m ? m[0] : null;
+  }
+
+  async function fetchChartData(symbol, range, interval) {
+    try {
+      return await new Promise((resolve) => {
+        try {
+          chrome.runtime.sendMessage({ type: 'FETCH_CHART', symbol, range, interval }, (res) => {
+            if (chrome.runtime.lastError) {
+              resolve({ data: [], timestamps: [] });
+              return;
+            }
+            resolve({ data: (res && res.data) || [], timestamps: (res && res.timestamps) || [] });
+          });
+        } catch (e) {
+          resolve({ data: [], timestamps: [] });
+        }
+      });
+    } catch (e) {
+      return { data: [], timestamps: [] };
+    }
+  }
+
+  function getChartSymbol(ticker, isIndex, data) {
+    if (isIndex) return data?.symbol || ticker;
+    if (data?.source === 'yahoo') return ticker;
+    // Indian stock from screener.in
+    return ticker + '.NS';
+  }
+
+  function updatePeriodReturn(dataArray, range) {
+    try {
+      const labelEl = modalBackdrop.querySelector('#screener-return-label');
+      const valEl = modalBackdrop.querySelector('#screener-period-return');
+      if (!labelEl || !valEl) return;
+      const labelMap = { '1mo': '1M Return', '6mo': '6M Return', '1y': '1Y Return', '3y': '3Y Return', '5y': '5Y Return', '10y': '10Y Return', 'max': 'Overall Return' };
+      labelEl.textContent = labelMap[range] || `${range} Return`;
+      if (!dataArray || dataArray.length < 2) {
+        valEl.textContent = '-';
+        return;
+      }
+      const first = dataArray[0];
+      const last = dataArray[dataArray.length - 1];
+      if (!isFinite(first) || !isFinite(last) || first === 0) {
+        valEl.textContent = '-';
+        return;
+      }
+      const pct = ((last - first) / Math.abs(first)) * 100;
+      const sign = pct >= 0 ? '+' : '';
+      valEl.textContent = `${sign}${pct.toFixed(2)}%`;
+      valEl.classList.remove('screener-metric-up', 'screener-metric-down');
+      valEl.classList.add(pct >= 0 ? 'screener-metric-up' : 'screener-metric-down');
+    } catch (e) {}
+  }
+
+  async function loadChartForPeriod(range, interval) {
+    const sparklineEl = modalBackdrop.querySelector('#screener-sparkline-container');
+    if (!sparklineEl) return;
+    sparklineEl.innerHTML = '<span style="color:#9aa0a6;font-size:12px;">Loading chart...</span>';
+    const chartData = await fetchChartData(currentModalSymbol, range, interval);
+    const color = currentModalIsIndex ? '#1a73e8' : (currentModalChangeDir === 'up' ? '#137333' : '#d93025');
+    // Fallback to cached sparkline when live fetch returns nothing (offline / rate-limit / weekend gap)
+    if ((!chartData.data || chartData.data.length < 2) && currentModalFallback && currentModalFallback.length >= 2) {
+      drawSparkline(sparklineEl, { data: currentModalFallback, timestamps: [] }, color);
+      updatePeriodReturn(currentModalFallback, range);
+      return;
+    }
+    drawSparkline(sparklineEl, chartData, color);
+    updatePeriodReturn(chartData.data, range);
+  }
+
+  // Wire period buttons
+  const periodBtns = modalBackdrop.querySelectorAll('.screener-period-btn');
+  periodBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      periodBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      loadChartForPeriod(btn.dataset.range, btn.dataset.interval);
+    });
+  });
 
   function formatMarketCap(value) {
     if (value === null || value === undefined || value === '-') return value;
@@ -232,7 +430,7 @@
     button.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const direction = button.dataset.direction === 'left' ? 1 : -1;
+      const direction = button.dataset.direction === 'left' ? -1 : 1;
       // Ease each press into the same continuous motion as the live marquee.
       arrowScrollRemaining += direction * 180;
     });
@@ -292,6 +490,47 @@
     isPaused = true; // Pause tape while modal is open
     modalBackdrop.classList.add('visible');
 
+    // Set multi-period chart state
+    currentModalIsIndex = isIndex;
+    currentModalChangeDir = data.changeDir || 'up';
+    currentModalSymbol = getChartSymbol(ticker, isIndex, data);
+    currentModalFallback = Array.isArray(data.sparkline) ? data.sparkline : [];
+    // Derive correct currency prefix for the hover tooltip (fixes ₹ shown for STI etc.)
+    try {
+      const formattedRef = isIndex ? (data.price || '') : ((data.ratios || {})['Current Price'] || '');
+      const codeRef = isIndex ? (data.curr || data.currency || '') : (data.currency || '');
+      const fromFormatted = extractPrefix(formattedRef);
+      const localeForPrefix = (p) => {
+        if (p === '₹') return 'en-IN';
+        if (p === 'S$') return 'en-SG';
+        if (p === '$') return 'en-US';
+        if (p === '£') return 'en-GB';
+        if (p === '€') return 'de-DE';
+        if (p === '¥') return 'ja-JP';
+        return null;
+      };
+      if (fromFormatted) {
+        currentModalCurrPrefix = fromFormatted;
+        currentModalLocale = localeForPrefix(fromFormatted) || currentModalLocale;
+      }
+      if (codeRef) {
+        const mapped = prefixForCurrencyCode(codeRef);
+        if (mapped) {
+          if (!fromFormatted) currentModalCurrPrefix = mapped.prefix;
+          currentModalLocale = mapped.locale;
+        }
+      }
+      if (!fromFormatted && !codeRef) {
+        currentModalCurrPrefix = isIndex ? '' : '₹';
+        currentModalLocale = 'en-US';
+      }
+    } catch (e) {}
+
+    // Reset period buttons to 1M active
+    periodBtns.forEach(b => b.classList.remove('active'));
+    const firstBtn = modalBackdrop.querySelector('.screener-period-btn[data-range="1mo"]');
+    if (firstBtn) firstBtn.classList.add('active');
+
     const titleEl = modalBackdrop.querySelector('#screener-modal-title');
     const subtitleEl = modalBackdrop.querySelector('#screener-modal-subtitle');
     const descEl = modalBackdrop.querySelector('#screener-modal-desc');
@@ -316,13 +555,13 @@
           <span class="screener-metric-val">${price}</span>
         </div>
         <div class="screener-metric-box">
-          <span class="screener-metric-label">1D Return</span>
-          <span class="screener-metric-val ${colorCls}">${pct}</span>
+          <span class="screener-metric-label" id="screener-return-label">1M Return</span>
+          <span class="screener-metric-val ${colorCls}" id="screener-period-return">${pct}</span>
         </div>
       `;
 
       btnEl.href = `https://finance.yahoo.com/quote/${encodeURIComponent(data.symbol || '')}/`;
-      drawSparkline(sparklineEl, data.sparkline || [], '#1a73e8');
+      loadChartForPeriod('1mo', '1d');
     } else {
       titleEl.innerText = data.companyName || ticker;
       
@@ -338,7 +577,7 @@
 
       const metrics = [
         { label: 'Last Price', val: ratios['Current Price'] || '-' },
-        { label: '1D Return', val: `<span class="${colorCls}">${pct}</span>` },
+        { label: '1M Return', val: `<span class="${colorCls}" id="screener-period-return">${pct}</span>`, labelId: 'screener-return-label' },
         { label: 'Market Cap', val: formatMarketCap(ratios['Market Cap'] || '-') },
         { label: 'P/E Ratio', val: ratios['Stock P/E'] || '-' },
         { label: 'Div Yield', val: ratios['Dividend Yield'] || '-' },
@@ -348,7 +587,7 @@
       metrics.forEach(m => {
         metricsHtml += `
           <div class="screener-metric-box">
-            <span class="screener-metric-label">${m.label}</span>
+            <span class="screener-metric-label"${m.labelId ? ` id="${m.labelId}"` : ''}>${m.label}</span>
             <span class="screener-metric-val">${m.val}</span>
           </div>
         `;
@@ -361,9 +600,8 @@
         btnEl.href = `https://www.screener.in/company/${encodeURIComponent(ticker)}/`;
       }
 
-      // Draw sparkline
-      const sparkColor = data.changeDir === 'up' ? '#137333' : '#d93025';
-      drawSparkline(sparklineEl, data.sparkline || [], sparkColor);
+      // Load chart for default period
+      loadChartForPeriod('1mo', '1d');
     }
 
     metricsGrid.innerHTML = metricsHtml;
@@ -394,6 +632,8 @@
   requestAnimationFrame(autoScrollStep);
 
   // --- Render Tape Content ---
+  let lastRenderedKey = '';
+  
   function renderTape() {
     chrome.storage.local.get(['screenerWatchlist', 'portfolios', 'cachedData', 'marketIndices'], (res) => {
       let list = res.screenerWatchlist || [];
@@ -411,15 +651,72 @@
       if (!isVisible || isDomainDisabled || (list.length === 0 && Object.keys(indices).length === 0)) {
         tapeDiv.style.display = 'none';
         document.documentElement.classList.remove('screener-tape-active');
+        lastRenderedKey = '';
         return;
       }
       
       tapeDiv.style.display = 'flex';
       document.documentElement.classList.add('screener-tape-active');
       
+      const currentKey = Object.keys(indices).join(',') + '|' + list.filter(t => cached[t] && cached[t].success).join(',');
+
+      // Soft update: If the list of symbols hasn't changed, just update the DOM nodes
+      if (lastRenderedKey === currentKey && marquee.children.length > 0) {
+        const itemNodes = marquee.querySelectorAll('.screener-clickable-ticker');
+        itemNodes.forEach(node => {
+          const ticker = node.getAttribute('data-ticker');
+          const isIndex = node.getAttribute('data-is-index') === 'true';
+          const priceSpan = node.querySelector('.screener-ticker-price');
+          const changeSpan = node.querySelector('.screener-ticker-change');
+          
+          if (isIndex) {
+            const idx = indices[ticker];
+            if (idx && priceSpan) {
+              const isUp = idx.changeDir === 'up' || parseFloat(idx.changePct) >= 0;
+              const color = isUp ? '#81c995' : '#f28b82';
+              const sign = isUp ? '\u25B2' : '\u25BC';
+              
+              if (idx.flash && (Date.now() - (idx.flashTime || 0) < 1000)) {
+                 priceSpan.className = 'screener-ticker-price ' + (idx.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down');
+              } else {
+                 priceSpan.className = 'screener-ticker-price';
+              }
+              priceSpan.textContent = idx.price;
+              
+              if (changeSpan) {
+                changeSpan.style.color = color;
+                changeSpan.textContent = `${sign} ${Math.abs(parseFloat(idx.changePct)).toFixed(2)}%`;
+              }
+            }
+          } else {
+            const data = cached[ticker];
+            if (data && data.success && priceSpan) {
+              const price = data.ratios['Current Price'] || '-';
+              
+              if (data.flash && (Date.now() - (data.flashTime || 0) < 1000)) {
+                priceSpan.className = 'screener-ticker-price ' + (data.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down');
+              } else {
+                priceSpan.className = 'screener-ticker-price';
+              }
+              priceSpan.textContent = price;
+              
+              if (changeSpan && data.changePct) {
+                const color = data.changeDir === 'up' ? '#81c995' : '#f28b82';
+                const sign = data.changeDir === 'up' ? '\u25B2' : '\u25BC';
+                changeSpan.style.color = color;
+                changeSpan.textContent = `${sign} ${data.changePct}`;
+              }
+            }
+          }
+        });
+        return; // Skip full DOM rebuild
+      }
+      
+      // Full rebuild
+      lastRenderedKey = currentKey;
       let html = '';
       
-      // Add Market Indices (Nifty 50, Sensex, Bank Nifty, S&P 500)
+      // Add Market Indices
       for (const [idxName, idx] of Object.entries(indices)) {
         if (!idx || !idx.price) continue;
         const isUp = idx.changeDir === 'up' || parseFloat(idx.changePct) >= 0;
@@ -427,17 +724,15 @@
         const sign = isUp ? '\u25B2' : '\u25BC';
         
         let flashClass = '';
-        if (idx.flash && (Date.now() - (idx.flashTime || 0) < 5000)) {
+        if (idx.flash && (Date.now() - (idx.flashTime || 0) < 1000)) {
            flashClass = idx.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down';
         }
-
-        const formattedPrice = idx.price;
 
         html += `
           <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${idxName}" data-is-index="true" style="cursor: pointer;">
             <span class="screener-ticker-name">${idxName}</span>
-            <span class="screener-ticker-price ${flashClass}">${formattedPrice}</span>
-            <span style="color: ${color}; font-size: 12px; margin-left: 6px;">${sign} ${Math.abs(parseFloat(idx.changePct)).toFixed(2)}%</span>
+            <span class="screener-ticker-price ${flashClass}">${idx.price}</span>
+            <span class="screener-ticker-change" style="color: ${color}; font-size: 12px; margin-left: 6px;">${sign} ${Math.abs(parseFloat(idx.changePct)).toFixed(2)}%</span>
           </div>
         `;
       }
@@ -452,11 +747,11 @@
           if (data.changePct) {
             const color = data.changeDir === 'up' ? '#81c995' : '#f28b82';
             const sign = data.changeDir === 'up' ? '\u25B2' : '\u25BC';
-            pctHtml = `<span style="color: ${color}; font-size: 12px; margin-left: 6px;">${sign} ${data.changePct}</span>`;
+            pctHtml = `<span class="screener-ticker-change" style="color: ${color}; font-size: 12px; margin-left: 6px;">${sign} ${data.changePct}</span>`;
           }
 
           let flashClass = '';
-          if (data.flash && (Date.now() - (data.flashTime || 0) < 5000)) {
+          if (data.flash && (Date.now() - (data.flashTime || 0) < 1000)) {
             flashClass = data.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down';
           }
 
@@ -476,13 +771,12 @@
         let itemsCount = Object.keys(indices).length + list.length;
         let gapHtml = '';
         if (itemsCount < 8) {
-          // Add a large visual gap so the same stock doesn't appear right next to itself
           gapHtml = `<div class="screener-ticker-item" style="border: none; padding: 0; margin-right: 80vw;"></div>`;
         }
         const block = html + gapHtml;
-        // We must duplicate the block at least once for the infinite scroll math to work seamlessly
         marquee.innerHTML = block + block;
       }
+      // If we just rebuilt, don't clobber currentX immediately if tape is running
       marquee.style.transform = `translate3d(${currentX}px, 0, 0)`;
     });
   }

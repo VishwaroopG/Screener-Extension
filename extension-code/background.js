@@ -2,6 +2,34 @@ let fastPollInterval = null;
 let isFetchingFastPrices = false;
 let lastFastFallbackAt = 0;
 const PRICE_DECIMALS = 2;
+const MACRO_CACHE_VERSION = 3; // bump to force refetch when indicator set changes
+// Full World Bank indicator catalog for the editable Economy Indicator tiles
+const MACRO_INDICATOR_DEFS = [
+  { key: 'inflation', label: 'Inflation (CPI)', code: 'FP.CPI.TOTL.ZG', suffix: '%' },
+  { key: 'unemployment', label: 'Unemployment', code: 'SL.UEM.TOTL.ZS', suffix: '%' },
+  { key: 'gdp', label: 'GDP Growth', code: 'NY.GDP.MKTP.KD.ZG', suffix: '%' },
+  { key: 'gdppc', label: 'GDP per Capita', code: 'NY.GDP.PCAP.CD', prefix: '$' },
+  { key: 'gdptotal', label: 'GDP Total', code: 'NY.GDP.MKTP.CD', prefix: '$', compact: true },
+  { key: 'trade', label: 'Trade (% of GDP)', code: 'NE.TRD.GNFS.ZS', suffix: '%' },
+  { key: 'reserves', label: 'Forex Reserves', code: 'FI.RES.TOTL.CD', prefix: '$', compact: true },
+  { key: 'population', label: 'Population', code: 'SP.POP.TOTL', compact: true }
+];
+function formatMacroValue(raw, def) {
+  const num = Number(raw);
+  if (!isFinite(num)) return null;
+  if (def.compact) {
+    const abs = Math.abs(num);
+    let out;
+    if (abs >= 1e12) out = `${(num / 1e12).toFixed(2)}T`;
+    else if (abs >= 1e9) out = `${(num / 1e9).toFixed(2)}B`;
+    else if (abs >= 1e6) out = `${(num / 1e6).toFixed(2)}M`;
+    else out = num.toLocaleString('en-US', { maximumFractionDigits: 0 });
+    return `${def.prefix || ''}${out}`;
+  }
+  const decimals = def.prefix ? 0 : 1;
+  const grouped = num.toLocaleString('en-US', { maximumFractionDigits: decimals, minimumFractionDigits: decimals });
+  return `${def.prefix || ''}${grouped}${def.suffix || ''}`;
+}
 // Open side panel on action icon click
 chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch((error) => console.error(error));
 
@@ -33,6 +61,9 @@ function getCurrencyDetails(currency) {
     case 'EUR': return { code: 'EUR', prefix: '€', locale: 'de-DE' };
     case 'JPY': return { code: 'JPY', prefix: '¥', locale: 'ja-JP' };
     case 'SGD': return { code: 'SGD', prefix: 'S$', locale: 'en-SG' };
+    case 'HKD': return { code: 'HKD', prefix: 'HK$', locale: 'en-HK' };
+    case 'AUD': return { code: 'AUD', prefix: 'A$', locale: 'en-AU' };
+    case 'CAD': return { code: 'CAD', prefix: 'C$', locale: 'en-CA' };
     default: return { code: currency, prefix: `${currency} `, locale: 'en-US' };
   }
 }
@@ -88,8 +119,9 @@ async function fetchYahooData(symbol) {
     
     const companyName = meta.shortName || meta.longName || symbol;
     const isIndex = meta.instrumentType === 'INDEX' || symbol.startsWith('^');
+    const isVIX = symbol.toUpperCase().includes('VIX');
     const currency = getCurrencyDetails(meta.currency);
-    const curr = currency.prefix;
+    const curr = isVIX ? '' : currency.prefix;
     const price = meta.regularMarketPrice;
     const prevClose = meta.chartPreviousClose || meta.previousClose;
     let diff = 0;
@@ -140,16 +172,25 @@ async function fetchYahooData(symbol) {
           const finvizHtml = await finvizRes.text();
           
           const extractFinviz = (field) => {
-            const regex = new RegExp(`>${field}<\\/div><\\/td><td[^>]*>.*?<div[^>]*>.*?<b>(.*?)<\\/b>`, 's');
-            const match = finvizHtml.match(regex);
+            // Tolerate inner tags around the label (e.g. "Dividend TTM" is wrapped in an <a> link)
+            const labelTail = `(?:<[^>]+>)*\\s*<\\/div>\\s*<\\/td>\\s*<td[^>]*>\\s*<div[^>]*>`;
+            let regex = new RegExp(`>${field}${labelTail}.*?<b>(.*?)<\\/b>`, 's');
+            let match = finvizHtml.match(regex);
             if (match && match[1]) {
               return match[1].replace(/<[^>]+>/g, '').trim();
             }
             // fallback if it's not inside <b> tags
-            const regex2 = new RegExp(`>${field}<\\/div><\\/td><td[^>]*>.*?<div[^>]*>.*?<span[^>]*>(.*?)<\\/span>`, 's');
-            const match2 = finvizHtml.match(regex2);
-            if (match2 && match2[1]) {
-              return match2[1].replace(/<[^>]+>/g, '').trim();
+            regex = new RegExp(`>${field}${labelTail}.*?<span[^>]*>(.*?)<\\/span>`, 's');
+            match = finvizHtml.match(regex);
+            if (match && match[1]) {
+              return match[1].replace(/<[^>]+>/g, '').trim();
+            }
+            // last resort: grab the whole value cell via the snapshot structure
+            regex = new RegExp(`snapshot-td-label[^>]*>(?:<[^>]+>)*\\s*${field}(?:<[^>]+>)*\\s*<\\/div>\\s*<\\/td>\\s*<td[^>]*>\\s*<div[^>]*>(.*?)<\\/div>`, 's');
+            match = finvizHtml.match(regex);
+            if (match && match[1]) {
+              const cleaned = match[1].replace(/<[^>]+>/g, '').trim();
+              if (cleaned) return cleaned;
             }
             return null;
           };
@@ -157,20 +198,40 @@ async function fetchYahooData(symbol) {
           const pe = extractFinviz('P\\/E');
           if (pe && pe !== '-') ratios['Stock P/E'] = pe;
 
-          const roi = extractFinviz('ROI');
-          if (roi && roi !== '-') ratios['ROCE'] = roi; // mapping ROI to ROCE for UI consistency
-          
+          // Finviz redesign: capital efficiency is labeled "ROIC" (old "ROI")
+          const roic = extractFinviz('ROIC') || extractFinviz('ROI');
+          if (roic && roic !== '-') ratios['ROCE'] = roic; // mapping ROIC to ROCE for UI consistency
+
           const mcap = extractFinviz('Market Cap');
           if (mcap && mcap !== '-') ratios['Market Cap'] = formatMarketCap(mcap);
-          
-          const div = extractFinviz('Dividend %');
-          if (div && div !== '-') ratios['Dividend Yield'] = div;
+
+          // Finviz redesign: dividend is labeled "Dividend TTM" (e.g. "3.64 (0.74%)")
+          const div = extractFinviz('Dividend TTM') || extractFinviz('Dividend %') || extractFinviz('Dividend');
+          if (div && div !== '-') {
+            const pctMatch = div.match(/([\d.,]+%)/);
+            ratios['Dividend Yield'] = pctMatch ? pctMatch[1] : div;
+          }
 
           const pb = extractFinviz('P\\/B');
           if (pb && pb !== '-') ratios['Price to book value'] = pb;
           
           const roe = extractFinviz('ROE');
           if (roe && roe !== '-') ratios['ROE'] = roe;
+        }
+      } catch(e) {}
+      // Yahoo meta fallbacks (used when Finviz is blocked or a field is missing)
+      try {
+        if (!ratios['Dividend Yield']) {
+          const dy = meta.trailingAnnualDividendYield ?? meta.dividendYield;
+          if (typeof dy === 'number' && isFinite(dy) && dy > 0) {
+            ratios['Dividend Yield'] = (dy * 100).toFixed(2) + '%';
+          }
+        }
+        if (!ratios['Stock P/E']) {
+          const tpe = meta.trailingPE ?? meta.forwardPE;
+          if (typeof tpe === 'number' && isFinite(tpe) && tpe > 0) {
+            ratios['Stock P/E'] = tpe.toFixed(2);
+          }
         }
       } catch(e) {}
     }
@@ -467,6 +528,141 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 
+  if (message.type === 'FETCH_CHART') {
+    const { symbol, range, interval } = message;
+    (async () => {
+      try {
+        const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?range=${range}&interval=${interval}`;
+        const res = await fetch(url);
+        if (!res.ok) { sendResponse({ data: [], timestamps: [] }); return; }
+        const json = await res.json();
+        const result = json?.chart?.result?.[0];
+        const rawQuotes = result?.indicators?.quote?.[0]?.close || [];
+        const rawTimestamps = result?.timestamp || [];
+        const data = [];
+        const timestamps = [];
+        for (let i = 0; i < rawQuotes.length; i++) {
+          if (rawQuotes[i] !== null && rawQuotes[i] !== undefined) {
+            data.push(parseFloat(rawQuotes[i].toFixed(2)));
+            timestamps.push(rawTimestamps[i] || 0);
+          }
+        }
+        sendResponse({ data, timestamps });
+      } catch (e) {
+        sendResponse({ data: [], timestamps: [] });
+      }
+    })();
+    return true;
+  }
+
+  if (message.type === 'FETCH_OVERVIEW') {
+    const items = Array.isArray(message.items) ? message.items : [];
+    (async () => {
+      try {
+        const symbols = [...new Set(items.map(i => i && i.symbol).filter(Boolean))];
+        if (symbols.length === 0) { sendResponse({ quotes: [] }); return; }
+        const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/spark?symbols=${encodeURIComponent(symbols.join(','))}&interval=1d&range=5d`);
+        const sparkData = res.ok ? normalizeSparkData(await res.json()) : {};
+        // Retry symbols missing from the batch response via the single-quote chart endpoint
+        const missing = symbols.filter(s => {
+          const q = sparkData[s];
+          const closes = q && Array.isArray(q.close) ? q.close : [];
+          return !closes.some(v => v !== null && v !== undefined) && q?.regularMarketPrice === undefined;
+        });
+        if (missing.length > 0) {
+          const retries = await Promise.all(missing.map(async (s) => [s, await fetchChartQuote(s)]));
+          for (const [s, q] of retries) {
+            if (q) sparkData[s] = q;
+          }
+        }
+        const quotes = items.map(item => {
+          const d = sparkData[item.symbol] || {};
+          const closes = Array.isArray(d.close) ? d.close : [];
+          let price = null;
+          for (let i = closes.length - 1; i >= 0; i--) {
+            if (closes[i] !== null && closes[i] !== undefined) { price = closes[i]; break; }
+          }
+          if (price === null && d.regularMarketPrice !== undefined) price = d.regularMarketPrice;
+          if (price === null && d.previousClose !== undefined) price = d.previousClose;
+          // Batch spark responses use chartPreviousClose instead of previousClose
+          const prev = d.previousClose ?? d.chartPreviousClose;
+          let pctNum = 0;
+          if (price !== null && prev) pctNum = ((price - prev) / prev) * 100;
+          const currency = getCurrencyDetails(d.meta?.currency || item.curr || 'USD');
+          const formatted = price !== null
+            ? (item.plain
+              ? Number(price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+              : `${currency.prefix}${Number(price).toLocaleString(currency.locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`)
+            : '-';
+          return {
+            key: item.key,
+            symbol: item.symbol,
+            price: formatted,
+            rawPrice: price,
+            changePct: `${Math.abs(pctNum).toFixed(2)}%`,
+            pctNum: parseFloat(pctNum.toFixed(2)),
+            changeDir: pctNum >= 0 ? 'up' : 'down'
+          };
+        });
+        sendResponse({ quotes });
+      } catch (e) {
+        sendResponse({ quotes: [] });
+      }
+    })();
+    return true;
+  }
+
+  if (message.type === 'FETCH_MACRO_STATS') {
+    const country = message.country;
+    (async () => {
+      try {
+        if (!country) { sendResponse({ stats: {} }); return; }
+        const now = Date.now();
+        const cached = await chrome.storage.local.get(['macroStats']);
+        const store = cached.macroStats || {};
+        // Serve from 24h cache to avoid hammering the World Bank API.
+        // Version guard drops stale entries saved before the indicator set changed.
+        if (store._v === MACRO_CACHE_VERSION && store[country] && (now - (store[country].fetchedAt || 0)) < 24 * 3600 * 1000) {
+          sendResponse({ stats: store[country].data || {} });
+          return;
+        }
+        const data = {};
+        await Promise.all(MACRO_INDICATOR_DEFS.map(async (d) => {
+          try {
+            const url = `https://api.worldbank.org/v2/country/${encodeURIComponent(country)}/indicator/${d.code}?format=json&date=2020:2030&per_page=50`;
+            const r = await fetch(url);
+            if (!r.ok) return;
+            const j = await r.json();
+            const rows = Array.isArray(j) ? j[1] : null;
+            if (!Array.isArray(rows)) return;
+            const hit = rows.find(x => x && x.value !== null && x.value !== undefined);
+            if (hit) {
+              const formatted = formatMacroValue(hit.value, d);
+              if (formatted === null) return;
+              data[d.key] = {
+                label: d.label,
+                value: formatted,
+                year: hit.date,
+                link: `https://data.worldbank.org/indicator/${d.code}?locations=${encodeURIComponent(country)}`
+              };
+            }
+          } catch (e) {}
+        }));
+        // Only cache complete sets — a partial fetch (one indicator failed)
+        // must not hide the missing tile for 24h; it retries next open.
+        if (Object.keys(data).length >= 4) {
+          store._v = MACRO_CACHE_VERSION;
+          store[country] = { fetchedAt: now, data };
+          await chrome.storage.local.set({ macroStats: store });
+        }
+        sendResponse({ stats: data });
+      } catch (e) {
+        sendResponse({ stats: {} });
+      }
+    })();
+    return true;
+  }
+
   if (message.type === 'FORCE_SYNC') {
     if (message.ticker) {
       fetchScreenerData(message.ticker).then(data => {
@@ -712,7 +908,9 @@ async function fetchFastPrices() {
             
             const oldIdx = marketIndices[idx.key];
             const currency = getCurrencyDetails(d.meta?.currency || oldIdx?.curr || idx.curr || 'INR');
-            const formatted = `${currency.prefix}${price.toLocaleString(currency.locale, { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
+            const isVIX = (idx.symbol || '').toUpperCase().includes('VIX');
+            const currPrefix = isVIX ? '' : currency.prefix;
+            const formatted = `${currPrefix}${price.toLocaleString(currency.locale, { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
 
             let flash = oldIdx?.flash;
             let flashTime = oldIdx?.flashTime;
@@ -763,8 +961,10 @@ async function fetchFastPrices() {
             if (!cachedData[ticker]) cachedData[ticker] = { ratios: {} };
             if (!cachedData[ticker].ratios) cachedData[ticker].ratios = {};
             const currency = getCurrencyDetails(d.meta?.currency || cachedData[ticker]?.currency || 'INR');
+            const isVIX = ticker.toUpperCase().includes('VIX');
+            const currPrefix = isVIX ? '' : currency.prefix;
             const currentStr = cachedData[ticker].ratios['Current Price'];
-            const formattedPrice = `${currency.prefix}${price.toLocaleString(currency.locale, { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
+            const formattedPrice = `${currPrefix}${price.toLocaleString(currency.locale, { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
 
             if (currentStr !== formattedPrice) {
               const oldNum = parseFloat((currentStr || '0').replace(/[^\d\.]/g, ''));

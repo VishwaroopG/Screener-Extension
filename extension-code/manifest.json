@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Screener Pro – Live Watchlist & Ticker",
-  "version": "2.1.5",
+  "version": "2.1.9",
   "icons": {
     "16": "icon_16.png",
     "48": "icon_48.png",
@@ -19,6 +19,8 @@
   "host_permissions": [
     "*://*.screener.in/*",
     "*://*.yahoo.com/*",
+    "*://*.finviz.com/*",
+    "*://api.worldbank.org/*",
     "*://news.google.com/*",
     "https://www.nseindia.com/*"
   ],
