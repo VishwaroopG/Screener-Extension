@@ -155,8 +155,8 @@ h1 .accent { color: var(--mint); }
 .article-title { margin: 14px 0 8px; font-size: clamp(32px, 4vw, 48px); line-height: 1.08; letter-spacing: -2px; max-width: none; }
 .article-body { margin-top: 30px; color: #c6d6e2; font-size: 17px; line-height: 1.8; }
 .article-body h2 { margin: 38px 0 12px; color: var(--ink); font-size: 24px; letter-spacing: -.8px; }
-.article-body p { margin: 0 0 18px; }
-.article-body ul { margin: 0 0 18px; padding-left: 22px; }
+.article-body p { margin: 0 0 18px; text-align: justify; }
+.article-body ul { margin: 0 0 18px; padding-left: 22px; text-align: justify; }
 .article-body li { margin-bottom: 10px; }
 .article-body strong { color: var(--ink); }
 .article-body a { color: var(--mint); font-weight: 700; }
