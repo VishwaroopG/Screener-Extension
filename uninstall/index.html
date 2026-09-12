@@ -32,8 +32,7 @@
       if (!/^https:\/\/(docs\.google\.com\/forms\/|forms\.gle\/)/.test(formUrl || '')) return;
       link.href = formUrl;
       link.removeAttribute('aria-disabled');
-      message.textContent = 'Thanks for helping us improve. You will be redirected to the form in a moment.';
-      window.setTimeout(() => { window.location.assign(formUrl); }, 1800);
+      message.textContent = 'Thanks for helping us improve. Click the button above to open the form.';
     })();
   </script>
 </body>
