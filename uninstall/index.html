@@ -29,21 +29,46 @@
       <p class="feedback-note"><a href="../">Return to Screener Pro</a></p>
     </section>
   </main>
+  <div id="confirm-dialog" class="confirm-overlay" style="display:none" role="alertdialog" aria-label="Feedback sent">
+    <div class="confirm-box">
+      <div class="confirm-check">✓</div>
+      <h3>Feedback sent!</h3>
+      <p>Thanks — we read every message.</p>
+    </div>
+  </div>
   <script>
     (() => {
       const form = document.getElementById('feedback-form');
       const status = document.getElementById('feedback-status');
       const submit = document.getElementById('feedback-submit');
+      const dialog = document.getElementById('confirm-dialog');
+      let hideTimer = null;
+      function showDialog() {
+        dialog.style.display = 'flex';
+        if (hideTimer) clearTimeout(hideTimer);
+        hideTimer = setTimeout(hideDialog, 5000);
+      }
+      function hideDialog() {
+        dialog.style.display = 'none';
+        if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+      }
+      dialog.addEventListener('click', hideDialog);
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         status.textContent = 'Sending…';
         submit.disabled = true;
         submit.style.opacity = '.6';
+        const fields = {
+          name: form.elements.name.value.trim(),
+          email: form.elements.email.value.trim(),
+          message: form.elements.message.value.trim()
+        };
         try {
-          const data = Object.fromEntries(new FormData(form).entries());
-          data._subject = 'Screener Pro feedback';
-          data._template = 'table';
-          data._captcha = 'false';
+          const data = Object.assign({}, fields, {
+            _subject: 'Screener Pro feedback',
+            _template: 'table',
+            _captcha: 'false'
+          });
           const r = await fetch('https://formsubmit.co/ajax/vishwaroopg8@gmail.com', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -51,9 +76,16 @@
           });
           if (!r.ok) throw new Error('send failed');
           form.reset();
-          status.textContent = 'Thanks — your feedback is on its way. We read every message.';
+          status.textContent = '';
+          submit.disabled = false;
+          submit.style.opacity = '';
+          showDialog();
         } catch (err) {
-          status.textContent = 'Could not send right now. Please try again in a moment.';
+          const mailto = 'mailto:vishwaroopg8@gmail.com?subject='
+            + encodeURIComponent('Screener Pro feedback')
+            + '&body=' + encodeURIComponent((fields.name ? 'Name: ' + fields.name + '\n' : '')
+              + (fields.email ? 'Email: ' + fields.email + '\n' : '') + '\n' + fields.message);
+          status.innerHTML = 'Automatic send failed. <a href="' + mailto + '">Click here to send via your email app instead</a>.';
           submit.disabled = false;
           submit.style.opacity = '';
         }

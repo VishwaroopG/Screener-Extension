@@ -206,6 +206,43 @@ h1 .accent { color: var(--mint); }
 .feedback-form input::placeholder, .feedback-form textarea::placeholder { color: #7e96a9; }
 .feedback-form input:focus, .feedback-form textarea:focus { outline: none; border-color: var(--mint); }
 .feedback-form .button { width: 100%; }
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(4, 12, 20, .72);
+  animation: confirm-fade .25s ease;
+}
+.confirm-box {
+  width: min(380px, 100%);
+  padding: 38px 30px;
+  border: 1px solid rgba(129, 244, 198, .4);
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(20, 49, 68, .97), rgba(9, 27, 40, .97));
+  box-shadow: 0 34px 90px rgba(0, 0, 0, .5);
+  text-align: center;
+  animation: confirm-pop .3s ease;
+}
+.confirm-check {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: rgba(129, 244, 198, .14);
+  color: var(--mint);
+  font-size: 28px;
+  font-weight: 900;
+}
+.confirm-box h3 { margin: 0 0 8px; font-size: 22px; letter-spacing: -.4px; }
+.confirm-box p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+@keyframes confirm-fade { from { opacity: 0; } }
+@keyframes confirm-pop { from { opacity: 0; transform: scale(.92) translateY(10px); } }
 .button[aria-disabled="true"] { cursor: not-allowed; opacity: .55; pointer-events: none; }
 
 @media (max-width: 800px) {
