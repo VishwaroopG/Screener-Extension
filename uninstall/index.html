@@ -22,6 +22,8 @@
         <input type="text" name="name" placeholder="Your name (optional)" autocomplete="name">
         <input type="email" name="email" placeholder="Your email (optional, if you'd like a reply)" autocomplete="email">
         <textarea name="message" rows="5" required placeholder="Write your feedback here…"></textarea>
+        <label class="attach-label" for="feedback-files">Attach screenshots or photos (optional, max 10MB total)</label>
+        <input type="file" id="feedback-files" name="attachment" accept="image/*" multiple>
         <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
         <button class="button button-primary" type="submit" id="feedback-submit">Send feedback</button>
         <p id="feedback-status" class="feedback-note" role="status"></p>
@@ -63,16 +65,27 @@
           email: form.elements.email.value.trim(),
           message: form.elements.message.value.trim()
         };
+        const files = Array.from(form.elements.attachment.files || []);
+        const MAX_TOTAL = 10 * 1024 * 1024;
+        if (files.reduce((s, f) => s + f.size, 0) > MAX_TOTAL) {
+          status.textContent = 'Attachments exceed 10MB in total. Please remove some files.';
+          submit.disabled = false;
+          submit.style.opacity = '';
+          return;
+        }
         try {
-          const data = Object.assign({}, fields, {
-            _subject: 'Screener Pro feedback',
-            _template: 'table',
-            _captcha: 'false'
-          });
+          const data = new FormData();
+          data.append('name', fields.name);
+          data.append('email', fields.email);
+          data.append('message', fields.message);
+          files.forEach((f) => data.append('attachment', f, f.name));
+          data.append('_subject', 'Screener Pro feedback');
+          data.append('_template', 'table');
+          data.append('_captcha', 'false');
           const r = await fetch('https://formsubmit.co/ajax/vishwaroopg8@gmail.com', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify(data)
+            headers: { 'Accept': 'application/json' },
+            body: data
           });
           if (!r.ok) throw new Error('send failed');
           form.reset();
@@ -85,7 +98,7 @@
             + encodeURIComponent('Screener Pro feedback')
             + '&body=' + encodeURIComponent((fields.name ? 'Name: ' + fields.name + '\n' : '')
               + (fields.email ? 'Email: ' + fields.email + '\n' : '') + '\n' + fields.message);
-          status.innerHTML = 'Automatic send failed. <a href="' + mailto + '">Click here to send via your email app instead</a>.';
+          status.innerHTML = 'Automatic send failed (attachments need automatic send). <a href="' + mailto + '">Click here to send the text via your email app instead</a>.';
           submit.disabled = false;
           submit.style.opacity = '';
         }
