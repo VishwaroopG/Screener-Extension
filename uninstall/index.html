@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Help Improve Screener Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../site.css">
+  <script src="feedback-config.js"></script>
+</head>
+<body>
+  <div class="aurora"></div>
+  <main class="container feedback-page">
+    <section class="feedback-card">
+      <a class="brand" href="../"><img class="brand-mark" src="../store-assets/icon_128.png" alt="Screener Pro icon">Screener <em>Pro</em></a>
+      <span class="eyebrow" style="margin-top:32px">One quick question</span>
+      <h1>Help us make the next version better.</h1>
+      <p>Sorry to see you go. Your feedback helps us improve the watchlist, ticker tape, and the features that matter most to investors like you.</p>
+      <a id="feedback-link" class="button button-primary" href="#" aria-disabled="true">Open feedback form</a>
+      <p id="redirect-message" class="feedback-note">The feedback form will open here once it is configured.</p>
+      <p class="feedback-note"><a href="../">Return to Screener Pro</a></p>
+    </section>
+  </main>
+  <script>
+    (() => {
+      const formUrl = window.SCREENER_PRO_UNINSTALL_FORM_URL;
+      const link = document.getElementById('feedback-link');
+      const message = document.getElementById('redirect-message');
+      if (!/^https:\/\/docs\.google\.com\/forms\//.test(formUrl || '')) return;
+      link.href = formUrl;
+      link.removeAttribute('aria-disabled');
+      message.textContent = 'Thanks for helping us improve. You will be redirected to the form in a moment.';
+      window.setTimeout(() => { window.location.assign(formUrl); }, 1800);
+    })();
+  </script>
+</body>
+</html>
