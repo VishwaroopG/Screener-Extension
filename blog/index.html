@@ -22,7 +22,7 @@
     <main>
       <section class="container section">
         <div class="section-head"><span class="eyebrow">Screener Pro Blog</span><h2 class="section-title">Market notes, explained.</h2><p class="section-copy">Short reads on markets, indicators and investing — in plain language.</p></div>
-        <div class="blog-grid" id="all-posts"><p class="section-copy">Loading posts…</p></div>
+        <div class="post-list" id="all-posts"><p class="section-copy">Loading posts…</p></div>
       </section>
     </main>
 
@@ -39,13 +39,13 @@
       posts.sort(function (a, b) { return b.date.localeCompare(a.date); });
       wrap.innerHTML = posts.map(function (p) {
         var tags = (p.tags || []).map(function (t) { return '<span class="tag">' + t + '</span>'; }).join('');
-        return '<a class="post-card" href="post.html?slug=' + encodeURIComponent(p.slug) + '">'
-          + '<div class="post-meta"><span>' + fmtDate(p.date) + '</span></div>'
+        return '<a class="post-row" href="post.html?slug=' + encodeURIComponent(p.slug) + '">'
+          + '<div class="post-meta"><span>Posted on ' + fmtDate(p.date) + '</span></div>'
           + '<h3>' + p.title + '</h3>'
           + '<p>' + p.excerpt + '</p>'
           + (tags ? '<div class="tag-row">' + tags + '</div>' : '')
           + '</a>';
-      }).join('');
+      }).join('<hr class="post-divider">');
     }).catch(function () {
       document.getElementById('all-posts').innerHTML = '<p class="section-copy">Could not load posts. Please refresh.</p>';
     });

@@ -50,7 +50,13 @@
           article.innerHTML = '<span class="eyebrow">' + fmtDate(meta.date) + '</span>'
             + '<h1 class="article-title">' + meta.title + '</h1>'
             + (tags ? '<div class="tag-row">' + tags + '</div>' : '')
-            + '<div class="article-body">' + body + '</div>';
+            + '<div class="post-date">Posted on ' + fmtDate(meta.date) + '</div>'
+            + '<div class="article-body">' + body + '</div>'
+            + '<hr class="post-divider">'
+            + '<div class="extension-cta">'
+            + '<div><strong>Track these markets live.</strong><p>Screener Pro puts your watchlist, charts and ticker tape in every browser tab.</p></div>'
+            + '<a class="button button-primary" href="https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en">Get the extension</a>'
+            + '</div>';
         });
       }).catch(function () {
         article.innerHTML = '<p class="section-copy">Post not found. <a href="./">Back to all posts</a>.</p>';

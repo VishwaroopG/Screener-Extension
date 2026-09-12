@@ -75,7 +75,7 @@
         wrap.innerHTML = latest.map(function (p) {
           var tags = (p.tags || []).map(function (t) { return '<span class="tag">' + t + '</span>'; }).join('');
           return '<a class="post-card" href="blog/post.html?slug=' + encodeURIComponent(p.slug) + '">'
-            + '<div class="post-meta"><span>' + fmtDate(p.date) + '</span></div>'
+            + '<div class="post-meta"><span>Posted on ' + fmtDate(p.date) + '</span></div>'
             + '<h3>' + p.title + '</h3>'
             + '<p>' + p.excerpt + '</p>'
             + (tags ? '<div class="tag-row">' + tags + '</div>' : '')
