@@ -51,6 +51,7 @@ body {
   padding: 12px 16px;
   background-color: #ffffff;
   border-bottom: 1px solid #dadce0;
+  flex-shrink: 0;
 }
 
 .screener-header h2 {
@@ -134,9 +135,13 @@ body {
   border-bottom: 1px solid #dadce0;
   background: #ffffff;
   padding: 0 6px;
+  flex-shrink: 0;
 }
 .screener-tab {
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   padding: 8px 6px;
   text-align: center;
   cursor: pointer;
@@ -164,8 +169,9 @@ body {
   flex-grow: 1;
   min-height: 0;
   overflow-y: auto;
-  background-color: #ffffff;
-  padding: 0 16px;
+  overflow-x: hidden;
+  background-color: var(--bg-color, #ffffff);
+  padding: 10px 16px 16px;
 }
 .screener-view.active {
   display: flex;
@@ -174,37 +180,124 @@ body {
 .screener-search-container {
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 0;
+  padding: 2px 0 10px;
   display: flex;
   gap: 12px;
   position: relative;
+  flex-shrink: 0;
 }
 
 .world-clocks {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 6px;
-  margin: 0 0 10px 0;
+  margin: 2px 0 10px 0;
+  flex-shrink: 0;
 }
 
 .world-clock {
-  background: var(--verdict-bg);
-  border: 1px solid var(--border-color);
+  background: var(--verdict-bg, #f1f3f4);
+  border: 1px solid var(--border-color, #dadce0);
   border-radius: 8px;
   padding: 8px 4px 7px;
   text-align: center;
   min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Editable market clock tiles (click to swap, x to remove) */
+.world-clock.is-editable {
+  cursor: pointer;
+}
+.world-clock.is-editable:hover,
+.world-clock.is-editable:focus-visible {
+  border-color: var(--accent-color, #1a73e8);
+  outline: none;
+}
+
+/* Dashed "+" tile for adding another market clock */
+.world-clock-add {
+  border-style: dashed;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.75;
+}
+.world-clock-add:hover,
+.world-clock-add:focus-visible {
+  opacity: 1;
+  border-color: var(--accent-color, #1a73e8);
+  outline: none;
+}
+.world-clock-add-plus {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--label-color, #5f6368);
+  line-height: 1;
+}
+.world-clock-add-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--label-color, #5f6368);
+  margin-top: 2px;
+}
+
+/* Remove button on user-added clocks */
+.world-clock-remove {
+  position: absolute;
+  top: 1px;
+  right: 3px;
+  background: none;
+  border: none;
+  color: var(--label-color, #5f6368);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 3px;
+  opacity: 0.55;
+}
+.world-clock-remove:hover {
+  opacity: 1;
+  color: #d93025;
+}
+
+/* Market picker rows in the Add-market modal */
+.market-pick-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-light, #e8eaed);
+}
+.market-pick-row:last-child {
+  border-bottom: none;
+}
+.market-pick-row:hover {
+  background: var(--row-hover, #e8eaed);
+}
+.market-pick-row.is-disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.market-pick-row.is-disabled:hover {
+  background: none;
 }
 
 .world-clock-city {
   font-size: 10px;
   font-weight: 600;
-  color: var(--label-color);
+  color: var(--label-color, #5f6368);
   letter-spacing: 0.01em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-bottom: 3px;
+  min-height: 12px;
 }
 
 .world-clock,
@@ -215,7 +308,7 @@ body {
 .world-clock-time {
   font-size: 13px;
   font-weight: 700;
-  color: var(--text-color);
+  color: var(--text-color, #202124);
   font-variant-numeric: tabular-nums;
   line-height: 1.2;
   margin-bottom: 3px;
@@ -243,15 +336,26 @@ body.dark-mode .world-clock.is-closed .world-clock-status {
   color: #f28b82;
 }
 
-@media (max-width: 360px) {
+@media (max-width: 480px) {
   .world-clocks {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
+/* Dashboard section headings: keep readable in both themes */
+.dashboard-section-title {
+  color: var(--text-color, #202124);
+}
+.dashboard-section-title > span:first-child {
+  color: var(--text-color, #202124);
+  font-size: 14px;
+  font-weight: 600;
+}
+
 /* Google-like Input Pill */
 .screener-input {
   flex-grow: 1;
+  min-width: 0;
   padding: 12px 20px;
   border: 1px solid #dadce0;
   border-radius: 24px;
@@ -267,6 +371,10 @@ body.dark-mode .world-clock.is-closed .world-clock-status {
 }
 .screener-input::placeholder {
   color: #5f6368;
+}
+
+.screener-search-container .screener-btn {
+  flex-shrink: 0;
 }
 
 /* Google-like Button Pill */
@@ -396,7 +504,7 @@ body.dark-mode .world-clock.is-closed .world-clock-status {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 0 20px 24px 20px;
+  padding: 0 0 24px 0;
 }
 
 .screener-watchlist-card {

@@ -118,7 +118,7 @@
     <div class="screener-watchlist-card" style="width: 270px; padding: 22px 18px; text-align: center; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
       <div style="font-size: 26px; margin-bottom: 6px;">📈</div>
       <h3 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600;">Screener Pro</h3>
-      <div style="font-size: 11px; color: var(--label-color); margin-bottom: 12px;"><span id="extension-version">v2.1.5</span> &bull; <span data-i18n="aboutTagline">Multi-Market Live Feed</span></div>
+      <div style="font-size: 11px; color: var(--label-color); margin-bottom: 12px;"><span id="extension-version">v2.2</span> &bull; <span data-i18n="aboutTagline">Multi-Market Live Feed</span></div>
       <p data-i18n="aboutDesc" style="font-size: 12px; color: var(--text-color); line-height: 1.5; margin: 0 0 18px 0;">
         Real-time watchlist, ticker tape, and ratios powered by Screener.in & Yahoo Finance.
       </p>
@@ -157,6 +157,18 @@
           <button id="btn-pinned-cancel" class="screener-btn screener-btn-secondary" data-i18n="cancelBtn" style="padding:6px 14px; font-size:12px;">Cancel</button>
           <button id="btn-pinned-save" class="screener-btn" data-i18n="saveCardBtn" style="padding:6px 16px; font-size:12px;">Save Card</button>
         </div>
+      </div>
+    </div>
+  </div>
+  <!-- Add Market Clock Modal -->
+  <div id="add-market-modal" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
+    <div class="screener-watchlist-card" style="width: 285px; padding: 20px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+      <h3 id="add-market-title" style="margin:0 0 4px 0; font-size:15px; font-weight:600; color:var(--text-color);">Add market</h3>
+      <div id="add-market-subtitle" style="font-size:11px; color:var(--label-color); margin-bottom:12px;"></div>
+      <div id="market-pick-list" style="max-height:280px; overflow-y:auto; border:1px solid var(--border-color); border-radius:8px;"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
+        <button id="btn-add-market-reset" class="screener-btn screener-btn-secondary" style="padding:6px 14px; font-size:12px; background:none; box-shadow:none;">Reset</button>
+        <button id="btn-add-market-cancel" class="screener-btn screener-btn-secondary" data-i18n="cancelBtn" style="padding:6px 14px; font-size:12px;">Cancel</button>
       </div>
     </div>
   </div>

@@ -21,6 +21,12 @@ $localesSrc = Join-Path $src '_locales'
 if (!(Test-Path $localesSrc)) { throw 'Missing required dir: _locales' }
 Copy-Item $localesSrc (Join-Path $stage '_locales') -Recurse -Force
 
+# Minify locale files in the package only (sources stay readable).
+# NOTE: uses node on purpose — PowerShell ConvertTo-Json escapes all
+# non-ASCII as \uXXXX, which makes CJK/Indic/Arabic files BIGGER.
+node (Join-Path $PSScriptRoot 'minify-locales.cjs') $stage
+if ($LASTEXITCODE -ne 0) { throw 'Locale minify failed' }
+
 # Validate Firefox manifest parses and has required keys
 $m = Get-Content (Join-Path $stage 'manifest.json') -Raw | ConvertFrom-Json
 foreach ($k in @('manifest_version','name','version','sidebar_action','background')) {

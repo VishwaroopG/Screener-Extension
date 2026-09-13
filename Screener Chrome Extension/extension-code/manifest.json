@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Screener Pro – Live Watchlist & Ticker",
-  "version": "2.1.9",
+  "version": "2.2",
   "default_locale": "en",
   "icons": {
     "16": "icon_16.png",

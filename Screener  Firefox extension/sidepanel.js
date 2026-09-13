@@ -48,13 +48,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let activePortfolio = 'Sample';
 
-  const WORLD_CLOCKS = [
-    { city: 'New York', tz: 'America/New_York', sessions: [[9 * 60 + 30, 16 * 60]] },
-    { city: 'London', tz: 'Europe/London', sessions: [[8 * 60, 16 * 60 + 30]] },
-    { city: 'Mumbai', tz: 'Asia/Kolkata', sessions: [[9 * 60 + 15, 15 * 60 + 30]] },
-    { city: 'Hong Kong', tz: 'Asia/Hong_Kong', sessions: [[9 * 60 + 30, 12 * 60], [13 * 60, 16 * 60]] },
-    { city: 'Singapore', tz: 'Asia/Singapore', sessions: [[9 * 60, 12 * 60], [13 * 60, 17 * 60]] }
+  const DEFAULT_WEEKEND = ['Sat', 'Sun'];
+  const MARKET_CATALOG = [
+    { key: 'newyork', city: 'New York', country: 'USA', tz: 'America/New_York', sessions: [[9 * 60 + 30, 16 * 60]] },
+    { key: 'london', city: 'London', country: 'UK', tz: 'Europe/London', sessions: [[8 * 60, 16 * 60 + 30]] },
+    { key: 'mumbai', city: 'Mumbai', country: 'India', tz: 'Asia/Kolkata', sessions: [[9 * 60 + 15, 15 * 60 + 30]] },
+    { key: 'hongkong', city: 'Hong Kong', country: 'Hong Kong', tz: 'Asia/Hong_Kong', sessions: [[9 * 60 + 30, 12 * 60], [13 * 60, 16 * 60]] },
+    { key: 'singapore', city: 'Singapore', country: 'Singapore', tz: 'Asia/Singapore', sessions: [[9 * 60, 12 * 60], [13 * 60, 17 * 60]] },
+    { key: 'tokyo', city: 'Tokyo', country: 'Japan', tz: 'Asia/Tokyo', sessions: [[9 * 60, 11 * 60 + 30], [12 * 60 + 30, 15 * 60]] },
+    { key: 'shanghai', city: 'Shanghai', country: 'China', tz: 'Asia/Shanghai', sessions: [[9 * 60 + 30, 11 * 60 + 30], [13 * 60, 15 * 60]] },
+    { key: 'seoul', city: 'Seoul', country: 'South Korea', tz: 'Asia/Seoul', sessions: [[9 * 60, 15 * 60 + 30]] },
+    { key: 'sydney', city: 'Sydney', country: 'Australia', tz: 'Australia/Sydney', sessions: [[10 * 60, 16 * 60]] },
+    { key: 'frankfurt', city: 'Frankfurt', country: 'Germany', tz: 'Europe/Berlin', sessions: [[9 * 60, 17 * 60 + 30]] },
+    { key: 'paris', city: 'Paris', country: 'France', tz: 'Europe/Paris', sessions: [[9 * 60, 17 * 60 + 30]] },
+    { key: 'zurich', city: 'Zurich', country: 'Switzerland', tz: 'Europe/Zurich', sessions: [[9 * 60, 17 * 60 + 30]] },
+    { key: 'toronto', city: 'Toronto', country: 'Canada', tz: 'America/Toronto', sessions: [[9 * 60 + 30, 16 * 60]] },
+    { key: 'saopaulo', city: 'S\u00E3o Paulo', country: 'Brazil', tz: 'America/Sao_Paulo', sessions: [[10 * 60, 17 * 60]] },
+    { key: 'dubai', city: 'Dubai', country: 'UAE', tz: 'Asia/Dubai', sessions: [[10 * 60, 15 * 60]], weekend: ['Fri', 'Sat'] }
   ];
+  const MARKET_BY_KEY = {};
+  MARKET_CATALOG.forEach((m) => { MARKET_BY_KEY[m.key] = m; });
+  const DEFAULT_CLOCK_KEYS = ['newyork', 'london', 'mumbai', 'hongkong', 'singapore'];
+  const MAX_CLOCKS = 6;
+  const MIN_CLOCKS = 1;
+  let clockKeys = DEFAULT_CLOCK_KEYS.slice();
+  let replaceClockKey = null;
 
   function getClockParts(tz) {
     const parts = new Intl.DateTimeFormat('en-GB', {
@@ -76,41 +94,209 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  function isMarketOpen(tz, sessions) {
+  function isMarketOpen(tz, sessions, weekend) {
     const { hour, minute, weekday } = getClockParts(tz);
-    if (weekday === 'Sat' || weekday === 'Sun') return false;
+    if ((weekend || DEFAULT_WEEKEND).indexOf(weekday) !== -1) return false;
     const mins = hour * 60 + minute;
     return sessions.some(([start, end]) => mins >= start && mins < end);
   }
 
-  function initWorldClocks() {
+  function sanitizeClockKeys(keys) {
+    const seen = {};
+    const out = [];
+    (Array.isArray(keys) ? keys : []).forEach((k) => {
+      if (typeof k === 'string' && MARKET_BY_KEY[k] && !seen[k]) {
+        seen[k] = true;
+        out.push(k);
+      }
+    });
+    return out.slice(0, MAX_CLOCKS);
+  }
+
+  function activeClocks() {
+    return clockKeys
+      .filter((k) => MARKET_BY_KEY[k])
+      .map((k) => Object.assign({}, MARKET_BY_KEY[k]));
+  }
+
+  function saveClockKeys() {
+    clockKeys = sanitizeClockKeys(clockKeys);
+    if (clockKeys.length < MIN_CLOCKS) clockKeys = DEFAULT_CLOCK_KEYS.slice();
+    chrome.storage.local.set({ clockKeys }, () => renderClocks());
+    if (chrome.storage.local.remove) {
+      try { chrome.storage.local.remove(['customClocks']); } catch (e) {}
+    }
+  }
+
+  function renderClocks() {
     const root = document.getElementById('world-clocks');
     if (!root) return;
+    const clocks = activeClocks();
+    const canAdd = clocks.length < MAX_CLOCKS;
 
-    root.innerHTML = WORLD_CLOCKS.map((c, i) => `
-      <div class="world-clock is-closed" data-clock-index="${i}" title="${c.city}">
+    root.innerHTML = clocks.map((c) => `
+      <div class="world-clock is-closed is-editable" data-clock-key="${c.key}" tabindex="0" title="${t('changeMarketTitle') || 'Change market'}">
+        ${clocks.length > MIN_CLOCKS ? `<button class="world-clock-remove" data-remove-clock="${c.key}" title="${t('deleteTitle') || 'Remove'}">&times;</button>` : ''}
         <div class="world-clock-city">${c.city}</div>
         <div class="world-clock-time">--:--</div>
         <div class="world-clock-status">${t('clockClosed')}</div>
-      </div>`).join('');
+      </div>`).join('') + (canAdd ? `
+      <div class="world-clock world-clock-add" id="world-clock-add" title="${t('addMarketTitle') || 'Add market'}" role="button" tabindex="0">
+        <div class="world-clock-add-plus">+</div>
+        <div class="world-clock-add-label">${t('addLabel') || 'Add'}</div>
+      </div>` : '');
 
-    function tick() {
-      WORLD_CLOCKS.forEach((c, i) => {
-        const card = root.querySelector(`[data-clock-index="${i}"]`);
-        if (!card) return;
-        const open = isMarketOpen(c.tz, c.sessions);
-        const { time } = getClockParts(c.tz);
-        const timeEl = card.querySelector('.world-clock-time');
-        const statusEl = card.querySelector('.world-clock-status');
-        if (timeEl) timeEl.textContent = time;
-        if (statusEl) statusEl.textContent = open ? t('clockOpen') : t('clockClosed');
-        card.classList.toggle('is-open', open);
-        card.classList.toggle('is-closed', !open);
+    root.querySelectorAll('[data-remove-clock]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        removeClock(btn.getAttribute('data-remove-clock'));
+      });
+    });
+    root.querySelectorAll('[data-clock-key]').forEach((tile) => {
+      const openReplace = () => openAddMarketModal(tile.getAttribute('data-clock-key'));
+      tile.addEventListener('click', (e) => {
+        if (e.target.closest('[data-remove-clock]')) return;
+        openReplace();
+      });
+      tile.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openReplace(); }
+      });
+    });
+    const addTile = document.getElementById('world-clock-add');
+    if (addTile) {
+      addTile.addEventListener('click', openAddMarketModal);
+      addTile.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openAddMarketModal(); }
       });
     }
+    tickClocks();
+  }
 
-    tick();
-    setInterval(tick, 1000);
+  function tickClocks() {
+    const root = document.getElementById('world-clocks');
+    if (!root) return;
+    root.querySelectorAll('[data-clock-key]').forEach((card) => {
+      const def = MARKET_BY_KEY[card.getAttribute('data-clock-key')];
+      if (!def) return;
+      const open = isMarketOpen(def.tz, def.sessions, def.weekend);
+      const { time } = getClockParts(def.tz);
+      const timeEl = card.querySelector('.world-clock-time');
+      const statusEl = card.querySelector('.world-clock-status');
+      if (timeEl) timeEl.textContent = time;
+      if (statusEl) statusEl.textContent = open ? t('clockOpen') : t('clockClosed');
+      card.classList.toggle('is-open', open);
+      card.classList.toggle('is-closed', !open);
+    });
+  }
+
+  function initWorldClocks() {
+    chrome.storage.local.get(['clockKeys', 'customClocks'], (res) => {
+      if (res && Array.isArray(res.clockKeys)) {
+        clockKeys = sanitizeClockKeys(res.clockKeys);
+      } else if (res && Array.isArray(res.customClocks)) {
+        // Migrate from the earlier add-one-market version
+        clockKeys = sanitizeClockKeys(DEFAULT_CLOCK_KEYS.concat(res.customClocks));
+      }
+      if (clockKeys.length < MIN_CLOCKS) clockKeys = DEFAULT_CLOCK_KEYS.slice();
+      renderClocks();
+    });
+    setInterval(tickClocks, 1000);
+  }
+
+  function addClock(key) {
+    if (!MARKET_BY_KEY[key] || clockKeys.indexOf(key) !== -1) return;
+    if (clockKeys.length >= MAX_CLOCKS) return;
+    clockKeys.push(key);
+    saveClockKeys();
+    closeAddMarketModal();
+    renderClocks();
+  }
+
+  function removeClock(key) {
+    if (clockKeys.length <= MIN_CLOCKS) return;
+    clockKeys = clockKeys.filter((k) => k !== key);
+    saveClockKeys();
+  }
+
+  function replaceClock(oldKey, newKey) {
+    if (!MARKET_BY_KEY[newKey]) return;
+    const idx = clockKeys.indexOf(oldKey);
+    if (idx === -1) return;
+    if (newKey !== oldKey && clockKeys.indexOf(newKey) !== -1) return;
+    clockKeys[idx] = newKey;
+    replaceClockKey = null;
+    saveClockKeys();
+    closeAddMarketModal();
+    renderClocks();
+  }
+
+  function resetClocks() {
+    clockKeys = DEFAULT_CLOCK_KEYS.slice();
+    replaceClockKey = null;
+    saveClockKeys();
+    closeAddMarketModal();
+    renderClocks();
+  }
+
+  function openAddMarketModal(replaceKey) {
+    const modal = document.getElementById('add-market-modal');
+    const list = document.getElementById('market-pick-list');
+    const title = document.getElementById('add-market-title');
+    const subtitle = document.getElementById('add-market-subtitle');
+    if (!modal || !list) return;
+    replaceClockKey = (replaceKey && MARKET_BY_KEY[replaceKey]) ? replaceKey : null;
+    const replacing = replaceClockKey ? MARKET_BY_KEY[replaceClockKey] : null;
+    const clocks = activeClocks();
+    if (title) {
+      title.textContent = replacing
+        ? (t('replaceMarketTitle') || 'Replace {city}').replace('{city}', replacing.city)
+        : (t('addMarketTitle') || 'Add market');
+    }
+    if (subtitle) {
+      subtitle.textContent = replacing
+        ? ((t('replaceMarketSubtitle') || 'Pick a market to show instead of {city}').replace('{city}', replacing.city))
+        : (t('addMarketSubtitle') || 'Showing {0} of {1} markets').replace('{0}', String(clocks.length)).replace('{1}', String(MAX_CLOCKS));
+    }
+    const visibleKeys = clocks.map((c) => c.key);
+    const isFull = clocks.length >= MAX_CLOCKS;
+    list.innerHTML = MARKET_CATALOG.map((m) => {
+      const isVisible = visibleKeys.indexOf(m.key) !== -1;
+      const isTarget = replacing && m.key === replaceClockKey;
+      const disabled = replacing ? (isVisible && !isTarget) : (isVisible || isFull);
+      const { time } = getClockParts(m.tz);
+      const open = isMarketOpen(m.tz, m.sessions, m.weekend);
+      const dotColor = open ? '#188038' : '#d93025';
+      const state = isTarget
+        ? `<span style="font-size:10px; font-weight:600; color:var(--link-color, #1a73e8);">${t('currentLabel') || 'Current'}</span>`
+        : (isVisible
+            ? `<span style="font-size:14px; color:#188038;">&#10003;</span>`
+            : `<span style="font-size:16px; font-weight:700; color:var(--label-color);">+</span>`);
+      return `
+        <div class="market-pick-row${disabled ? ' is-disabled' : ''}"${disabled ? '' : ` data-market-key="${m.key}"`}>
+          <div style="min-width:0; flex:1;">
+            <div style="font-weight:600; font-size:13px; color:var(--text-color); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${m.city}</div>
+            <div style="font-size:10px; color:var(--label-color);">${m.country} &bull; ${time}</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+            <span style="width:7px; height:7px; border-radius:50%; background:${dotColor}; display:inline-block;"></span>
+            ${state}
+          </div>
+        </div>`;
+    }).join('');
+    list.querySelectorAll('[data-market-key]').forEach((row) => {
+      row.addEventListener('click', () => {
+        const key = row.getAttribute('data-market-key');
+        if (replaceClockKey) replaceClock(replaceClockKey, key);
+        else addClock(key);
+      });
+    });
+    modal.style.display = 'flex';
+  }
+
+  function closeAddMarketModal() {
+    replaceClockKey = null;
+    const modal = document.getElementById('add-market-modal');
+    if (modal) modal.style.display = 'none';
   }
 
   initWorldClocks();
@@ -538,6 +724,18 @@ document.addEventListener('DOMContentLoaded', () => {
   if (aboutModal) {
     aboutModal.addEventListener('click', (e) => {
       if (e.target === aboutModal) aboutModal.style.display = 'none';
+    });
+  }
+
+  // Add Market modal (world clocks): cancel + backdrop close
+  const addMarketModalEl = document.getElementById('add-market-modal');
+  const btnAddMarketCancel = document.getElementById('btn-add-market-cancel');
+  const btnAddMarketReset = document.getElementById('btn-add-market-reset');
+  if (btnAddMarketCancel) btnAddMarketCancel.addEventListener('click', closeAddMarketModal);
+  if (btnAddMarketReset) btnAddMarketReset.addEventListener('click', resetClocks);
+  if (addMarketModalEl) {
+    addMarketModalEl.addEventListener('click', (e) => {
+      if (e.target === addMarketModalEl) closeAddMarketModal();
     });
   }
 
