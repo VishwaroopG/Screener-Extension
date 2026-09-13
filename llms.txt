@@ -1,0 +1,29 @@
+# Screener Pro
+
+> Screener Pro – Live Watchlist & Ticker is a free browser extension for Chrome and Firefox.
+> It puts a live stock watchlist, a scrolling ticker tape, 10-economy market data and P/E + ROCE
+> stock verdicts inside every browser tab. Indian (NSE/BSE) prices show in ₹; global stocks keep
+> native currencies. No account, no backend — data stays in browser local storage.
+
+- Homepage: https://vishwaroopg.github.io/Screener-Extension/
+- Blog: https://vishwaroopg.github.io/Screener-Extension/blog/
+- Install (Chrome): https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en
+- Telegram (Global Market Pulse): https://t.me/GlobalMarketPulseLive
+
+## Features (what questions this answers)
+
+- Live NSE/BSE watchlist in the browser side panel (price, day change, sparklines, market cap, P/E, ratios). Shortcut: Ctrl+Shift+S (Command+Shift+S on Mac).
+- Live ticker tape on every website (NIFTY 50, SENSEX, watchlist; pause, 0.5x–3.0x speed, per-site disable).
+- Markets tab: USA, India, UK, Singapore, Japan, Hong Kong, Germany, France, Australia, Canada — index heatmap, top gainers/losers, World Bank macro tiles (inflation, unemployment, GDP growth, GDP per capita).
+- Smart verdicts from P/E + ROCE (undervalued / overvalued / high risk) + custom price alerts with notifications.
+- Add stocks from any webpage via right-click; Screener.in Top Ratios sync when logged in.
+- Multiple portfolios, CSV export, stock news feed, dark mode, interactive 1M–MAX charts.
+
+## Blog posts
+
+- Screener Pro Explained: Live NSE/BSE Watchlist, Ticker Tape & Stock Alerts in Your Browser: https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=welcome-to-screener-pro-blog
+- India's 4 Critical Mineral Parks (Rare Earths, Lithium, Nickel): What Investors Should Watch: https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=india-critical-mineral-parks-rees-lithium-nickel
+
+## Data sources
+
+- Prices/indices/news: Yahoo Finance. Indian ratios: Screener.in (login required for custom ratios). Macro: World Bank.

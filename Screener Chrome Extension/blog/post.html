@@ -3,12 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Screener Pro Blog post.">
+  <meta name="description" id="meta-description" content="Screener Pro Blog — free browser extension guides (live NSE/BSE watchlist, ticker tape, price alerts) and plain-language market notes.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" id="canonical-link" href="https://vishwaroopg.github.io/Screener-Extension/blog/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Screener Pro Blog">
+  <meta property="og:title" id="og-title" content="Screener Pro Blog">
+  <meta property="og:description" id="og-description" content="Market notes and Screener Pro extension guides in plain language.">
+  <meta property="og:url" id="og-url" content="https://vishwaroopg.github.io/Screener-Extension/blog/">
   <title>Blog | Screener Pro</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../site.css?v=3">
+  <script type="application/ld+json" id="post-jsonld">{"@context":"https://schema.org","@type":"Blog","name":"Screener Pro Blog","url":"https://vishwaroopg.github.io/Screener-Extension/blog/"}</script>
 </head>
 <body>
   <div class="aurora"></div>
@@ -29,9 +37,14 @@
     <footer class="container footer"><div class="footer-row"><span>© 2026 Screener Pro. Built for focused market watching.</span><span><a href="../uninstall/">Feedback</a> · <a href="https://buymeacoffee.com/vgexperiments">Support the developer</a></span></div></footer>
   </div>
   <script>
+    var SITE = 'https://vishwaroopg.github.io/Screener-Extension';
     function fmtDate(iso) {
       try { return new Date(iso + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); }
       catch (e) { return iso; }
+    }
+    function setMeta(id, attr, value) {
+      var el = document.getElementById(id);
+      if (el) el.setAttribute(attr, value);
     }
     var slug = new URLSearchParams(window.location.search).get('slug');
     var article = document.getElementById('post-article');
@@ -41,7 +54,22 @@
       fetch('posts.json').then(function (r) { return r.json(); }).then(function (posts) {
         var meta = posts.filter(function (p) { return p.slug === slug; })[0];
         if (!meta) throw new Error('not found');
+        var url = SITE + '/blog/post.html?slug=' + encodeURIComponent(meta.slug);
         document.title = meta.title + ' | Screener Pro Blog';
+        setMeta('meta-description', 'content', meta.excerpt);
+        setMeta('canonical-link', 'href', url);
+        setMeta('og-title', 'content', meta.title);
+        setMeta('og-description', 'content', meta.excerpt);
+        setMeta('og-url', 'content', url);
+        document.getElementById('post-jsonld').textContent = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          headline: meta.title,
+          description: meta.excerpt,
+          datePublished: meta.date,
+          author: { '@type': 'Organization', name: 'Screener Pro' },
+          mainEntityOfPage: url
+        });
         return fetch('posts/' + encodeURIComponent(slug) + '.html').then(function (r) {
           if (!r.ok) throw new Error('not found');
           return r.text();
@@ -58,7 +86,7 @@
             + '<a class="button button-primary" href="https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en">Get the extension</a>'
             + '</div>'
             + '<div class="telegram-cta">'
-            + '<div><strong>\uD83D\uDCE2 Join our Telegram channel for daily market updates.</strong><p>Follow Global Market Pulse for breaking market news, stock ideas and investing insights.</p></div>'
+            + '<div><strong>📢 Join our Telegram channel for daily market updates.</strong><p>Follow Global Market Pulse for breaking market news, stock ideas and investing insights.</p></div>'
             + '<a class="button button-primary" href="https://t.me/GlobalMarketPulseLive" target="_blank" rel="noopener">Join on Telegram</a>'
             + '</div>';
         });

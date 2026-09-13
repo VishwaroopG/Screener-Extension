@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vishwaroopg.github.io/Screener-Extension/sitemap.xml
