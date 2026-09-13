@@ -72,7 +72,7 @@
         try { return new Date(iso + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); }
         catch (e) { return iso; }
       }
-      fetch('blog/posts.json').then(function (r) { return r.json(); }).then(function (posts) {
+      fetch('blog/posts.json?v=4').then(function (r) { return r.json(); }).then(function (posts) {
         posts.sort(function (a, b) { return b.date.localeCompare(a.date); });
         var latest = posts.slice(0, 3);
         if (!latest.length) { wrap.innerHTML = '<p class="section-copy">No posts yet — check back soon.</p>'; return; }

@@ -42,7 +42,7 @@
       try { return new Date(iso + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); }
       catch (e) { return iso; }
     }
-    fetch('posts.json').then(function (r) { return r.json(); }).then(function (posts) {
+    fetch('posts.json?v=4').then(function (r) { return r.json(); }).then(function (posts) {
       var wrap = document.getElementById('all-posts');
       if (!posts.length) { wrap.innerHTML = '<p class="section-copy">No posts yet — check back soon.</p>'; return; }
       posts.sort(function (a, b) { return b.date.localeCompare(a.date); });
