@@ -9,15 +9,28 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="site.css?v=3">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 </head>
 <body>
   <div class="aurora"></div>
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
   <div class="site-shell">
     <header class="container nav">
       <a class="brand" href="./"><img class="brand-mark" src="store-assets/icon_128.png" alt="Screener Pro icon">Screener <em>Pro</em></a>
       <nav class="nav-links" aria-label="Primary navigation"><a href="#features">Features</a><a href="#markets">Markets</a><a href="blog/">Blog</a><a href="#developer">Developer</a></nav>
       <a class="button button-secondary" href="https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en">Get the extension</a>
+      <button class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer"><span></span><span></span><span></span></button>
     </header>
+    <div class="drawer-scrim" id="drawer-scrim" hidden></div>
+    <nav class="mobile-drawer" id="mobile-drawer" aria-label="Mobile navigation">
+      <a href="#features">Features</a>
+      <a href="#markets">Markets</a>
+      <a href="blog/">Blog</a>
+      <a href="#developer">Developer</a>
+      <a class="button button-primary" href="https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en">Get the extension</a>
+    </nav>
 
     <main>
       <section class="container hero">
@@ -36,12 +49,12 @@
       <section class="container section" id="features">
         <div class="section-head"><span class="eyebrow">Built for your workflow</span><h2 class="section-title">Move from scattered tabs to one clean market command center.</h2><p class="section-copy">Designed for investors who want a faster way to monitor their watchlist without interrupting the work already on their screen.</p></div>
         <div class="feature-grid">
-          <article class="feature"><div class="feature-icon">↗</div><h3>Live ticker tape</h3><p>Keep prices, daily moves, and indices in view on any page. Pause, adjust speed from 0.5x to 3.0x, or glide through the tape with smooth controls.</p></article>
-          <article class="feature"><div class="feature-icon">◌</div><h3>Markets tab · 10 economies</h3><p>Switch between USA, India, UK, Singapore, Japan, Hong Kong, Germany, France, Australia and Canada for indices, top stocks and macro data.</p></article>
-          <article class="feature"><div class="feature-icon">▦</div><h3>Heatmap, gainers &amp; losers</h3><p>Index heatmap plus strictly separated top gainers and losers per market. Click anything for full analysis.</p></article>
-          <article class="feature"><div class="feature-icon">◈</div><h3>Economy indicators</h3><p>Live macro stats — inflation, unemployment, GDP growth and GDP per capita — with editable tiles and World Bank detail pages.</p></article>
-          <article class="feature"><div class="feature-icon">⌁</div><h3>Interactive charts</h3><p>1M to MAX charts with hover price-and-date crosshair and period returns that recalculate as you switch ranges.</p></article>
-          <article class="feature"><div class="feature-icon">✦</div><h3>Signal-rich updates</h3><p>Live green and red movement highlights, prices, market caps, P/E, AI verdicts and price alerts without leaving your tab.</p></article>
+          <article class="feature"><div class="feature-icon">↗</div><h3>Live ticker tape</h3><p>Keep prices, daily moves, and indices in view on any page. Pause, adjust speed from 0.5x to 3.0x, or glide through the tape with smooth controls.</p><p class="feature-more" hidden>The tape reads your saved watchlist from local storage, so indices and your own stocks scroll together. Click any ticker for a detail popup with its chart.</p><button class="feature-toggle" aria-expanded="false">Read more</button></article>
+          <article class="feature"><div class="feature-icon">◌</div><h3>Markets tab · 10 economies</h3><p>Switch between USA, India, UK, Singapore, Japan, Hong Kong, Germany, France, Australia and Canada for indices, top stocks and macro data.</p><p class="feature-more" hidden>Switch economies without losing your watchlist — your portfolios stay intact in the side panel while you browse global macro data.</p><button class="feature-toggle" aria-expanded="false">Read more</button></article>
+          <article class="feature"><div class="feature-icon">▦</div><h3>Heatmap, gainers &amp; losers</h3><p>Index heatmap plus strictly separated top gainers and losers per market. Click anything for full analysis.</p><p class="feature-more" hidden>Gainers and losers are strictly separated lists — never a mixed table — and clicking any row opens its full analysis.</p><button class="feature-toggle" aria-expanded="false">Read more</button></article>
+          <article class="feature"><div class="feature-icon">◈</div><h3>Economy indicators</h3><p>Live macro stats — inflation, unemployment, GDP growth and GDP per capita — with editable tiles and World Bank detail pages.</p><p class="feature-more" hidden>Tiles are editable per economy and every tile links to its World Bank source page, so you can verify each number at the source.</p><button class="feature-toggle" aria-expanded="false">Read more</button></article>
+          <article class="feature"><div class="feature-icon">⌁</div><h3>Interactive charts</h3><p>1M to MAX charts with hover price-and-date crosshair and period returns that recalculate as you switch ranges.</p><p class="feature-more" hidden>Ranges run from 1M to MAX with a hover crosshair showing the exact price and date, plus period returns that recalculate every time you switch ranges.</p><button class="feature-toggle" aria-expanded="false">Read more</button></article>
+          <article class="feature"><div class="feature-icon">✦</div><h3>Signal-rich updates</h3><p>Live green and red movement highlights, prices, market caps, P/E, AI verdicts and price alerts without leaving your tab.</p><p class="feature-more" hidden>Alerts run on background alarms with desktop notifications, and green/red movement highlights update live as prices stream in.</p><button class="feature-toggle" aria-expanded="false">Read more</button></article>
         </div>
       </section>
 
@@ -54,6 +67,7 @@
 
       <section class="container section" id="blog">
         <div class="section-head"><span class="eyebrow">From the blog</span><h2 class="section-title">Market notes, explained.</h2><p class="section-copy">Short reads on markets, indicators and investing — in plain language. <a class="inline-link" href="blog/">View all posts →</a></p></div>
+        <div class="filter-bar" id="post-filters" hidden></div>
         <div class="blog-grid" id="latest-posts"><p class="section-copy">Loading posts…</p></div>
       </section>
 
@@ -64,6 +78,7 @@
 
     <footer class="container footer"><div class="footer-row"><span>© 2026 Screener Pro. Built for focused market watching.</span><span><a href="uninstall/">Feedback</a> · <a href="https://buymeacoffee.com/vgexperiments">Support the developer</a> · <a href="https://www.vishwaroopgalgali.com/" target="_blank" rel="noopener">About the developer</a></span></div></footer>
   </div>
+  <script src="site.js?v=1" defer></script>
   <script>
     (function () {
       var wrap = document.getElementById('latest-posts');
@@ -76,15 +91,37 @@
         posts.sort(function (a, b) { return b.date.localeCompare(a.date); });
         var latest = posts.slice(0, 3);
         if (!latest.length) { wrap.innerHTML = '<p class="section-copy">No posts yet — check back soon.</p>'; return; }
-        wrap.innerHTML = latest.map(function (p) {
-          var tags = (p.tags || []).map(function (t) { return '<span class="tag">' + t + '</span>'; }).join('');
-          return '<a class="post-card" href="blog/post.html?slug=' + encodeURIComponent(p.slug) + '">'
+        var bar = document.getElementById('post-filters');
+        var tags = [];
+        latest.forEach(function (p) { (p.tags || []).forEach(function (t) { if (tags.indexOf(t) === -1) tags.push(t); }); });
+        function cardHtml(p) {
+          var tagHtml = (p.tags || []).map(function (t) { return '<span class="tag">' + t + '</span>'; }).join('');
+          return '<a class="post-card" data-tags="' + (p.tags || []).join(',') + '" href="blog/post.html?slug=' + encodeURIComponent(p.slug) + '">'
             + '<div class="post-meta"><span>Posted on ' + fmtDate(p.date) + '</span></div>'
             + '<h3>' + p.title + '</h3>'
             + '<p>' + p.excerpt + '</p>'
-            + (tags ? '<div class="tag-row">' + tags + '</div>' : '')
+            + (tagHtml ? '<div class="tag-row">' + tagHtml + '</div>' : '')
             + '</a>';
-        }).join('');
+        }
+        function render(active) {
+          wrap.innerHTML = latest.filter(function (p) {
+            return active === 'All' || (p.tags || []).indexOf(active) !== -1;
+          }).map(cardHtml).join('') || '<p class="section-copy">No posts under this topic yet.</p>';
+        }
+        if (bar && tags.length > 1) {
+          bar.hidden = false;
+          bar.innerHTML = ['All'].concat(tags).map(function (t, i) {
+            return '<button class="filter-btn' + (i === 0 ? ' active' : '') + '" data-filter="' + t + '">' + t + '</button>';
+          }).join('');
+          bar.addEventListener('click', function (e) {
+            var btn = e.target.closest('.filter-btn');
+            if (!btn) return;
+            bar.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            render(btn.getAttribute('data-filter'));
+          });
+        }
+        render('All');
       }).catch(function () { wrap.innerHTML = ''; });
     })();
   </script>
