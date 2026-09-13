@@ -9,6 +9,7 @@
 - Blog: https://vishwaroopg.github.io/Screener-Extension/blog/
 - Install (Chrome): https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en
 - Telegram (Global Market Pulse): https://t.me/GlobalMarketPulseLive
+- Developer portfolio: https://www.vishwaroopgalgali.com/
 
 ## Features (what questions this answers)
 
