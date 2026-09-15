@@ -3,26 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" id="meta-description" content="Screener Pro Blog — free browser extension guides (live NSE/BSE watchlist, ticker tape, price alerts) and plain-language market notes.">
+  <meta name="description" id="meta-description" content="Ticker Screener Blog — free browser extension guides (live NSE/BSE watchlist, ticker tape, price alerts) and plain-language market notes.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" id="canonical-link" href="https://vishwaroopg.github.io/Screener-Extension/blog/">
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="Screener Pro Blog">
-  <meta property="og:title" id="og-title" content="Screener Pro Blog">
-  <meta property="og:description" id="og-description" content="Market notes and Screener Pro extension guides in plain language.">
+  <meta property="og:site_name" content="Ticker Screener Blog">
+  <meta property="og:title" id="og-title" content="Ticker Screener Blog">
+  <meta property="og:description" id="og-description" content="Market notes and Ticker Screener extension guides in plain language.">
   <meta property="og:url" id="og-url" content="https://vishwaroopg.github.io/Screener-Extension/blog/">
-  <title>Blog | Screener Pro</title>
+  <title>Blog | Ticker Screener</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../site.css?v=3">
-  <script type="application/ld+json" id="post-jsonld">{"@context":"https://schema.org","@type":"Blog","name":"Screener Pro Blog","url":"https://vishwaroopg.github.io/Screener-Extension/blog/"}</script>
+  <link rel="stylesheet" href="../site.css?v=4">
+  <script type="application/ld+json" id="post-jsonld">{"@context":"https://schema.org","@type":"Blog","name":"Ticker Screener Blog","url":"https://vishwaroopg.github.io/Screener-Extension/blog/"}</script>
 </head>
 <body>
   <div class="aurora"></div>
   <div class="site-shell">
     <header class="container nav">
-      <a class="brand" href="../"><img class="brand-mark" src="../store-assets/icon_128.png" alt="Screener Pro icon">Screener <em>Pro</em></a>
+      <a class="brand" href="../"><img class="brand-mark" src="../store-assets/icon_128.png" alt="Ticker Screener icon">Ticker <em>Screener</em></a>
       <nav class="nav-links" aria-label="Primary navigation"><a href="../#features">Features</a><a href="../#markets">Markets</a><a href="./">Blog</a></nav>
       <a class="button button-secondary" href="https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en">Get the extension</a>
     </header>
@@ -34,7 +34,7 @@
       </section>
     </main>
 
-    <footer class="container footer"><div class="footer-row"><span>© 2026 Screener Pro. Built for focused market watching.</span><span><a href="../uninstall/">Feedback</a> · <a href="https://buymeacoffee.com/vgexperiments">Support the developer</a> · <a href="https://www.vishwaroopgalgali.com/" target="_blank" rel="noopener">About the developer</a></span></div></footer>
+    <footer class="container footer"><div class="footer-row"><span>© 2026 Ticker Screener. Built for focused market watching.</span><span><a href="../uninstall/">Feedback</a> · <a href="https://buymeacoffee.com/vgexperiments">Support the developer</a> · <a href="https://www.vishwaroopgalgali.com/" target="_blank" rel="noopener">About the developer</a></span></div></footer>
   </div>
   <script>
     var SITE = 'https://vishwaroopg.github.io/Screener-Extension';
@@ -55,7 +55,7 @@
         var meta = posts.filter(function (p) { return p.slug === slug; })[0];
         if (!meta) throw new Error('not found');
         var url = SITE + '/blog/post.html?slug=' + encodeURIComponent(meta.slug);
-        document.title = meta.title + ' | Screener Pro Blog';
+        document.title = meta.title + ' | Ticker Screener Blog';
         setMeta('meta-description', 'content', meta.excerpt);
         setMeta('canonical-link', 'href', url);
         setMeta('og-title', 'content', meta.title);
@@ -67,7 +67,7 @@
           headline: meta.title,
           description: meta.excerpt,
           datePublished: meta.date,
-          author: { '@type': 'Organization', name: 'Screener Pro' },
+          author: { '@type': 'Organization', name: 'Ticker Screener' },
           mainEntityOfPage: url
         });
         return fetch('posts/' + encodeURIComponent(slug) + '.html?v=4').then(function (r) {
@@ -82,7 +82,7 @@
             + '<div class="article-body">' + body + '</div>'
             + '<hr class="post-divider">'
             + '<div class="extension-cta">'
-            + '<div><strong>Track these markets live.</strong><p>Screener Pro puts your watchlist, charts and ticker tape in every browser tab.</p></div>'
+            + '<div><strong>Track these markets live.</strong><p>Ticker Screener puts your watchlist, charts and ticker tape in every browser tab.</p></div>'
             + '<a class="button button-primary" href="https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en">Get the extension</a>'
             + '</div>';
         });

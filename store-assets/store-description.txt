@@ -1,0 +1,41 @@
+Ticker Screener – Live Watchlist, Markets & Ticker Tape (v2.5)
+Short description (Chrome Web Store / AMO, max 132 chars):
+Ticker Screener: live Indian & global stock watchlist, draggable portfolios, and ticker tape.
+
+============================================================
+LONG DESCRIPTION (paste into Chrome Web Store "Detailed description" and AMO "Description")
+============================================================
+
+Ticker Screener turns every browser tab into a focused market workspace — a live watchlist, a 10-economy Markets tab, interactive price charts, and a ticker tape that moves with you.
+
+LIVE WATCHLIST & PORTFOLIOS
+- Track Indian (NSE/BSE) and global stocks with live prices, day change, sparkline trend, P/E, market cap, dividend yield and ROCE.
+- Multiple portfolios with drag-to-reorder tickers, CSV export, and rename support.
+- AI verdict on every stock (Undervalued / Solid / Expensive / Risk) from P/E and capital efficiency.
+- Price alerts with desktop notifications when a target is crossed.
+
+10-ECONOMY MARKETS TAB
+- USA, India, UK, Singapore, Japan, Hong Kong, Germany, France, Australia, Canada.
+- Index heatmap plus strictly separated top gainers and losers per market.
+- Live macro indicators (inflation, unemployment, GDP growth, GDP per capita and more) with World Bank sources.
+
+TICKER TAPE THAT MOVES WITH YOU
+- Live prices on any page. Pause, 0.5x–3.0x speed control, top/bottom position, 3 themes, 3 sizes, scroll direction, pause-on-hover.
+- Show/hide indices, % change or amount change. Disable per-site.
+
+INTERACTIVE CHARTS
+- 1M to MAX ranges with hover price-and-date crosshair. The line turns green when the period return is positive and red when negative, with period returns recalculated per range.
+
+WORLD MARKET CLOCKS
+- Draggable market clock tiles (New York, London, Mumbai, Hong Kong, Singapore and 10 more). Tiles sort by local time by default; click any tile to swap its market.
+
+ALSO INCLUDED
+- Right-click any company name on the web to add it to your watchlist.
+- Dark/light mode, 55 interface languages, cross-device sync via your browser account.
+- No account needed. Your data stays in your browser (local storage only).
+
+DATA SOURCES
+Indian ratios: Screener.in. Prices/indices/charts: Yahoo Finance. Fundamentals (US): Finviz. Macro: World Bank. News: Google News RSS.
+
+SUPPORT & UPDATES
+Independent project by Vishwaroop Galgali. Join @GlobalMarketPulseLive on Telegram for stock market updates and research reports. Support development: buymeacoffee.com/vgexperiments

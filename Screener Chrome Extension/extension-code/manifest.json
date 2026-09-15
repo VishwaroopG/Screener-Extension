@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Screener Pro – Live Watchlist & Ticker",
-  "version": "2.2",
+  "name": "Ticker Screener – Live Watchlist & Ticker",
+  "version": "2.5",
   "default_locale": "en",
   "icons": {
     "16": "icon_16.png",
@@ -15,7 +15,8 @@
     "alarms",
     "notifications",
     "contextMenus",
-    "tabs"
+    "tabs",
+    "identity"
   ],
   "host_permissions": [
     "*://*.screener.in/*",
@@ -23,7 +24,8 @@
     "*://*.finviz.com/*",
     "*://api.worldbank.org/*",
     "*://news.google.com/*",
-    "https://www.nseindia.com/*"
+    "https://www.nseindia.com/*",
+    "https://vishwaroopg.github.io/*"
   ],
   "action": {
     "default_title": "__MSG_actionTitle__"

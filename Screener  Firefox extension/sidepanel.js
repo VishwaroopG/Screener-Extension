@@ -49,6 +49,54 @@ document.addEventListener('DOMContentLoaded', () => {
   let activePortfolio = 'Sample';
 
   const DEFAULT_WEEKEND = ['Sat', 'Sun'];
+  // Trading holidays are NOT bundled — they are fetched daily from the
+  // published site and cached in chrome.storage.local, so holiday fixes
+  // reach all users with no extension re-publish. A missing or stale cache
+  // simply falls back to time+weekend logic.
+  const HOLIDAYS_URL = 'https://vishwaroopg.github.io/Screener-Extension/market-holidays.json';
+  const HOLIDAYS_TTL_MS = 24 * 60 * 60 * 1000;
+  let remoteHolidays = {};
+  let holidaysFetchInFlight = false;
+
+  function loadHolidaysFromCache() {
+    try {
+      chrome.storage.local.get(['marketHolidays'], (res) => {
+        if (res && res.marketHolidays && typeof res.marketHolidays === 'object') {
+          remoteHolidays = res.marketHolidays;
+          tickClocks();
+        }
+      });
+    } catch (e) {}
+  }
+
+  function ensureHolidaysFresh() {
+    if (holidaysFetchInFlight) return;
+    try {
+      chrome.storage.local.get(['marketHolidaysFetchedAt'], (res) => {
+        const fetchedAt = res && res.marketHolidaysFetchedAt;
+        if (fetchedAt && (Date.now() - fetchedAt) < HOLIDAYS_TTL_MS) return;
+        holidaysFetchInFlight = true;
+        fetch(HOLIDAYS_URL + '?v=' + new Date().toISOString().slice(0, 10))
+          .then((r) => {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+          })
+          .then((data) => {
+            if (data && data.holidays && typeof data.holidays === 'object') {
+              remoteHolidays = data.holidays;
+              chrome.storage.local.set(
+                { marketHolidays: data.holidays, marketHolidaysFetchedAt: Date.now() },
+                () => tickClocks()
+              );
+            }
+          })
+          .catch(() => {})
+          .finally(() => { holidaysFetchInFlight = false; });
+      });
+    } catch (e) {
+      holidaysFetchInFlight = false;
+    }
+  }
   const MARKET_CATALOG = [
     { key: 'newyork', city: 'New York', country: 'USA', tz: 'America/New_York', sessions: [[9 * 60 + 30, 16 * 60]] },
     { key: 'london', city: 'London', country: 'UK', tz: 'Europe/London', sessions: [[8 * 60, 16 * 60 + 30]] },
@@ -64,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { key: 'zurich', city: 'Zurich', country: 'Switzerland', tz: 'Europe/Zurich', sessions: [[9 * 60, 17 * 60 + 30]] },
     { key: 'toronto', city: 'Toronto', country: 'Canada', tz: 'America/Toronto', sessions: [[9 * 60 + 30, 16 * 60]] },
     { key: 'saopaulo', city: 'S\u00E3o Paulo', country: 'Brazil', tz: 'America/Sao_Paulo', sessions: [[10 * 60, 17 * 60]] },
-    { key: 'dubai', city: 'Dubai', country: 'UAE', tz: 'Asia/Dubai', sessions: [[10 * 60, 15 * 60]], weekend: ['Fri', 'Sat'] }
+    { key: 'dubai', city: 'Dubai', country: 'UAE', tz: 'Asia/Dubai', sessions: [[10 * 60, 15 * 60]] }
   ];
   const MARKET_BY_KEY = {};
   MARKET_CATALOG.forEach((m) => { MARKET_BY_KEY[m.key] = m; });
@@ -73,6 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const MIN_CLOCKS = 1;
   let clockKeys = DEFAULT_CLOCK_KEYS.slice();
   let replaceClockKey = null;
+  let clockDragKey = null;
+  let lastClockDropAt = 0;
 
   function getClockParts(tz) {
     const parts = new Intl.DateTimeFormat('en-GB', {
@@ -94,7 +144,51 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  function isMarketOpen(tz, sessions, weekend) {
+  // Default placement is ascending local market time (earliest clock first).
+  function getMarketMinutes(tz) {
+    try {
+      const p = getClockParts(tz);
+      const h = Number.isFinite(p.hour) ? p.hour : 0;
+      const m = Number.isFinite(p.minute) ? p.minute : 0;
+      return h * 60 + m;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  function sortKeysByTime(keys) {
+    return (Array.isArray(keys) ? keys.slice() : []).sort((a, b) => {
+      const ma = MARKET_BY_KEY[a];
+      const mb = MARKET_BY_KEY[b];
+      if (!ma) return 1;
+      if (!mb) return -1;
+      const ta = getMarketMinutes(ma.tz);
+      const tb = getMarketMinutes(mb.tz);
+      if (ta !== tb) return ta - tb;
+      return ma.city.localeCompare(mb.city);
+    });
+  }
+
+  function defaultClockKeysByTime() {
+    return sortKeysByTime(DEFAULT_CLOCK_KEYS);
+  }
+
+  function getMarketDateString(tz, now) {
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: tz,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).formatToParts(now || new Date());
+    const get = (type) => parts.find((p) => p.type === type)?.value || '';
+    return `${get('year')}-${get('month')}-${get('day')}`;
+  }
+
+  function isMarketOpen(tz, sessions, weekend, marketKey, now) {
+    const list = marketKey && remoteHolidays[marketKey];
+    if (Array.isArray(list)) {
+      if (list.indexOf(getMarketDateString(tz, now)) !== -1) return false;
+    }
     const { hour, minute, weekday } = getClockParts(tz);
     if ((weekend || DEFAULT_WEEKEND).indexOf(weekday) !== -1) return false;
     const mins = hour * 60 + minute;
@@ -121,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function saveClockKeys() {
     clockKeys = sanitizeClockKeys(clockKeys);
-    if (clockKeys.length < MIN_CLOCKS) clockKeys = DEFAULT_CLOCK_KEYS.slice();
+    if (clockKeys.length < MIN_CLOCKS) clockKeys = defaultClockKeysByTime();
     chrome.storage.local.set({ clockKeys }, () => renderClocks());
     if (chrome.storage.local.remove) {
       try { chrome.storage.local.remove(['customClocks']); } catch (e) {}
@@ -135,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const canAdd = clocks.length < MAX_CLOCKS;
 
     root.innerHTML = clocks.map((c) => `
-      <div class="world-clock is-closed is-editable" data-clock-key="${c.key}" tabindex="0" title="${t('changeMarketTitle') || 'Change market'}">
+      <div class="world-clock is-closed is-editable" data-clock-key="${c.key}" tabindex="0" draggable="true" title="${(t('changeMarketTitle') || 'Change market') + ' · ' + (t('dragHint') || 'Drag to reorder')}">
         ${clocks.length > MIN_CLOCKS ? `<button class="world-clock-remove" data-remove-clock="${c.key}" title="${t('deleteTitle') || 'Remove'}">&times;</button>` : ''}
         <div class="world-clock-city">${c.city}</div>
         <div class="world-clock-time">--:--</div>
@@ -153,13 +247,60 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
     root.querySelectorAll('[data-clock-key]').forEach((tile) => {
-      const openReplace = () => openAddMarketModal(tile.getAttribute('data-clock-key'));
+      const tileKey = tile.getAttribute('data-clock-key');
+      const openReplace = () => openAddMarketModal(tileKey);
       tile.addEventListener('click', (e) => {
         if (e.target.closest('[data-remove-clock]')) return;
+        // Suppress the click that follows a drag-and-drop reorder.
+        if (Date.now() - lastClockDropAt < 300) return;
         openReplace();
       });
       tile.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openReplace(); }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openReplace(); return; }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          const delta = (e.key === 'ArrowLeft' || e.key === 'ArrowUp') ? -1 : 1;
+          const idx = clockKeys.indexOf(tileKey);
+          const next = idx + delta;
+          if (idx === -1 || next < 0 || next >= clockKeys.length) return;
+          const moved = clockKeys.splice(idx, 1)[0];
+          clockKeys.splice(next, 0, moved);
+          saveClockKeys();
+          setTimeout(() => {
+            const again = root.querySelector(`[data-clock-key="${moved}"]`);
+            if (again) again.focus();
+          }, 50);
+        }
+      });
+      tile.addEventListener('dragstart', (e) => {
+        clockDragKey = tileKey;
+        tile.classList.add('is-dragging');
+        try {
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/plain', tileKey);
+        } catch (err) {}
+      });
+      tile.addEventListener('dragend', () => {
+        tile.classList.remove('is-dragging');
+        root.querySelectorAll('.world-clock.is-drag-over').forEach((el) => el.classList.remove('is-drag-over'));
+        clockDragKey = null;
+      });
+      tile.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        try { e.dataTransfer.dropEffect = 'move'; } catch (err) {}
+        if (clockDragKey && clockDragKey !== tileKey) tile.classList.add('is-drag-over');
+        return false;
+      });
+      tile.addEventListener('dragleave', () => {
+        tile.classList.remove('is-drag-over');
+      });
+      tile.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        tile.classList.remove('is-drag-over');
+        const fromKey = clockDragKey || (() => { try { return e.dataTransfer.getData('text/plain'); } catch (err) { return null; } })();
+        if (fromKey) reorderClock(fromKey, tileKey);
+        return false;
       });
     });
     const addTile = document.getElementById('world-clock-add');
@@ -178,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
     root.querySelectorAll('[data-clock-key]').forEach((card) => {
       const def = MARKET_BY_KEY[card.getAttribute('data-clock-key')];
       if (!def) return;
-      const open = isMarketOpen(def.tz, def.sessions, def.weekend);
+      const open = isMarketOpen(def.tz, def.sessions, def.weekend, def.key);
       const { time } = getClockParts(def.tz);
       const timeEl = card.querySelector('.world-clock-time');
       const statusEl = card.querySelector('.world-clock-status');
@@ -196,17 +337,43 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (res && Array.isArray(res.customClocks)) {
         // Migrate from the earlier add-one-market version
         clockKeys = sanitizeClockKeys(DEFAULT_CLOCK_KEYS.concat(res.customClocks));
+      } else {
+        // Fresh install: default placement is ascending local market time.
+        clockKeys = defaultClockKeysByTime();
       }
-      if (clockKeys.length < MIN_CLOCKS) clockKeys = DEFAULT_CLOCK_KEYS.slice();
+      if (clockKeys.length < MIN_CLOCKS) clockKeys = defaultClockKeysByTime();
       renderClocks();
     });
+    loadHolidaysFromCache();
+    ensureHolidaysFresh();
+    try {
+      chrome.storage.onChanged.addListener((changes, namespace) => {
+        if (namespace === 'local' && changes.marketHolidays && changes.marketHolidays.newValue) {
+          remoteHolidays = changes.marketHolidays.newValue;
+          tickClocks();
+        }
+      });
+    } catch (e) {}
     setInterval(tickClocks, 1000);
   }
 
   function addClock(key) {
     if (!MARKET_BY_KEY[key] || clockKeys.indexOf(key) !== -1) return;
     if (clockKeys.length >= MAX_CLOCKS) return;
-    clockKeys.push(key);
+    // Insert at the ascending-time slot so default placement stays time-ordered.
+    const incoming = MARKET_BY_KEY[key];
+    const incomingMins = getMarketMinutes(incoming.tz);
+    let at = clockKeys.length;
+    for (let i = 0; i < clockKeys.length; i++) {
+      const cur = MARKET_BY_KEY[clockKeys[i]];
+      if (!cur) continue;
+      const curMins = getMarketMinutes(cur.tz);
+      if (curMins > incomingMins || (curMins === incomingMins && cur.city.localeCompare(incoming.city) > 0)) {
+        at = i;
+        break;
+      }
+    }
+    clockKeys.splice(at, 0, key);
     saveClockKeys();
     closeAddMarketModal();
     renderClocks();
@@ -230,8 +397,20 @@ document.addEventListener('DOMContentLoaded', () => {
     renderClocks();
   }
 
+  function reorderClock(fromKey, toKey) {
+    if (!fromKey || !toKey || fromKey === toKey) return;
+    const fromIdx = clockKeys.indexOf(fromKey);
+    const toIdx = clockKeys.indexOf(toKey);
+    if (fromIdx === -1 || toIdx === -1) return;
+    const moved = clockKeys.splice(fromIdx, 1)[0];
+    clockKeys.splice(toIdx, 0, moved);
+    lastClockDropAt = Date.now();
+    clockDragKey = null;
+    saveClockKeys();
+  }
+
   function resetClocks() {
-    clockKeys = DEFAULT_CLOCK_KEYS.slice();
+    clockKeys = defaultClockKeysByTime();
     replaceClockKey = null;
     saveClockKeys();
     closeAddMarketModal();
@@ -264,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const isTarget = replacing && m.key === replaceClockKey;
       const disabled = replacing ? (isVisible && !isTarget) : (isVisible || isFull);
       const { time } = getClockParts(m.tz);
-      const open = isMarketOpen(m.tz, m.sessions, m.weekend);
+      const open = isMarketOpen(m.tz, m.sessions, m.weekend, m.key);
       const dotColor = open ? '#188038' : '#d93025';
       const state = isTarget
         ? `<span style="font-size:10px; font-weight:600; color:var(--link-color, #1a73e8);">${t('currentLabel') || 'Current'}</span>`
@@ -590,41 +769,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (tapeVisibilityBtn) {
-    tapeVisibilityBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const nextState = !isTapeVisible;
-
-      // 1. Instant optimistic UI update (0ms latency)
-      updateVisibilityUI(nextState);
-
-      // 2. Persist state to storage
-      chrome.storage.local.set({ tapeVisible: nextState });
-
-      // 3. Notify background service worker
-      try {
-        chrome.runtime.sendMessage({ type: 'SET_TAPE_VISIBLE', isVisible: nextState }, () => {
-          if (chrome.runtime.lastError) {}
-        });
-      } catch (err) {}
-
-      // 4. Directly broadcast to all open tabs for instant content script response
-      try {
-        if (chrome.tabs && chrome.tabs.query) {
-          chrome.tabs.query({}, (tabs) => {
-            for (const t of (tabs || [])) {
-              if (t && t.id) {
-                chrome.tabs.sendMessage(t.id, { type: 'TAPE_VISIBILITY_UPDATE', isVisible: nextState }, () => {
-                  if (chrome.runtime.lastError) {}
-                });
-              }
-            }
-          });
-        }
-      } catch (err) {}
-    });
-  }
+  // NOTE: The global show/hide toggle lives only in Settings → Visibility
+  // ("Show ticker tape"). No header button — updateVisibilityUI is kept as a
+  // harmless no-op guard for the Settings/reset/storage call sites below.
+  void tapeVisibilityBtn;
 
   // --- Domain Disable Logic ---
   const tapeDomainBtn = document.getElementById('tape-domain-btn');
@@ -645,6 +793,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       tapeDomainBtn.style.color = ''; // reset to default
     }
+    try {
+      if (typeof refreshSettingsDomainRow === 'function') refreshSettingsDomainRow();
+    } catch (e) {}
   }
 
   // Get current active tab
@@ -705,6 +856,278 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
+
+  // --- Tape Settings Modal (position, appearance, behavior, visibility) ---
+  const TAPE_SETTING_DEFAULTS = {
+    tapePosition: 'bottom',
+    tapeSize: 'comfortable',
+    tapeTheme: 'dark',
+    tapeDirection: 'left',
+    tapePauseOnHover: true,
+    tapeShowIndices: true,
+    tapeShowChange: true,
+    tapeShowAmount: false,
+    tapeVisible: true
+  };
+  const btnSettings = document.getElementById('btn-settings');
+  const settingsModal = document.getElementById('settings-modal');
+  const btnSettingsClose = document.getElementById('btn-settings-close');
+  const btnSettingsDone = document.getElementById('btn-settings-done');
+  const btnSettingsReset = document.getElementById('btn-settings-reset');
+  const settingsTheme = document.getElementById('settings-theme');
+  const settingsSize = document.getElementById('settings-size');
+  const settingsDirection = document.getElementById('settings-direction');
+  const settingsPauseHover = document.getElementById('settings-pause-hover');
+  const settingsShowIndices = document.getElementById('settings-show-indices');
+  const settingsShowChange = document.getElementById('settings-show-change');
+  const settingsShowAmount = document.getElementById('settings-show-amount');
+  const settingsVisible = document.getElementById('settings-visible');
+  const settingsDomainRow = document.getElementById('settings-domain-row');
+  const settingsPositionGroup = document.getElementById('settings-position-group');
+  const settingsSyncToggle = document.getElementById('settings-sync');
+  const settingsAccountEmail = document.getElementById('settings-account-email');
+  const settingsAccountDot = document.getElementById('settings-account-dot');
+  const settingsSyncTime = document.getElementById('settings-sync-time');
+  const btnSyncNow = document.getElementById('btn-sync-now');
+
+  function broadcastTapeSettings(settings) {
+    try {
+      if (chrome.tabs && chrome.tabs.query) {
+        chrome.tabs.query({}, (tabs) => {
+          for (const tab of (tabs || [])) {
+            if (tab && tab.id) {
+              chrome.tabs.sendMessage(tab.id, { type: 'TAPE_SETTINGS_UPDATE', settings }, () => {
+                if (chrome.runtime.lastError) {}
+              });
+            }
+          }
+        });
+      }
+    } catch (e) {}
+  }
+
+  function paintPositionSegmented(value) {
+    if (!settingsPositionGroup) return;
+    settingsPositionGroup.querySelectorAll('button[data-value]').forEach((b) => {
+      b.classList.toggle('is-active', b.getAttribute('data-value') === value);
+      b.setAttribute('aria-checked', b.getAttribute('data-value') === value ? 'true' : 'false');
+    });
+  }
+
+  function refreshSettingsDomainRow() {
+    if (!settingsDomainRow) return;
+    if (!currentDomain) {
+      settingsDomainRow.textContent = '';
+      return;
+    }
+    const isDisabled = disabledDomains.includes(currentDomain);
+    const hiddenMsg = (t('settingsDomainHidden', currentDomain) || '').replace('$DOMAIN$', currentDomain) || ('Hidden on ' + currentDomain);
+    const shownMsg = (t('settingsDomainShown', currentDomain) || '').replace('$DOMAIN$', currentDomain) || ('Showing on ' + currentDomain);
+    settingsDomainRow.textContent = isDisabled ? hiddenMsg : shownMsg;
+  }
+
+  function loadTapeSettingsIntoUI() {
+    chrome.storage.local.get(['tapePosition', 'tapeSize', 'tapeTheme', 'tapeDirection', 'tapePauseOnHover', 'tapeShowIndices', 'tapeShowChange', 'tapeShowAmount', 'tapeVisible', 'disabledDomains'], (res) => {
+      const pos = res.tapePosition || TAPE_SETTING_DEFAULTS.tapePosition;
+      paintPositionSegmented(pos);
+      if (settingsTheme) settingsTheme.value = res.tapeTheme || TAPE_SETTING_DEFAULTS.tapeTheme;
+      if (settingsSize) settingsSize.value = res.tapeSize || TAPE_SETTING_DEFAULTS.tapeSize;
+      if (settingsDirection) settingsDirection.value = res.tapeDirection || TAPE_SETTING_DEFAULTS.tapeDirection;
+      if (settingsPauseHover) settingsPauseHover.checked = res.tapePauseOnHover !== false;
+      if (settingsShowIndices) settingsShowIndices.checked = res.tapeShowIndices !== false;
+      if (settingsShowChange) settingsShowChange.checked = res.tapeShowChange !== false;
+      if (settingsShowAmount) settingsShowAmount.checked = res.tapeShowAmount === true;
+      // % change and amount change are mutually exclusive — % wins if both are stored on
+      if (settingsShowChange && settingsShowAmount && settingsShowChange.checked && settingsShowAmount.checked) {
+        settingsShowAmount.checked = false;
+        persistTapeSetting({ tapeShowAmount: false });
+      }
+      if (settingsVisible) settingsVisible.checked = res.tapeVisible !== false;
+      if (Array.isArray(res.disabledDomains)) disabledDomains = res.disabledDomains;
+      updateDomainUI();
+      refreshSettingsDomainRow();
+    });
+  }
+
+  function persistTapeSetting(patch) {
+    chrome.storage.local.set(patch, () => {
+      broadcastTapeSettings(patch);
+      // Keep the header eye icon in sync when visibility changes from Settings
+      if (patch.tapeVisible !== undefined) updateVisibilityUI(patch.tapeVisible);
+    });
+  }
+
+  function formatSyncTime(ts) {
+    if (!ts) return t('settingsNeverSynced') || 'Not synced yet';
+    try {
+      const when = new Date(ts).toLocaleString();
+      return (t('settingsLastSync', String(when)) || '').replace('$TIME$', when) || ('Last synced: ' + when);
+    } catch (e) {
+      return t('settingsNeverSynced') || 'Not synced yet';
+    }
+  }
+
+  function paintSyncUI(state) {
+    const enabled = !state || state.enabled !== false;
+    const supported = !state || state.supported !== false;
+    // canReadIdentity is false on browsers where the profile email can't be
+    // read (e.g. Firefox) — there we must not claim "Not signed in".
+    const identityReadable = !state || state.canReadIdentity !== false;
+    const signedOut = !!(state && supported && identityReadable && state.canReadIdentity === true && !state.email);
+    if (settingsSyncToggle) settingsSyncToggle.checked = enabled;
+    if (settingsSyncToggle) settingsSyncToggle.disabled = !supported;
+    if (btnSyncNow) btnSyncNow.disabled = !supported || !enabled;
+    if (settingsAccountEmail) {
+      if (!supported) {
+        settingsAccountEmail.textContent = t('settingsSyncUnsupported') || 'Browser sync not available';
+      } else if (state && state.email) {
+        settingsAccountEmail.textContent = state.email;
+      } else if (state && !identityReadable) {
+        settingsAccountEmail.textContent = t('settingsBrowserSync') || 'Syncs with your browser account';
+      } else if (signedOut) {
+        settingsAccountEmail.textContent = t('settingsSignedOut') || 'Not signed in';
+      } else {
+        settingsAccountEmail.textContent = '…';
+      }
+    }
+    if (settingsAccountDot) {
+      settingsAccountDot.classList.toggle('is-signed-in', !!(state && state.email));
+    }
+    if (settingsSyncTime) {
+      if (!supported || signedOut) {
+        // Showing a stored time next to "Not signed in" is contradictory —
+        // and on some browsers the email simply can't be read — so only show
+        // the time when it can honestly mean a cross-device sync happened.
+        settingsSyncTime.textContent = '';
+      } else if (state) {
+        settingsSyncTime.textContent = formatSyncTime(state.lastSync);
+      }
+    }
+  }
+
+  function loadSyncUI() {
+    // Local toggle state first for instant paint; background fills in email + time.
+    chrome.storage.local.get(['syncEnabled', 'lastPrefsSyncAt'], (res) => {
+      paintSyncUI({ enabled: res.syncEnabled !== false, lastSync: res.lastPrefsSyncAt || 0, email: '', supported: true });
+      try {
+        chrome.runtime.sendMessage({ type: 'GET_SYNC_STATE' }, (state) => {
+          if (chrome.runtime.lastError || !state) return;
+          paintSyncUI(state);
+        });
+      } catch (e) {}
+    });
+  }
+
+  function openSettingsModal() {
+    loadTapeSettingsIntoUI();
+    loadSyncUI();
+    if (settingsModal) settingsModal.style.display = 'flex';
+  }
+  function closeSettingsModal() {
+    if (settingsModal) settingsModal.style.display = 'none';
+  }
+
+  if (btnSettings) btnSettings.addEventListener('click', openSettingsModal);
+  if (btnSettingsClose) btnSettingsClose.addEventListener('click', closeSettingsModal);
+  if (btnSettingsDone) btnSettingsDone.addEventListener('click', closeSettingsModal);
+  if (settingsModal) {
+    settingsModal.addEventListener('click', (e) => {
+      if (e.target === settingsModal) closeSettingsModal();
+    });
+  }
+  if (settingsPositionGroup) {
+    settingsPositionGroup.querySelectorAll('button[data-value]').forEach((b) => {
+      b.addEventListener('click', () => {
+        const value = b.getAttribute('data-value');
+        paintPositionSegmented(value);
+        persistTapeSetting({ tapePosition: value });
+      });
+    });
+  }
+  if (settingsTheme) settingsTheme.addEventListener('change', () => persistTapeSetting({ tapeTheme: settingsTheme.value }));
+  if (settingsSize) settingsSize.addEventListener('change', () => persistTapeSetting({ tapeSize: settingsSize.value }));
+  if (settingsDirection) settingsDirection.addEventListener('change', () => persistTapeSetting({ tapeDirection: settingsDirection.value }));
+  if (settingsPauseHover) settingsPauseHover.addEventListener('change', () => persistTapeSetting({ tapePauseOnHover: settingsPauseHover.checked }));
+  if (settingsShowIndices) settingsShowIndices.addEventListener('change', () => persistTapeSetting({ tapeShowIndices: settingsShowIndices.checked }));
+  // % change and amount change are mutually exclusive: selecting one unchecks the other
+  if (settingsShowChange) settingsShowChange.addEventListener('change', () => {
+    const on = settingsShowChange.checked;
+    const patch = { tapeShowChange: on };
+    if (on && settingsShowAmount && settingsShowAmount.checked) {
+      settingsShowAmount.checked = false;
+      patch.tapeShowAmount = false;
+    }
+    persistTapeSetting(patch);
+  });
+  if (settingsShowAmount) settingsShowAmount.addEventListener('change', () => {
+    const on = settingsShowAmount.checked;
+    const patch = { tapeShowAmount: on };
+    if (on && settingsShowChange && settingsShowChange.checked) {
+      settingsShowChange.checked = false;
+      patch.tapeShowChange = false;
+    }
+    persistTapeSetting(patch);
+  });
+  if (settingsVisible) settingsVisible.addEventListener('change', () => persistTapeSetting({ tapeVisible: settingsVisible.checked }));
+  if (settingsSyncToggle) {
+    settingsSyncToggle.addEventListener('change', () => {
+      const enabled = settingsSyncToggle.checked;
+      chrome.storage.local.set({ syncEnabled: enabled }, () => {
+        if (enabled) {
+          try {
+            chrome.runtime.sendMessage({ type: 'SYNC_NOW' }, () => {
+              if (chrome.runtime.lastError) {}
+              loadSyncUI();
+            });
+          } catch (e) {}
+        }
+        loadSyncUI();
+      });
+    });
+  }
+  if (btnSyncNow) {
+    btnSyncNow.addEventListener('click', () => {
+      const original = btnSyncNow.textContent;
+      btnSyncNow.disabled = true;
+      btnSyncNow.textContent = t('settingsSyncing') || 'Syncing…';
+      const restore = () => {
+        btnSyncNow.textContent = original;
+        loadSyncUI();
+      };
+      try {
+        chrome.runtime.sendMessage({ type: 'SYNC_NOW' }, () => {
+          if (chrome.runtime.lastError) {}
+          restore();
+        });
+      } catch (e) {
+        restore();
+      }
+      setTimeout(() => {
+        if (btnSyncNow.disabled) restore();
+      }, 8000);
+    });
+  }
+  if (btnSettingsReset) {
+    btnSettingsReset.addEventListener('click', () => {
+      const resetPatch = Object.assign({}, TAPE_SETTING_DEFAULTS);
+      chrome.storage.local.set(resetPatch, () => {
+        broadcastTapeSettings(resetPatch);
+        updateVisibilityUI(true);
+        loadTapeSettingsIntoUI();
+      });
+    });
+  }
+  // Keep Settings UI fresh if storage changes elsewhere
+  chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace === 'local' && settingsModal && settingsModal.style.display !== 'none') {
+      if (changes.tapePosition || changes.tapeSize || changes.tapeTheme || changes.tapeDirection || changes.tapePauseOnHover || changes.tapeShowIndices || changes.tapeShowChange || changes.tapeShowAmount || changes.tapeVisible || changes.disabledDomains) {
+        loadTapeSettingsIntoUI();
+      }
+      if (changes.syncEnabled || changes.lastPrefsSyncAt) {
+        loadSyncUI();
+      }
+    }
+  });
 
   // About & Support Modal
   const btnAbout = document.getElementById('btn-about');
@@ -787,17 +1210,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  loadPortfolios(() => {
-    renderDefaultSearch();
-    renderWatchlist(); // Instantly render watchlist from cache with zero delay!
-    initMarketOverview();
+  chrome.storage.local.get(['activePortfolioName'], (res) => {
+    if (res && res.activePortfolioName) activePortfolio = res.activePortfolioName;
+    loadPortfolios(() => {
+      renderDefaultSearch();
+      renderWatchlist(); // Instantly render watchlist from cache with zero delay!
+      initMarketOverview();
+    });
   });
 
   portfolioSelect.addEventListener('change', (e) => {
     activePortfolio = e.target.value;
     chrome.storage.local.get(['portfolios'], (res) => {
        const ports = res.portfolios || {};
-       chrome.storage.local.set({ screenerWatchlist: ports[activePortfolio] || [] }, () => {
+       chrome.storage.local.set({ screenerWatchlist: ports[activePortfolio] || [], activePortfolioName: activePortfolio }, () => {
          renderWatchlist();
        });
     });
@@ -862,7 +1288,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ports[newName] = ports[activePortfolio];
             delete ports[activePortfolio];
             activePortfolio = newName;
-            chrome.storage.local.set({ portfolios: ports }, () => {
+            chrome.storage.local.set({ portfolios: ports, activePortfolioName: activePortfolio }, () => {
               loadPortfolios();
             });
           });
@@ -879,7 +1305,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!ports[name]) {
             ports[name] = [];
             activePortfolio = name;
-            chrome.storage.local.set({ portfolios: ports, screenerWatchlist: [] }, () => {
+            chrome.storage.local.set({ portfolios: ports, screenerWatchlist: [], activePortfolioName: activePortfolio }, () => {
               loadPortfolios();
               renderWatchlist();
             });

@@ -5,6 +5,61 @@
 
   const tapeDiv = document.createElement('div');
   tapeDiv.id = 'screener-ticker-tape';
+  tapeDiv.classList.add('screener-tape-bottom', 'screener-tape-comfortable', 'screener-tape-dark');
+
+  // --- User-configurable tape settings (managed via side-panel Settings) ---
+  const TAPE_DEFAULTS = {
+    tapePosition: 'bottom',      // 'top' | 'bottom'
+    tapeSize: 'comfortable',     // 'compact' | 'comfortable' | 'large'
+    tapeTheme: 'dark',           // 'dark' | 'light' | 'blue'
+    tapeDirection: 'left',       // 'left' (default scroll) | 'right'
+    tapePauseOnHover: true,
+    tapeShowIndices: true,
+    tapeShowChange: true,
+    tapeShowAmount: false
+  };
+  let tapePosition = TAPE_DEFAULTS.tapePosition;
+  let tapeSize = TAPE_DEFAULTS.tapeSize;
+  let tapeTheme = TAPE_DEFAULTS.tapeTheme;
+  let tapeDirection = TAPE_DEFAULTS.tapeDirection;
+  let tapePauseOnHover = TAPE_DEFAULTS.tapePauseOnHover;
+  let tapeShowIndices = TAPE_DEFAULTS.tapeShowIndices;
+  let tapeShowChange = TAPE_DEFAULTS.tapeShowChange;
+  let tapeShowAmount = TAPE_DEFAULTS.tapeShowAmount;
+
+  function applyTapeSettings() {
+    tapeDiv.classList.toggle('screener-tape-top', tapePosition === 'top');
+    tapeDiv.classList.toggle('screener-tape-bottom', tapePosition !== 'top');
+    tapeDiv.classList.toggle('screener-tape-compact', tapeSize === 'compact');
+    tapeDiv.classList.toggle('screener-tape-comfortable', tapeSize !== 'compact' && tapeSize !== 'large');
+    tapeDiv.classList.toggle('screener-tape-large', tapeSize === 'large');
+    tapeDiv.classList.toggle('screener-tape-dark', tapeTheme !== 'light' && tapeTheme !== 'blue');
+    tapeDiv.classList.toggle('screener-tape-light', tapeTheme === 'light');
+    tapeDiv.classList.toggle('screener-tape-blue', tapeTheme === 'blue');
+    tapeDiv.classList.toggle('screener-tape-hide-change', tapeShowChange === false);
+    tapeDiv.classList.toggle('screener-tape-hide-amount', tapeShowAmount === false);
+    // Keep the page offset in sync with the tape height + position
+    const root = document.documentElement;
+    const sizeH = tapeSize === 'compact' ? '26px' : (tapeSize === 'large' ? '38px' : '30px');
+    root.style.setProperty('--screener-tape-h', sizeH);
+    root.classList.toggle('screener-tape-active-top', tapePosition === 'top');
+    try { lastRenderedKey = ''; } catch (e) {}
+    if (typeof renderTape === 'function') renderTape();
+  }
+
+  function readTapeSettings(res) {
+    if (!res) return false;
+    let changed = false;
+    if (typeof res.tapePosition === 'string' && (res.tapePosition === 'top' || res.tapePosition === 'bottom') && res.tapePosition !== tapePosition) { tapePosition = res.tapePosition; changed = true; }
+    if (typeof res.tapeSize === 'string' && ['compact', 'comfortable', 'large'].includes(res.tapeSize) && res.tapeSize !== tapeSize) { tapeSize = res.tapeSize; changed = true; }
+    if (typeof res.tapeTheme === 'string' && ['dark', 'light', 'blue'].includes(res.tapeTheme) && res.tapeTheme !== tapeTheme) { tapeTheme = res.tapeTheme; changed = true; }
+    if (typeof res.tapeDirection === 'string' && (res.tapeDirection === 'left' || res.tapeDirection === 'right') && res.tapeDirection !== tapeDirection) { tapeDirection = res.tapeDirection; changed = true; }
+    if (typeof res.tapePauseOnHover === 'boolean' && res.tapePauseOnHover !== tapePauseOnHover) { tapePauseOnHover = res.tapePauseOnHover; changed = true; }
+    if (typeof res.tapeShowIndices === 'boolean' && res.tapeShowIndices !== tapeShowIndices) { tapeShowIndices = res.tapeShowIndices; changed = true; }
+    if (typeof res.tapeShowChange === 'boolean' && res.tapeShowChange !== tapeShowChange) { tapeShowChange = res.tapeShowChange; changed = true; }
+    if (typeof res.tapeShowAmount === 'boolean' && res.tapeShowAmount !== tapeShowAmount) { tapeShowAmount = res.tapeShowAmount; changed = true; }
+    return changed;
+  }
   
   const container = document.createElement('div');
   container.className = 'screener-marquee-container';
@@ -196,6 +251,9 @@
   let currentModalFallback = [];
   let currentModalCurrPrefix = '₹';
   let currentModalLocale = 'en-IN';
+  // Guards against out-of-order responses: only the latest requested
+  // period/ticker may paint the modal (fixes "chart not changing").
+  let modalChartSeq = 0;
 
   function prefixForCurrencyCode(code) {
     switch ((code || '').toUpperCase()) {
@@ -217,19 +275,23 @@
 
   async function fetchChartData(symbol, range, interval) {
     try {
-      return await new Promise((resolve) => {
-        try {
-          chrome.runtime.sendMessage({ type: 'FETCH_CHART', symbol, range, interval }, (res) => {
-            if (chrome.runtime.lastError) {
-              resolve({ data: [], timestamps: [] });
-              return;
-            }
-            resolve({ data: (res && res.data) || [], timestamps: (res && res.timestamps) || [] });
-          });
-        } catch (e) {
-          resolve({ data: [], timestamps: [] });
-        }
-      });
+      return await Promise.race([
+        new Promise((resolve) => {
+          try {
+            chrome.runtime.sendMessage({ type: 'FETCH_CHART', symbol, range, interval }, (res) => {
+              if (chrome.runtime.lastError) {
+                resolve({ data: [], timestamps: [] });
+                return;
+              }
+              resolve({ data: (res && res.data) || [], timestamps: (res && res.timestamps) || [] });
+            });
+          } catch (e) {
+            resolve({ data: [], timestamps: [] });
+          }
+        }),
+        // Never leave the modal stuck on "Loading..." — fall back to cache.
+        new Promise((resolve) => setTimeout(() => resolve({ data: [], timestamps: [] }), 20000))
+      ]);
     } catch (e) {
       return { data: [], timestamps: [] };
     }
@@ -240,6 +302,36 @@
     if (data?.source === 'yahoo') return ticker;
     // Indian stock from screener.in
     return ticker + '.NS';
+  }
+
+  // Keep only finite numbers — Yahoo occasionally returns "N/A"/null holes
+  // that would otherwise poison the SVG path (blank chart, no error).
+  function cleanSeries(arr) {
+    if (!Array.isArray(arr)) return [];
+    const out = [];
+    for (const v of arr) {
+      const n = typeof v === 'number' ? v : parseFloat(v);
+      if (Number.isFinite(n)) out.push(n);
+    }
+    return out;
+  }
+
+  // Sparkline color follows the displayed period's return: red when the
+  // period return is negative, green when positive. Shades adapt to the
+  // modal theme (dark modal uses the brighter palette).
+  function periodLineColor(dataArray) {
+    let dark = false;
+    try { dark = !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches); } catch (e) {}
+    const up = dark ? '#81c995' : '#137333';
+    const down = dark ? '#f28b82' : '#d93025';
+    if (dataArray && dataArray.length >= 2) {
+      const first = dataArray[0];
+      const last = dataArray[dataArray.length - 1];
+      if (Number.isFinite(first) && Number.isFinite(last) && first !== 0) {
+        return ((last - first) / Math.abs(first)) >= 0 ? up : down;
+      }
+    }
+    return up;
   }
 
   function updatePeriodReturn(dataArray, range) {
@@ -268,19 +360,21 @@
   }
 
   async function loadChartForPeriod(range, interval) {
+    const seq = ++modalChartSeq;
     const sparklineEl = modalBackdrop.querySelector('#screener-sparkline-container');
     if (!sparklineEl) return;
     sparklineEl.innerHTML = '<span style="color:#9aa0a6;font-size:12px;">' + t('chartLoading') + '</span>';
     const chartData = await fetchChartData(currentModalSymbol, range, interval);
-    const color = currentModalIsIndex ? '#1a73e8' : (currentModalChangeDir === 'up' ? '#137333' : '#d93025');
+    if (seq !== modalChartSeq) return; // stale: user switched period/ticker meanwhile
+    let data = cleanSeries(chartData.data);
+    let timestamps = Array.isArray(chartData.timestamps) ? chartData.timestamps : [];
     // Fallback to cached sparkline when live fetch returns nothing (offline / rate-limit / weekend gap)
-    if ((!chartData.data || chartData.data.length < 2) && currentModalFallback && currentModalFallback.length >= 2) {
-      drawSparkline(sparklineEl, { data: currentModalFallback, timestamps: [] }, color);
-      updatePeriodReturn(currentModalFallback, range);
-      return;
+    if (data.length < 2) {
+      data = cleanSeries(currentModalFallback);
+      timestamps = [];
     }
-    drawSparkline(sparklineEl, chartData, color);
-    updatePeriodReturn(chartData.data, range);
+    drawSparkline(sparklineEl, { data, timestamps: timestamps.slice(0, data.length) }, periodLineColor(data));
+    updatePeriodReturn(data, range);
   }
 
   // Wire period buttons
@@ -322,9 +416,11 @@
   let isDomainDisabled = false;
   const currentDomain = window.location.hostname;
 
-  chrome.storage.local.get(['tapePaused', 'tapeSpeedMultiplier', 'tapeSpeed', 'tapeVisible', 'disabledDomains'], (res) => {
+  chrome.storage.local.get(['tapePaused', 'tapeSpeedMultiplier', 'tapeSpeed', 'tapeVisible', 'disabledDomains', 'tapePosition', 'tapeSize', 'tapeTheme', 'tapeDirection', 'tapePauseOnHover', 'tapeShowIndices', 'tapeShowChange', 'tapeShowAmount'], (res) => {
     isPaused = res.tapePaused === true;
     isVisible = res.tapeVisible !== false; // Default true
+    readTapeSettings(res);
+    applyTapeSettings();
     
     const disabledDomains = res.disabledDomains || [];
     if (disabledDomains.includes(currentDomain)) {
@@ -359,6 +455,15 @@
       } else if (changes.tapeSpeed !== undefined) {
         speed = changes.tapeSpeed.newValue;
       }
+      let settingsChanged = false;
+      ['tapePosition', 'tapeSize', 'tapeTheme', 'tapeDirection', 'tapePauseOnHover', 'tapeShowIndices', 'tapeShowChange', 'tapeShowAmount'].forEach((k) => {
+        if (changes[k] !== undefined) {
+          const patch = {};
+          patch[k] = changes[k].newValue;
+          if (readTapeSettings(patch)) settingsChanged = true;
+        }
+      });
+      if (settingsChanged) applyTapeSettings();
       if (changes.cachedData || changes.screenerWatchlist || changes.marketIndices) {
         renderTape();
       }
@@ -611,14 +716,16 @@
   // --- Continuous GPU-Accelerated Auto-Scroll Engine ---
   // Uses translate3d which never hits DOM scroll limits or integer truncation issues
   function autoScrollStep() {
-    if (!isPaused && !isDragging && !isHovered && isVisible && !isDomainDisabled) {
+    const hoverPauses = tapePauseOnHover !== false && isHovered;
+    if (!isPaused && !isDragging && !hoverPauses && isVisible && !isDomainDisabled) {
       if (Math.abs(arrowScrollRemaining) > 0.25) {
         const step = Math.sign(arrowScrollRemaining) * Math.max(0.5, Math.abs(arrowScrollRemaining) * 0.16);
         currentX += step;
         arrowScrollRemaining -= step;
       } else {
         arrowScrollRemaining = 0;
-        currentX -= speed;
+        const dirSign = tapeDirection === 'right' ? 1 : -1;
+        currentX += dirSign * speed;
       }
       const halfWidth = marquee.scrollWidth / 2;
       
@@ -631,6 +738,24 @@
     requestAnimationFrame(autoScrollStep);
   }
   requestAnimationFrame(autoScrollStep);
+
+  // Absolute change text (e.g. "(+₹12.34)") derived from the displayed
+  // price + % change. Shown when the "Show amount change" setting is on.
+  function absChangeText(priceStr, pctStr, isUp) {
+    try {
+      const priceNum = parseFloat(String(priceStr || '').replace(/[^0-9.\-]/g, ''));
+      const pctNum = parseFloat(String(pctStr || ''));
+      if (!isFinite(priceNum) || !isFinite(pctNum)) return '';
+      const abs = (priceNum * Math.abs(pctNum)) / 100;
+      if (!isFinite(abs)) return '';
+      const prefixMatch = String(priceStr || '').match(/^[^\d\-+.,\s]+/);
+      const prefix = prefixMatch ? prefixMatch[0] : '';
+      const sign = isUp ? '+' : '-';
+      return `(${sign}${prefix}${abs.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`;
+    } catch (e) {
+      return '';
+    }
+  }
 
   // --- Render Tape Content ---
   let lastRenderedKey = '';
@@ -669,43 +794,53 @@
           const isIndex = node.getAttribute('data-is-index') === 'true';
           const priceSpan = node.querySelector('.screener-ticker-price');
           const changeSpan = node.querySelector('.screener-ticker-change');
-          
+          const amountSpan = node.querySelector('.screener-ticker-amount');
+
           if (isIndex) {
             const idx = indices[ticker];
             if (idx && priceSpan) {
               const isUp = idx.changeDir === 'up' || parseFloat(idx.changePct) >= 0;
               const color = isUp ? '#81c995' : '#f28b82';
               const sign = isUp ? '\u25B2' : '\u25BC';
-              
+
               if (idx.flash && (Date.now() - (idx.flashTime || 0) < 1000)) {
                  priceSpan.className = 'screener-ticker-price ' + (idx.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down');
               } else {
                  priceSpan.className = 'screener-ticker-price';
               }
               priceSpan.textContent = idx.price;
-              
+
               if (changeSpan) {
                 changeSpan.style.color = color;
                 changeSpan.textContent = `${sign} ${Math.abs(parseFloat(idx.changePct)).toFixed(2)}%`;
+              }
+              if (amountSpan) {
+                amountSpan.style.color = color;
+                amountSpan.textContent = absChangeText(idx.price, idx.changePct, isUp);
               }
             }
           } else {
             const data = cached[ticker];
             if (data && data.success && priceSpan) {
               const price = data.ratios['Current Price'] || '-';
-              
+              const isUp = data.changeDir === 'up';
+
               if (data.flash && (Date.now() - (data.flashTime || 0) < 1000)) {
                 priceSpan.className = 'screener-ticker-price ' + (data.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down');
               } else {
                 priceSpan.className = 'screener-ticker-price';
               }
               priceSpan.textContent = price;
-              
+
               if (changeSpan && data.changePct) {
-                const color = data.changeDir === 'up' ? '#81c995' : '#f28b82';
-                const sign = data.changeDir === 'up' ? '\u25B2' : '\u25BC';
+                const color = isUp ? '#81c995' : '#f28b82';
+                const sign = isUp ? '\u25B2' : '\u25BC';
                 changeSpan.style.color = color;
                 changeSpan.textContent = `${sign} ${data.changePct}`;
+              }
+              if (amountSpan && data.changePct) {
+                amountSpan.style.color = isUp ? '#81c995' : '#f28b82';
+                amountSpan.textContent = absChangeText(price, data.changePct, isUp);
               }
             }
           }
@@ -717,8 +852,9 @@
       lastRenderedKey = currentKey;
       let html = '';
       
-      // Add Market Indices
-      for (const [idxName, idx] of Object.entries(indices)) {
+      // Add Market Indices (skipped when user hides them in Settings)
+      const visibleIndices = tapeShowIndices === false ? {} : indices;
+      for (const [idxName, idx] of Object.entries(visibleIndices)) {
         if (!idx || !idx.price) continue;
         const isUp = idx.changeDir === 'up' || parseFloat(idx.changePct) >= 0;
         const color = isUp ? '#81c995' : '#f28b82';
@@ -729,11 +865,13 @@
            flashClass = idx.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down';
         }
 
+        const idxAmt = absChangeText(idx.price, idx.changePct, isUp);
         html += `
           <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${idxName}" data-is-index="true" style="cursor: pointer;">
             <span class="screener-ticker-name">${idxName}</span>
             <span class="screener-ticker-price ${flashClass}">${idx.price}</span>
             <span class="screener-ticker-change" style="color: ${color}; font-size: 12px; margin-left: 6px;">${sign} ${Math.abs(parseFloat(idx.changePct)).toFixed(2)}%</span>
+            ${idxAmt ? `<span class="screener-ticker-amount" style="color: ${color};">${idxAmt}</span>` : ''}
           </div>
         `;
       }
@@ -745,10 +883,17 @@
           const price = data.ratios['Current Price'] || '-';
           
           let pctHtml = '';
-          if (data.changePct) {
+          if (data.changePct && tapeShowChange !== false) {
             const color = data.changeDir === 'up' ? '#81c995' : '#f28b82';
             const sign = data.changeDir === 'up' ? '\u25B2' : '\u25BC';
             pctHtml = `<span class="screener-ticker-change" style="color: ${color}; font-size: 12px; margin-left: 6px;">${sign} ${data.changePct}</span>`;
+          }
+
+          let amtHtml = '';
+          if (data.changePct) {
+            const amtColor = data.changeDir === 'up' ? '#81c995' : '#f28b82';
+            const amt = absChangeText(price, data.changePct, data.changeDir === 'up');
+            if (amt) amtHtml = `<span class="screener-ticker-amount" style="color: ${amtColor};">${amt}</span>`;
           }
 
           let flashClass = '';
@@ -761,6 +906,7 @@
               <span class="screener-ticker-name">${data.companyName || ticker}</span>
               <span class="screener-ticker-price ${flashClass}">${price}</span>
               ${pctHtml}
+              ${amtHtml}
             </div>
           `;
         }
@@ -769,7 +915,7 @@
       if (html === '') {
         marquee.innerHTML = `<div class="screener-ticker-item">${t('tapeLoading')}</div>`;
       } else {
-        let itemsCount = Object.keys(indices).length + list.length;
+        let itemsCount = Object.keys(visibleIndices).length + list.length;
         let gapHtml = '';
         if (itemsCount < 8) {
           gapHtml = `<div class="screener-ticker-item" style="border: none; padding: 0; margin-right: 80vw;"></div>`;
@@ -802,6 +948,13 @@
     if (msg.type === 'TAPE_DOMAIN_TOGGLE') {
       isDomainDisabled = msg.disabled === true;
       renderTape();
+    }
+    if (msg.type === 'TAPE_SETTINGS_UPDATE' && msg.settings) {
+      if (typeof msg.settings.tapeVisible === 'boolean') {
+        isVisible = msg.settings.tapeVisible !== false;
+      }
+      if (readTapeSettings(msg.settings)) applyTapeSettings();
+      else renderTape();
     }
   });
 })();

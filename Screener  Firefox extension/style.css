@@ -206,14 +206,24 @@ body {
   position: relative;
 }
 
-/* Editable market clock tiles (click to swap, x to remove) */
+/* Editable market clock tiles (click to swap, drag to reorder, x to remove) */
 .world-clock.is-editable {
-  cursor: pointer;
+  cursor: grab;
 }
 .world-clock.is-editable:hover,
 .world-clock.is-editable:focus-visible {
   border-color: var(--accent-color, #1a73e8);
   outline: none;
+}
+.world-clock.is-editable:active {
+  cursor: grabbing;
+}
+.world-clock.is-dragging {
+  opacity: 0.5;
+}
+.world-clock.is-drag-over {
+  border-color: var(--accent-color, #1a73e8);
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.35);
 }
 
 /* Dashed "+" tile for adding another market clock */
@@ -775,14 +785,22 @@ body.dark-mode [style*="border-bottom: 1px solid #dadce0"] { border-color: #484f
 body.dark-mode [style*="background-color: #f8f9fa"] { background-color: #353a45 !important; }
 body.dark-mode [style*="color:#188038"] { color: #85d996 !important; }
 
-/* Flash Animations */
+/* Flash Animations: inset overlay so the cell keeps its row/theme background */
 @keyframes flashGreen {
-    0% { background-color: rgba(24, 128, 56, 0.5); }
-    100% { background-color: transparent; }
+    0% { box-shadow: inset 0 0 0 999px rgba(24, 128, 56, 0.28); }
+    100% { box-shadow: inset 0 0 0 999px rgba(24, 128, 56, 0); }
 }
 @keyframes flashRed {
-    0% { background-color: rgba(217, 48, 37, 0.5); }
-    100% { background-color: transparent; }
+    0% { box-shadow: inset 0 0 0 999px rgba(217, 48, 37, 0.28); }
+    100% { box-shadow: inset 0 0 0 999px rgba(217, 48, 37, 0); }
+}
+@keyframes flashGreenDark {
+    0% { box-shadow: inset 0 0 0 999px rgba(133, 217, 150, 0.22); }
+    100% { box-shadow: inset 0 0 0 999px rgba(133, 217, 150, 0); }
+}
+@keyframes flashRedDark {
+    0% { box-shadow: inset 0 0 0 999px rgba(242, 139, 130, 0.22); }
+    100% { box-shadow: inset 0 0 0 999px rgba(242, 139, 130, 0); }
 }
 .screener-flash-up {
     animation: flashGreen 1.5s ease-out;
@@ -791,6 +809,16 @@ body.dark-mode [style*="color:#188038"] { color: #85d996 !important; }
 .screener-flash-down {
     animation: flashRed 1.5s ease-out;
     border-radius: 4px;
+}
+body.dark-mode .screener-flash-up {
+    animation-name: flashGreenDark;
+}
+body.dark-mode .screener-flash-down {
+    animation-name: flashRedDark;
+}
+/* Watchlist cells inherit the row stripe so no cell looks detached from the theme */
+.watchlist-row td {
+    background-color: transparent;
 }
 
 .screener-btn-secondary {
@@ -955,6 +983,101 @@ body.dark-mode .md-icon-btn.tape-is-paused {
   color: #fdd663 !important;
   background-color: rgba(253, 214, 99, 0.15) !important;
   border-color: rgba(253, 214, 99, 0.35) !important;
+}
+
+/* Tape Settings Modal */
+.settings-card {
+  max-height: calc(100% - 8px);
+  overflow-y: auto;
+}
+.settings-account {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color, #dadce0);
+  border-radius: 8px;
+  background: var(--verdict-bg, #f1f3f4);
+  margin-bottom: 4px;
+}
+.settings-account-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #9aa0a6;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.settings-account-dot.is-signed-in {
+  background: #188038;
+}
+body.dark-mode .settings-account-dot.is-signed-in {
+  background: #85d996;
+}
+.settings-segmented {
+  display: flex;
+  gap: 8px;
+}
+.settings-segmented button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 0;
+  border-radius: 8px;
+  border: 1px solid var(--border-color, #dadce0);
+  background: var(--verdict-bg, #f1f3f4);
+  color: var(--text-color, #202124);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.settings-segmented button.is-active {
+  border-color: var(--link-color, #1a73e8);
+  color: var(--link-color, #1a73e8);
+  background: rgba(26, 115, 232, 0.08);
+}
+body.dark-mode .settings-segmented button.is-active {
+  background: rgba(122, 168, 255, 0.14);
+}
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin: 8px 0;
+}
+.settings-select {
+  width: 150px;
+  flex-shrink: 0;
+  padding: 7px 10px !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+  cursor: pointer;
+}
+.settings-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-color);
+  margin: 8px 0;
+  cursor: pointer;
+  user-select: none;
+}
+.settings-check input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: #1a73e8;
+  cursor: pointer;
+}
+body.dark-mode .settings-check input[type="checkbox"] {
+  accent-color: #79a8ff;
 }
 
 /* Market Overview Section */

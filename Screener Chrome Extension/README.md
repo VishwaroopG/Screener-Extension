@@ -1,30 +1,34 @@
-# 📈 Screener & Market Tracker Extension
+# 📈 Ticker Screener — Live Watchlist, Markets & Ticker Tape
 
-A powerful Chrome extension that acts as a real-time mirror to your Screener.in account and Yahoo Finance, bringing financial data, stock watchlists, and market indices directly to your fingertips on any webpage you visit.
+**Ticker Screener** (v2.5) is a free Manifest V3 browser extension for Chrome and Firefox that turns every browser tab into a focused market workspace: a live watchlist with multiple portfolios, a 10-economy Markets tab, interactive price charts, and a ticker tape that moves with you.
 
 ## ✨ Features
 
-- **🚀 Live Ticker Tape:** See real-time price updates and percentage changes for NIFTY 50, SENSEX, and your personal watchlist across the top of any webpage.
-- **📌 Floating Watchlist Widget:** A draggable, collapsible widget that stays with you on any webpage. Instantly check current prices, P/E ratios, Market Cap, and ROCE without leaving your active tab.
-- **🔄 Screener.in Integration:** The extension securely scrapes your customized 'Top Ratios' from your Screener.in dashboard. Add a new metric on Screener, and it instantly syncs to the extension.
-- **🧠 Smart AI Verdict:** Get an instant, color-coded health check (Undervalued, Overvalued, High Risk) based on the stock's P/E and ROCE ratio.
-- **📁 Multiple Portfolios:** Create and manage distinct portfolios (e.g., Long Term, Swing Trades) directly from the side panel.
-- **📰 News Feed:** Stay updated with the latest Yahoo Finance news for the top stocks in your active portfolio.
-- **📊 Export to CSV:** Download your entire watchlist and ratios to Excel with a single click.
-- **🌙 Dark Mode:** Fully supports dark mode for comfortable reading during late-night research.
+- **📊 Live watchlist & portfolios:** Indian (NSE/BSE) and global stocks with live price, day change, sparkline trend, P/E, market cap, dividend yield and ROCE. Draggable tickers, CSV export, AI verdict per stock.
+- **🌍 10-economy Markets tab:** USA, India, UK, Singapore, Japan, Hong Kong, Germany, France, Australia, Canada — index heatmap, separated top gainers/losers, and live World Bank macro indicators.
+- **🚀 Ticker tape:** Live prices on any page. Pause, 0.5x–3.0x speed, top/bottom position, themes, sizes, scroll direction, per-site disable.
+- **📉 Interactive charts:** 1M–MAX ranges, hover price-and-date crosshair; the line is green when the period return is positive, red when negative.
+- **🕒 World market clocks:** Draggable tiles across 15 markets, time-ordered by default, click to swap.
+- **🔔 Price alerts, 🖱️ right-click to add any company, 🌙 dark mode, 🌐 55 languages, 🔄 cross-device sync.**
 
-## ⚙️ How It Works
+## ⚙️ How it works
 
-This extension does not rely on a costly backend server. Instead, it securely acts as a local frontend:
-- **Screener.in:** For financial ratios (P/E, ROCE, Market Cap). *Note: You must be logged into Screener.in on your browser for the data to sync properly.*
-- **Yahoo Finance:** For live stock prices, market indices (NIFTY 50), and the latest financial news.
+No backend, no account — everything stays in your browser's local storage:
+
+- **Screener.in** — financial ratios for Indian stocks (P/E, ROCE, market cap).
+- **Yahoo Finance** — live prices, indices, charts and sparklines.
+- **Finviz** — US fundamentals. **World Bank** — macro indicators. **Google News RSS** — news.
+
+## 📦 Install / package
+
+- Chrome: `powershell -ExecutionPolicy Bypass -File dev-tools/build-chrome.ps1` → `Screener-Extension-vX.Y.zip` (load unpacked from `extension-code/` for development).
+- Firefox: same command from the `Screener  Firefox extension` folder using its own `dev-tools/build-firefox.ps1` (see `agent.md`).
+- Store listing copy lives in `../store-assets/store-description.txt`.
 
 ## ❤️ Support
 
-If you find this extension useful for your trading or investing workflow, consider buying me a coffee! It helps keep the project alive.
-
-<a href="https://buymeacoffee.com/techieajju" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+Independent project by Vishwaroop Galgali. Join **@GlobalMarketPulseLive** on Telegram for stock market updates and research reports, or [buy me a coffee](https://buymeacoffee.com/vgexperiments).
 
 ## 📜 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT — see [LICENSE](LICENSE) for details.

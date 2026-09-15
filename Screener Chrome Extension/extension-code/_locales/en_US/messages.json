@@ -1,7 +1,7 @@
 {
-  "appDescription": { "message": "Live Indian & Global stock watchlist, draggable portfolios, and ticker tape. Support: buymeacoffee.com/vgexperiments" },
-  "actionTitle": { "message": "Open Screener Watchlist" },
-  "commandDesc": { "message": "Open Screener Side Panel" },
+  "appDescription": { "message": "Ticker Screener: live Indian & global stock watchlist, draggable portfolios, and ticker tape." },
+  "actionTitle": { "message": "Open Ticker Screener Watchlist" },
+  "commandDesc": { "message": "Open Ticker Screener Side Panel" },
 
   "speedTitle": {
     "message": "Tape Speed: $SPEED$ (Click to adjust 0.5x – 3.0x)",
@@ -224,7 +224,7 @@
   "modalExchangeDefault": { "message": "NSE/BSE" },
   "modalGlobal": { "message": "Global" },
   "modalDetails": { "message": "Details" },
-  "tapeLoading": { "message": "Loading Screener Watchlist..." },
+  "tapeLoading": { "message": "Loading Ticker Screener Watchlist..." },
 
   "notifAboveTitle": { "message": "Price Alert Triggered! 📈" },
   "notifAbove": {
@@ -236,13 +236,13 @@
     "message": "$TICKER$ has dropped below ₹$PRICE$ (Current: ₹$CUR$)",
     "placeholders": { "ticker": { "content": "$1" }, "price": { "content": "$2" }, "cur": { "content": "$3" } }
   },
-  "notifGenericTitle": { "message": "Screener Price Alert" },
+  "notifGenericTitle": { "message": "Ticker Screener Price Alert" },
   "notifGeneric": {
     "message": "$TICKER$ has crossed your target of $TARGET$ (Current: $CUR$)",
     "placeholders": { "ticker": { "content": "$1" }, "target": { "content": "$2" }, "cur": { "content": "$3" } }
   },
-  "ctxAdd": { "message": "Add \"%s\" to Screener Watchlist" },
-  "ctxAddedTitle": { "message": "Screener Watchlist" },
+  "ctxAdd": { "message": "Add \"%s\" to Ticker Screener Watchlist" },
+  "ctxAddedTitle": { "message": "Ticker Screener Watchlist" },
   "ctxAddedMsg": {
     "message": "Added $TICKER$ to your watchlist!",
     "placeholders": { "ticker": { "content": "$1" } }

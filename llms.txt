@@ -1,6 +1,6 @@
-# Screener Pro
+# Ticker Screener
 
-> Screener Pro – Live Watchlist & Ticker is a free browser extension for Chrome and Firefox.
+> Ticker Screener – Live Watchlist & Ticker is a free browser extension for Chrome and Firefox.
 > It puts a live stock watchlist, a scrolling ticker tape, 10-economy market data and P/E + ROCE
 > stock verdicts inside every browser tab. Indian (NSE/BSE) prices show in ₹; global stocks keep
 > native currencies. No account, no backend — data stays in browser local storage.
@@ -22,7 +22,7 @@
 
 ## Blog posts
 
-- Screener Pro Explained: Live NSE/BSE Watchlist, Ticker Tape & Stock Alerts in Your Browser: https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=welcome-to-screener-pro-blog
+- Ticker Screener Explained: Live NSE/BSE Watchlist, Ticker Tape & Stock Alerts in Your Browser: https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=welcome-to-screener-pro-blog
 - India's 4 Critical Mineral Parks (Rare Earths, Lithium, Nickel): What Investors Should Watch: https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=india-critical-mineral-parks-rees-lithium-nickel
 
 ## Data sources

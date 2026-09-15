@@ -1,7 +1,7 @@
-# Screener Pro - Project Handover Document
+# Ticker Screener - Project Handover Document
 
 ## 1. Project Concept
-**Screener Pro** is a comprehensive Chrome Extension (Manifest V3) designed for investors and traders. It provides a live watchlist, a globally injected scrolling ticker tape, and portfolio tracking. 
+**Ticker Screener** is a comprehensive Chrome Extension (Manifest V3) designed for investors and traders. It provides a live watchlist, a globally injected scrolling ticker tape, and portfolio tracking. 
 The extension aggregates real-time and historical financial data by scraping Screener.in (for Indian stocks) and querying the Yahoo Finance API (for global stocks and market indices). It also fetches latest financial news from Google News RSS feeds.
 
 ## 2. Core Components & Architecture

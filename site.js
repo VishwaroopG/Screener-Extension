@@ -1,4 +1,4 @@
-/* Screener Pro landing interactions: custom cursor, scroll reveals, mobile drawer, read-more toggles. */
+/* Ticker Screener landing interactions: custom cursor, scroll reveals, mobile drawer, read-more toggles. */
 (function () {
   'use strict';
 

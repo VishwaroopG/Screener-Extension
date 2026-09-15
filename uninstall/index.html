@@ -4,18 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
-  <title>Help Improve Screener Pro</title>
+  <title>Help Improve Ticker Screener</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../site.css?v=3">
+  <link rel="stylesheet" href="../site.css?v=4">
 </head>
 <body>
   <div class="aurora"></div>
   <main class="container feedback-page">
     <section class="feedback-card">
-      <a class="brand" href="../">Screener <em>Pro</em></a>
-      <img src="../store-assets/icon_128.png" alt="Screener Pro icon" style="display:block; width:64px; height:64px; border-radius:16px; margin:32px auto 0; box-shadow:0 4px 20px rgba(0,0,0,0.35);">
+      <a class="brand" href="../">Ticker <em>Screener</em></a>
+      <img src="../store-assets/icon_128.png" alt="Ticker Screener icon" style="display:block; width:64px; height:64px; border-radius:16px; margin:32px auto 0; box-shadow:0 4px 20px rgba(0,0,0,0.35);">
       <h1>Help us make the next version better.</h1>
       <p>Sorry to see you go. Tell us what happened, what broke, or what you'd love to see — it lands straight in our inbox.</p>
       <form id="feedback-form" class="feedback-form">
@@ -33,7 +33,7 @@
         <button class="button button-primary" type="submit" id="feedback-submit">Send feedback</button>
         <p id="feedback-status" class="feedback-note" role="status"></p>
       </form>
-      <p class="feedback-note"><a href="../">Return to Screener Pro</a></p>
+      <p class="feedback-note"><a href="../">Return to Ticker Screener</a></p>
     </section>
   </main>
   <div id="confirm-dialog" class="confirm-overlay" style="display:none" role="alertdialog" aria-label="Feedback sent">
@@ -124,7 +124,7 @@
           data.append('email', fields.email);
           data.append('message', fields.message);
           files.forEach((f) => data.append('attachment', f, f.name));
-          data.append('_subject', 'Screener Pro feedback');
+          data.append('_subject', 'Ticker Screener feedback');
           data.append('_template', 'table');
           data.append('_captcha', 'false');
           const r = await fetch('https://formsubmit.co/ajax/vishwaroopg8@gmail.com', {
@@ -142,7 +142,7 @@
           showDialog();
         } catch (err) {
           const mailto = 'mailto:vishwaroopg8@gmail.com?subject='
-            + encodeURIComponent('Screener Pro feedback')
+            + encodeURIComponent('Ticker Screener feedback')
             + '&body=' + encodeURIComponent((fields.name ? 'Name: ' + fields.name + '\n' : '')
               + (fields.email ? 'Email: ' + fields.email + '\n' : '') + '\n' + fields.message);
           status.innerHTML = 'Automatic send failed (attachments need automatic send). <a href="' + mailto + '">Click here to send the text via your email app instead</a>.';

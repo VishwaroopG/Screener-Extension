@@ -31,6 +31,187 @@ function formatMacroValue(raw, def) {
   const grouped = num.toLocaleString('en-US', { maximumFractionDigits: decimals, minimumFractionDigits: decimals });
   return `${def.prefix || ''}${grouped}${def.suffix || ''}`;
 }
+// ---- Cross-device preference sync ----
+// Small preference keys are mirrored to chrome.storage.sync, which the browser
+// syncs automatically via the user's browser profile (Google / Firefox account).
+// No separate extension account or backend is needed: signing in to the browser
+// is the sign-in. Bulky / high-churn caches (cachedData, marketIndices,
+// macroStats) intentionally stay in local-only storage.
+const SYNCABLE_KEYS = [
+  'tapePosition', 'tapeSize', 'tapeTheme', 'tapeDirection',
+  'tapePauseOnHover', 'tapeShowIndices', 'tapeShowChange', 'tapeShowAmount',
+  'tapeVisible', 'tapePaused', 'tapeSpeedMultiplier',
+  'theme', 'portfolios', 'screenerWatchlist', 'activePortfolioName', 'alerts', 'priceAlerts',
+  'clockKeys', 'pinnedIndices', 'disabledDomains',
+  'overviewEconomy', 'macroTiles'
+];
+const SYNC_TIME_KEY = 'lastPrefsSyncAt';
+let syncPushTimer = null;
+
+function prefsSyncArea() {
+  try {
+    return (chrome.storage && chrome.storage.sync) ? chrome.storage.sync : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function syncValsEqual(a, b) {
+  try {
+    return JSON.stringify(a) === JSON.stringify(b);
+  } catch (e) {
+    return a === b;
+  }
+}
+
+function getSyncEmail() {
+  return new Promise((resolve) => {
+    try {
+      if (chrome.identity && chrome.identity.getProfileUserInfo) {
+        chrome.identity.getProfileUserInfo((info) => {
+          if (chrome.runtime.lastError) {
+            resolve('');
+            return;
+          }
+          resolve((info && info.email) || '');
+        });
+      } else {
+        resolve('');
+      }
+    } catch (e) {
+      resolve('');
+    }
+  });
+}
+
+async function isPrefsSyncEnabled() {
+  try {
+    const res = await chrome.storage.local.get(['syncEnabled']);
+    return res.syncEnabled !== false;
+  } catch (e) {
+    return true;
+  }
+}
+
+// Push local preference changes up to browser-profile sync (last-writer-wins).
+async function pushPrefsToSync() {
+  try {
+    const area = prefsSyncArea();
+    if (!area) return { success: false, reason: 'unsupported' };
+    if (!(await isPrefsSyncEnabled())) return { success: false, reason: 'disabled' };
+    const [localVals, syncVals] = await Promise.all([
+      chrome.storage.local.get(SYNCABLE_KEYS),
+      new Promise((resolve) => {
+        try {
+          area.get(SYNCABLE_KEYS, (res) => {
+            if (chrome.runtime.lastError) resolve({});
+            else resolve(res || {});
+          });
+        } catch (e) {
+          resolve({});
+        }
+      })
+    ]);
+    const diff = {};
+    for (const key of SYNCABLE_KEYS) {
+      if (localVals[key] !== undefined && !syncValsEqual(localVals[key], syncVals[key])) {
+        diff[key] = localVals[key];
+      }
+    }
+    if (Object.keys(diff).length === 0) return { success: true, pushed: 0 };
+    const setOk = await new Promise((resolve) => {
+      try {
+        area.set(diff, () => resolve(!chrome.runtime.lastError));
+      } catch (e) {
+        resolve(false);
+      }
+    });
+    if (!setOk) return { success: false, reason: 'quota' };
+    await chrome.storage.local.set({ [SYNC_TIME_KEY]: Date.now() });
+    return { success: true, pushed: Object.keys(diff).length };
+  } catch (e) {
+    return { success: false, reason: 'error' };
+  }
+}
+
+// Pull the latest synced preferences down into local storage (sync wins).
+async function pullPrefsFromSync() {
+  try {
+    const area = prefsSyncArea();
+    if (!area) return { success: false, reason: 'unsupported' };
+    if (!(await isPrefsSyncEnabled())) return { success: false, reason: 'disabled' };
+    const [localVals, syncVals] = await Promise.all([
+      chrome.storage.local.get(SYNCABLE_KEYS),
+      new Promise((resolve) => {
+        try {
+          area.get(SYNCABLE_KEYS, (res) => {
+            if (chrome.runtime.lastError) resolve({});
+            else resolve(res || {});
+          });
+        } catch (e) {
+          resolve({});
+        }
+      })
+    ]);
+    const apply = {};
+    for (const key of SYNCABLE_KEYS) {
+      if (syncVals[key] !== undefined && !syncValsEqual(syncVals[key], localVals[key])) {
+        apply[key] = syncVals[key];
+      }
+    }
+    if (Object.keys(apply).length > 0) {
+      await chrome.storage.local.set(apply);
+      // Stamp the time only when preferences actually moved — a no-op pull
+      // must not pretend a sync happened.
+      await chrome.storage.local.set({ [SYNC_TIME_KEY]: Date.now() });
+    }
+    return { success: true, pulled: Object.keys(apply).length };
+  } catch (e) {
+    return { success: false, reason: 'error' };
+  }
+}
+
+function schedulePrefsPush() {
+  if (syncPushTimer) clearTimeout(syncPushTimer);
+  syncPushTimer = setTimeout(() => {
+    syncPushTimer = null;
+    pushPrefsToSync();
+  }, 2000);
+}
+
+// Mirror preference changes in both directions (diff-guarded, so no echo loops:
+// a push writes identical values to sync, which then compare equal and stop).
+chrome.storage.onChanged.addListener((changes, namespace) => {
+  try {
+    if (namespace === 'local') {
+      for (const key of SYNCABLE_KEYS) {
+        if (changes[key] !== undefined) {
+          schedulePrefsPush();
+          break;
+        }
+      }
+    } else if (namespace === 'sync') {
+      (async () => {
+        if (!(await isPrefsSyncEnabled())) return;
+        const keys = Object.keys(changes).filter((k) => SYNCABLE_KEYS.includes(k));
+        if (keys.length === 0) return;
+        const localVals = await chrome.storage.local.get(keys);
+        const apply = {};
+        for (const key of keys) {
+          const incoming = changes[key].newValue;
+          if (incoming !== undefined && !syncValsEqual(incoming, localVals[key])) {
+            apply[key] = incoming;
+          }
+        }
+        if (Object.keys(apply).length > 0) {
+          await chrome.storage.local.set(apply);
+          await chrome.storage.local.set({ [SYNC_TIME_KEY]: Date.now() });
+        }
+      })();
+    }
+  } catch (e) {}
+});
+
 // Open side panel on action icon click (Chrome only — Firefox uses sidebar_action)
 if (chrome.sidePanel && chrome.sidePanel.setPanelBehavior) {
   chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch((error) => console.error(error));
@@ -375,9 +556,13 @@ async function fetchIndices() {
 
 chrome.runtime.onStartup.addListener(() => {
   chrome.alarms.create('checkAlerts', { periodInMinutes: 5 });
+  chrome.alarms.create('refreshHolidays', { periodInMinutes: 720 });
+  refreshMarketHolidays();
 });
 chrome.runtime.onInstalled.addListener(() => {
   chrome.alarms.create('checkAlerts', { periodInMinutes: 5 });
+  chrome.alarms.create('refreshHolidays', { periodInMinutes: 720 });
+  refreshMarketHolidays();
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
@@ -387,7 +572,37 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === 'syncWatchlist') {
     syncWatchlistData();
   }
+  if (alarm.name === 'refreshHolidays') {
+    refreshMarketHolidays();
+  }
 });
+
+// Daily market-holiday refresh: a single small JSON on our own site holds
+// every exchange's full-day closures, so holiday fixes ship without a store
+// re-publish. Cached in local storage; sidepanel reads the same keys.
+const HOLIDAYS_URL = 'https://vishwaroopg.github.io/Screener-Extension/market-holidays.json';
+const HOLIDAYS_TTL_MS = 24 * 60 * 60 * 1000;
+
+async function refreshMarketHolidays() {
+  try {
+    const res = await new Promise((resolve) => {
+      try {
+        chrome.storage.local.get(['marketHolidaysFetchedAt'], (r) => {
+          if (chrome.runtime.lastError) resolve({});
+          else resolve(r || {});
+        });
+      } catch (e) {
+        resolve({});
+      }
+    });
+    if (res.marketHolidaysFetchedAt && (Date.now() - res.marketHolidaysFetchedAt) < HOLIDAYS_TTL_MS) return;
+    const response = await fetch(HOLIDAYS_URL + '?v=' + new Date().toISOString().slice(0, 10));
+    if (!response.ok) return;
+    const data = await response.json();
+    if (!data || !data.holidays || typeof data.holidays !== 'object') return;
+    chrome.storage.local.set({ marketHolidays: data.holidays, marketHolidaysFetchedAt: Date.now() });
+  } catch (e) {}
+}
 
 async function checkPriceAlerts() {
   chrome.storage.local.get(['alerts', 'portfolios'], async (res) => {
@@ -520,6 +735,26 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     syncWatchlistData();
   }
 });
+
+// One-time cleanup: an earlier context-menu build extracted "CONSOLIDATED"
+// (the URL tail) instead of the ticker. Drop that bogus entry wherever it
+// landed so it stops showing "Could not fetch CONSOLIDATED".
+(async () => {
+  try {
+    const stored = await chrome.storage.local.get(['portfolios', 'screenerWatchlist']);
+    let changed = false;
+    const clean = (list) => {
+      if (!Array.isArray(list)) return list;
+      const next = list.filter((tk) => tk !== 'CONSOLIDATED');
+      if (next.length !== list.length) changed = true;
+      return next;
+    };
+    const portfolios = stored.portfolios || {};
+    for (const name of Object.keys(portfolios)) portfolios[name] = clean(portfolios[name]);
+    const screenerWatchlist = clean(stored.screenerWatchlist || []);
+    if (changed) await chrome.storage.local.set({ portfolios, screenerWatchlist });
+  } catch (e) {}
+})();
 
 // Run once on startup
 syncWatchlistData();
@@ -774,6 +1009,34 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 
+  if (message.type === 'SYNC_NOW') {
+    (async () => {
+      const pulled = await pullPrefsFromSync();
+      const pushed = await pushPrefsToSync();
+      sendResponse({ success: true, pulled: pulled.pulled || 0, pushed: pushed.pushed || 0 });
+    })();
+    return true;
+  }
+
+  if (message.type === 'GET_SYNC_STATE') {
+    (async () => {
+      let enabled = true;
+      let lastSync = 0;
+      try {
+        const res = await chrome.storage.local.get(['syncEnabled', SYNC_TIME_KEY]);
+        enabled = res.syncEnabled !== false;
+        lastSync = res[SYNC_TIME_KEY] || 0;
+      } catch (e) {}
+      const email = await getSyncEmail();
+      let canReadIdentity = false;
+      try {
+        canReadIdentity = !!(chrome.identity && chrome.identity.getProfileUserInfo);
+      } catch (e) {}
+      sendResponse({ success: true, enabled, lastSync, email, supported: !!prefsSyncArea(), canReadIdentity });
+    })();
+    return true;
+  }
+
   if (message.type === 'SET_TAPE_SPEED') {
     const mult = typeof message.speedMultiplier === 'number' ? message.speedMultiplier : 1.0;
     chrome.storage.local.set({ tapeSpeedMultiplier: mult, tapeSpeed: mult * 0.8 }, () => {
@@ -792,46 +1055,110 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-// --- Context Menu Logic ---
+// --- Context Menu Logic ("Add selection to Ticker Screener watchlist") ---
+function setupContextMenu() {
+  const create = () => {
+    try {
+      chrome.contextMenus.create({
+        id: "addToScreener",
+        title: t('ctxAdd') || 'Add "%s" to Ticker Screener Watchlist',
+        contexts: ["selection"]
+      });
+    } catch (e) {}
+  };
+  try {
+    chrome.contextMenus.removeAll(() => create());
+  } catch (e) {
+    create();
+  }
+}
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.contextMenus.create({
-    id: "addToScreener",
-    title: t('ctxAdd'),
-    contexts: ["selection"]
-  });
-  
+  setupContextMenu();
+
   // Set Uninstall Survey URL
   chrome.runtime.setUninstallURL("https://forms.gle/YOUR_GOOGLE_FORM_URL_HERE");
 });
+try {
+  if (chrome.runtime.onStartup) chrome.runtime.onStartup.addListener(setupContextMenu);
+} catch (e) {}
+// Service workers restart — ensure the menu exists on every wake-up.
+try { setupContextMenu(); } catch (e) {}
+
+// Resolve selected text to a watchlist ticker: Screener.in first (Indian
+// stocks), Yahoo Finance search as fallback (global stocks/ETFs/indices).
+async function resolveCtxTicker(query) {
+  const q = (query || '').trim();
+  if (!q) return null;
+  try {
+    const res = await fetch(`https://www.screener.in/api/company/search/?q=${encodeURIComponent(q)}`);
+    if (res.ok) {
+      const results = await res.json();
+      if (results && results.length > 0 && results[0].url) {
+        // Company URLs look like /company/RELIANCE/consolidated/ — the ticker
+        // is the segment right after "company", NOT the last segment.
+        const segs = String(results[0].url).split('/').filter(Boolean);
+        const ci = segs.indexOf('company');
+        const raw = (ci !== -1 && segs[ci + 1]) ? segs[ci + 1] : segs[segs.length - 1];
+        if (raw) return raw.toUpperCase();
+      }
+    }
+  } catch (e) {}
+  try {
+    const res = await fetch(`https://query2.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(q)}`);
+    if (res.ok) {
+      const data = await res.json();
+      const quotes = (data && data.quotes) || [];
+      if (quotes.length > 0 && quotes[0].symbol) return String(quotes[0].symbol).toUpperCase();
+    }
+  } catch (e) {}
+  return null;
+}
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-  if (info.menuItemId === "addToScreener") {
-    const query = info.selectionText.trim();
-    if (!query) return;
+  if (info.menuItemId !== "addToScreener") return;
+  const query = (info.selectionText || '').trim();
+  if (!query) return;
+  const notify = (title, message) => {
     try {
-      const res = await fetch(`https://www.screener.in/api/company/search/?q=${encodeURIComponent(query)}`);
-      const results = await res.json();
-      if (results && results.length > 0) {
-        const parts = results[0].url.split('/');
-        const ticker = parts[2];
-        const { screenerWatchlist = [] } = await chrome.storage.local.get(['screenerWatchlist']);
-        if (!screenerWatchlist.includes(ticker)) {
-          screenerWatchlist.push(ticker);
-          await chrome.storage.local.set({ screenerWatchlist });
-          syncWatchlistData(); // fetch new data immediately
-          // Notify user via a silent push notification
-          chrome.notifications.create({
-            type: 'basic',
-            iconUrl: 'icon_128.png',
-            title: t('ctxAddedTitle'),
-            message: t('ctxAddedMsg', ticker),
-            silent: true
-          });
-        }
-      }
-    } catch(err) {
-      console.error('Context menu search failed', err);
+      chrome.notifications.create({
+        type: 'basic',
+        iconUrl: 'icon_128.png',
+        title,
+        message,
+        silent: true
+      });
+    } catch (e) {}
+  };
+  try {
+    const ticker = await resolveCtxTicker(query);
+    if (!ticker) {
+      notify(
+        t('ctxAddedTitle') || 'Ticker Screener Watchlist',
+        (t('ctxNotFound', query) || `Could not find "${query}". Try selecting the exact company name.`)
+      );
+      return;
     }
+    const stored = await chrome.storage.local.get(['portfolios', 'screenerWatchlist', 'activePortfolioName']);
+    let portfolios = stored.portfolios || {};
+    let target = stored.activePortfolioName;
+    if (!target || !portfolios[target]) {
+      const names = Object.keys(portfolios);
+      target = names.length > 0 ? names[0] : 'Sample';
+      if (!portfolios[target]) portfolios[target] = [];
+    }
+    if ((portfolios[target] || []).includes(ticker)) {
+      notify(t('ctxAddedTitle') || 'Ticker Screener Watchlist', t('alreadyButton') || 'Already in Watchlist');
+      return;
+    }
+    portfolios[target] = [...(portfolios[target] || []), ticker];
+    await chrome.storage.local.set({ portfolios, screenerWatchlist: portfolios[target] });
+    syncWatchlistData(); // fetch new data immediately
+    notify(
+      t('ctxAddedTitle') || 'Ticker Screener Watchlist',
+      t('ctxAddedMsg', ticker) || `Added ${ticker} to your watchlist!`
+    );
+  } catch (err) {
+    console.error('Context menu add failed', err);
   }
 });
 
@@ -1001,6 +1328,9 @@ async function fetchFastPrices() {
     isFetchingFastPrices = false;
   }
 }
+
+// Pull synced preferences on startup so this device matches the latest state
+pullPrefsFromSync();
 
 // Start 1-second ultra-fast live price updates
 fetchFastPrices();

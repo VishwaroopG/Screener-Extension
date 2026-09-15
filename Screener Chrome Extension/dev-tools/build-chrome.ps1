@@ -1,4 +1,4 @@
-# Builds the Chrome Web Store package for Screener Pro.
+# Builds the Chrome Web Store package for Ticker Screener.
 # Usage: powershell -ExecutionPolicy Bypass -File dev-tools/build-chrome.ps1
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot

@@ -1,10 +1,9 @@
 /* ticker_tape.css */
 #screener-ticker-tape {
   position: fixed;
-  bottom: 0 !important; top: auto !important;
   left: 0;
   width: 100%;
-  height: 30px;
+  height: var(--screener-tape-h, 30px);
   overflow: hidden;
   background-color: #2d3139;
   color: #f1f1f1;
@@ -16,6 +15,77 @@
   overflow: hidden;
   isolation: isolate;
   box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* --- Tape position (user setting; default: bottom) --- */
+#screener-ticker-tape.screener-tape-bottom {
+  bottom: 0 !important; top: auto !important;
+}
+#screener-ticker-tape.screener-tape-top {
+  top: 0 !important; bottom: auto !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* --- Tape size presets --- */
+#screener-ticker-tape.screener-tape-compact {
+  --screener-tape-h: 26px;
+  font-size: 12px;
+}
+#screener-ticker-tape.screener-tape-comfortable {
+  --screener-tape-h: 30px;
+  font-size: 14px;
+}
+#screener-ticker-tape.screener-tape-large {
+  --screener-tape-h: 38px;
+  font-size: 15px;
+}
+#screener-ticker-tape.screener-tape-large .screener-tape-scroll-btn {
+  width: 38px;
+  height: 38px;
+}
+#screener-ticker-tape.screener-tape-compact .screener-tape-scroll-btn {
+  width: 26px;
+  height: 26px;
+}
+
+/* --- Tape themes --- */
+#screener-ticker-tape.screener-tape-dark {
+  background-color: #2d3139;
+  color: #f1f1f1;
+}
+#screener-ticker-tape.screener-tape-light {
+  background-color: #ffffff;
+  color: #202124;
+  border-bottom: 1px solid #dadce0;
+}
+#screener-ticker-tape.screener-tape-light .screener-ticker-price {
+  color: #188038 !important;
+}
+#screener-ticker-tape.screener-tape-light .screener-tape-scroll-btn {
+  background: rgba(255, 255, 255, 0.94);
+  color: #202124;
+}
+#screener-ticker-tape.screener-tape-blue {
+  background-color: #0b3d91;
+  color: #ffffff;
+}
+#screener-ticker-tape.screener-tape-blue .screener-tape-scroll-btn {
+  background: rgba(11, 61, 145, 0.94);
+}
+
+/* --- Content visibility toggles --- */
+#screener-ticker-tape.screener-tape-hide-change .screener-ticker-change {
+  display: none !important;
+}
+
+#screener-ticker-tape .screener-ticker-amount {
+  font-size: 12px;
+  margin-left: 6px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+#screener-ticker-tape.screener-tape-hide-amount .screener-ticker-amount {
+  display: none !important;
 }
 
 .screener-marquee-container {
@@ -106,12 +176,21 @@
 
 
 html.screener-tape-active {
-  margin-bottom: 30px !important; margin-top: 0 !important;
+  margin-bottom: var(--screener-tape-h, 30px) !important; margin-top: 0 !important;
 }
 
 /* Ensure page content is not overlapped by the tape */
 html.screener-tape-active body {
-  padding-bottom: 30px !important;
+  padding-bottom: var(--screener-tape-h, 30px) !important;
+}
+
+/* Top-positioned tape pushes page content down instead */
+html.screener-tape-active-top {
+  margin-top: var(--screener-tape-h, 30px) !important; margin-bottom: 0 !important;
+}
+html.screener-tape-active-top body {
+  padding-top: var(--screener-tape-h, 30px) !important;
+  padding-bottom: 0 !important;
 }
 
 /* Flash Animations for Live Price Ticks */

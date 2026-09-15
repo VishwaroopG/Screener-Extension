@@ -1,9 +1,9 @@
-# Screener Pro Agent Context
+# Ticker Screener Agent Context
 
-This file provides context for any AI agent working on the Screener Pro extension. Read this before making changes to understand the architecture, design choices, and past bugs.
+This file provides context for any AI agent working on the Ticker Screener extension. Read this before making changes to understand the architecture, design choices, and past bugs.
 
 ## Project Overview
-**Screener Pro** is a Chrome Extension (Manifest V3) that provides a live stock watchlist (side panel) and a globally injected ticker tape (content script) across all websites. It aggregates real-time data from Yahoo Finance (global markets/indices) and Screener.in (Indian equities).
+**Ticker Screener** is a Chrome Extension (Manifest V3) that provides a live stock watchlist (side panel) and a globally injected ticker tape (content script) across all websites. It aggregates real-time data from Yahoo Finance (global markets/indices) and Screener.in (Indian equities).
 
 ## Architecture
 - **`manifest.json`**: Manifest V3. Permissions include `sidePanel`, `storage`, `alarms`, `notifications`, `contextMenus`.
