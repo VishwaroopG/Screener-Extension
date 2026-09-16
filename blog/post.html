@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" id="meta-description" content="Ticker Screener Blog — free browser extension guides (live NSE/BSE watchlist, ticker tape, price alerts) and plain-language market notes.">
+  <meta name="description" id="meta-description" content="Ticker Screener Blog — free browser extension guides (live US watchlist with NYSE/Nasdaq, ticker tape, price alerts) and plain-language market notes.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" id="canonical-link" href="https://vishwaroopg.github.io/Screener-Extension/blog/">
   <meta property="og:type" content="article">
@@ -39,7 +39,7 @@
   <script>
     var SITE = 'https://vishwaroopg.github.io/Screener-Extension';
     function fmtDate(iso) {
-      try { return new Date(iso + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); }
+      try { return new Date(iso + 'T00:00:00').toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }); }
       catch (e) { return iso; }
     }
     function setMeta(id, attr, value) {

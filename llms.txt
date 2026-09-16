@@ -1,9 +1,9 @@
 # Ticker Screener
 
 > Ticker Screener – Live Watchlist & Ticker is a free browser extension for Chrome and Firefox.
-> It puts a live stock watchlist, a scrolling ticker tape, 10-economy market data and P/E + ROCE
-> stock verdicts inside every browser tab. Indian (NSE/BSE) prices show in ₹; global stocks keep
-> native currencies. No account, no backend — data stays in browser local storage.
+> Built US-first: live NYSE/Nasdaq watchlist, S&P 500 / Nasdaq / Dow ticker tape, P/E-based
+> stock verdicts and price alerts inside every browser tab. US prices show in $; 9 more
+> economies keep native currencies. No account, no backend — data stays in browser local storage.
 
 - Homepage: https://vishwaroopg.github.io/Screener-Extension/
 - Blog: https://vishwaroopg.github.io/Screener-Extension/blog/
@@ -13,9 +13,9 @@
 
 ## Features (what questions this answers)
 
-- Live NSE/BSE watchlist in the browser side panel (price, day change, sparklines, market cap, P/E, ratios). Shortcut: Ctrl+Shift+S (Command+Shift+S on Mac).
-- Live ticker tape on every website (NIFTY 50, SENSEX, watchlist; pause, 0.5x–3.0x speed, per-site disable).
-- Markets tab: USA, India, UK, Singapore, Japan, Hong Kong, Germany, France, Australia, Canada — index heatmap, top gainers/losers, World Bank macro tiles (inflation, unemployment, GDP growth, GDP per capita).
+- Live US watchlist in the browser side panel (NYSE/Nasdaq price, day change, sparklines, market cap, P/E, ratios). Shortcut: Ctrl+Shift+S (Command+Shift+S on Mac).
+- Live ticker tape on every website (S&P 500, Nasdaq, Dow, watchlist; pause, 0.5x–3.0x speed, per-site disable).
+- Markets tab: USA first, plus UK, India, Singapore, Japan, Hong Kong, Germany, France, Australia, Canada — index heatmap, top gainers/losers, World Bank macro tiles (inflation, unemployment, GDP growth, GDP per capita).
 - Smart verdicts from P/E + ROCE (undervalued / overvalued / high risk) + custom price alerts with notifications.
 - Add stocks from any webpage via right-click; Screener.in Top Ratios sync when logged in.
 - Multiple portfolios, CSV export, stock news feed, dark mode, interactive 1M–MAX charts.
@@ -27,4 +27,4 @@
 
 ## Data sources
 
-- Prices/indices/news: Yahoo Finance. Indian ratios: Screener.in (login required for custom ratios). Macro: World Bank.
+- Prices/indices/news: Yahoo Finance. US fundamentals: Finviz. Indian ratios: Screener.in (login required for custom ratios). Macro: World Bank.
