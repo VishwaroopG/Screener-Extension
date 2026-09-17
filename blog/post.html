@@ -51,7 +51,7 @@
     if (!slug) {
       article.innerHTML = '<p class="section-copy">No post selected. <a href="./">Back to all posts</a>.</p>';
     } else {
-      fetch('posts.json?v=4').then(function (r) { return r.json(); }).then(function (posts) {
+      fetch('posts.json?v=5').then(function (r) { return r.json(); }).then(function (posts) {
         var meta = posts.filter(function (p) { return p.slug === slug; })[0];
         if (!meta) throw new Error('not found');
         var url = SITE + '/blog/post.html?slug=' + encodeURIComponent(meta.slug);
@@ -70,7 +70,7 @@
           author: { '@type': 'Organization', name: 'Ticker Screener' },
           mainEntityOfPage: url
         });
-        return fetch('posts/' + encodeURIComponent(slug) + '.html?v=4').then(function (r) {
+        return fetch('posts/' + encodeURIComponent(slug) + '.html?v=5').then(function (r) {
           if (!r.ok) throw new Error('not found');
           return r.text();
         }).then(function (body) {
