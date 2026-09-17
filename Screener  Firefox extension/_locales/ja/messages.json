@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "マーケットカードを編集" },
   "displayNameLabel": { "message": "表示名:" },
   "displayNamePh": { "message": "例 NIFTY IT、Apple、Reliance" },
-  "symbolLabel": { "message": "シンボル (Yahoo/NSE):" },
+  "symbolLabel": { "message": "シンボル:" },
   "symbolPh": { "message": "例 ^CNXIT、AAPL、RELIANCE.NS" },
   "removeBtn": { "message": "削除" },
   "cancelBtn": { "message": "キャンセル" },

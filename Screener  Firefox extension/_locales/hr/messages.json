@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Uredi tržišnu karticu" },
   "displayNameLabel": { "message": "Prikazano ime:" },
   "displayNamePh": { "message": "npr. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Simbol (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Simbol:" },
   "symbolPh": { "message": "npr. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Ukloni" },
   "cancelBtn": { "message": "Otkaži" },

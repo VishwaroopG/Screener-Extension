@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Edita la targeta de mercat" },
   "displayNameLabel": { "message": "Nom visible:" },
   "displayNamePh": { "message": "p. ex. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Símbol (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Símbol:" },
   "symbolPh": { "message": "p. ex. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Treu" },
   "cancelBtn": { "message": "Cancel·la" },

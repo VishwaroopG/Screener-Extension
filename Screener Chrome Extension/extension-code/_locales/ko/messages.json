@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "시장 카드 편집" },
   "displayNameLabel": { "message": "표시 이름:" },
   "displayNamePh": { "message": "예: NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "심볼 (Yahoo/NSE):" },
+  "symbolLabel": { "message": "심볼:" },
   "symbolPh": { "message": "예: ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "제거" },
   "cancelBtn": { "message": "취소" },

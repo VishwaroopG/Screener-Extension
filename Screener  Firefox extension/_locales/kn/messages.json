@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "ಮಾರುಕಟ್ಟೆ ಕಾರ್ಡ್ ಸಂಪಾದಿಸಿ" },
   "displayNameLabel": { "message": "ಪ್ರದರ್ಶನ ಹೆಸರು:" },
   "displayNamePh": { "message": "ಉದಾ. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "ಸಿಂಬಲ್ (Yahoo/NSE):" },
+  "symbolLabel": { "message": "ಸಿಂಬಲ್:" },
   "symbolPh": { "message": "ಉದಾ. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "ತೆಗೆದುಹಾಕಿ" },
   "cancelBtn": { "message": "ರದ್ದುಮಾಡಿ" },

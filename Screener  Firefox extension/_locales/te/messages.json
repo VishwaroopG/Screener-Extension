@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "మార్కెట్ కార్డ్ సవరించు" },
   "displayNameLabel": { "message": "ప్రదర్శన పేరు:" },
   "displayNamePh": { "message": "ఉదా. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "సింబల్ (Yahoo/NSE):" },
+  "symbolLabel": { "message": "సింబల్:" },
   "symbolPh": { "message": "ఉదా. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "తొలగించు" },
   "cancelBtn": { "message": "రద్దు చేయి" },

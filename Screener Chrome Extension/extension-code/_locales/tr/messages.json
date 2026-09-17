@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Piyasa kartını düzenle" },
   "displayNameLabel": { "message": "Görünen ad:" },
   "displayNamePh": { "message": "örn. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Sembol (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Sembol:" },
   "symbolPh": { "message": "örn. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Kaldır" },
   "cancelBtn": { "message": "İptal" },

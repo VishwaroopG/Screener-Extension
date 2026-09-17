@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Edit kad pasaran" },
   "displayNameLabel": { "message": "Nama paparan:" },
   "displayNamePh": { "message": "cth. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Simbol (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Simbol:" },
   "symbolPh": { "message": "cth. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Buang" },
   "cancelBtn": { "message": "Batal" },

@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "編輯市場卡片" },
   "displayNameLabel": { "message": "顯示名稱：" },
   "displayNamePh": { "message": "例如 NIFTY IT、Apple、Reliance" },
-  "symbolLabel": { "message": "代碼 (Yahoo/NSE)：" },
+  "symbolLabel": { "message": "代碼：" },
   "symbolPh": { "message": "例如 ^CNXIT、AAPL、RELIANCE.NS" },
   "removeBtn": { "message": "移除" },
   "cancelBtn": { "message": "取消" },

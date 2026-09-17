@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Redaguoti rinkos kortelę" },
   "displayNameLabel": { "message": "Rodomas vardas:" },
   "displayNamePh": { "message": "pvz. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Simbolis (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Simbolis:" },
   "symbolPh": { "message": "pvz. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Pašalinti" },
   "cancelBtn": { "message": "Atšaukti" },

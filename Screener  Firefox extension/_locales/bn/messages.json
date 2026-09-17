@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "মার্কেট কার্ড সম্পাদনা" },
   "displayNameLabel": { "message": "প্রদর্শন নাম:" },
   "displayNamePh": { "message": "যেমন NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "সিম্বল (Yahoo/NSE):" },
+  "symbolLabel": { "message": "সিম্বল:" },
   "symbolPh": { "message": "যেমন ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "সরান" },
   "cancelBtn": { "message": "বাতিল" },

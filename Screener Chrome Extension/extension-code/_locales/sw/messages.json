@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Hariri kadi ya soko" },
   "displayNameLabel": { "message": "Jina linaloonyeshwa:" },
   "displayNamePh": { "message": "mf. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Alama (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Alama:" },
   "symbolPh": { "message": "mf. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Ondoa" },
   "cancelBtn": { "message": "Ghairi" },

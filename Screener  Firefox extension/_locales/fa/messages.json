@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "ویرایش کارت بازار" },
   "displayNameLabel": { "message": "نام نمایشی:" },
   "displayNamePh": { "message": "مثلاً NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "نماد (Yahoo/NSE):" },
+  "symbolLabel": { "message": "نماد:" },
   "symbolPh": { "message": "مثلاً ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "حذف" },
   "cancelBtn": { "message": "لغو" },

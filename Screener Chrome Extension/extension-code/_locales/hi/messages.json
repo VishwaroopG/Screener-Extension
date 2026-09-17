@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "मार्केट कार्ड संपादित करें" },
   "displayNameLabel": { "message": "प्रदर्शित नाम:" },
   "displayNamePh": { "message": "जैसे NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "सिंबल (Yahoo/NSE):" },
+  "symbolLabel": { "message": "सिंबल:" },
   "symbolPh": { "message": "जैसे ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "हटाएं" },
   "cancelBtn": { "message": "रद्द करें" },

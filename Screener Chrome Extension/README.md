@@ -1,6 +1,6 @@
 # 📈 Ticker Screener — Live Watchlist, Markets & Ticker Tape
 
-**Ticker Screener** (v2.5) is a free Manifest V3 browser extension for Chrome and Firefox that turns every browser tab into a focused market workspace: a live watchlist with multiple portfolios, a 10-economy Markets tab, interactive price charts, and a ticker tape that moves with you.
+**Ticker Screener** (v2.5.1) is a free Manifest V3 browser extension for Chrome and Firefox that turns every browser tab into a focused market workspace: a live watchlist with multiple portfolios, a 10-economy Markets tab, interactive price charts, and a ticker tape that moves with you.
 
 ## ✨ Features
 
@@ -15,9 +15,10 @@
 
 No backend, no account — everything stays in your browser's local storage:
 
-- **Screener.in** — financial ratios for Indian stocks (P/E, ROCE, market cap).
 - **Yahoo Finance** — live prices, indices, charts and sparklines.
-- **Finviz** — US fundamentals. **World Bank** — macro indicators. **Google News RSS** — news.
+- **Finviz** — US fundamentals (with Yahoo Finance fallback).
+- **Screener.in** — financial ratios for Indian stocks (P/E, ROCE, market cap).
+- **World Bank** — macro indicators. **Google News RSS** — news.
 
 ## 📦 Install / package
 

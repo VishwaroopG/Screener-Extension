@@ -937,11 +937,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (settingsShowIndices) settingsShowIndices.checked = res.tapeShowIndices !== false;
       if (settingsShowChange) settingsShowChange.checked = res.tapeShowChange !== false;
       if (settingsShowAmount) settingsShowAmount.checked = res.tapeShowAmount === true;
-      // % change and amount change are mutually exclusive — % wins if both are stored on
-      if (settingsShowChange && settingsShowAmount && settingsShowChange.checked && settingsShowAmount.checked) {
-        settingsShowAmount.checked = false;
-        persistTapeSetting({ tapeShowAmount: false });
-      }
+      // % change and amount change are independent — both on shows "+40.29 (0.37%)"
       if (settingsVisible) settingsVisible.checked = res.tapeVisible !== false;
       if (Array.isArray(res.disabledDomains)) disabledDomains = res.disabledDomains;
       updateDomainUI();
@@ -1049,24 +1045,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (settingsDirection) settingsDirection.addEventListener('change', () => persistTapeSetting({ tapeDirection: settingsDirection.value }));
   if (settingsPauseHover) settingsPauseHover.addEventListener('change', () => persistTapeSetting({ tapePauseOnHover: settingsPauseHover.checked }));
   if (settingsShowIndices) settingsShowIndices.addEventListener('change', () => persistTapeSetting({ tapeShowIndices: settingsShowIndices.checked }));
-  // % change and amount change are mutually exclusive: selecting one unchecks the other
+  // % change and amount change are independent toggles — both on shows "+40.29 (0.37%)"
   if (settingsShowChange) settingsShowChange.addEventListener('change', () => {
-    const on = settingsShowChange.checked;
-    const patch = { tapeShowChange: on };
-    if (on && settingsShowAmount && settingsShowAmount.checked) {
-      settingsShowAmount.checked = false;
-      patch.tapeShowAmount = false;
-    }
-    persistTapeSetting(patch);
+    persistTapeSetting({ tapeShowChange: settingsShowChange.checked });
   });
   if (settingsShowAmount) settingsShowAmount.addEventListener('change', () => {
-    const on = settingsShowAmount.checked;
-    const patch = { tapeShowAmount: on };
-    if (on && settingsShowChange && settingsShowChange.checked) {
-      settingsShowChange.checked = false;
-      patch.tapeShowChange = false;
-    }
-    persistTapeSetting(patch);
+    persistTapeSetting({ tapeShowAmount: settingsShowAmount.checked });
   });
   if (settingsVisible) settingsVisible.addEventListener('change', () => persistTapeSetting({ tapeVisible: settingsVisible.checked }));
   if (settingsSyncToggle) {
@@ -1143,6 +1127,29 @@ document.addEventListener('DOMContentLoaded', () => {
     btnAboutClose.addEventListener('click', () => {
       aboutModal.style.display = 'none';
     });
+  }
+
+  // Fullscreen tab: open this panel in a full browser tab (?fullscreen=1).
+  // The layout is fluid so it fills the tab; a roomier centered style applies.
+  let isFullscreenTab = false;
+  try {
+    isFullscreenTab = new URLSearchParams(location.search).get('fullscreen') === '1';
+  } catch (e) {}
+  if (isFullscreenTab) document.body.classList.add('screener-fullscreen');
+  const btnFullscreen = document.getElementById('btn-fullscreen');
+  if (btnFullscreen) {
+    if (isFullscreenTab) {
+      btnFullscreen.style.display = 'none';
+    } else {
+      btnFullscreen.addEventListener('click', () => {
+        const url = chrome.runtime.getURL('sidepanel.html?fullscreen=1');
+        try {
+          chrome.tabs.create({ url });
+        } catch (e) {
+          window.open(url, '_blank');
+        }
+      });
+    }
   }
   if (aboutModal) {
     aboutModal.addEventListener('click', (e) => {
@@ -1227,6 +1234,30 @@ document.addEventListener('DOMContentLoaded', () => {
          renderWatchlist();
        });
     });
+  });
+
+  // Dashboard refresh: full re-sync + fast-price poll, list repaints on WATCHLIST_UPDATED
+  const btnWatchlistRefresh = document.getElementById('btn-watchlist-refresh');
+  if (btnWatchlistRefresh) btnWatchlistRefresh.addEventListener('click', () => {
+    btnWatchlistRefresh.disabled = true;
+    btnWatchlistRefresh.style.opacity = '0.5';
+    const done = () => {
+      btnWatchlistRefresh.disabled = false;
+      btnWatchlistRefresh.style.opacity = '';
+    };
+    const safety = setTimeout(done, 30000);
+    try {
+      chrome.runtime.sendMessage({ type: 'FORCE_SYNC' }, () => {
+        if (chrome.runtime.lastError) {}
+        clearTimeout(safety);
+        chrome.runtime.sendMessage({ type: 'POLL_NOW' });
+        renderWatchlist();
+        done();
+      });
+    } catch (e) {
+      clearTimeout(safety);
+      done();
+    }
   });
 
   // --- Custom Text Prompt Logic ---
@@ -1402,13 +1433,13 @@ document.addEventListener('DOMContentLoaded', () => {
              <h3 style="margin:0 0 4px 0;"><a href="${companyUrl}" target="_blank" style="color:var(--link-green); text-decoration:none;">${data.companyName}</a></h3>
              <button id="btn-back-dashboard" class="screener-btn screener-btn-secondary" style="padding:4px 8px; font-size:11px; flex-shrink:0; margin-left:8px;">${t('backButton')}</button>
            </div>`;
-           if (data.isIndex) {
-             html += `<div style="background:var(--verdict-bg); border:var(--border-color); padding:12px; border-radius:8px; margin-top:12px; font-size:13px;"><span style="color:var(--label-color); font-weight:600;">${t('verdictLabel')}</span> <span style="color:var(--link-green); font-weight:500;">${t('verdictIndex')}</span></div>`;
-           } else {
-             html += generateVerdict(data.ratios);
-           }
+            if (data.isIndex) {
+              html += `<div style="background:var(--verdict-bg); border:var(--border-color); padding:12px; border-radius:8px; margin-top:12px; font-size:13px;"><span style="color:var(--label-color); font-weight:600;">${t('verdictLabel')}</span> <span style="color:var(--link-green); font-weight:500;">${t('verdictIndex')}</span></div>`;
+            } else {
+              html += generateVerdict(data.ratios);
+            }
 
-           // Add to Watchlist button
+            // Add to Watchlist button
            html += `<button id="btn-search-add-wl" data-ticker="${ticker}" style="margin-top:12px; width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color); cursor:pointer; font-weight:600; font-size:14px; background:var(--btn-wl-bg); color:#fff;">${t('addToWatchlist')}</button>`;
 
            html += `<div style="width:100%; overflow-x:auto; margin-top:16px; border:1px solid var(--border-color); border-radius:8px;">`;
@@ -1430,9 +1461,9 @@ document.addEventListener('DOMContentLoaded', () => {
              html += `<div id="search-peers-container"></div>`;
              html += `<div id="search-announcements-container"></div>`;
 
-             resultsSearch.innerHTML = html;
+              resultsSearch.innerHTML = html;
 
-             // Async fetch for Peers & Announcements
+              // Async fetch for Peers & Announcements
              fetch(`https://www.screener.in/company/${ticker}/consolidated/`)
                .then(r => {
                  if (!r.ok) return fetch(`https://www.screener.in/company/${ticker}/`);
@@ -1455,7 +1486,7 @@ document.addEventListener('DOMContentLoaded', () => {
                      const isHeader = tr.querySelector('th');
                      return `<tr style="border-bottom:1px solid var(--border-color); ${isHeader ? 'font-weight:bold; background:var(--row-even)' : ''}">${tr.innerHTML}</tr>`;
                    }).join('')}</table>`;
-                   document.getElementById('search-peers-container').innerHTML = `<h4 style="margin:16px 0 8px 0; color:var(--text-color);">${t('peerTitle')}</h4><div style="border:1px solid var(--border-color); border-radius:8px; overflow-x:auto;">${tableHtml}</div>`;
+                    document.getElementById('search-peers-container').innerHTML = `<h4 style="margin:16px 0 8px 0; color:var(--text-color);">${t('peerTitle')}</h4><div style="border:1px solid var(--border-color); border-radius:8px; overflow-x:auto;">${tableHtml}</div>`;
                  }
                  
                  // Parse Announcements (Documents)
@@ -2536,6 +2567,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // --- News thumbnails ---
+  // Google News RSS carries no article images, so each row shows the
+  // publisher's favicon (via Google's favicon service) over a
+  // source-initial fallback tile. The <source url="..."> attribute holds
+  // the publisher's real domain (item <link> always points at news.google.com).
+  function newsSourceHost(item) {
+    try {
+      const srcUrl = item.querySelector('source')?.getAttribute('url') || '';
+      const host = srcUrl ? new URL(srcUrl).hostname : '';
+      return host || '';
+    } catch (e) {
+      return '';
+    }
+  }
+  function newsThumbHtml(item, source) {
+    const host = newsSourceHost(item);
+    const name = (source || '').trim();
+    const initial = /^[A-Za-z0-9]/.test(name) ? name.charAt(0).toUpperCase() : '•';
+    const img = host
+      ? `<img class="news-thumb" src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=64" alt="" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#fff; border-radius:8px;" />`
+      : '';
+    return `<div style="position:relative; flex:0 0 36px; width:36px; height:36px; border-radius:8px; background:var(--border-color, #e8eaed); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; color:var(--label-color); overflow:hidden;"><span>${initial}</span>${img}</div>`;
+  }
+  // Broken favicons are removed (capture phase: img errors don't bubble).
+  // Inline onerror is avoided — MV3 extension pages block inline handlers.
+  newsContainer.addEventListener('error', (e) => {
+    if (e.target && e.target.classList && e.target.classList.contains('news-thumb')) {
+      e.target.remove();
+    }
+  }, true);
+
   // --- News Render ---
   function renderNews() {
     chrome.storage.local.get(['portfolios'], async (res) => {
@@ -2557,11 +2619,15 @@ document.addEventListener('DOMContentLoaded', () => {
               const pubDate = item.querySelector('pubDate')?.textContent || '';
               const source = item.querySelector('source')?.textContent || t('newsSourceDefault');
               const dateStr = pubDate ? new Date(pubDate).toLocaleDateString() : '';
-              
+              const thumb = newsThumbHtml(item, source);
+
               allNewsHtml += `
-                <div style="padding: 12px; border-bottom: 1px solid var(--border-color);">
-                  <a href="${link}" target="_blank" style="color:var(--text-color); text-decoration:none; font-size:14px; display:block; margin-bottom:4px;">${title}</a>
-                  <div style="font-size:11px; color:var(--label-color);">${source} &bull; ${dateStr}</div>
+                <div style="padding: 12px; border-bottom: 1px solid var(--border-color); display:flex; gap:10px; align-items:flex-start;">
+                  ${thumb}
+                  <div style="min-width:0; flex:1;">
+                    <a href="${link}" target="_blank" style="color:var(--text-color); text-decoration:none; font-size:14px; display:block; margin-bottom:4px;">${title}</a>
+                    <div style="font-size:11px; color:var(--label-color);">${source} &bull; ${dateStr}</div>
+                  </div>
                 </div>
               `;
             });
@@ -2595,11 +2661,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const pubDate = item.querySelector('pubDate')?.textContent || '';
                 const source = item.querySelector('source')?.textContent || t('newsSourceDefault');
                 const dateStr = pubDate ? new Date(pubDate).toLocaleDateString() : '';
-                
+                const thumb = newsThumbHtml(item, source);
+
                 html += `
-                  <div style="padding: 12px; border-bottom: 1px solid var(--border-color);">
-                    <a href="${link}" target="_blank" style="color:var(--text-color); text-decoration:none; font-size:14px; display:block; margin-bottom:4px;">${title}</a>
-                    <div style="font-size:11px; color:var(--label-color);">${source} &bull; ${dateStr}</div>
+                  <div style="padding: 12px; border-bottom: 1px solid var(--border-color); display:flex; gap:10px; align-items:flex-start;">
+                    ${thumb}
+                    <div style="min-width:0; flex:1;">
+                      <a href="${link}" target="_blank" style="color:var(--text-color); text-decoration:none; font-size:14px; display:block; margin-bottom:4px;">${title}</a>
+                      <div style="font-size:11px; color:var(--label-color);">${source} &bull; ${dateStr}</div>
+                    </div>
                   </div>
                 `;
               });

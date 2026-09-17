@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "የገበያ ካርድ አርም" },
   "displayNameLabel": { "message": "የማሳያ ስም:" },
   "displayNamePh": { "message": "ለምሳሌ NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "ምልክት (Yahoo/NSE):" },
+  "symbolLabel": { "message": "ምልክት:" },
   "symbolPh": { "message": "ለምሳሌ ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "አስወግድ" },
   "cancelBtn": { "message": "ሰርዝ" },

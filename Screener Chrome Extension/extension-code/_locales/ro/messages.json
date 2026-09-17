@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Editează cardul de piață" },
   "displayNameLabel": { "message": "Nume afișat:" },
   "displayNamePh": { "message": "ex. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Simbol (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Simbol:" },
   "symbolPh": { "message": "ex. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Elimină" },
   "cancelBtn": { "message": "Anulează" },

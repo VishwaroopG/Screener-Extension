@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Muuda turukaarti" },
   "displayNameLabel": { "message": "Kuvatav nimi:" },
   "displayNamePh": { "message": "nt. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Sümbol (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Sümbol:" },
   "symbolPh": { "message": "nt. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Eemalda" },
   "cancelBtn": { "message": "Tühista" },

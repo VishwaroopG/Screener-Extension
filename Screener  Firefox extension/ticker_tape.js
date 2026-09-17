@@ -1,5 +1,17 @@
 // ticker_tape.js
 (function() {
+  // When the extension is reloaded, updated or disabled while this tab stays
+  // open, this orphaned content script loses its extension context and every
+  // chrome.* call throws "Extension context invalidated". Guard all of them
+  // so the page degrades quietly instead of spamming uncaught errors.
+  function isContextValid() {
+    try {
+      return !!(chrome.runtime && chrome.runtime.id);
+    } catch (e) {
+      return false;
+    }
+  }
+  if (!isContextValid()) return;
   if (document.getElementById('screener-ticker-tape')) return; // Already injected
 
   const tapeDiv = document.createElement('div');
@@ -277,11 +289,15 @@
         new Promise((resolve) => {
           try {
             chrome.runtime.sendMessage({ type: 'FETCH_CHART', symbol, range, interval }, (res) => {
-              if (chrome.runtime.lastError) {
+              try {
+                if (!isContextValid() || chrome.runtime.lastError) {
+                  resolve({ data: [], timestamps: [] });
+                  return;
+                }
+                resolve({ data: (res && res.data) || [], timestamps: (res && res.timestamps) || [] });
+              } catch (e) {
                 resolve({ data: [], timestamps: [] });
-                return;
               }
-              resolve({ data: (res && res.data) || [], timestamps: (res && res.timestamps) || [] });
             });
           } catch (e) {
             resolve({ data: [], timestamps: [] });
@@ -414,7 +430,9 @@
   let isDomainDisabled = false;
   const currentDomain = window.location.hostname;
 
+  try {
   chrome.storage.local.get(['tapePaused', 'tapeSpeedMultiplier', 'tapeSpeed', 'tapeVisible', 'disabledDomains', 'tapePosition', 'tapeSize', 'tapeTheme', 'tapeDirection', 'tapePauseOnHover', 'tapeShowIndices', 'tapeShowChange', 'tapeShowAmount'], (res) => {
+    if (!isContextValid()) return;
     isPaused = res.tapePaused === true;
     isVisible = res.tapeVisible !== false; // Default true
     readTapeSettings(res);
@@ -432,9 +450,12 @@
     }
     renderTape(); // Force an initial render now that all prefs are loaded
   });
+  } catch (e) { /* context died before prefs arrived — tape stays inert */ }
 
   // Listen for control updates from side panel
+  try {
   chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (!isContextValid()) return;
     if (namespace === 'local') {
       if (changes.tapePaused !== undefined) {
         isPaused = changes.tapePaused.newValue === true;
@@ -467,6 +488,7 @@
       }
     }
   });
+  } catch (e) { /* listener registration on a dead context — nothing to do */ }
 
   // --- Interactive Grab-and-Drag (Left / Right) ---
   container.addEventListener('mousedown', (e) => {
@@ -755,11 +777,49 @@
     }
   }
 
+  // Plain amount value without parens/prefix for the combined readout.
+  function absChangeValue(priceStr, pctStr, isUp) {
+    try {
+      const priceNum = parseFloat(String(priceStr || '').replace(/[^0-9.\-]/g, ''));
+      const pctNum = parseFloat(String(pctStr || ''));
+      if (!isFinite(priceNum) || !isFinite(pctNum)) return null;
+      const abs = (priceNum * Math.abs(pctNum)) / 100;
+      if (!isFinite(abs)) return null;
+      return (isUp ? '+' : '-') + abs.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Change readout honoring both display settings: % only, amount only,
+  // or both combined like "+40.29 (0.37%)". pctDisplay is the preformatted
+  // percent text (e.g. "0.37%" or "1.75%").
+  function changeAreaHtml(priceStr, pctStr, pctDisplay, isUp) {
+    if (!pctStr) return '';
+    const showPct = tapeShowChange !== false;
+    const showAmt = tapeShowAmount === true;
+    const color = isUp ? '#81c995' : '#f28b82';
+    const arrow = isUp ? '▲' : '▼';
+    if (showPct && showAmt) {
+      const amt = absChangeValue(priceStr, pctStr, isUp);
+      if (amt !== null) return `<span class="screener-ticker-change" style="color: ${color}; font-size: 12px;">${arrow} ${amt} (${pctDisplay})</span>`;
+    }
+    if (showPct) return `<span class="screener-ticker-change" style="color: ${color}; font-size: 12px;">${arrow} ${pctDisplay}</span>`;
+    if (showAmt) {
+      const amt = absChangeText(priceStr, pctStr, isUp);
+      if (amt) return `<span class="screener-ticker-amount" style="color: ${color};">${amt}</span>`;
+    }
+    return '';
+  }
+
   // --- Render Tape Content ---
   let lastRenderedKey = '';
   
   function renderTape() {
+    if (!isContextValid()) return;
+    try {
     chrome.storage.local.get(['screenerWatchlist', 'portfolios', 'cachedData', 'marketIndices'], (res) => {
+      if (!isContextValid()) return;
       let list = res.screenerWatchlist || [];
       const portfolios = res.portfolios || {};
       for (const portList of Object.values(portfolios)) {
@@ -808,13 +868,9 @@
               }
               priceSpan.textContent = idx.price;
 
-              if (changeSpan) {
-                changeSpan.style.color = color;
-                changeSpan.textContent = `${sign} ${Math.abs(parseFloat(idx.changePct)).toFixed(2)}%`;
-              }
-              if (amountSpan) {
-                amountSpan.style.color = color;
-                amountSpan.textContent = absChangeText(idx.price, idx.changePct, isUp);
+              const movesWrap = node.querySelector('.screener-ticker-moves');
+              if (movesWrap) {
+                movesWrap.innerHTML = changeAreaHtml(idx.price, idx.changePct, Math.abs(parseFloat(idx.changePct)).toFixed(2) + '%', isUp);
               }
             }
           } else {
@@ -829,15 +885,9 @@
               }
               priceSpan.textContent = price;
 
-              if (changeSpan && data.changePct) {
-                const color = data.changeDir === 'up' ? '#81c995' : '#f28b82';
-                const sign = data.changeDir === 'up' ? '\u25B2' : '\u25BC';
-                changeSpan.style.color = color;
-                changeSpan.textContent = `${sign} ${data.changePct}`;
-              }
-              if (amountSpan && data.changePct) {
-                amountSpan.style.color = data.changeDir === 'up' ? '#81c995' : '#f28b82';
-                amountSpan.textContent = absChangeText(price, data.changePct, data.changeDir === 'up');
+              const movesWrap = node.querySelector('.screener-ticker-moves');
+              if (movesWrap && data.changePct) {
+                movesWrap.innerHTML = changeAreaHtml(price, data.changePct, data.changePct, data.changeDir === 'up');
               }
             }
           }
@@ -862,13 +912,11 @@
            flashClass = idx.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down';
         }
 
-        const idxAmt = absChangeText(idx.price, idx.changePct, isUp);
         html += `
           <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${idxName}" data-is-index="true" style="cursor: pointer;">
             <span class="screener-ticker-name">${idxName}</span>
             <span class="screener-ticker-price ${flashClass}">${idx.price}</span>
-            <span class="screener-ticker-change" style="color: ${color}; font-size: 12px; margin-left: 6px;">${sign} ${Math.abs(parseFloat(idx.changePct)).toFixed(2)}%</span>
-            ${idxAmt ? `<span class="screener-ticker-amount" style="color: ${color};">${idxAmt}</span>` : ''}
+            <span class="screener-ticker-moves" style="margin-left: 6px;">${changeAreaHtml(idx.price, idx.changePct, Math.abs(parseFloat(idx.changePct)).toFixed(2) + '%', isUp)}</span>
           </div>
         `;
       }
@@ -879,19 +927,7 @@
         if (data && data.success) {
           const price = data.ratios['Current Price'] || '-';
           
-          let pctHtml = '';
-          if (data.changePct && tapeShowChange !== false) {
-            const color = data.changeDir === 'up' ? '#81c995' : '#f28b82';
-            const sign = data.changeDir === 'up' ? '\u25B2' : '\u25BC';
-            pctHtml = `<span class="screener-ticker-change" style="color: ${color}; font-size: 12px; margin-left: 6px;">${sign} ${data.changePct}</span>`;
-          }
-
-          let amtHtml = '';
-          if (data.changePct) {
-            const amtColor = data.changeDir === 'up' ? '#81c995' : '#f28b82';
-            const amt = absChangeText(price, data.changePct, data.changeDir === 'up');
-            if (amt) amtHtml = `<span class="screener-ticker-amount" style="color: ${amtColor};">${amt}</span>`;
-          }
+          const movesHtml = `<span class="screener-ticker-moves" style="margin-left: 6px;">${changeAreaHtml(price, data.changePct, data.changePct, data.changeDir === 'up')}</span>`;
 
           let flashClass = '';
           if (data.flash && (Date.now() - (data.flashTime || 0) < 1000)) {
@@ -902,8 +938,7 @@
             <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${ticker}" style="cursor: pointer;">
               <span class="screener-ticker-name">${data.companyName || ticker}</span>
               <span class="screener-ticker-price ${flashClass}">${price}</span>
-              ${pctHtml}
-              ${amtHtml}
+              ${movesHtml}
             </div>
           `;
         }
@@ -923,10 +958,13 @@
       // If we just rebuilt, don't clobber currentX immediately if tape is running
       marquee.style.transform = `translate3d(${currentX}px, 0, 0)`;
     });
+    } catch (e) { /* context invalidated mid-render — stop quietly */ }
   }
 
   // Listen for updates from background script and sidepanel
+  try {
   chrome.runtime.onMessage.addListener((msg) => {
+    if (!isContextValid()) return;
     if (msg.type === 'WATCHLIST_UPDATED') {
       renderTape();
     }
@@ -954,13 +992,27 @@
       else renderTape();
     }
   });
+  } catch (e) { /* listener registration on a dead context — nothing to do */ }
 })();
 
-// Keep background worker active and trigger price polling from any webpage
-setInterval(() => {
+// Keep background worker active and trigger price polling from any webpage.
+// When the extension is reloaded/updated/disabled, this orphaned script loses
+// its context: stop the timer and remove the stale tape instead of throwing
+// "Extension context invalidated" every second.
+const screenerPingTimer = setInterval(() => {
   try {
+    if (!(chrome.runtime && chrome.runtime.id)) throw new Error('context invalidated');
     chrome.runtime.sendMessage({ type: 'PING' }, () => {
-      if (chrome.runtime.lastError) { /* ignore */ }
+      try {
+        if (chrome.runtime.lastError) { /* ignore */ }
+      } catch (e) { /* context died — next tick cleans up */ }
     });
-  } catch(e) {}
+  } catch (e) {
+    try { clearInterval(screenerPingTimer); } catch (ignored) {}
+    try {
+      const stale = document.getElementById('screener-ticker-tape');
+      if (stale && stale.parentNode) stale.parentNode.removeChild(stale);
+      document.documentElement.classList.remove('screener-tape-active', 'screener-tape-active-top');
+    } catch (ignored) {}
+  }
 }, 1000);

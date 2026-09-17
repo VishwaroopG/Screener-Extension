@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Muokkaa markkinakorttia" },
   "displayNameLabel": { "message": "Näyttönimi:" },
   "displayNamePh": { "message": "esim. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Tunnus (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Tunnus:" },
   "symbolPh": { "message": "esim. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Poista" },
   "cancelBtn": { "message": "Peruuta" },

@@ -1188,4 +1188,16 @@ body.dark-mode .screener-suggestion-item:hover {
   border-radius: 4px;
 }
 
+/* Fullscreen tab mode (?fullscreen=1): roomier centered layout */
+body.screener-fullscreen {
+  overflow-y: auto;
+  align-items: center;
+}
+body.screener-fullscreen .screener-header,
+body.screener-fullscreen .screener-tabs,
+body.screener-fullscreen .screener-view {
+  width: 100%;
+  max-width: 980px;
+}
+
 

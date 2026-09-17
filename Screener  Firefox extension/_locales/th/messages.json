@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "แก้การ์ดตลาด" },
   "displayNameLabel": { "message": "ชื่อที่แสดง:" },
   "displayNamePh": { "message": "เช่น NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "สัญลักษณ์ (Yahoo/NSE):" },
+  "symbolLabel": { "message": "สัญลักษณ์:" },
   "symbolPh": { "message": "เช่น ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "ลบออก" },
   "cancelBtn": { "message": "ยกเลิก" },

@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "تحرير بطاقة السوق" },
   "displayNameLabel": { "message": "الاسم المعروض:" },
   "displayNamePh": { "message": "مثال NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "الرمز (Yahoo/NSE):" },
+  "symbolLabel": { "message": "الرمز:" },
   "symbolPh": { "message": "مثال ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "إزالة" },
   "cancelBtn": { "message": "إلغاء" },

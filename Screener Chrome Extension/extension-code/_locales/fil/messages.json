@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "I-edit ang market card" },
   "displayNameLabel": { "message": "Ipakitang pangalan:" },
   "displayNamePh": { "message": "hal. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Simbolo (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Simbolo:" },
   "symbolPh": { "message": "hal. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Alisin" },
   "cancelBtn": { "message": "Kanselahin" },

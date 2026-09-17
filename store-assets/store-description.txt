@@ -1,41 +1,77 @@
-Ticker Screener – Live Watchlist, Markets & Ticker Tape (v2.5)
+Ticker Screener – Live US Watchlist, Markets & Ticker Tape (v2.5.1)
 Short description (Chrome Web Store / AMO, max 132 chars):
-Ticker Screener: live Indian & global stock watchlist, draggable portfolios, and ticker tape.
+Live US stock watchlist (NYSE, Nasdaq), S&P 500 ticker tape, markets & alerts.
 
 ============================================================
 LONG DESCRIPTION (paste into Chrome Web Store "Detailed description" and AMO "Description")
 ============================================================
 
-Ticker Screener turns every browser tab into a focused market workspace — a live watchlist, a 10-economy Markets tab, interactive price charts, and a ticker tape that moves with you.
+Ticker Screener: Live US Watchlist, Markets & Ticker Tape
+Your market, always in sight. Turn every browser tab into a focused market workspace — live NYSE / Nasdaq watchlist, S&P 500 / Nasdaq / Dow ticker tape, interactive charts, plus global context when you need it.
+
+US stocks, ETFs and indices display in true $ prices. When you check other economies, each market keeps its native currency — no silent conversion, ever.
+
+WHAT'S NEW IN v2.5.1
+- Full-screen view: hit the ⛶ button in the panel header to open the whole workspace in a dedicated browser tab.
+- Combined tape readout: show % change and amount change together like +$5.20 (+0.37%).
+- Dashboard refresh button, publisher thumbnails in News, and right-click menu now shows just the stock name.
+- The Markets tab opens on the USA with S&P 500, Nasdaq, Dow, top US stocks and US macro.
+- Holiday-aware market clocks: Open/Closed status now respects real 2026 exchange holidays for 15 markets, auto-updated with no extension update needed.
+- Right-click to add: select any company name on any webpage → Add to Ticker Screener Watchlist.
+- 55 interface languages, refined dark mode.
 
 LIVE WATCHLIST & PORTFOLIOS
-- Track Indian (NSE/BSE) and global stocks with live prices, day change, sparkline trend, P/E, market cap, dividend yield and ROCE.
-- Multiple portfolios with drag-to-reorder tickers, CSV export, and rename support.
-- AI verdict on every stock (Undervalued / Solid / Expensive / Risk) from P/E and capital efficiency.
-- Price alerts with desktop notifications when a target is crossed.
-
-10-ECONOMY MARKETS TAB
-- USA, India, UK, Singapore, Japan, Hong Kong, Germany, France, Australia, Canada.
-- Index heatmap plus strictly separated top gainers and losers per market.
-- Live macro indicators (inflation, unemployment, GDP growth, GDP per capita and more) with World Bank sources.
+- Track NYSE, Nasdaq and global stocks with live price, day change, 1Y sparkline, P/E, market cap, dividend yield and ROCE.
+- Prices flash green/red on every tick so momentum is visible instantly.
+- Multiple portfolios, drag-to-reorder, sort by price or market cap, rename, CSV export to Excel.
+- Price alerts with desktop notifications when your target is crossed.
+- AI Verdict on every stock (Undervalued / Solid / Expensive / High Risk) from P/E + ROCE, plus peer comparison and company announcements.
 
 TICKER TAPE THAT MOVES WITH YOU
-- Live prices on any page. Pause, 0.5x–3.0x speed control, top/bottom position, 3 themes, 3 sizes, scroll direction, pause-on-hover.
-- Show/hide indices, % change or amount change. Disable per-site.
+- Live S&P 500, Nasdaq, Dow + your own watchlist on every website you browse.
+- Pin to Top or Bottom. Compact, Comfortable or Large sizes. Dark, Light and Blue themes.
+- 0.5x–3.0x speed control, scroll Left/Right, Pause on Hover, pause/resume controls.
+- Show/hide indices; show % change, amount change, or both combined like +5.20 (+0.37%). Hide temporarily or disable completely on specific sites.
+
+10-ECONOMY MARKETS TAB
+- Opens on the USA, plus India, UK, Singapore, Japan, Hong Kong, Germany, France, Australia, Canada.
+- Index heatmap + strictly separated Top Gainers and Top Losers — a negative stock never appears under gainers.
+- Click any index or stock for full analysis with charts and fundamentals.
+- 4 customizable index cards with 35+ presets: indices, commodities and currencies. Just type to find.
+
+ECONOMY INDICATORS WITH REAL SOURCES
+- Live macro per market: Inflation (CPI), Unemployment, GDP Growth, GDP per Capita — each year-labeled.
+- Click any tile to swap in GDP Total, Trade, Forex Reserves or Population.
+- Every tile links directly to its World Bank source.
 
 INTERACTIVE CHARTS
-- 1M to MAX ranges with hover price-and-date crosshair. The line turns green when the period return is positive and red when negative, with period returns recalculated per range.
+- 1M, 6M, 1Y, 3Y, 5Y, 10Y, MAX with hover crosshair showing exact price and date.
+- Line turns green when period return is positive, red when negative. Returns recalculate as you switch ranges.
 
-WORLD MARKET CLOCKS
-- Draggable market clock tiles (New York, London, Mumbai, Hong Kong, Singapore and 10 more). Tiles sort by local time by default; click any tile to swap its market.
+NEWS & WORLD MARKET CLOCKS
+- Portfolio news grouped by your holdings + dedicated US Macro News.
+- Draggable clock tiles for 15 markets (New York, London, Mumbai, Hong Kong, Singapore + more), auto-sorted by local time.
+- Holiday-aware Open/Closed status. Click any tile to swap its market.
 
 ALSO INCLUDED
-- Right-click any company name on the web to add it to your watchlist.
-- Dark/light mode, 55 interface languages, cross-device sync via your browser account.
-- No account needed. Your data stays in your browser (local storage only).
+- Smart search by company name or ticker for US and international stocks.
+- Cross-device Cloud Sync via your browser account (Google / Firefox) — no separate account needed.
+- Dark / Light mode, 55 languages, side-panel shortcut.
+- No account, no backend. Your data stays in your browser (local storage only).
+
+HOW TO USE
+1. Press Ctrl+Shift+S (Windows/Linux) or Cmd+Shift+S (Mac) to open the sidebar.
+2. Search a ticker (e.g. AAPL, NVDA, RELIANCE.NS) and add it to your watchlist.
+3. Open the Markets tab — start with USA, then explore 9 more economies, heatmap, gainers/losers and macro.
+4. Click the gear icon for Tape Settings: position, size, theme, speed, and data display.
+5. Right-click any company name on the web to add it instantly.
+6. Sign into your browser to auto-sync watchlists, alerts and settings across devices.
 
 DATA SOURCES
-Indian ratios: Screener.in. Prices/indices/charts: Yahoo Finance. Fundamentals (US): Finviz. Macro: World Bank. News: Google News RSS.
+Prices, indices & charts: Yahoo Finance. US fundamentals: Finviz (with Yahoo Finance fallback). Indian ratios: Screener.in. Macro: World Bank. News: Google News RSS.
 
-SUPPORT & UPDATES
-Independent project by Vishwaroop Galgali. Join @GlobalMarketPulseLive on Telegram for stock market updates and research reports. Support development: buymeacoffee.com/vgexperiments
+DISCLAIMER
+Ticker Screener is an independent browser extension and is not affiliated with, endorsed by, or sponsored by Screener.in, Yahoo Finance, Finviz, or their respective parent companies. Market data may be delayed. For informational purposes only — not financial advice.
+
+SUPPORT THE DEVELOPER
+Independent project by Vishwaroop Galgali. Market updates & research: join @GlobalMarketPulseLive on Telegram. Support development: https://buymeacoffee.com/vgexperiments

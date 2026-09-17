@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Redigera marknadskort" },
   "displayNameLabel": { "message": "Visningsnamn:" },
   "displayNamePh": { "message": "t.ex. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Symbol (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Symbol:" },
   "symbolPh": { "message": "t.ex. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Ta bort" },
   "cancelBtn": { "message": "Avbryt" },

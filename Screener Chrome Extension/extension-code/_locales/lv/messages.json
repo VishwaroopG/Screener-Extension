@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Rediģēt tirgus kartīti" },
   "displayNameLabel": { "message": "Parādāmais nosaukums:" },
   "displayNamePh": { "message": "piem. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Simbols (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Simbols:" },
   "symbolPh": { "message": "piem. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Noņemt" },
   "cancelBtn": { "message": "Atcelt" },

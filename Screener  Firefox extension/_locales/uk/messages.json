@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Змінити картку ринку" },
   "displayNameLabel": { "message": "Відображуване ім'я:" },
   "displayNamePh": { "message": "напр. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Символ (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Символ:" },
   "symbolPh": { "message": "напр. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Прибрати" },
   "cancelBtn": { "message": "Скасувати" },

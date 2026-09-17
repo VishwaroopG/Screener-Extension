@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Επεξεργασία κάρτας αγοράς" },
   "displayNameLabel": { "message": "Εμφανιζόμενο όνομα:" },
   "displayNamePh": { "message": "π.χ. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Σύμβολο (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Σύμβολο:" },
   "symbolPh": { "message": "π.χ. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Αφαίρεση" },
   "cancelBtn": { "message": "Άκυρο" },

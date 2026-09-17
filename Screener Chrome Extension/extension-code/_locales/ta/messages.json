@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "சந்தை அட்டை திருத்து" },
   "displayNameLabel": { "message": "காட்சிப் பெயர்:" },
   "displayNamePh": { "message": "எ.கா. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "குறியீடு (Yahoo/NSE):" },
+  "symbolLabel": { "message": "குறியீடு:" },
   "symbolPh": { "message": "எ.கா. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "அகற்று" },
   "cancelBtn": { "message": "ரத்து" },

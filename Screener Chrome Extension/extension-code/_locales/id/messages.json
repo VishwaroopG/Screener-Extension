@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Edit kartu pasar" },
   "displayNameLabel": { "message": "Nama tampilan:" },
   "displayNamePh": { "message": "mis. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Simbol (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Simbol:" },
   "symbolPh": { "message": "mis. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Hapus" },
   "cancelBtn": { "message": "Batal" },

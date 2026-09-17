@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Marktkaart bewerken" },
   "displayNameLabel": { "message": "Weergavenaam:" },
   "displayNamePh": { "message": "bijv. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Symbool (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Symbool:" },
   "symbolPh": { "message": "bijv. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Verwijderen" },
   "cancelBtn": { "message": "Annuleren" },

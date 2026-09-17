@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "مارکیٹ کارڈ تدوین کریں" },
   "displayNameLabel": { "message": "ظاہری نام:" },
   "displayNamePh": { "message": "مثلاً NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "سمبل (Yahoo/NSE):" },
+  "symbolLabel": { "message": "سمبل:" },
   "symbolPh": { "message": "مثلاً ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "ہٹائیں" },
   "cancelBtn": { "message": "منسوخ کریں" },

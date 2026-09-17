@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "ערוך כרטיס שוק" },
   "displayNameLabel": { "message": "שם תצוגה:" },
   "displayNamePh": { "message": "למשל NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "סימול (Yahoo/NSE):" },
+  "symbolLabel": { "message": "סימול:" },
   "symbolPh": { "message": "למשל ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "הסר" },
   "cancelBtn": { "message": "בטל" },

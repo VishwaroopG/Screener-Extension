@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Upraviť trhovú kartu" },
   "displayNameLabel": { "message": "Zobrazovaný názov:" },
   "displayNamePh": { "message": "napr. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Symbol (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Symbol:" },
   "symbolPh": { "message": "napr. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Odobrať" },
   "cancelBtn": { "message": "Zrušiť" },

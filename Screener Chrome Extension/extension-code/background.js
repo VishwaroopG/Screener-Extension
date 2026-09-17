@@ -299,7 +299,7 @@ async function fetchYahooData(symbol) {
       sym = `${symbol}.NS`;
       chartRes = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=1d`);
     }
-    if (!chartRes.ok) throw new Error('Quote not found on Yahoo Finance');
+    if (!chartRes.ok) throw new Error('Quote not found. Try another ticker.');
     const chartData = await chartRes.json();
     const result = chartData?.chart?.result?.[0];
     if (!result) throw new Error('Invalid quote response');
@@ -1083,6 +1083,45 @@ try {
 } catch (e) {}
 // Service workers restart — ensure the menu exists on every wake-up.
 try { setupContextMenu(); } catch (e) {}
+
+// Guess a clean stock name from a raw text selection for the menu label.
+// Selections often include prices ("Syrma SGS Technology 1,612.00 101.40"),
+// so cut before the first price-like number and cap the length. The full
+// selection is still used for ticker resolution on click.
+function guessStockName(sel) {
+  try {
+    let s = String(sel || '').split('\n')[0].trim().replace(/^["'“”‘’]+|["'“”‘’]+$/g, '').trim();
+    if (!s) return '';
+    const m = s.match(/\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+\.\d+/);
+    if (m && m.index > 0) s = s.slice(0, m.index).trim().replace(/[-–—|:,;(.]+$/, '').trim();
+    if (!s) return '';
+    if (s.length > 42) s = s.slice(0, 42).trim() + '…';
+    return s;
+  } catch (e) {
+    return '';
+  }
+}
+// Rewrite the menu title on every open so it shows only the stock name
+// instead of the whole selected text (Chrome's "%s" always uses the raw
+// selection). Reuses the localized ctxAdd string with manual substitution.
+try {
+  if (chrome.contextMenus && chrome.contextMenus.onShown) {
+    chrome.contextMenus.onShown.addListener((info) => {
+      try {
+        if (!info || !info.menuIds || info.menuIds.indexOf('addToScreener') === -1) return;
+        const name = guessStockName(info.selectionText);
+        const base = t('ctxAdd') || 'Add "%s" to Ticker Screener Watchlist';
+        const title = name ? base.replace('%s', name) : base.replace('"%s" ', '').replace('%s', '').trim();
+        chrome.contextMenus.update('addToScreener', { title }, () => {
+          try {
+            if (chrome.runtime.lastError) return;
+            chrome.contextMenus.refresh();
+          } catch (e) {}
+        });
+      } catch (e) {}
+    });
+  }
+} catch (e) {}
 
 // Resolve selected text to a watchlist ticker: Screener.in first (Indian
 // stocks), Yahoo Finance search as fallback (global stocks/ETFs/indices).

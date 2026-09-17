@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Edytuj kartę rynku" },
   "displayNameLabel": { "message": "Wyświetlana nazwa:" },
   "displayNamePh": { "message": "np. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Symbol (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Symbol:" },
   "symbolPh": { "message": "np. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Usuń" },
   "cancelBtn": { "message": "Anuluj" },

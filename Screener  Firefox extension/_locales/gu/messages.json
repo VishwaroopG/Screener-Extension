@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "માર્કેટ કાર્ડ સંપાદિત કરો" },
   "displayNameLabel": { "message": "પ્રદર્શન નામ:" },
   "displayNamePh": { "message": "દા.ત. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "સિમ્બોલ (Yahoo/NSE):" },
+  "symbolLabel": { "message": "સિમ્બોલ:" },
   "symbolPh": { "message": "દા.ત. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "દૂર કરો" },
   "cancelBtn": { "message": "રદ કરો" },

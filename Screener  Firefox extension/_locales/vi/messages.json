@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Sửa thẻ thị trường" },
   "displayNameLabel": { "message": "Tên hiển thị:" },
   "displayNamePh": { "message": "vd. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Mã (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Mã:" },
   "symbolPh": { "message": "vd. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Gỡ" },
   "cancelBtn": { "message": "Hủy" },

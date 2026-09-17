@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "വിപണി കാർഡ് തിരുത്തുക" },
   "displayNameLabel": { "message": "പ്രദർശന നാമം:" },
   "displayNamePh": { "message": "ഉദാ. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "സിംബൽ (Yahoo/NSE):" },
+  "symbolLabel": { "message": "സിംബൽ:" },
   "symbolPh": { "message": "ഉദാ. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "നീക്കംചെയ്യുക" },
   "cancelBtn": { "message": "റദ്ദാക്കുക" },

@@ -98,7 +98,7 @@
   "editCardTitle": { "message": "Piaci kártya szerkesztése" },
   "displayNameLabel": { "message": "Megjelenített név:" },
   "displayNamePh": { "message": "pl. NIFTY IT, Apple, Reliance" },
-  "symbolLabel": { "message": "Szimbólum (Yahoo/NSE):" },
+  "symbolLabel": { "message": "Szimbólum:" },
   "symbolPh": { "message": "pl. ^CNXIT, AAPL, RELIANCE.NS" },
   "removeBtn": { "message": "Eltávolítás" },
   "cancelBtn": { "message": "Mégse" },

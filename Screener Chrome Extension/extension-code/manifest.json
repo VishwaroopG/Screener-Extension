@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Ticker Screener – Live Watchlist & Ticker",
-  "version": "2.5",
+  "version": "2.5.1",
   "default_locale": "en",
   "icons": {
     "16": "icon_16.png",
@@ -24,7 +24,6 @@
     "*://*.finviz.com/*",
     "*://api.worldbank.org/*",
     "*://news.google.com/*",
-    "https://www.nseindia.com/*",
     "https://vishwaroopg.github.io/*"
   ],
   "action": {
