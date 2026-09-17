@@ -103,7 +103,7 @@ h1 .accent { color: var(--mint); }
 
 .section { padding: 8px 0; }
 .section-tight { padding: 6px 0 24px; }
-.section-head { max-width: 650px; }
+.section-head { max-width: 900px; }
 .section-title { margin: 8px 0; font-size: clamp(32px, 4vw, 50px); line-height: 1.06; letter-spacing: -2.4px; }
 .section-copy { margin: 8px 0 0; color: var(--muted); line-height: 1.7; }
 .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 12px; }
@@ -152,7 +152,7 @@ h1 .accent { color: var(--mint); }
 .tag { padding: 4px 10px; border: 1px solid var(--line); border-radius: 20px; background: rgba(129,244,198,.08); color: var(--mint); font-size: 11px; font-weight: 700; }
 .back-link { display: inline-block; margin-bottom: 26px; color: var(--muted); font-size: 14px; font-weight: 700; }
 .back-link:hover { color: var(--ink); }
-.article { max-width: 760px; }
+.article { max-width: 960px; }
 .article-title { margin: 14px 0 8px; font-size: clamp(32px, 4vw, 48px); line-height: 1.08; letter-spacing: -2px; max-width: none; }
 .article-body { margin-top: 30px; color: #c6d6e2; font-size: 17px; line-height: 1.8; }
 .article-body h2 { margin: 38px 0 12px; color: var(--ink); font-size: 24px; letter-spacing: -.8px; }
