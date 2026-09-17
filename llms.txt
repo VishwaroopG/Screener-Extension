@@ -18,7 +18,7 @@
 - Markets tab: opens on the USA, plus UK, India, Singapore, Japan, Hong Kong, Germany, France, Australia, Canada — index heatmap, top gainers/losers, World Bank macro tiles (inflation, unemployment, GDP growth, GDP per capita).
 - Smart verdicts from P/E + ROCE (undervalued / overvalued / high risk) + custom price alerts with notifications.
 - Add stocks from any webpage via right-click; Screener.in Top Ratios sync when logged in.
-- Multiple portfolios, CSV export, stock news feed with publisher thumbnails, dark mode, interactive 1M–MAX charts, dashboard refresh button, full-screen tab view (⛶ header button).
+- Multiple portfolios, CSV export, stock news feed with publisher thumbnails, dark mode, interactive 1M–MAX charts, dashboard refresh button, full-screen tab view (fullscreen header button).
 
 ## Blog posts
 

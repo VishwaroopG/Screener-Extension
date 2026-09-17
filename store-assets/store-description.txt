@@ -12,7 +12,7 @@ Your market, always in sight. Ticker Screener turns every browser tab into a mar
 Stocks, ETFs and indices display in the currency they trade in — $ for Wall Street, and native currencies everywhere else. No silent conversion, ever.
 
 WHAT'S NEW IN v2.5.1
-- Full-screen view: hit the ⛶ button in the panel header to open the whole workspace in a dedicated browser tab.
+- Full-screen view: hit the fullscreen button in the panel header to open the whole workspace in a dedicated browser tab.
 - Combined tape readout: show % change and amount change together, like +$5.20 (+0.37%).
 - Dashboard refresh button, publisher thumbnails in News, and a right-click menu that shows just the stock name.
 - The Markets tab opens on the USA — S&P 500, Nasdaq, Dow, top stocks and macro data.
@@ -57,7 +57,7 @@ HOW TO USE
 2. Search a ticker (e.g. AAPL, NVDA, RELIANCE.NS) and add it to your watchlist.
 3. Open the Markets tab and explore heatmap, gainers/losers and macro data.
 4. Click the gear icon for Tape Settings: position, size, theme, speed and data display.
-5. Hit ⛶ anytime for the full-screen tab view.
+5. Hit the fullscreen button anytime for the full-screen tab view.
 
 DATA SOURCES
 Prices, indices & charts: Yahoo Finance. US fundamentals: Finviz (with Yahoo Finance fallback). Indian ratios: Screener.in. Macro: World Bank. News: Google News RSS.
