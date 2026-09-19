@@ -336,27 +336,26 @@ h1 .accent { color: var(--accent-warm); }
 }
 .ticker-chip {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  right: 16px;
+  bottom: 16px;
   display: inline-flex;
   flex-direction: row;
   align-items: center;
-  gap: 16px;
-  padding: 20px 40px 20px 28px;
+  gap: 8px;
+  padding: 10px 16px 10px 14px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
   background: #181d21;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   z-index: 3;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.55);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
 }
 @media (prefers-color-scheme: dark) {
   .ticker-chip {
     background: #161b1f;
     border-color: rgba(255, 255, 255, 0.09);
-    box-shadow: 0 8px 48px rgba(0,0,0,0.65);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
   }
 }
 .ticker-chip i {
@@ -375,9 +374,9 @@ h1 .accent { color: var(--accent-warm); }
 .chip-line1, .chip-line2 {
   display: block;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 1.3rem;
+  font-size: 0.7rem;
   font-weight: 500;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #4ecb94;
   line-height: 1.25;
