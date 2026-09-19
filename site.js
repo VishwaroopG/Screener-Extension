@@ -25,60 +25,64 @@
 
     var tickerData = [];
     spans.forEach(function(span) {
+      var boldEl = span.querySelector('b');
+      var name = boldEl ? boldEl.textContent : '';
+      var isIndex = name === 'S&P 500' || name === 'NASDAQ' || name === 'DOW';
+
+      var priceEl = span.querySelectorAll('span')[0] || null;
       var text = span.textContent;
-      var priceMatch = text.match(/[\$]?([\d,]+\.?\d*)/);
+      var priceMatch = text.match(/\$?([\d,]+\.?\d*)/);
       var basePrice = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 0;
-      var isIndex = text.indexOf('S&P') !== -1 || text.indexOf('NASDAQ') !== -1 || text.indexOf('DOW') !== -1;
+
       tickerData.push({
         span: span,
+        name: name,
         basePrice: basePrice,
         currentPrice: basePrice,
         isIndex: isIndex,
-        volatility: isIndex ? 0.0003 : 0.002
+        isUsStock: !isIndex && text.indexOf('$') !== -1
       });
     });
 
-    function updateRandomTicker() {
-      var randIdx = Math.floor(Math.random() * tickerData.length);
-      var data = tickerData[randIdx];
+    var updateIdx = 0;
+    function updateNextTicker() {
+      var data = tickerData[updateIdx % tickerData.length];
+      updateIdx++;
+
       if (!data || data.basePrice === 0) {
-        setTimeout(updateRandomTicker, 1000);
+        setTimeout(updateNextTicker, 1000);
         return;
       }
 
-      var changePercent = (Math.random() - 0.5) * data.volatility * 2;
-      var newPrice = data.currentPrice * (1 + changePercent);
-      var minPrice = data.basePrice * 0.98;
-      var maxPrice = data.basePrice * 1.02;
-      newPrice = Math.max(minPrice, Math.min(maxPrice, newPrice));
+      var step = data.basePrice * (data.isIndex ? 0.0001 : 0.001);
+      var change = (Math.random() - 0.48) * step * 2;
+      var newPrice = data.currentPrice + change;
+
+      var minP = data.basePrice * 0.98;
+      var maxP = data.basePrice * 1.02;
+      newPrice = Math.max(minP, Math.min(maxP, newPrice));
       data.currentPrice = newPrice;
 
-      var totalChange = ((newPrice - data.basePrice) / data.basePrice) * 100;
-      var isUp = totalChange >= 0;
-      var changeStr = (isUp ? '+' : '') + totalChange.toFixed(2) + '%';
+      var pctChange = ((newPrice - data.basePrice) / data.basePrice) * 100;
+      var isUp = pctChange >= 0;
+      var pctStr = (isUp ? '+' : '') + Math.abs(pctChange).toFixed(2) + '%';
 
       var priceStr;
       if (data.isIndex) {
         priceStr = newPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      } else {
+      } else if (data.isUsStock) {
         priceStr = '$' + newPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      } else {
+        priceStr = newPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       }
 
-      var boldEl = data.span.querySelector('b');
-      var tickerName = boldEl ? boldEl.textContent : '';
       var changeClass = isUp ? 'up' : 'down';
-      data.span.innerHTML = '<b>' + tickerName + '</b> ' + priceStr + ' <span class="' + changeClass + '">' + changeStr + '</span>';
+      data.span.innerHTML = '<b>' + data.name + '</b> ' + priceStr + ' <span class="' + changeClass + '">' + pctStr + '</span>';
 
-      var flashClass = isUp ? 'ticker-tick-up' : 'ticker-tick-down';
-      data.span.classList.remove('ticker-tick-up', 'ticker-tick-down');
-      void data.span.offsetWidth;
-      data.span.classList.add(flashClass);
-      setTimeout(function() { data.span.classList.remove(flashClass); }, 800);
-
-      setTimeout(updateRandomTicker, 800 + Math.random() * 1200);
+      setTimeout(updateNextTicker, 1000);
     }
 
-    setTimeout(updateRandomTicker, 1500);
+    setTimeout(updateNextTicker, 1000);
   })();
 
   /* ─────────────────────────────────────────────────────────────
