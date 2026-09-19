@@ -265,6 +265,14 @@ h1 .accent { color: var(--gold); font-weight: 300; }
 /* Reveal defaults — visible without JS; JS animates transform+opacity only. */
 .reveal { opacity: 1; }
 
+/* No-GSAP fallback: hidden state is added by JS only, so no-JS stays visible. */
+.io-hidden {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+}
+.io-hidden.io-in { opacity: 1; transform: none; }
+
 /* Hamburger + drawer (Emil drawer curve, 280ms, transform+opacity only). */
 .menu-btn {
   display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px;

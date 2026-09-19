@@ -13,15 +13,39 @@
     track.innerHTML += track.innerHTML;
   })();
 
-  /* ---------- GSAP scroll reveals: enter-only, staggered, transform+opacity ---------- */
+  /* ---------- Scroll reveals: GSAP when available, IntersectionObserver fallback ----------
+     Fallback matters: if the GSAP CDN is blocked, reveals still run on native APIs. */
   (function reveals() {
-    if (reduceMotion || !window.gsap) return;
+    if (reduceMotion) return;
+
+    var singles = '.hero-grid > div, .section-head, .signal-panel';
+
+    /* No GSAP (CDN blocked/offline): CSS-transition reveals via IntersectionObserver. */
+    if (!window.gsap) {
+      var ioTargets = document.querySelectorAll(singles + ', .tile, .post-card');
+      if (!('IntersectionObserver' in window)) return; /* content stays visible */
+      ioTargets.forEach(function (el) { el.classList.add('io-hidden'); });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var el = entry.target;
+          /* Stagger siblings inside bento / blog grids (Emil: 30-80ms). */
+          var group = el.closest('.bento, .blog-grid');
+          if (group) {
+            var idx = Array.prototype.indexOf.call(group.querySelectorAll('.tile, .post-card'), el);
+            el.style.transitionDelay = (Math.max(0, idx) * 60) + 'ms';
+          }
+          el.classList.add('io-in');
+          io.unobserve(el);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      ioTargets.forEach(function (el) { io.observe(el); });
+      return;
+    }
+
     if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 
-    var groups = ['.hero-grid > div', '.bento', '.signal-panel', '.blog-grid', '#developer .section-head'];
-    groups.forEach(function () {});
-
-    gsap.utils.toArray('.hero-grid > div, .section-head, .signal-panel').forEach(function (el) {
+    gsap.utils.toArray(singles).forEach(function (el) {
       gsap.fromTo(el,
         { opacity: 0, y: 24 },
         {
