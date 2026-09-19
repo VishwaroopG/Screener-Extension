@@ -963,13 +963,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function isBrave() {
+    try { return navigator.userAgent && navigator.userAgent.includes('Brave'); } catch (e) { return false; }
+  }
+
   function paintSyncUI(state) {
     const enabled = !state || state.enabled !== false;
     const supported = !state || state.supported !== false;
     // canReadIdentity is false on browsers where the profile email can't be
-    // read (e.g. Firefox) — there we must not claim "Not signed in".
+    // read (e.g. Firefox, Brave) — there we must not claim "Not signed in".
     const identityReadable = !state || state.canReadIdentity !== false;
-    const signedOut = !!(state && supported && identityReadable && state.canReadIdentity === true && !state.email);
+    const signedOut = !!(state && supported && identityReadable && state.canReadIdentity === true && !state.email && !isBrave());
     if (settingsSyncToggle) settingsSyncToggle.checked = enabled;
     if (settingsSyncToggle) settingsSyncToggle.disabled = !supported;
     if (btnSyncNow) btnSyncNow.disabled = !supported || !enabled;
@@ -980,6 +984,8 @@ document.addEventListener('DOMContentLoaded', () => {
         settingsAccountEmail.textContent = state.email;
       } else if (state && !identityReadable) {
         settingsAccountEmail.textContent = t('settingsBrowserSync') || 'Syncs with your browser account';
+      } else if (isBrave()) {
+        settingsAccountEmail.textContent = t('settingsBrowserSync') || 'Syncs with your browser account';
       } else if (signedOut) {
         settingsAccountEmail.textContent = t('settingsSignedOut') || 'Not signed in';
       } else {
@@ -987,7 +993,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     if (settingsAccountDot) {
-      settingsAccountDot.classList.toggle('is-signed-in', !!(state && state.email));
+      settingsAccountDot.classList.toggle('is-signed-in', !!(state && state.email) || (isBrave() && enabled));
     }
     if (settingsSyncTime) {
       if (!supported || signedOut) {

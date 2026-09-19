@@ -64,9 +64,22 @@ function syncValsEqual(a, b) {
   }
 }
 
+function isBraveBrowser() {
+  try {
+    return navigator.userAgent && navigator.userAgent.includes('Brave');
+  } catch (e) {
+    return false;
+  }
+}
+
 function getSyncEmail() {
   return new Promise((resolve) => {
     try {
+      if (isBraveBrowser()) {
+        // Brave blocks chrome.identity.getProfileUserInfo — sync still works
+        resolve('');
+        return;
+      }
       if (chrome.identity && chrome.identity.getProfileUserInfo) {
         chrome.identity.getProfileUserInfo((info) => {
           if (chrome.runtime.lastError) {
