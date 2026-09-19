@@ -392,12 +392,12 @@ h1 .accent { color: var(--accent-warm); }
   height: auto;
 }
 
-/* Centered LIVE WATCHLIST Badge Pill */
+/* Bottom-right LIVE WATCHLIST Badge Pill */
 .ticker-chip {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  right: 24px;
+  bottom: 24px;
+  transform: none;
   display: inline-flex;
   flex-direction: row;
   align-items: center;
@@ -414,7 +414,7 @@ h1 .accent { color: var(--accent-warm); }
   transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 300ms ease;
 }
 .ticker-chip:hover {
-  transform: translate(-50%, -53%) scale(1.03);
+  transform: translateY(-3px) scale(1.03);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.75), 0 0 24px rgba(78, 203, 148, 0.35);
 }
 .ticker-chip i {
