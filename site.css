@@ -221,12 +221,12 @@ img { max-width: 100%; height: auto; }
 .hero-text-wrap .hero-actions { justify-content: center; }
 .hero-text-wrap .proof { justify-content: center; }
 
-/* Full-bleed frame wrapper — no side padding, max spans nearly full viewport */
+/* Full-bleed frame wrapper — constrained width */
 .hero-frame-wrap {
   width: 100%;
   padding: 0 20px;
   box-sizing: border-box;
-  max-width: 1600px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
@@ -286,12 +286,12 @@ h1 .accent { color: var(--accent-warm); }
 .tape .down { color: var(--red); }
 @keyframes tape-scroll { to { transform: translateX(-50%); } }
 
-/* Product frame - full-width hero screenshot */
+/* Product frame - constrained hero screenshot */
 .product-frame {
   position: relative;
   padding: 0;
   border: 1px solid var(--border);
-  border-radius: 22px;
+  border-radius: 16px;
   background: var(--surface);
   box-shadow: var(--shadow-lg);
   transition: transform 400ms var(--ease-out), box-shadow 400ms var(--ease-out);
@@ -332,6 +332,9 @@ h1 .accent { color: var(--accent-warm); }
   display: block;
   width: 100%;
   height: auto;
+  max-height: 520px;
+  object-fit: cover;
+  object-position: top;
   border-radius: 0;
 }
 .ticker-chip {
