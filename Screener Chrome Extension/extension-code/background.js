@@ -70,15 +70,20 @@ function getSyncEmail() {
       if (chrome.identity && chrome.identity.getProfileUserInfo) {
         chrome.identity.getProfileUserInfo((info) => {
           if (chrome.runtime.lastError) {
+            console.warn('getProfileUserInfo error:', chrome.runtime.lastError.message);
             resolve('');
             return;
           }
-          resolve((info && info.email) || '');
+          const email = (info && info.email) || '';
+          console.log('getProfileUserInfo result:', email ? 'found email' : 'no email', email ? email.substring(0, 3) + '...' : '');
+          resolve(email);
         });
       } else {
+        console.warn('chrome.identity not available');
         resolve('');
       }
     } catch (e) {
+      console.warn('getSyncEmail exception:', e);
       resolve('');
     }
   });
@@ -1032,7 +1037,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       try {
         canReadIdentity = !!(chrome.identity && chrome.identity.getProfileUserInfo);
       } catch (e) {}
-      sendResponse({ success: true, enabled, lastSync, email, supported: !!prefsSyncArea(), canReadIdentity });
+      const supported = !!prefsSyncArea();
+      console.log('GET_SYNC_STATE:', { enabled, lastSync, email: email ? email.substring(0, 5) + '...' : '', supported, canReadIdentity });
+      sendResponse({ success: true, enabled, lastSync, email, supported, canReadIdentity });
     })();
     return true;
   }
