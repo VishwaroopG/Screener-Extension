@@ -1150,9 +1150,13 @@ document.addEventListener('DOMContentLoaded', () => {
       btnFullscreen.addEventListener('click', () => {
         const url = chrome.runtime.getURL('sidepanel.html?fullscreen=1');
         try {
-          chrome.tabs.create({ url });
+          chrome.tabs.create({ url }, () => {
+            // Close the side panel after opening fullscreen tab
+            try { window.close(); } catch (e) {}
+          });
         } catch (e) {
           window.open(url, '_blank');
+          try { window.close(); } catch (e) {}
         }
       });
     }
