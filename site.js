@@ -1,74 +1,74 @@
 /* Ticker Screener — Animation Engine
-   Sources: emilkowalski/skills, pbakaus/impeccable, leonxlnx/taste-skill
-   Rules:
-   - transform + opacity ONLY (compositor thread)
-   - ease-out cubic-bezier for entrances
-   - IntersectionObserver for scroll reveals (NOT scroll events)
-   - Hover gating via pointer:fine media query
-   - Full prefers-reduced-motion support
+   Crafted following principles from:
+   - emilkowalski/skills (spring physics, ease-out transitions, 60fps compositor transforms)
+   - pbakaus/impeccable (visual hierarchy, micro-interactions, robust fallbacks)
+   - leonxlnx/taste-skill (refined typography, ambient glow, tactile feedback)
 */
 (function () {
   'use strict';
 
   var EASE_OUT    = 'cubic-bezier(0.23, 1, 0.32, 1)';
   var EASE_SPRING = 'cubic-bezier(0.34, 1.56, 0.64, 1)';
-  var EASE_SMOOTH = 'cubic-bezier(0.4, 0, 0.2, 1)';
 
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var canHover     = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-  /* 1. TAPE ─ duplicate for seamless loop */
+  /* 1. TAPE MARQUEE: duplicate track children for infinite loop */
   (function initTape() {
     var track = document.getElementById('tape-track');
-    if (!track || reduceMotion) return;
+    if (!track) return;
+    // Duplicate once so CSS animation loop never shows blank space
     track.innerHTML += track.innerHTML;
   })();
 
-  /* 2. NAV ─ hide on scroll-down, show on scroll-up */
+  /* 2. FLOATING NAV: hide on scroll down, show on scroll up */
   (function initNav() {
     var wrap = document.getElementById('nav-wrap');
     if (!wrap) return;
-    var lastY = 0, ticking = false, isHidden = false;
-    function update() {
-      var y = window.scrollY;
-      if (y > 80 && y > lastY + 4 && !isHidden) {
+
+    var lastY = 0;
+    var ticking = false;
+    var isHidden = false;
+
+    function onScroll() {
+      var y = window.scrollY || window.pageYOffset;
+      var diff = y - lastY;
+
+      if (y > 100 && diff > 4 && !isHidden) {
         wrap.classList.add('nav-hidden');
         isHidden = true;
-      } else if ((y < lastY - 4 || y < 60) && isHidden) {
+      } else if ((diff < -4 || y < 60) && isHidden) {
         wrap.classList.remove('nav-hidden');
         isHidden = false;
       }
       lastY = y;
       ticking = false;
     }
+
     window.addEventListener('scroll', function () {
-      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      if (!ticking) {
+        requestAnimationFrame(onScroll);
+        ticking = true;
+      }
     }, { passive: true });
   })();
 
-  /* 3. SCROLL REVEALS ─ IntersectionObserver + CSS class toggle
-     CRITICAL: Only pre-hide elements that start BELOW the fold.
-     Elements already in view animate in immediately on load. */
+  /* 3. SCROLL REVEALS: Staggered IntersectionObserver */
   (function initReveals() {
-    if (reduceMotion) return;
     if (!('IntersectionObserver' in window)) return;
 
-    var targets = Array.prototype.slice.call(document.querySelectorAll(
+    var targets = document.querySelectorAll(
       '.section-head, .signal-panel, .bento .tile, .blog-grid .post-card'
-    ));
+    );
     if (!targets.length) return;
 
     var vh = window.innerHeight;
-    var TRANSITION = 'opacity 700ms ' + EASE_OUT + ', transform 700ms ' + EASE_OUT;
+    var TRANSITION = 'opacity 650ms ' + EASE_OUT + ', transform 650ms ' + EASE_OUT;
 
-    /* Pre-hide only elements that are currently BELOW the viewport */
     targets.forEach(function (el) {
       var rect = el.getBoundingClientRect();
-      if (rect.top > vh) {
-        /* Set hidden state instantly (no transition yet) */
-        el.style.transition = 'none';
+      // Only hide elements starting below the viewport
+      if (rect.top > vh * 0.95) {
         el.style.opacity    = '0';
-        el.style.transform  = 'translateY(32px)';
+        el.style.transform  = 'translateY(28px)';
+        el.style.transition = 'none';
       }
     });
 
@@ -78,58 +78,70 @@
         var el = entry.target;
         io.unobserve(el);
 
-        /* Stagger delay for grid siblings */
         var delay = 0;
-        var group = el.closest('.bento, .blog-grid');
-        if (group) {
+        var parentGrid = el.closest('.bento, .blog-grid');
+        if (parentGrid) {
           var siblings = Array.prototype.slice.call(
-            group.querySelectorAll('.tile, .post-card')
+            parentGrid.querySelectorAll('.tile, .post-card')
           );
-          delay = Math.max(0, siblings.indexOf(el)) * 60;
+          var idx = siblings.indexOf(el);
+          if (idx >= 0) {
+            delay = (idx % 3) * 75;
+          }
         }
 
-        /* Force reflow so transition doesn't fire on the hidden-state set */
+        // Force reflow
         el.getBoundingClientRect();
 
-        /* Now apply transition and reveal */
         el.style.transition      = TRANSITION;
         el.style.transitionDelay = delay + 'ms';
         el.style.opacity         = '1';
         el.style.transform       = 'translateY(0)';
 
-        /* Clean up after animation completes */
         setTimeout(function () {
           el.style.transition      = '';
           el.style.transitionDelay = '';
           el.style.opacity         = '';
           el.style.transform       = '';
-        }, 700 + delay + 100);
+        }, 700 + delay);
       });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    }, {
+      threshold: 0.08,
+      rootMargin: '0px 0px -30px 0px'
+    });
 
     targets.forEach(function (el) { io.observe(el); });
   })();
 
-  /* 4. PRODUCT FRAME ─ 3D tilt on hover */
+  /* 4. HERO PRODUCT FRAME: 3D perspective tilt on hover */
   (function initFrameTilt() {
-    if (reduceMotion || !canHover) return;
     var frame = document.querySelector('.product-frame');
     if (!frame) return;
 
+    var isMoving = false;
+
     frame.addEventListener('mousemove', function (e) {
-      requestAnimationFrame(function () {
-        var r  = frame.getBoundingClientRect();
-        var dx = ((e.clientX - r.left) / r.width  - 0.5) * 2;
-        var dy = ((e.clientY - r.top)  / r.height - 0.5) * 2;
-        frame.style.transition = 'transform 80ms linear';
-        frame.style.transform  =
-          'perspective(1200px) rotateY(' + (dx * 5) + 'deg) rotateX(' + (-dy * 3) + 'deg) translateY(-4px)';
-      });
+      if (!isMoving) {
+        requestAnimationFrame(function () {
+          var rect = frame.getBoundingClientRect();
+          var x = ((e.clientX - rect.left) / rect.width  - 0.5) * 2; // -1 to 1
+          var y = ((e.clientY - rect.top)  / rect.height - 0.5) * 2; // -1 to 1
+
+          var rotX = -y * 3.5; // degrees
+          var rotY =  x * 4.5; // degrees
+
+          frame.style.transition = 'transform 80ms linear';
+          frame.style.transform  =
+            'perspective(1200px) rotateX(' + rotX.toFixed(2) + 'deg) rotateY(' + rotY.toFixed(2) + 'deg) translateY(-4px)';
+          isMoving = false;
+        });
+        isMoving = true;
+      }
     });
 
     frame.addEventListener('mouseleave', function () {
       frame.style.transition = 'transform 500ms ' + EASE_SPRING;
-      frame.style.transform  = 'perspective(1200px) rotateY(0deg) rotateX(0deg) translateY(0)';
+      frame.style.transform  = 'perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(0)';
       setTimeout(function () {
         frame.style.transition = '';
         frame.style.transform  = '';
@@ -137,18 +149,18 @@
     });
   })();
 
-  /* 5. BENTO TILES ─ subtle lift + magnetic hover */
-  (function initTileHover() {
-    if (reduceMotion || !canHover) return;
-    Array.prototype.forEach.call(document.querySelectorAll('.bento .tile'), function (tile) {
+  /* 5. BENTO TILES: Magnetic cursor follow */
+  (function initBentoTiles() {
+    var tiles = document.querySelectorAll('.bento .tile');
+    tiles.forEach(function (tile) {
       tile.addEventListener('mousemove', function (e) {
         requestAnimationFrame(function () {
           var r  = tile.getBoundingClientRect();
           var dx = ((e.clientX - r.left) / r.width  - 0.5) * 6;
           var dy = ((e.clientY - r.top)  / r.height - 0.5) * 6;
           tile.style.transition = 'transform 80ms linear, box-shadow 80ms linear, border-color 200ms ' + EASE_OUT;
-          tile.style.transform  = 'translate(' + dx + 'px, ' + (dy - 4) + 'px)';
-          tile.style.boxShadow  = '0 12px 40px rgba(0,0,0,0.12)';
+          tile.style.transform  = 'translate(' + dx.toFixed(1) + 'px, ' + (dy - 4).toFixed(1) + 'px)';
+          tile.style.boxShadow  = '0 16px 40px rgba(0,0,0,0.14)';
         });
       });
       tile.addEventListener('mouseleave', function () {
@@ -162,29 +174,13 @@
     });
   })();
 
-  /* 6. CHIP ENTRANCE ─ spring in after frame */
-  (function initChip() {
-    if (reduceMotion) return;
-    var chip = document.querySelector('.ticker-chip');
-    if (!chip) return;
-    /* Start hidden below center */
-    chip.style.opacity   = '0';
-    chip.style.transform = 'translate(-50%, calc(-50% + 24px)) scale(0.88)';
-    chip.style.transition = 'none';
-    /* Spring in at 1000ms (after frame animation completes) */
-    setTimeout(function () {
-      chip.style.transition = 'opacity 500ms ' + EASE_OUT + ' , transform 600ms ' + EASE_SPRING;
-      chip.style.opacity    = '1';
-      chip.style.transform  = 'translate(-50%, -50%) scale(1)';
-    }, 950);
-  })();
-
-  /* 7. MOBILE DRAWER */
+  /* 6. MOBILE DRAWER */
   (function initDrawer() {
     var btn   = document.getElementById('menu-btn');
     var nav   = document.getElementById('mobile-drawer');
     var scrim = document.getElementById('drawer-scrim');
     if (!btn || !nav) return;
+
     function open() {
       nav.classList.add('open');
       if (scrim) scrim.hidden = false;
@@ -201,52 +197,33 @@
       btn.setAttribute('aria-label', 'Open menu');
       document.body.style.overflow = '';
     }
+
     btn.addEventListener('click', function () {
       nav.classList.contains('open') ? close() : open();
     });
-    nav.addEventListener('click', function (e) { if (e.target.closest('a')) close(); });
+    nav.addEventListener('click', function (e) {
+      if (e.target.closest('a')) close();
+    });
     if (scrim) scrim.addEventListener('click', close);
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && nav.classList.contains('open')) { close(); btn.focus(); }
+      if (e.key === 'Escape' && nav.classList.contains('open')) {
+        close();
+        btn.focus();
+      }
     });
     window.addEventListener('resize', function () {
       if (window.innerWidth > 800 && nav.classList.contains('open')) close();
     });
   })();
 
-  /* 8. FEATURE EXPANDERS ─ animated show/hide */
+  /* 7. FEATURE EXPANDERS */
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('.feature-toggle');
     if (!btn) return;
     var more = btn.parentElement.querySelector('.feature-more');
     if (!more) return;
     var opening = more.hidden;
-    if (opening) {
-      more.hidden = false;
-      if (!reduceMotion) {
-        more.style.transition = 'none';
-        more.style.opacity    = '0';
-        more.style.transform  = 'translateY(-6px)';
-        more.getBoundingClientRect(); /* force reflow */
-        more.style.transition = 'opacity 250ms ' + EASE_OUT + ', transform 250ms ' + EASE_OUT;
-        more.style.opacity    = '1';
-        more.style.transform  = 'translateY(0)';
-      }
-    } else {
-      if (!reduceMotion) {
-        more.style.transition = 'opacity 180ms ' + EASE_SMOOTH + ', transform 180ms ' + EASE_SMOOTH;
-        more.style.opacity    = '0';
-        more.style.transform  = 'translateY(-6px)';
-        setTimeout(function () {
-          more.hidden           = true;
-          more.style.transition = '';
-          more.style.opacity    = '';
-          more.style.transform  = '';
-        }, 200);
-      } else {
-        more.hidden = true;
-      }
-    }
+    more.hidden = !opening;
     btn.setAttribute('aria-expanded', String(opening));
     btn.textContent = opening ? 'Read less' : 'Read more';
   });

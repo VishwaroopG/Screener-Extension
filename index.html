@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=26">
+  <link rel="stylesheet" href="site.css?v=30">
 </head>
 <body>
   <div class="site-shell">
@@ -43,7 +43,23 @@
           <div class="proof"><span><strong>S&amp;P 500, Nasdaq, Dow</strong> covered</span><span><strong>NYSE &amp; Nasdaq</strong> + 9 more economies</span><span><strong>Live</strong> ticker controls</span></div>
         </div>
         <div class="hero-frame-wrap">
-          <div class="product-frame"><img src="store-assets/screenshot_v2_5_contextmenu_1280x800_gold.jpg" alt="Ticker Screener — add to watchlist from any page" width="1280" height="800" fetchpriority="high"><div class="ticker-chip"><i></i><span class="chip-text"><span class="chip-line1">LIVE</span><span class="chip-line2">WATCHLIST</span></span></div></div>
+          <div class="product-frame">
+            <div class="frame-bar">
+              <div class="frame-dots"><span></span><span></span><span></span></div>
+              <div class="frame-url"><span class="lock-icon">🔒</span> screener.in &nbsp;·&nbsp; live-market-view</div>
+              <div class="frame-tag">LIVE MARKET VIEW</div>
+            </div>
+            <div class="frame-screen">
+              <img src="store-assets/screenshot_v2_3_1_dashboard_1280x800_gold.png" alt="Ticker Screener live market dashboard" width="1280" height="800" fetchpriority="high">
+              <div class="ticker-chip">
+                <i></i>
+                <span class="chip-text">
+                  <span class="chip-line1">LIVE</span>
+                  <span class="chip-line2">WATCHLIST</span>
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="container"><div class="tape" aria-hidden="true"><div class="tape-track" id="tape-track">
           <span><b>S&amp;P 500</b> 5,842.31 <span class="up">+0.42%</span></span>
@@ -52,6 +68,10 @@
           <span><b>AAPL</b> $232.40 <span class="up">+1.12%</span></span>
           <span><b>NVDA</b> $138.25 <span class="up">+2.04%</span></span>
           <span><b>MSFT</b> $428.15 <span class="down">&minus;0.34%</span></span>
+          <span><b>TSLA</b> $219.16 <span class="up">+3.80%</span></span>
+          <span><b>AMZN</b> $186.40 <span class="up">+0.88%</span></span>
+          <span><b>GOOGL</b> $165.20 <span class="down">&minus;0.22%</span></span>
+          <span><b>META</b> $582.01 <span class="up">+1.45%</span></span>
         </div></div></div>
       </section>
 
@@ -87,7 +107,7 @@
 
     <footer class="container footer"><div class="footer-row"><span>&copy; 2026 Ticker Screener. Built for focused market watching.</span><span><a href="uninstall/">Feedback</a> &middot; <a href="https://buymeacoffee.com/vgexperiments">Support the developer</a> &middot; <a href="https://www.vishwaroopgalgali.com/" target="_blank" rel="noopener">About the developer</a></span></div></footer>
   </div>
-  <script src="site.js?v=8" defer></script>
+  <script src="site.js?v=10" defer></script>
   <script>
     (function () {
       var wrap = document.getElementById('latest-posts');
