@@ -1143,9 +1143,11 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (e) {}
   if (isFullscreenTab) document.body.classList.add('screener-fullscreen');
   const btnFullscreen = document.getElementById('btn-fullscreen');
+  const btnSidebar = document.getElementById('btn-sidebar');
   if (btnFullscreen) {
     if (isFullscreenTab) {
       btnFullscreen.style.display = 'none';
+      if (btnSidebar) btnSidebar.style.display = '';
     } else {
       btnFullscreen.addEventListener('click', () => {
         const url = chrome.runtime.getURL('sidepanel.html?fullscreen=1');
@@ -1160,6 +1162,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }
+  }
+  if (btnSidebar) {
+    btnSidebar.addEventListener('click', () => {
+      // Close this tab and open side panel
+      try {
+        chrome.tabs.getCurrent((tab) => {
+          if (tab && tab.id) {
+            chrome.tabs.remove(tab.id, () => {
+              // Side panel stays open after tab closes
+            });
+          }
+        });
+      } catch (e) {}
+    });
   }
   if (aboutModal) {
     aboutModal.addEventListener('click', (e) => {
