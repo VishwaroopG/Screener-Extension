@@ -923,7 +923,7 @@
 
         html += `
           <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${idxName}" data-is-index="true" style="cursor: pointer;">
-            <span class="screener-ticker-name">${idxName}</span>
+            <span class="screener-ticker-name">${idxName.replace(/\s*\(.*\)\s*$/, '')}</span>
             <span class="screener-ticker-price ${flashClass}">${idx.price}</span>
             <span class="screener-ticker-moves" style="margin-left: 6px;">${changeAreaHtml(idx.price, idx.changePct, Math.abs(parseFloat(idx.changePct)).toFixed(2) + '%', isUp)}</span>
           </div>
