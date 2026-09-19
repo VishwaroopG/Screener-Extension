@@ -1,85 +1,62 @@
-/* Ticker Screener landing interactions: custom cursor, scroll reveals, mobile drawer, read-more toggles. */
+/* Ticker Screener landing interactions.
+   Motion: emilkowalski animate skill — ease-out only, transform+opacity,
+   UI <300ms, stagger 30-80ms, reduced-motion + hover gating. */
 (function () {
   'use strict';
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var finePointer = window.matchMedia('(pointer: fine)').matches;
-  var desktop = window.innerWidth >= 768;
 
-  /* ---------- Custom cursor: glow dot + trailing ring that reacts to interactive elements ---------- */
-  (function cursor() {
-    if (!finePointer || reduceMotion) return;
-    var dot = document.getElementById('cursor-dot');
-    var ring = document.getElementById('cursor-ring');
-    if (!dot || !ring) return;
-
-    var x = -100, y = -100, rx = -100, ry = -100, shown = false;
-    function place() {
-      dot.style.transform = 'translate(' + x + 'px,' + y + 'px)';
-      ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
-    }
-    place();
-
-    if (window.gsap && window.gsap.quickTo) {
-      var dotX = gsap.quickTo(dot, 'x', { duration: 0.12, ease: 'power2' });
-      var dotY = gsap.quickTo(dot, 'y', { duration: 0.12, ease: 'power2' });
-      var ringX = gsap.quickTo(ring, 'x', { duration: 0.4, ease: 'power3' });
-      var ringY = gsap.quickTo(ring, 'y', { duration: 0.4, ease: 'power3' });
-      dot.style.transform = '';
-      ring.style.transform = '';
-      window.addEventListener('mousemove', function (e) {
-        if (!shown) { shown = true; dot.classList.add('on'); ring.classList.add('on'); }
-        dotX(e.clientX); dotY(e.clientY); ringX(e.clientX); ringY(e.clientY);
-      }, { passive: true });
-    } else {
-      window.addEventListener('mousemove', function (e) {
-        if (!shown) { shown = true; dot.classList.add('on'); ring.classList.add('on'); }
-        x = e.clientX; y = e.clientY;
-        place();
-      }, { passive: true });
-      (function loop() {
-        rx += (x - rx) * 0.16;
-        ry += (y - ry) * 0.16;
-        if (shown) place();
-        requestAnimationFrame(loop);
-      })();
-    }
-
-    document.addEventListener('mouseover', function (e) {
-      if (e.target.closest('a, button, .feature, .post-card')) ring.classList.add('hot');
-      else ring.classList.remove('hot');
-    });
-    document.addEventListener('mouseleave', function () {
-      dot.classList.remove('on'); ring.classList.remove('on'); shown = false;
-    });
+  /* ---------- Tape: duplicate once for a seamless linear loop ---------- */
+  (function tape() {
+    var track = document.getElementById('tape-track');
+    if (!track || reduceMotion) return;
+    track.innerHTML += track.innerHTML;
   })();
 
-  /* ---------- GSAP scroll reveals (desktop only; content stays visible without JS/GSAP) ---------- */
+  /* ---------- GSAP scroll reveals: enter-only, staggered, transform+opacity ---------- */
   (function reveals() {
-    if (reduceMotion || !desktop || !window.gsap) return;
+    if (reduceMotion || !window.gsap) return;
     if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
-    var targets = '.hero-grid > div, .section-head, .feature, .stat, .signal-panel, .post-card, #developer .section-head';
-    gsap.utils.toArray(targets).forEach(function (el) {
+
+    var groups = ['.hero-grid > div', '.bento', '.signal-panel', '.blog-grid', '#developer .section-head'];
+    groups.forEach(function () {});
+
+    gsap.utils.toArray('.hero-grid > div, .section-head, .signal-panel').forEach(function (el) {
       gsap.fromTo(el,
-        { opacity: 0, y: 36 },
+        { opacity: 0, y: 24 },
         {
-          opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
+          opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
           scrollTrigger: window.ScrollTrigger
-            ? { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' }
+            ? { trigger: el, start: 'top 88%', once: true }
             : undefined
         });
     });
-    /* Subtle hero product tilt on scroll */
+
+    /* Bento tiles + blog cards: 60ms stagger cascade (Emil: 30-80ms). */
+    gsap.utils.toArray('.bento, .blog-grid').forEach(function (group) {
+      var items = group.querySelectorAll('.tile, .post-card');
+      if (!items.length) return;
+      gsap.fromTo(items,
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', stagger: 0.06,
+          scrollTrigger: window.ScrollTrigger
+            ? { trigger: group, start: 'top 85%', once: true }
+            : undefined
+        });
+    });
+
+    /* Hero frame: gentle parallax on scroll (decorative, desktop only). */
     var frame = document.querySelector('.product-frame');
-    if (frame && window.ScrollTrigger) {
+    if (frame && window.ScrollTrigger && window.innerWidth >= 900) {
       gsap.to(frame, {
-        y: -30, ease: 'none',
+        y: -24, ease: 'none',
         scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }
       });
     }
   })();
 
-  /* ---------- Glassmorphic mobile drawer (always mounted; visibility via classes) ---------- */
+  /* ---------- Mobile drawer (Emil drawer curve via CSS, transform only) ---------- */
   (function drawer() {
     var btn = document.getElementById('menu-btn');
     var nav = document.getElementById('mobile-drawer');
