@@ -13,66 +13,54 @@
     track.innerHTML += track.innerHTML;
   })();
 
-  /* ---------- Scroll reveals: GSAP when available, IntersectionObserver fallback ----------
-     Fallback matters: if the GSAP CDN is blocked, reveals still run on native APIs. */
+  /* ---------- Scroll reveals: native IntersectionObserver + CSS transitions ----------
+     Primary engine is dependency-free (Emil: cheapest tool that works; CSS transitions
+     stay smooth under load and retarget cleanly). GSAP is only a parallax enhancement. */
   (function reveals() {
     if (reduceMotion) return;
+    if (!('IntersectionObserver' in window)) return; /* content stays visible */
 
-    var singles = '.hero-grid > div, .section-head, .signal-panel';
+    var singles = document.querySelectorAll('.hero-grid > div, .section-head, .signal-panel');
+    var groups = document.querySelectorAll('.bento, .blog-grid');
 
-    /* No GSAP (CDN blocked/offline): CSS-transition reveals via IntersectionObserver. */
-    if (!window.gsap) {
-      var ioTargets = document.querySelectorAll(singles + ', .tile, .post-card');
-      if (!('IntersectionObserver' in window)) return; /* content stays visible */
-      ioTargets.forEach(function (el) { el.classList.add('io-hidden'); });
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          var el = entry.target;
-          /* Stagger siblings inside bento / blog grids (Emil: 30-80ms). */
-          var group = el.closest('.bento, .blog-grid');
-          if (group) {
-            var idx = Array.prototype.indexOf.call(group.querySelectorAll('.tile, .post-card'), el);
-            el.style.transitionDelay = (Math.max(0, idx) * 60) + 'ms';
-          }
-          el.classList.add('io-in');
-          io.unobserve(el);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        io.unobserve(el);
+        /* Stagger siblings inside bento / blog grids (Emil: 30-80ms). */
+        var group = el.closest('.bento, .blog-grid');
+        var step = 0;
+        if (group) {
+          var idx = Array.prototype.indexOf.call(group.querySelectorAll('.tile, .post-card'), el);
+          step = Math.max(0, idx) * 60;
+          el.style.transitionDelay = step + 'ms';
+        }
+        /* Force a frame between hidden-state paint and reveal so the transition runs. */
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { el.classList.add('io-in'); });
         });
-      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-      ioTargets.forEach(function (el) { io.observe(el); });
-      return;
+        /* Hand styles back to the component after the reveal (kills stagger delay). */
+        window.setTimeout(function () {
+          el.classList.remove('io-hidden', 'io-in');
+          el.style.transitionDelay = '';
+        }, 700 + step);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+    function arm(el) {
+      el.classList.add('io-hidden');
+      io.observe(el);
     }
-
-    if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
-
-    gsap.utils.toArray(singles).forEach(function (el) {
-      gsap.fromTo(el,
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
-          scrollTrigger: window.ScrollTrigger
-            ? { trigger: el, start: 'top 88%', once: true }
-            : undefined
-        });
+    singles.forEach(arm);
+    groups.forEach(function (group) {
+      group.querySelectorAll('.tile, .post-card').forEach(arm);
     });
 
-    /* Bento tiles + blog cards: 60ms stagger cascade (Emil: 30-80ms). */
-    gsap.utils.toArray('.bento, .blog-grid').forEach(function (group) {
-      var items = group.querySelectorAll('.tile, .post-card');
-      if (!items.length) return;
-      gsap.fromTo(items,
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', stagger: 0.06,
-          scrollTrigger: window.ScrollTrigger
-            ? { trigger: group, start: 'top 85%', once: true }
-            : undefined
-        });
-    });
-
-    /* Hero frame: gentle parallax on scroll (decorative, desktop only). */
+    /* Hero frame parallax: GSAP enhancement only, skipped when CDN is blocked. */
     var frame = document.querySelector('.product-frame');
-    if (frame && window.ScrollTrigger && window.innerWidth >= 900) {
+    if (frame && window.gsap && window.ScrollTrigger && window.innerWidth >= 900) {
+      gsap.registerPlugin(ScrollTrigger);
       gsap.to(frame, {
         y: -24, ease: 'none',
         scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }
