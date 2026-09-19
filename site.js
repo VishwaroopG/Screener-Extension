@@ -16,7 +16,7 @@
   /* ---------- Floating nav: hide on scroll down, show on scroll up ---------- */
   (function floatingNav() {
     var wrap = document.getElementById('nav-wrap');
-    if (!wrap || reduceMotion) return;
+    if (!wrap) return;
     var lastY = 0;
     var ticking = false;
 
@@ -37,33 +37,18 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   })();
 
-  /* ---------- Scroll reveals: IntersectionObserver + CSS transitions ----------
-     Cheapest tool that works. CSS transitions stay smooth under load. */
+  /* ---------- Scroll reveals: IntersectionObserver + CSS transitions ---------- */
   (function reveals() {
     if (reduceMotion) return;
     if (!('IntersectionObserver' in window)) return;
 
-    var singles = document.querySelectorAll('.hero-grid > div, .section-head, .signal-panel');
-    var groups = document.querySelectorAll('.bento, .blog-grid');
-    var allReveals = [];
+    /* Only observe elements that are NOT in the hero.
+       Hero has its own CSS entrance animations. */
+    var targets = document.querySelectorAll(
+      '.section-head, .signal-panel, .bento .tile, .blog-grid .post-card'
+    );
 
-    function revealEl(el, delay) {
-      el.style.transitionDelay = delay + 'ms';
-      el.classList.add('io-hidden');
-      /* Force layout so the browser registers the hidden state. */
-      el.offsetHeight;
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          el.classList.add('io-in');
-        });
-      });
-        /* Clean up after transition completes. */
-        var totalDelay = delay + 700;
-        window.setTimeout(function () {
-          el.classList.remove('io-hidden', 'io-in');
-          el.style.transitionDelay = '';
-        }, totalDelay);
-    }
+    if (!targets.length) return;
 
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -71,21 +56,37 @@
         var el = entry.target;
         io.unobserve(el);
 
+        /* Calculate stagger delay for siblings inside grids. */
+        var delay = 0;
         var group = el.closest('.bento, .blog-grid');
-        var step = 0;
         if (group) {
           var tiles = group.querySelectorAll('.tile, .post-card');
           var idx = Array.prototype.indexOf.call(tiles, el);
-          step = Math.max(0, idx) * 60;
+          delay = Math.max(0, idx) * 70;
         }
-        revealEl(el, step);
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
 
-    singles.forEach(function (el) { io.observe(el); });
-    groups.forEach(function (group) {
-      group.querySelectorAll('.tile, .post-card').forEach(function (el) { io.observe(el); });
-    });
+        /* Phase 1: apply hidden state, let browser paint it. */
+        el.style.transitionDelay = '0ms';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(40px)';
+
+        /* Phase 2: after browser paints the hidden state, trigger the reveal. */
+        setTimeout(function () {
+          el.style.transitionDelay = delay + 'ms';
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+
+          /* Phase 3: clean up inline styles after transition finishes. */
+          setTimeout(function () {
+            el.style.transitionDelay = '';
+            el.style.opacity = '';
+            el.style.transform = '';
+          }, 600 + delay);
+        }, 50);
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
+
+    targets.forEach(function (el) { io.observe(el); });
   })();
 
   /* ---------- Mobile drawer (Emil drawer curve via CSS, transform only) ---------- */
