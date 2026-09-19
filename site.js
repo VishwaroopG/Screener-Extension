@@ -44,8 +44,20 @@
       });
     });
 
-    function buildHTML(name, priceStr, isUp, pctStr) {
-      return '<b>' + name + '</b> ' + priceStr + ' <span class="' + (isUp ? 'up' : 'down') + '">' + pctStr + '</span>';
+    function initTickerNodes(span) {
+      var children = span.childNodes;
+      var boldEl = span.querySelector('b');
+      var pctEl = null;
+      for (var i = 0; i < children.length; i++) {
+        if (children[i].nodeType === 1 && children[i] !== boldEl && children[i].tagName !== 'B') {
+          pctEl = children[i];
+        }
+      }
+      var textNodes = [];
+      for (var j = 0; j < children.length; j++) {
+        if (children[j].nodeType === 3) textNodes.push(children[j]);
+      }
+      return { bold: boldEl, priceNode: textNodes[0], pctEl: pctEl };
     }
 
     function updateTicker(data) {
@@ -73,9 +85,15 @@
         priceStr = newPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       }
 
-      var html = buildHTML(data.name, priceStr, isUp, pctStr);
       data.spans.forEach(function(s) {
-        if (s) s.innerHTML = html;
+        if (!s) return;
+        if (!s._nodes) s._nodes = initTickerNodes(s);
+        var n = s._nodes;
+        if (n.priceNode) n.priceNode.nodeValue = priceStr;
+        if (n.pctEl) {
+          n.pctEl.textContent = pctStr;
+          n.pctEl.className = isUp ? 'up' : 'down';
+        }
       });
 
       var el = data.spans[0];
