@@ -44,15 +44,8 @@
       });
     });
 
-    var updateIdx = 0;
-    function updateNextTicker() {
-      var data = tickerData[updateIdx % tickerData.length];
-      updateIdx++;
-
-      if (!data || data.basePrice === 0) {
-        setTimeout(updateNextTicker, 1000);
-        return;
-      }
+    function updateTicker(data) {
+      if (!data || data.basePrice === 0) return;
 
       var step = data.basePrice * (data.isIndex ? 0.0001 : 0.001);
       var change = (Math.random() - 0.48) * step * 2;
@@ -76,8 +69,7 @@
         priceStr = newPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       }
 
-      var changeClass = isUp ? 'up' : 'down';
-      data.span.innerHTML = '<b>' + data.name + '</b> ' + priceStr + ' <span class="' + changeClass + '">' + pctStr + '</span>';
+      data.span.innerHTML = '<b>' + data.name + '</b> ' + priceStr + ' <span class="' + (isUp ? 'up' : 'down') + '">' + pctStr + '</span>';
 
       data.span.classList.remove('ticker-tick-up', 'ticker-tick-down');
       void data.span.offsetWidth;
@@ -85,11 +77,15 @@
       setTimeout(function() {
         data.span.classList.remove('ticker-tick-up', 'ticker-tick-down');
       }, 600);
-
-      setTimeout(updateNextTicker, 1000);
     }
 
-    setTimeout(updateNextTicker, 1000);
+    function updateAllTickers() {
+      for (var i = 0; i < tickerData.length; i++) {
+        updateTicker(tickerData[i]);
+      }
+    }
+
+    setInterval(updateAllTickers, 2000);
   })();
 
   /* ─────────────────────────────────────────────────────────────
