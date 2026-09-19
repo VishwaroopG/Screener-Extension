@@ -87,11 +87,15 @@
       }
     }
 
-    setInterval(function() {
-      for (var i = 0; i < tickerData.length; i++) {
-        updateTicker(tickerData[i]);
-      }
-    }, 2000);
+    function scheduleTicker(data, index) {
+      var delay = 1000 + Math.random() * 3000; // 1–4 s random offset per stock
+      setTimeout(function tick() {
+        updateTicker(data);
+        var next = 1200 + Math.random() * 2800; // 1.2–4 s between ticks
+        setTimeout(tick, next);
+      }, delay + index * 200); // stagger initial fire
+    }
+    tickerData.forEach(function(d, i) { scheduleTicker(d, i); });
   })();
 
   /* ─────────────────────────────────────────────────────────────
