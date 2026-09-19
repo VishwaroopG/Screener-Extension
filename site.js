@@ -79,6 +79,13 @@
       var changeClass = isUp ? 'up' : 'down';
       data.span.innerHTML = '<b>' + data.name + '</b> ' + priceStr + ' <span class="' + changeClass + '">' + pctStr + '</span>';
 
+      data.span.classList.remove('ticker-tick-up', 'ticker-tick-down');
+      void data.span.offsetWidth;
+      data.span.classList.add(isUp ? 'ticker-tick-up' : 'ticker-tick-down');
+      setTimeout(function() {
+        data.span.classList.remove('ticker-tick-up', 'ticker-tick-down');
+      }, 600);
+
       setTimeout(updateNextTicker, 1000);
     }
 
