@@ -945,7 +945,7 @@
 
           html += `
             <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${ticker}" style="cursor: pointer;">
-              <span class="screener-ticker-name">${data.companyName || ticker}</span>
+              <span class="screener-ticker-name">${ticker}</span>
               <span class="screener-ticker-price ${flashClass}">${price}</span>
               ${movesHtml}
             </div>

@@ -155,13 +155,13 @@
 }
 
 #screener-ticker-tape .screener-ticker-name {
-  color: #00bcd4 !important;
+  color: #ffffff !important;
   margin-right: 8px;
   font-weight: 600 !important;
 }
 
 #screener-ticker-tape .screener-ticker-price {
-  color: #4caf50 !important;
+  color: #ffffff !important;
   margin-right: 8px;
   font-weight: 500 !important;
   display: inline-block;
