@@ -1165,16 +1165,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (btnSidebar) {
     btnSidebar.addEventListener('click', () => {
-      // Close this tab and open side panel
+      // Tell background to open sidebar, then close this tab
       try {
-        chrome.tabs.getCurrent((tab) => {
-          if (tab && tab.id) {
-            chrome.tabs.remove(tab.id, () => {
-              // Side panel stays open after tab closes
-            });
-          }
+        chrome.runtime.sendMessage({ type: 'OPEN_SIDEBAR' }, () => {
+          chrome.tabs.getCurrent((tab) => {
+            if (tab && tab.id) {
+              setTimeout(() => { chrome.tabs.remove(tab.id); }, 300);
+            }
+          });
         });
-      } catch (e) {}
+      } catch (e) {
+        try { window.close(); } catch (e2) {}
+      }
     });
   }
   if (aboutModal) {

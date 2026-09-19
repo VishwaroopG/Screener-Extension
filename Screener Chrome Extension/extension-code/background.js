@@ -788,6 +788,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 
+  if (message.type === 'OPEN_SIDEBAR') {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs && tabs[0] && tabs[0].id) {
+        chrome.sidePanel.open({ tabId: tabs[0].id }).catch(() => {});
+      }
+    });
+    sendResponse({ ok: true });
+    return true;
+  }
+
   if (message.type === 'FETCH_CHART') {
     const { symbol, range, interval } = message;
     (async () => {
