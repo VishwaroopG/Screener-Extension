@@ -18,24 +18,24 @@
     var track = document.getElementById('tape-track');
     if (!track) return;
 
-    track.innerHTML += track.innerHTML;
+    var originalHTML = track.innerHTML;
+    track.innerHTML = originalHTML + originalHTML;
 
-    var spans = track.querySelectorAll('span');
-    if (!spans.length) return;
+    var spans = Array.prototype.slice.call(track.querySelectorAll('span'));
+    var half = Math.floor(spans.length / 2);
+    var firstHalf = spans.slice(0, half);
 
     var tickerData = [];
-    spans.forEach(function(span) {
+    firstHalf.forEach(function(span) {
       var boldEl = span.querySelector('b');
       var name = boldEl ? boldEl.textContent : '';
       var isIndex = name === 'S&P 500' || name === 'NASDAQ' || name === 'DOW';
-
-      var priceEl = span.querySelectorAll('span')[0] || null;
       var text = span.textContent;
       var priceMatch = text.match(/\$?([\d,]+\.?\d*)/);
       var basePrice = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 0;
 
       tickerData.push({
-        span: span,
+        spans: [span, spans[tickerData.length + half]],
         name: name,
         basePrice: basePrice,
         currentPrice: basePrice,
@@ -43,6 +43,10 @@
         isUsStock: !isIndex && text.indexOf('$') !== -1
       });
     });
+
+    function buildHTML(name, priceStr, isUp, pctStr) {
+      return '<b>' + name + '</b> ' + priceStr + ' <span class="' + (isUp ? 'up' : 'down') + '">' + pctStr + '</span>';
+    }
 
     function updateTicker(data) {
       if (!data || data.basePrice === 0) return;
@@ -69,23 +73,25 @@
         priceStr = newPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       }
 
-      data.span.innerHTML = '<b>' + data.name + '</b> ' + priceStr + ' <span class="' + (isUp ? 'up' : 'down') + '">' + pctStr + '</span>';
+      var html = buildHTML(data.name, priceStr, isUp, pctStr);
+      data.spans.forEach(function(s) {
+        if (s) s.innerHTML = html;
+      });
 
-      data.span.classList.remove('ticker-tick-up', 'ticker-tick-down');
-      void data.span.offsetWidth;
-      data.span.classList.add(isUp ? 'ticker-tick-up' : 'ticker-tick-down');
-      setTimeout(function() {
-        data.span.classList.remove('ticker-tick-up', 'ticker-tick-down');
-      }, 600);
-    }
-
-    function updateAllTickers() {
-      for (var i = 0; i < tickerData.length; i++) {
-        updateTicker(tickerData[i]);
+      var el = data.spans[0];
+      if (el) {
+        el.classList.remove('ticker-tick-up', 'ticker-tick-down');
+        void el.offsetWidth;
+        el.classList.add(isUp ? 'ticker-tick-up' : 'ticker-tick-down');
+        setTimeout(function() { el.classList.remove('ticker-tick-up', 'ticker-tick-down'); }, 600);
       }
     }
 
-    setInterval(updateAllTickers, 2000);
+    setInterval(function() {
+      for (var i = 0; i < tickerData.length; i++) {
+        updateTicker(tickerData[i]);
+      }
+    }, 2000);
   })();
 
   /* ─────────────────────────────────────────────────────────────
