@@ -2,6 +2,8 @@
 *.html
 !sidepanel.html
 !extension-code/sidepanel.html
+!blog/posts/*.html
+!Screener Chrome Extension/blog/posts/*.html
 .DS_Store
 node_modules/
 */node_modules/
