@@ -1,5 +1,5 @@
 /* Ticker Screener landing interactions.
-   Motion: emilkowalski animate skill — ease-out only, transform+opacity,
+   Animation: emilkowalski animate skill - ease-out only, transform+opacity,
    UI <300ms, stagger 30-80ms, reduced-motion + hover gating. */
 (function () {
   'use strict';
@@ -13,59 +13,79 @@
     track.innerHTML += track.innerHTML;
   })();
 
-  /* ---------- Scroll reveals: native IntersectionObserver + CSS transitions ----------
-     Primary engine is dependency-free (Emil: cheapest tool that works; CSS transitions
-     stay smooth under load and retarget cleanly). GSAP is only a parallax enhancement. */
+  /* ---------- Floating nav: hide on scroll down, show on scroll up ---------- */
+  (function floatingNav() {
+    var wrap = document.getElementById('nav-wrap');
+    if (!wrap || reduceMotion) return;
+    var lastY = 0;
+    var ticking = false;
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var y = window.scrollY;
+        if (y > 120 && y > lastY + 5) {
+          wrap.classList.add('nav-hidden');
+        } else if (y < lastY - 5 || y < 80) {
+          wrap.classList.remove('nav-hidden');
+        }
+        lastY = y;
+        ticking = false;
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+
+  /* ---------- Scroll reveals: IntersectionObserver + CSS transitions ----------
+     Cheapest tool that works. CSS transitions stay smooth under load. */
   (function reveals() {
     if (reduceMotion) return;
-    if (!('IntersectionObserver' in window)) return; /* content stays visible */
+    if (!('IntersectionObserver' in window)) return;
 
     var singles = document.querySelectorAll('.hero-grid > div, .section-head, .signal-panel');
     var groups = document.querySelectorAll('.bento, .blog-grid');
+    var allReveals = [];
+
+    function revealEl(el, delay) {
+      el.style.transitionDelay = delay + 'ms';
+      el.classList.add('io-hidden');
+      /* Force layout so the browser registers the hidden state. */
+      el.offsetHeight;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          el.classList.add('io-in');
+        });
+      });
+        /* Clean up after transition completes. */
+        var totalDelay = delay + 700;
+        window.setTimeout(function () {
+          el.classList.remove('io-hidden', 'io-in');
+          el.style.transitionDelay = '';
+        }, totalDelay);
+    }
 
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
         var el = entry.target;
         io.unobserve(el);
-        /* Stagger siblings inside bento / blog grids (Emil: 30-80ms). */
+
         var group = el.closest('.bento, .blog-grid');
         var step = 0;
         if (group) {
-          var idx = Array.prototype.indexOf.call(group.querySelectorAll('.tile, .post-card'), el);
+          var tiles = group.querySelectorAll('.tile, .post-card');
+          var idx = Array.prototype.indexOf.call(tiles, el);
           step = Math.max(0, idx) * 60;
-          el.style.transitionDelay = step + 'ms';
         }
-        /* Force a frame between hidden-state paint and reveal so the transition runs. */
-        requestAnimationFrame(function () {
-          requestAnimationFrame(function () { el.classList.add('io-in'); });
-        });
-        /* Hand styles back to the component after the reveal (kills stagger delay). */
-        window.setTimeout(function () {
-          el.classList.remove('io-hidden', 'io-in');
-          el.style.transitionDelay = '';
-        }, 700 + step);
+        revealEl(el, step);
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
 
-    function arm(el) {
-      el.classList.add('io-hidden');
-      io.observe(el);
-    }
-    singles.forEach(arm);
+    singles.forEach(function (el) { io.observe(el); });
     groups.forEach(function (group) {
-      group.querySelectorAll('.tile, .post-card').forEach(arm);
+      group.querySelectorAll('.tile, .post-card').forEach(function (el) { io.observe(el); });
     });
-
-    /* Hero frame parallax: GSAP enhancement only, skipped when CDN is blocked. */
-    var frame = document.querySelector('.product-frame');
-    if (frame && window.gsap && window.ScrollTrigger && window.innerWidth >= 900) {
-      gsap.registerPlugin(ScrollTrigger);
-      gsap.to(frame, {
-        y: -24, ease: 'none',
-        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }
-      });
-    }
   })();
 
   /* ---------- Mobile drawer (Emil drawer curve via CSS, transform only) ---------- */
