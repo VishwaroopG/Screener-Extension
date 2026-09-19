@@ -18,36 +18,67 @@
     var track = document.getElementById('tape-track');
     if (!track) return;
 
-    // Duplicate once so CSS animation loop never shows empty space
     track.innerHTML += track.innerHTML;
 
-    // Live Market Ticker Pulse Simulator
     var spans = track.querySelectorAll('span');
     if (!spans.length) return;
 
-    function pulseRandomTicker() {
-      var randIdx = Math.floor(Math.random() * spans.length);
-      var item = spans[randIdx];
-      if (!item) return;
+    var tickerData = [];
+    spans.forEach(function(span) {
+      var text = span.textContent;
+      var priceMatch = text.match(/[\$]?([\d,]+\.?\d*)/);
+      var basePrice = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 0;
+      var isIndex = text.indexOf('S&P') !== -1 || text.indexOf('NASDAQ') !== -1 || text.indexOf('DOW') !== -1;
+      tickerData.push({
+        span: span,
+        basePrice: basePrice,
+        currentPrice: basePrice,
+        isIndex: isIndex,
+        volatility: isIndex ? 0.0003 : 0.002
+      });
+    });
 
-      var isUp = item.querySelector('.up') || Math.random() > 0.4;
+    function updateRandomTicker() {
+      var randIdx = Math.floor(Math.random() * tickerData.length);
+      var data = tickerData[randIdx];
+      if (!data || data.basePrice === 0) {
+        setTimeout(updateRandomTicker, 1000);
+        return;
+      }
+
+      var changePercent = (Math.random() - 0.5) * data.volatility * 2;
+      var newPrice = data.currentPrice * (1 + changePercent);
+      var minPrice = data.basePrice * 0.98;
+      var maxPrice = data.basePrice * 1.02;
+      newPrice = Math.max(minPrice, Math.min(maxPrice, newPrice));
+      data.currentPrice = newPrice;
+
+      var totalChange = ((newPrice - data.basePrice) / data.basePrice) * 100;
+      var isUp = totalChange >= 0;
+      var changeStr = (isUp ? '+' : '') + totalChange.toFixed(2) + '%';
+
+      var priceStr;
+      if (data.isIndex) {
+        priceStr = newPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      } else {
+        priceStr = '$' + newPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      var boldEl = data.span.querySelector('b');
+      var tickerName = boldEl ? boldEl.textContent : '';
+      var changeClass = isUp ? 'up' : 'down';
+      data.span.innerHTML = '<b>' + tickerName + '</b> ' + priceStr + ' <span class="' + changeClass + '">' + changeStr + '</span>';
+
       var flashClass = isUp ? 'ticker-tick-up' : 'ticker-tick-down';
+      data.span.classList.remove('ticker-tick-up', 'ticker-tick-down');
+      void data.span.offsetWidth;
+      data.span.classList.add(flashClass);
+      setTimeout(function() { data.span.classList.remove(flashClass); }, 800);
 
-      item.classList.remove('ticker-tick-up', 'ticker-tick-down');
-      // Trigger reflow to restart animation
-      void item.offsetWidth;
-      item.classList.add(flashClass);
-
-      setTimeout(function () {
-        item.classList.remove(flashClass);
-      }, 1300);
-
-      var nextInterval = 1800 + Math.random() * 2200;
-      setTimeout(pulseRandomTicker, nextInterval);
+      setTimeout(updateRandomTicker, 800 + Math.random() * 1200);
     }
 
-    // Start live pulses after initial page settle
-    setTimeout(pulseRandomTicker, 1500);
+    setTimeout(updateRandomTicker, 1500);
   })();
 
   /* ─────────────────────────────────────────────────────────────
