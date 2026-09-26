@@ -27,6 +27,17 @@ foreach ($k in @('manifest_version','name','version','side_panel','background'))
 
 $dest = Join-Path $root "Screener-Extension-v$version.zip"
 if (Test-Path $dest) { Remove-Item $dest -Force }
-Compress-Archive -Path (Join-Path $stage '*') -DestinationPath $dest -Force
+# NOTE: Do NOT use Compress-Archive — it stores Windows backslash paths
+# which violates the ZIP spec. Use .NET with forward-slash entry names.
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+$zip = [System.IO.Compression.ZipFile]::Open($dest, 'Create')
+try {
+  Get-ChildItem -Path $stage -Recurse -File | ForEach-Object {
+    $rel = $_.FullName.Substring($stage.Length + 1).Replace('\', '/')
+    [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $_.FullName, $rel, 'Optimal') | Out-Null
+  }
+} finally {
+  $zip.Dispose()
+}
 $item = Get-Item $dest
 Write-Host "Built $($item.Name) ($([math]::Round($item.Length/1KB,1)) KB)"

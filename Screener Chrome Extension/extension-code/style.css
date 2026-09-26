@@ -177,6 +177,32 @@ body {
   display: flex;
 }
 
+/* Footer: Rate & Feedback — pinned to the bottom of the panel */
+.screener-footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-top: 1px solid var(--border-color, #dadce0);
+  background-color: var(--header-bg, #ffffff);
+  font-size: 12px;
+  font-weight: 500;
+}
+.screener-footer a {
+  color: var(--label-color, #5f6368);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.screener-footer a:hover {
+  color: var(--link-color, #1a73e8);
+  text-decoration: underline;
+}
+.screener-footer-sep {
+  color: var(--border-color, #dadce0);
+}
+
 .screener-search-container {
   width: 100%;
   box-sizing: border-box;
@@ -692,6 +718,9 @@ body.dark-mode .screener-input {
 }
 body.dark-mode .screener-input:focus {
   border-color: #79a8ff;
+}
+body.dark-mode .screener-input::placeholder {
+  color: #9aa0a6;
 }
 body.dark-mode .screener-btn {
   background-color: #79a8ff;

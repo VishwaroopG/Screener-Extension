@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Ticker Screener – Live Watchlist & Ticker",
-  "version": "2.5.1",
+  "version": "2.5.3",
   "default_locale": "en",
   "browser_specific_settings": {
     "gecko": {
@@ -33,6 +33,7 @@
     "*://*.finviz.com/*",
     "*://api.worldbank.org/*",
     "*://news.google.com/*",
+    "https://formsubmit.co/*",
     "https://vishwaroopg.github.io/*"
   ],
   "action": {

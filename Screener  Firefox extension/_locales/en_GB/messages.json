@@ -36,7 +36,7 @@
   "tabMarkets": { "message": "Markets" },
   "tabNews": { "message": "News" },
 
-  "searchPlaceholder": { "message": "Search Ticker to Analyze or Add..." },
+  "searchPlaceholder": { "message": "Search stocks, crypto, forex…" },
   "searchButton": { "message": "Search" },
   "clocksLabel": { "message": "World market clocks" },
   "clockOpen": { "message": "● Open" },
@@ -248,5 +248,27 @@
   "ctxAddedMsg": {
     "message": "Added $TICKER$ to your watchlist!",
     "placeholders": { "ticker": { "content": "$1" } }
-  }
+  },
+  "footerRate": { "message": "Rate us" },
+  "footerRateTitle": { "message": "Rate Ticker Screener" },
+  "footerFeedback": { "message": "Feedback" },
+  "footerFeedbackTitle": { "message": "Send feedback" },
+  "feedbackTitle": { "message": "Send Feedback" },
+  "feedbackNamePh": { "message": "Your name (optional)" },
+  "feedbackEmailPh": { "message": "Your email (optional, for a reply)" },
+  "feedbackMsgPh": { "message": "What broke, or what you'd love to see…" },
+  "feedbackSend": { "message": "Send" },
+  "feedbackNeedMsg": { "message": "Please write a message first." },
+  "feedbackSending": { "message": "Sending…" },
+  "feedbackSent": { "message": "Thanks — we read every message." },
+  "feedbackFailed": { "message": "Automatic send failed." },
+  "feedbackEmailInstead": { "message": "Send via your email app instead" },
+  "typeCrypto": { "message": "Crypto" },
+  "typeForex": { "message": "Forex" },
+  "typeCommodity": { "message": "Commodity" },
+  "verdictCrypto": { "message": "[Crypto] Digital asset — price driven by market sentiment." },
+  "verdictForex": { "message": "[Forex] Currency pair — tracks relative currency strength." },
+  "verdictCommodity": { "message": "[Commodity] Futures contract — sensitive to supply and geopolitics." },
+  "alertAboveDyn": { "message": "Alert if price goes ABOVE ({CUR}):" },
+  "alertBelowDyn": { "message": "Alert if price goes BELOW ({CUR}):" }
 }

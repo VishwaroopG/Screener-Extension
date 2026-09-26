@@ -8,9 +8,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const ty = item.type || 'Stock';
     if (ty === 'Index') return t('typeIndex');
     if (ty === 'ETF') return t('typeETF');
+    if (ty === 'Crypto') return t('typeCrypto') || 'Crypto';
+    if (ty === 'Forex') return t('typeForex') || 'Forex';
+    if (ty === 'Commodity') return t('typeCommodity') || 'Commodity';
     if (ty === 'Stock') return t('typeDefault');
     if (ty.endsWith(' Stock')) return t('typeExchangeStock', ty.slice(0, -6));
     return ty;
+  }
+  // Mirror of background classifyAsset() for cached entries saved before
+  // assetKind existed (pattern-only, no quote meta available here)
+  function inferAssetKind(ticker, data) {
+    if (data && data.assetKind) return data.assetKind;
+    const k = classifyTickerPattern(ticker);
+    if (k !== 'stock') return k;
+    if (data && data.isIndex) return 'index';
+    return 'stock';
+  }
+  function classifyTickerPattern(ticker) {
+    const t = String(ticker || '').toUpperCase();
+    if (t.startsWith('^')) return 'index';
+    if (/-USD[TC]?$/.test(t)) return 'crypto';
+    if (/=X$/.test(t)) return 'forex';
+    if (/=F$/.test(t)) return 'commodity';
+    return 'stock';
+  }
+  function verdictForKind(kind) {
+    if (kind === 'crypto') return t('verdictCrypto');
+    if (kind === 'forex') return t('verdictForex');
+    if (kind === 'commodity') return t('verdictCommodity');
+    return '';
   }
   function applyStaticI18n() {
     document.querySelectorAll('[data-i18n]').forEach((el) => { const v = t(el.getAttribute('data-i18n')); if (v) el.textContent = v; });
@@ -492,6 +518,40 @@ document.addEventListener('DOMContentLoaded', () => {
         ? num.toLocaleString('en-IN', { maximumFractionDigits: 0 })
         : match;
     });
+  }
+  function mcapPrefixForCode(code) {
+    if (!code) return '';
+    const c = String(code).trim();
+    if (!/^[A-Za-z]{3}$/.test(c)) return c; // already a symbol (₹, $, S$...)
+    switch (c.toUpperCase()) {
+      case 'INR': return '₹';
+      case 'USD': return '$';
+      case 'GBP': return '£';
+      case 'EUR': return '€';
+      case 'JPY': return '¥';
+      case 'SGD': return 'S$';
+      case 'HKD': return 'HK$';
+      case 'AUD': return 'A$';
+      case 'CAD': return 'C$';
+      default: return c + ' ';
+    }
+  }
+  // Prefix Market Cap with currency (₹, $, £...) when the stored value lacks one.
+  // Handles legacy cache entries saved before the prefix was stored at source.
+  function formatMcapCell(raw, data) {
+    const formatted = formatMarketCap(raw == null ? '-' : raw);
+    if (formatted === '-' || formatted == null) return formatted;
+    if (/^[^\d\-+.,\s]+/.test(String(formatted))) return formatted; // already prefixed
+    let prefix = '';
+    if (data) {
+      if (data.currency) prefix = mcapPrefixForCode(data.currency);
+      if (!prefix) {
+        const m = String((data.ratios || {})['Current Price'] || '').match(/^[^\d\-+.,\s]+/);
+        if (m) prefix = m[0];
+      }
+      if (!prefix && data.source === 'screener') prefix = '₹';
+    }
+    return prefix ? prefix + formatted : formatted;
   }
   // Tab Switching Logic
   function switchTab(activeTab, activeView) {
@@ -1129,6 +1189,79 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // In-panel Feedback Modal (posts to the inbox via FormSubmit, mailto fallback)
+  const feedbackModal = document.getElementById('feedback-modal');
+  const footerFeedback = document.getElementById('footer-feedback');
+  const btnFeedbackCancel = document.getElementById('btn-feedback-cancel');
+  const btnFeedbackSend = document.getElementById('btn-feedback-send');
+  const inputFeedbackName = document.getElementById('feedback-name');
+  const inputFeedbackEmail = document.getElementById('feedback-email');
+  const inputFeedbackMsg = document.getElementById('feedback-message');
+  const feedbackStatus = document.getElementById('feedback-status');
+
+  function openFeedbackModal() {
+    if (feedbackStatus) feedbackStatus.textContent = '';
+    if (feedbackModal) feedbackModal.style.display = 'flex';
+    setTimeout(() => { try { inputFeedbackMsg.focus(); } catch (e) {} }, 50);
+  }
+  function closeFeedbackModal() {
+    if (feedbackModal) feedbackModal.style.display = 'none';
+  }
+
+  if (footerFeedback) {
+    footerFeedback.addEventListener('click', (e) => {
+      e.preventDefault();
+      openFeedbackModal();
+    });
+  }
+  if (btnFeedbackCancel) btnFeedbackCancel.addEventListener('click', closeFeedbackModal);
+  if (feedbackModal) {
+    feedbackModal.addEventListener('click', (e) => {
+      if (e.target === feedbackModal) closeFeedbackModal();
+    });
+  }
+  if (btnFeedbackSend) {
+    btnFeedbackSend.addEventListener('click', async () => {
+      const name = (inputFeedbackName.value || '').trim();
+      const email = (inputFeedbackEmail.value || '').trim();
+      const message = (inputFeedbackMsg.value || '').trim();
+      if (!message) {
+        if (feedbackStatus) feedbackStatus.textContent = t('feedbackNeedMsg') || 'Please write a message first.';
+        return;
+      }
+      btnFeedbackSend.disabled = true;
+      if (feedbackStatus) feedbackStatus.textContent = t('feedbackSending') || 'Sending…';
+      try {
+        const data = new FormData();
+        data.append('name', name);
+        data.append('email', email);
+        data.append('message', message + '\n\n[source: in-panel]');
+        data.append('_subject', 'Ticker Screener feedback');
+        data.append('_template', 'table');
+        data.append('_captcha', 'false');
+        const r = await fetch('https://formsubmit.co/ajax/vishwaroopg8@gmail.com', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: data
+        });
+        if (!r.ok) throw new Error('send failed');
+        inputFeedbackMsg.value = '';
+        if (feedbackStatus) feedbackStatus.textContent = t('feedbackSent') || 'Thanks — we read every message.';
+        setTimeout(closeFeedbackModal, 1800);
+      } catch (err) {
+        const mailto = 'mailto:vishwaroopg8@gmail.com?subject='
+          + encodeURIComponent('Ticker Screener feedback')
+          + '&body=' + encodeURIComponent((name ? 'Name: ' + name + '\n' : '')
+            + (email ? 'Email: ' + email + '\n' : '') + '\n' + message);
+        if (feedbackStatus) feedbackStatus.innerHTML = (t('feedbackFailed') || 'Automatic send failed.')
+          + ' <a href="' + mailto + '" style="color:var(--link-color,#1a73e8);">'
+          + (t('feedbackEmailInstead') || 'Send via your email app instead') + '</a>.';
+      } finally {
+        btnFeedbackSend.disabled = false;
+      }
+    });
+  }
+
   // Fullscreen tab: open this panel in a full browser tab (?fullscreen=1).
   // The layout is fluid so it fills the tab; a roomier centered style applies.
   let isFullscreenTab = false;
@@ -1433,11 +1566,16 @@ document.addEventListener('DOMContentLoaded', () => {
              <h3 style="margin:0 0 4px 0;"><a href="${companyUrl}" target="_blank" style="color:var(--link-green); text-decoration:none;">${data.companyName}</a></h3>
              <button id="btn-back-dashboard" class="screener-btn screener-btn-secondary" style="padding:4px 8px; font-size:11px; flex-shrink:0; margin-left:8px;">${t('backButton')}</button>
            </div>`;
-            if (data.isIndex) {
-              html += `<div style="background:var(--verdict-bg); border:var(--border-color); padding:12px; border-radius:8px; margin-top:12px; font-size:13px;"><span style="color:var(--label-color); font-weight:600;">${t('verdictLabel')}</span> <span style="color:var(--link-green); font-weight:500;">${t('verdictIndex')}</span></div>`;
-            } else {
-              html += generateVerdict(data.ratios);
-            }
+             const assetKind = inferAssetKind(ticker, data);
+             const isNonEquity = assetKind === 'crypto' || assetKind === 'forex' || assetKind === 'commodity';
+             if (data.isIndex) {
+               html += `<div style="background:var(--verdict-bg); border:var(--border-color); padding:12px; border-radius:8px; margin-top:12px; font-size:13px;"><span style="color:var(--label-color); font-weight:600;">${t('verdictLabel')}</span> <span style="color:var(--link-green); font-weight:500;">${t('verdictIndex')}</span></div>`;
+             } else {
+               const kindVerdict = verdictForKind(assetKind);
+               html += kindVerdict
+                 ? `<div style="background:var(--verdict-bg); border:var(--border-color); padding:12px; border-radius:8px; margin-top:12px; font-size:13px;"><span style="color:var(--label-color); font-weight:600;">${t('verdictLabel')}</span> <span style="color:var(--link-green); font-weight:500;">${kindVerdict}</span></div>`
+                 : generateVerdict(data.ratios);
+             }
 
             // Add to Watchlist button
            html += `<button id="btn-search-add-wl" data-ticker="${ticker}" style="margin-top:12px; width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color); cursor:pointer; font-weight:600; font-size:14px; background:var(--btn-wl-bg); color:#fff;">${t('addToWatchlist')}</button>`;
@@ -1452,19 +1590,24 @@ document.addEventListener('DOMContentLoaded', () => {
              </tr>`;
              i++;
            }
-           html += `</table></div>`;
-           html += `<div style="text-align:right; margin-top:8px;">
-             <a href="https://www.screener.in/company/${ticker}/" target="_blank" style="color:#1a73e8; font-size:12px; text-decoration:none; font-weight:500;">&#9881; ${t('customizeScreener')}</a>
-           </div>`;
+            html += `</table></div>`;
+            // Screener.in links & peers only make sense for equities —
+            // skip them for crypto/forex/commodities
+            if (!isNonEquity) {
+              html += `<div style="text-align:right; margin-top:8px;">
+                <a href="https://www.screener.in/company/${ticker}/" target="_blank" style="color:#1a73e8; font-size:12px; text-decoration:none; font-weight:500;">&#9881; ${t('customizeScreener')}</a>
+              </div>`;
+            }
            if (data.aboutText) html += `<div class="screener-about" style="margin-top:16px;">${data.aboutText}</div>`;
              
              html += `<div id="search-peers-container"></div>`;
              html += `<div id="search-announcements-container"></div>`;
 
-              resultsSearch.innerHTML = html;
+               resultsSearch.innerHTML = html;
 
-              // Async fetch for Peers & Announcements
-             fetch(`https://www.screener.in/company/${ticker}/consolidated/`)
+               // Async fetch for Peers & Announcements (equities only)
+              if (!isNonEquity) {
+              fetch(`https://www.screener.in/company/${ticker}/consolidated/`)
                .then(r => {
                  if (!r.ok) return fetch(`https://www.screener.in/company/${ticker}/`);
                  return r;
@@ -1507,35 +1650,57 @@ document.addEventListener('DOMContentLoaded', () => {
                        }
                        return `<div style="padding:8px 0; border-bottom:1px solid var(--border-color); font-size:12px; color:var(--text-color);">${li.innerHTML}</div>`;
                      }).join('');
-                     document.getElementById('search-announcements-container').innerHTML = `<h4 style="margin:16px 0 8px 0; color:var(--text-color);">${t('annTitle')}</h4>${annHtml}`;
-                   }
-                 }
-               })
-               .catch(() => {});
+                      document.getElementById('search-announcements-container').innerHTML = `<h4 style="margin:16px 0 8px 0; color:var(--text-color);">${t('annTitle')}</h4>${annHtml}`;
+                    }
+                  }
+                })
+                .catch(() => {});
+              }
   
-             // Wire up the Add to Watchlist button
-           const addBtn = document.getElementById('btn-search-add-wl');
-           if (addBtn) {
-             addBtn.onclick = () => {
-               chrome.storage.local.get(['portfolios'], (r) => {
-                 const ports = r.portfolios || {};
-                 const list = ports[activePortfolio] || [];
-                 if (!list.includes(ticker)) {
-                   list.push(ticker);
-                   ports[activePortfolio] = list;
-                   chrome.storage.local.set({ portfolios: ports, screenerWatchlist: list }, () => {
-                     addBtn.textContent = t('addedButton');
-                     addBtn.style.background = '#5f6368';
-                     addBtn.disabled = true;
-                     chrome.runtime.sendMessage({ type: 'FORCE_SYNC' });
-                   });
-                 } else {
-                   addBtn.textContent = t('alreadyButton');
-                   addBtn.style.background = '#5f6368';
-                 }
-               });
-             };
-           }
+              // Wire up the Add / Remove Watchlist toggle button
+            const addBtn = document.getElementById('btn-search-add-wl');
+            if (addBtn) {
+              const paintWlBtn = (inList) => {
+                if (inList) {
+                  const addedTxt = t('addedButton') || 'Added!';
+                  const removeTxt = t('removeBtn') || 'Remove';
+                  addBtn.textContent = `\u2713 ${addedTxt} \u2014 ${removeTxt}`;
+                  addBtn.style.background = '#a93226';
+                  addBtn.disabled = false;
+                } else {
+                  addBtn.textContent = t('addToWatchlist') || '+ Add to Watchlist';
+                  addBtn.style.background = 'var(--btn-wl-bg)';
+                  addBtn.disabled = false;
+                }
+              };
+              // If ticker is already in the active portfolio, show Remove state right away
+              chrome.storage.local.get(['portfolios'], (r) => {
+                const ports = r.portfolios || {};
+                const list = ports[activePortfolio] || [];
+                if (list.includes(ticker)) paintWlBtn(true);
+              });
+              addBtn.onclick = () => {
+                chrome.storage.local.get(['portfolios'], (r) => {
+                  const ports = r.portfolios || {};
+                  const list = ports[activePortfolio] || [];
+                  if (!list.includes(ticker)) {
+                    list.push(ticker);
+                    ports[activePortfolio] = list;
+                    chrome.storage.local.set({ portfolios: ports, screenerWatchlist: list }, () => {
+                      paintWlBtn(true);
+                      renderWatchlist();
+                      chrome.runtime.sendMessage({ type: 'FORCE_SYNC' });
+                    });
+                  } else {
+                    ports[activePortfolio] = list.filter((sym) => sym !== ticker);
+                    chrome.storage.local.set({ portfolios: ports, screenerWatchlist: ports[activePortfolio] }, () => {
+                      paintWlBtn(false);
+                      renderWatchlist();
+                    });
+                  }
+                });
+              };
+            }
         } else {
            resultsSearch.innerHTML = '<div class="screener-error">' + t('fetchFailed') + '</div>';
         }
@@ -1581,6 +1746,25 @@ document.addEventListener('DOMContentLoaded', () => {
   window.openAlertModal = function(ticker) {
     currentAlertTicker = ticker;
     document.getElementById('alert-ticker').textContent = ticker;
+    // Show the asset's own currency in the alert labels (₹, $, …)
+    const paintAlertLabels = (prefix) => {
+      const aboveEl = document.getElementById('alert-above-label');
+      const belowEl = document.getElementById('alert-below-label');
+      if (aboveEl) aboveEl.textContent = (t('alertAboveDyn') || 'Alert if price goes ABOVE ({CUR}):').replace('{CUR}', prefix);
+      if (belowEl) belowEl.textContent = (t('alertBelowDyn') || 'Alert if price goes BELOW ({CUR}):').replace('{CUR}', prefix);
+    };
+    try {
+      chrome.storage.local.get(['cachedData'], (res) => {
+        const d = (res.cachedData || {})[ticker] || {};
+        let prefix = '';
+        if (d.currency) prefix = mcapPrefixForCode(d.currency);
+        if (!prefix) {
+          const m = String((d.ratios || {})['Current Price'] || '').match(/^[^\d\-+.,\s]+/);
+          if (m) prefix = m[0];
+        }
+        paintAlertLabels(prefix || '₹');
+      });
+    } catch (e) { paintAlertLabels('₹'); }
     chrome.storage.local.get(['alerts'], (res) => {
       const alerts = res.alerts || {};
       inputAlertAbove.value = alerts[ticker]?.above || '';
@@ -1742,7 +1926,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td style="padding:10px;">${spark}</td>
                 <td class="${flashClass}" style="padding:10px;">${ratios['Current Price']||'-'}<br/>${pctHtml}</td>
                 <td style="padding:10px;">${ratios['Stock P/E']||'-'}</td>
-                <td style="padding:10px;">${formatMarketCap(ratios['Market Cap'] || '-')}</td>
+                <td style="padding:10px;">${formatMcapCell(ratios['Market Cap'], data)}</td>
                 <td style="padding:10px; text-align:center;">
                   <button class="screener-alert-btn" data-ticker="${ticker}" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px;" title="${t('setAlertTitle')}">${hasAlert ? '\uD83D\uDD14' : '\u23F0'}</button>
                   <button class="screener-del-btn" data-ticker="${ticker}" style="background:none; border:none; color:#d93025; cursor:pointer; font-size:14px; padding:2px;" title="${t('deleteTitle')}">&#128465;</button>

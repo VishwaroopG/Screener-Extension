@@ -101,6 +101,12 @@
     <div id="news-container" data-i18n="newsLoading" style="padding-top:8px;">Loading latest news...</div>
   </div>
 
+  <!-- Footer: Rate & Feedback (always visible at the bottom) -->
+  <div class="screener-footer">
+    <a href="https://chromewebstore.google.com/detail/pfaifjhdbnpfdjieppkhciemgccbpifi/reviews" target="_blank" rel="noopener" data-i18n-title="footerRateTitle" title="Rate Ticker Screener">⭐ <span data-i18n="footerRate">Rate us</span></a>
+    <span class="screener-footer-sep">·</span>
+    <a id="footer-feedback" href="#" data-i18n-title="footerFeedbackTitle" title="Send feedback">💬 <span data-i18n="footerFeedback">Feedback</span></a>
+  </div>
 
   <script src="sidepanel.js"></script>
 
@@ -109,16 +115,31 @@
     <div class="screener-watchlist-card" style="width: 250px; padding: 20px;">
       <h3 style="margin-top:0;"><span data-i18n="alertPrefix">Set Alert for</span> <span id="alert-ticker"></span></h3>
       <div style="margin-bottom: 12px;">
-        <label data-i18n="aboveLabel" style="display:block; font-size:12px; margin-bottom:4px;">Alert if price goes ABOVE (&#x20B9;):</label>
+        <label id="alert-above-label" data-i18n="aboveLabel" style="display:block; font-size:12px; margin-bottom:4px;">Alert if price goes ABOVE (&#x20B9;):</label>
         <input type="number" id="alert-above" class="screener-input" data-i18n-ph="abovePh" placeholder="e.g. 3000">
       </div>
       <div style="margin-bottom: 16px;">
-        <label data-i18n="belowLabel" style="display:block; font-size:12px; margin-bottom:4px;">Alert if price goes BELOW (&#x20B9;):</label>
+        <label id="alert-below-label" data-i18n="belowLabel" style="display:block; font-size:12px; margin-bottom:4px;">Alert if price goes BELOW (&#x20B9;):</label>
         <input type="number" id="alert-below" class="screener-input" data-i18n-ph="belowPh" placeholder="e.g. 2500">
       </div>
       <div style="display:flex; justify-content:flex-end; gap:8px;">
         <button id="btn-alert-cancel" class="screener-btn screener-btn-secondary" data-i18n="cancelBtn">Cancel</button>
         <button id="btn-alert-save" class="screener-btn" data-i18n="saveBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback Modal (in-panel, lands in the inbox) -->
+  <div id="feedback-modal" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
+    <div class="screener-watchlist-card" style="width: 270px; padding: 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+      <h3 data-i18n="feedbackTitle" style="margin:0 0 12px 0; font-size:15px; font-weight:600; color:var(--text-color);">Send Feedback</h3>
+      <input type="text" id="feedback-name" class="screener-input" data-i18n-ph="feedbackNamePh" placeholder="Your name (optional)" autocomplete="off" style="width:100%; padding:8px 10px; border-radius:4px; font-size:12px; margin-bottom:8px;">
+      <input type="email" id="feedback-email" class="screener-input" data-i18n-ph="feedbackEmailPh" placeholder="Your email (optional, for a reply)" autocomplete="off" style="width:100%; padding:8px 10px; border-radius:4px; font-size:12px; margin-bottom:8px;">
+      <textarea id="feedback-message" class="screener-input" data-i18n-ph="feedbackMsgPh" placeholder="What broke, or what you'd love to see…" rows="4" style="width:100%; padding:8px 10px; border-radius:4px; font-size:12px; resize:vertical; font-family:inherit;"></textarea>
+      <div id="feedback-status" style="font-size:11px; color:var(--label-color); margin-top:8px; min-height:16px;"></div>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px;">
+        <button id="btn-feedback-cancel" class="screener-btn screener-btn-secondary" data-i18n="cancelBtn" style="padding:6px 14px; font-size:12px;">Cancel</button>
+        <button id="btn-feedback-send" class="screener-btn" data-i18n="feedbackSend" style="padding:6px 16px; font-size:12px;">Send</button>
       </div>
     </div>
   </div>

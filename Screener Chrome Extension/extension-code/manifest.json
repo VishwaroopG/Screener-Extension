@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Ticker Screener – Live Watchlist & Ticker",
-  "version": "2.5.2",
+  "version": "2.5.5",
   "default_locale": "en",
   "icons": {
     "16": "icon_16.png",
@@ -19,11 +19,13 @@
     "identity"
   ],
   "host_permissions": [
-    "*://*.screener.in/*",
-    "*://*.yahoo.com/*",
-    "*://*.finviz.com/*",
-    "*://api.worldbank.org/*",
-    "*://news.google.com/*",
+    "https://www.screener.in/*",
+    "https://query1.finance.yahoo.com/*",
+    "https://query2.finance.yahoo.com/*",
+    "https://finviz.com/*",
+    "https://api.worldbank.org/*",
+    "https://news.google.com/*",
+    "https://formsubmit.co/*",
     "https://vishwaroopg.github.io/*"
   ],
   "action": {

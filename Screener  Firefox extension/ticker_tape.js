@@ -412,6 +412,23 @@
     });
   }
 
+  // Prefix Market Cap with currency (₹, $, £...) when the stored value lacks one.
+  function formatMcapWithCurrency(raw, data) {
+    const formatted = formatMarketCap(raw == null ? '-' : raw);
+    if (formatted === '-' || formatted == null) return formatted;
+    if (extractPrefix(formatted)) return formatted; // already prefixed
+    let prefix = '';
+    if (data) {
+      if (data.currency) {
+        const mapped = prefixForCurrencyCode(data.currency);
+        if (mapped) prefix = mapped.prefix;
+      }
+      if (!prefix) prefix = extractPrefix((data.ratios || {})['Current Price'] || '') || '';
+      if (!prefix && data.source === 'screener') prefix = '₹';
+    }
+    return prefix ? prefix + formatted : formatted;
+  }
+
 
   // --- State Variables ---
   let isPaused = false;
@@ -704,7 +721,7 @@
       const metrics = [
         { label: 'Last Price', val: ratios['Current Price'] || '-' },
         { label: '1M Return', val: `<span class="${colorCls}" id="screener-period-return">${pct}</span>`, labelId: 'screener-return-label' },
-        { label: 'Market Cap', val: formatMarketCap(ratios['Market Cap'] || '-') },
+        { label: 'Market Cap', val: formatMcapWithCurrency(ratios['Market Cap'], data) },
         { label: 'P/E Ratio', val: ratios['Stock P/E'] || '-' },
         { label: 'Div Yield', val: ratios['Dividend Yield'] || '-' },
         { label: 'ROCE', val: ratios['ROCE'] || '-' }
