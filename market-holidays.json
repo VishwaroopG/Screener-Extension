@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updated": "2026-09-14",
-  "notes": "Full-day trading holidays (YYYY-MM-DD in each market's own timezone). Fetched daily by the Ticker Screener extension — update this file on the site to push holiday fixes to all users with no extension re-publish. Half-day / early-close sessions are intentionally NOT listed (the widget still shows those mornings as open).",
+  "notes": "Full-day trading holidays (YYYY-MM-DD in each market's own timezone). Fetched daily by the Ticker Screener extension  update this file on the site to push holiday fixes to all users with no extension re-publish. Half-day / early-close sessions are intentionally NOT listed (the widget still shows those mornings as open).",
   "sources": {
     "newyork": "NYSE hours-calendars 2026 (nyse.com)",
     "london": "LSE business-days 2026 (londonstockexchange.com)",

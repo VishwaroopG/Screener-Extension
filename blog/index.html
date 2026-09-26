@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Ticker Screener Blog — free browser extension guides (live US watchlist with NYSE/Nasdaq, ticker tape, price alerts) and plain-language market notes.">
+  <meta name="description" content="Ticker Screener Blog  free browser extension guides (live US watchlist with NYSE/Nasdaq, ticker tape, price alerts) and plain-language market notes.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://vishwaroopg.github.io/Screener-Extension/blog/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Ticker Screener Blog">
-  <meta property="og:title" content="Ticker Screener Blog — Market notes, explained.">
+  <meta property="og:title" content="Ticker Screener Blog  Market notes, explained.">
   <meta property="og:description" content="Free browser extension guides and plain-language market notes: live watchlists, ticker tape, price alerts.">
   <meta property="og:url" content="https://vishwaroopg.github.io/Screener-Extension/blog/">
   <title>Blog | Ticker Screener</title>
@@ -38,7 +38,7 @@
 
     <main>
       <section class="container section section-tight">
-        <div class="section-head"><span class="eyebrow">Ticker Screener Blog</span><h2 class="section-title">Market notes, explained.</h2><p class="section-copy">Short reads on markets, indicators and investing — in plain language.</p></div>
+        <div class="section-head"><span class="eyebrow">Ticker Screener Blog</span><h2 class="section-title">Market notes, explained.</h2><p class="section-copy">Short reads on markets, indicators and investing  in plain language.</p></div>
         <div class="telegram-cta"><div><strong>Join our Telegram channel for daily market updates.</strong><p>Follow Global Market Pulse for breaking market news, stock ideas and investing insights.</p></div><a class="button button-primary" href="https://t.me/GlobalMarketPulseLive" target="_blank" rel="noopener">Join on Telegram</a></div>
         <div class="post-list" id="all-posts"><p class="section-copy">Loading posts…</p></div>
       </section>
@@ -53,7 +53,7 @@
     }
     fetch('posts.json?v=5').then(function (r) { return r.json(); }).then(function (posts) {
       var wrap = document.getElementById('all-posts');
-      if (!posts.length) { wrap.innerHTML = '<p class="section-copy">No posts yet — check back soon.</p>'; return; }
+      if (!posts.length) { wrap.innerHTML = '<p class="section-copy">No posts yet  check back soon.</p>'; return; }
       posts.sort(function (a, b) { return b.date.localeCompare(a.date); });
       wrap.innerHTML = posts.map(function (p) {
         var tags = (p.tags || []).map(function (t) { return '<span class="tag">' + t + '</span>'; }).join('');

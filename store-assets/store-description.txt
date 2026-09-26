@@ -7,15 +7,15 @@ LONG DESCRIPTION (paste into Chrome Web Store "Detailed description" and AMO "De
 ============================================================
 
 Ticker Screener: Live Watchlist, Markets & Ticker Tape
-Your market, always in sight. Ticker Screener turns every browser tab into a market workspace — a live NYSE / Nasdaq watchlist, an S&P 500 / Nasdaq / Dow ticker tape, interactive charts, and a 10-economy Markets tab for global context.
+Your market, always in sight. Ticker Screener turns every browser tab into a market workspace  a live NYSE / Nasdaq watchlist, an S&P 500 / Nasdaq / Dow ticker tape, interactive charts, and a 10-economy Markets tab for global context.
 
-Stocks, ETFs and indices display in the currency they trade in — $ for Wall Street, and native currencies everywhere else. No silent conversion, ever.
+Stocks, ETFs and indices display in the currency they trade in  $ for Wall Street, and native currencies everywhere else. No silent conversion, ever.
 
 WHAT'S NEW IN v2.5.1
 - Full-screen view: hit the fullscreen button in the panel header to open the whole workspace in a dedicated browser tab.
 - Combined tape readout: show % change and amount change together, like +$5.20 (+0.37%).
 - Dashboard refresh button, publisher thumbnails in News, and a right-click menu that shows just the stock name.
-- The Markets tab opens on the USA — S&P 500, Nasdaq, Dow, top stocks and macro data.
+- The Markets tab opens on the USA  S&P 500, Nasdaq, Dow, top stocks and macro data.
 
 LIVE WATCHLIST & PORTFOLIOS
 - Live price, day change, 1Y sparkline, P/E, market cap, dividend yield and ROCE, flashing green/red on every tick.
@@ -31,12 +31,12 @@ TICKER TAPE THAT MOVES WITH YOU
 
 10-ECONOMY MARKETS TAB
 - Opens on the USA, plus India, UK, Singapore, Japan, Hong Kong, Germany, France, Australia and Canada.
-- Index heatmap with strictly separated Top Gainers and Top Losers — click anything for full analysis.
+- Index heatmap with strictly separated Top Gainers and Top Losers  click anything for full analysis.
 - 4 customizable index cards with 35+ presets: indices, commodities and currencies.
 
 ECONOMY INDICATORS YOU CAN VERIFY
 - Inflation (CPI), Unemployment, GDP Growth and GDP per Capita, each year-labeled.
-- Click any tile to swap in GDP Total, Trade, Forex Reserves or Population — every tile links to its World Bank source.
+- Click any tile to swap in GDP Total, Trade, Forex Reserves or Population  every tile links to its World Bank source.
 
 INTERACTIVE CHARTS
 - 1M to MAX ranges with a hover crosshair for exact price and date.
@@ -48,7 +48,7 @@ NEWS & WORLD MARKET CLOCKS
 
 ALSO INCLUDED
 - Search by company name or ticker; right-click any company name on the web to add it instantly.
-- Cross-device sync through your browser account — no separate account needed.
+- Cross-device sync through your browser account  no separate account needed.
 - Dark / light mode, 55 languages, side-panel shortcut (Ctrl+Shift+S / Cmd+Shift+S).
 - No account, no backend: your data stays in your browser.
 
@@ -63,7 +63,7 @@ DATA SOURCES
 Prices, indices & charts: Yahoo Finance. US fundamentals: Finviz (with Yahoo Finance fallback). Indian ratios: Screener.in. Macro: World Bank. News: Google News RSS.
 
 DISCLAIMER
-Ticker Screener is an independent browser extension and is not affiliated with, endorsed by, or sponsored by Screener.in, Yahoo Finance, Finviz, or their respective parent companies. Market data may be delayed. For informational purposes only — not financial advice.
+Ticker Screener is an independent browser extension and is not affiliated with, endorsed by, or sponsored by Screener.in, Yahoo Finance, Finviz, or their respective parent companies. Market data may be delayed. For informational purposes only  not financial advice.
 
 SUPPORT THE DEVELOPER
 Independent project by Vishwaroop Galgali. Market updates & research: join @GlobalMarketPulseLive on Telegram. Support development: https://buymeacoffee.com/vgexperiments

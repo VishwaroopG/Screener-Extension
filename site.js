@@ -1,4 +1,4 @@
-/* Ticker Screener — 3D Animation Engine
+/* Ticker Screener  3D Animation Engine
    Synthesizing principles from:
    - emilkowalski/skills (spring physics, ease-out curves, 60fps compositor transforms, hover gating)
    - pbakaus/impeccable (restraint in chrome, brilliance in texture, rich feedback)

@@ -830,7 +830,7 @@ h1 .accent { color: var(--accent-warm); }
 /* Reveal - visible without JS */
 .reveal { opacity: 1; }
 
-/* Scroll reveal — JS adds/removes .is-visible */
+/* Scroll reveal  JS adds/removes .is-visible */
 .will-reveal {
   opacity: 0;
   transform: translateY(32px);
