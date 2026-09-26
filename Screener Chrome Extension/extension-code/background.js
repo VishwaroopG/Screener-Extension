@@ -2,6 +2,24 @@ let fastPollInterval = null;
 let isFetchingFastPrices = false;
 let lastFastFallbackAt = 0;
 const PRICE_DECIMALS = 2;
+// Sub-dollar assets (e.g. altcoins, JPY-cross forex) need more precision
+function priceDecimalsFor(v) {
+  const a = Math.abs(Number(v));
+  if (!isFinite(a) || a === 0 || a >= 1) return PRICE_DECIMALS;
+  if (a >= 0.01) return 4;
+  return 6;
+}
+// Classify a symbol into stock | crypto | forex | commodity | index.
+// Used to skip equity-only enrichment (Finviz, Screener peers) for non-equities.
+function classifyAsset(ticker, meta) {
+  const t = String(ticker || '').toUpperCase();
+  const qt = String((meta && (meta.quoteType || meta.instrumentType)) || '').toUpperCase();
+  if (t.startsWith('^') || qt === 'INDEX') return 'index';
+  if (/-USD[TC]?$/.test(t) || qt === 'CRYPTOCURRENCY' || qt === 'CRYPTO') return 'crypto';
+  if (/=X$/.test(t) || qt === 'CURRENCY') return 'forex';
+  if (/=F$/.test(t) || qt === 'FUTURE') return 'commodity';
+  return 'stock';
+}
 function t(key, subs) { try { return chrome.i18n.getMessage(key, subs); } catch (e) { return ''; } }
 const MACRO_CACHE_VERSION = 3; // bump to force refetch when indicator set changes
 // Full World Bank indicator catalog for the editable Economy Indicator tiles
@@ -313,7 +331,9 @@ async function fetchYahooData(symbol) {
   try {
     let sym = symbol;
     let chartRes = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=1d`);
-    if (!chartRes.ok && !sym.startsWith('^') && !sym.includes('.')) {
+    // `.NS` retry is only for plain Indian tickers — never for indices, dotted
+    // symbols, or crypto/forex/futures (BTC-USD, EURUSD=X, GC=F, BRK-B, …)
+    if (!chartRes.ok && !sym.startsWith('^') && !sym.includes('.') && !sym.includes('=') && !sym.includes('-')) {
       sym = `${symbol}.NS`;
       chartRes = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=1d`);
     }
@@ -325,6 +345,7 @@ async function fetchYahooData(symbol) {
     
     const companyName = meta.shortName || meta.longName || symbol;
     const isIndex = meta.instrumentType === 'INDEX' || symbol.startsWith('^');
+    const assetKind = classifyAsset(symbol, meta);
     const isVIX = symbol.toUpperCase().includes('VIX');
     const currency = getCurrencyDetails(meta.currency);
     const curr = isVIX ? '' : currency.prefix;
@@ -341,13 +362,16 @@ async function fetchYahooData(symbol) {
     
     const ratios = {};
     if (price !== undefined) {
-      ratios['Current Price'] = `${curr}${price.toLocaleString(currency.locale, { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
+      const pd = priceDecimalsFor(price);
+      ratios['Current Price'] = `${curr}${price.toLocaleString(currency.locale, { minimumFractionDigits: pd, maximumFractionDigits: pd })}`;
     }
     if (meta.regularMarketDayLow !== undefined && meta.regularMarketDayHigh !== undefined) {
-      ratios['Day Range'] = `${curr}${meta.regularMarketDayLow.toLocaleString(currency.locale, { minimumFractionDigits: 2 })} - ${curr}${meta.regularMarketDayHigh.toLocaleString(currency.locale, { minimumFractionDigits: 2 })}`;
+      const dd = priceDecimalsFor(meta.regularMarketPrice);
+      ratios['Day Range'] = `${curr}${meta.regularMarketDayLow.toLocaleString(currency.locale, { minimumFractionDigits: dd, maximumFractionDigits: dd })} - ${curr}${meta.regularMarketDayHigh.toLocaleString(currency.locale, { minimumFractionDigits: dd, maximumFractionDigits: dd })}`;
     }
     if (meta.fiftyTwoWeekLow !== undefined && meta.fiftyTwoWeekHigh !== undefined) {
-      ratios['52W Range'] = `${curr}${meta.fiftyTwoWeekLow.toLocaleString(currency.locale, { minimumFractionDigits: 2 })} - ${curr}${meta.fiftyTwoWeekHigh.toLocaleString(currency.locale, { minimumFractionDigits: 2 })}`;
+      const wd = priceDecimalsFor(meta.regularMarketPrice);
+      ratios['52W Range'] = `${curr}${meta.fiftyTwoWeekLow.toLocaleString(currency.locale, { minimumFractionDigits: wd, maximumFractionDigits: wd })} - ${curr}${meta.fiftyTwoWeekHigh.toLocaleString(currency.locale, { minimumFractionDigits: wd, maximumFractionDigits: wd })}`;
     }
     if (meta.regularMarketVolume !== undefined && meta.regularMarketVolume > 0) {
       ratios['Volume'] = meta.regularMarketVolume.toLocaleString('en-US');
@@ -370,8 +394,9 @@ async function fetchYahooData(symbol) {
       }
     } catch(e) {}
 
-    // Fetch fundamental data from Finviz for US stocks
-    if (!isIndex) {
+    // Fetch fundamental data from Finviz for US stocks only —
+    // crypto/forex/futures have no P/E or balance sheet, so skip the request
+    if (!isIndex && assetKind === 'stock') {
       try {
         const finvizRes = await fetch(`https://finviz.com/quote.ashx?t=${encodeURIComponent(sym.replace('.NS', ''))}`);
         if (finvizRes.ok) {
@@ -409,7 +434,10 @@ async function fetchYahooData(symbol) {
           if (roic && roic !== '-') ratios['ROCE'] = roic; // mapping ROIC to ROCE for UI consistency
 
           const mcap = extractFinviz('Market Cap');
-          if (mcap && mcap !== '-') ratios['Market Cap'] = formatMarketCap(mcap);
+          if (mcap && mcap !== '-') {
+            const formattedMcap = formatMarketCap(mcap);
+            ratios['Market Cap'] = (/^[^\d\-+.,\s]+/.test(formattedMcap) || !curr) ? formattedMcap : curr + formattedMcap;
+          }
 
           // Finviz redesign: dividend is labeled "Dividend TTM" (e.g. "3.64 (0.74%)")
           const div = extractFinviz('Dividend TTM') || extractFinviz('Dividend %') || extractFinviz('Dividend');
@@ -452,6 +480,7 @@ async function fetchYahooData(symbol) {
       changePct,
       sparkline,
       isIndex,
+      assetKind,
       source: 'yahoo',
       currency: meta.currency
     };
@@ -461,8 +490,9 @@ async function fetchYahooData(symbol) {
 }
 
 async function fetchScreenerData(ticker) {
-  // If ticker is an index, fetch directly from Yahoo Finance
-  if (ticker.startsWith('^')) {
+  // Indices, crypto, forex and futures live on Yahoo Finance, not Screener —
+  // route them directly instead of wasting two Screener fetches first
+  if (ticker.startsWith('^') || classifyAsset(ticker) !== 'stock') {
     return fetchYahooData(ticker);
   }
 
@@ -491,9 +521,13 @@ async function fetchScreenerData(ticker) {
           let name = nameMatch[1].trim();
           let afterName = liHtml.substring(nameMatch.index + nameMatch[0].length);
           let valueStr = afterName.replace(/<[^>]+>/g, '').trim().replace(/\s+/g, ' ');
-          ratios[name] = name === 'Market Cap'
-            ? formatMarketCap(valueStr)
-            : roundStringValue(valueStr);
+          if (name === 'Market Cap') {
+            const formattedMcap = formatMarketCap(valueStr);
+            // Screener.in values are in INR — ensure the ₹ prefix is stored
+            ratios[name] = /^[^\d\-+.,\s]+/.test(formattedMcap) ? formattedMcap : '₹' + formattedMcap;
+          } else {
+            ratios[name] = roundStringValue(valueStr);
+          }
         }
       }
     }
@@ -995,6 +1029,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
           let type = 'Stock';
           if (q.quoteType === 'INDEX' || sym.startsWith('^')) type = 'Index';
+          else if (q.quoteType === 'CRYPTOCURRENCY') type = 'Crypto';
+          else if (q.quoteType === 'CURRENCY') type = 'Forex';
+          else if (q.quoteType === 'FUTURE') type = 'Commodity';
           else if (q.quoteType === 'ETF') type = 'ETF';
           else if (q.exchange) type = q.exchange + ' Stock';
 
@@ -1104,9 +1141,6 @@ function setupContextMenu() {
 }
 chrome.runtime.onInstalled.addListener(() => {
   setupContextMenu();
-
-  // Set Uninstall Survey URL
-  chrome.runtime.setUninstallURL("https://forms.gle/YOUR_GOOGLE_FORM_URL_HERE");
 });
 try {
   if (chrome.runtime.onStartup) chrome.runtime.onStartup.addListener(setupContextMenu);
@@ -1258,7 +1292,9 @@ async function fetchFastPrices() {
 
     const symbolsToFetch = pinnedIndices.map(p => p.symbol);
     for (const t of allTickers) {
-      if (t.startsWith('^') || t.includes('.')) {
+      // Yahoo-native symbols (indices, dotted, crypto/forex/futures, hyphenated
+      // like BRK-B/BTC-USD) go as-is; plain tickers resolve via cache or .NS
+      if (t.startsWith('^') || t.includes('.') || t.includes('=') || t.includes('-')) {
         symbolsToFetch.push(t);
       } else {
         const cached = cachedData[t];
@@ -1316,7 +1352,8 @@ async function fetchFastPrices() {
             const currency = getCurrencyDetails(d.meta?.currency || oldIdx?.curr || idx.curr || 'INR');
             const isVIX = (idx.symbol || '').toUpperCase().includes('VIX');
             const currPrefix = isVIX ? '' : currency.prefix;
-            const formatted = `${currPrefix}${price.toLocaleString(currency.locale, { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
+            const ipd = priceDecimalsFor(price);
+            const formatted = `${currPrefix}${price.toLocaleString(currency.locale, { minimumFractionDigits: ipd, maximumFractionDigits: ipd })}`;
 
             let flash = oldIdx?.flash;
             let flashTime = oldIdx?.flashTime;
@@ -1370,7 +1407,8 @@ async function fetchFastPrices() {
             const isVIX = ticker.toUpperCase().includes('VIX');
             const currPrefix = isVIX ? '' : currency.prefix;
             const currentStr = cachedData[ticker].ratios['Current Price'];
-            const formattedPrice = `${currPrefix}${price.toLocaleString(currency.locale, { minimumFractionDigits: PRICE_DECIMALS, maximumFractionDigits: PRICE_DECIMALS })}`;
+            const wpd = priceDecimalsFor(price);
+            const formattedPrice = `${currPrefix}${price.toLocaleString(currency.locale, { minimumFractionDigits: wpd, maximumFractionDigits: wpd })}`;
 
             if (currentStr !== formattedPrice) {
               const oldNum = parseFloat((currentStr || '0').replace(/[^\d\.]/g, ''));
