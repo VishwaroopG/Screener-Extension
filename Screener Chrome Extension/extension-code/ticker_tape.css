@@ -59,20 +59,31 @@
   border-bottom: 1px solid #dadce0;
 }
 #screener-ticker-tape.screener-tape-light .screener-ticker-price {
-  color: #188038 !important;
+  color: #202124 !important;
 }
 #screener-ticker-tape.screener-tape-light .screener-tape-scroll-btn {
   background: rgba(255, 255, 255, 0.94);
   color: #202124;
 }
-#screener-ticker-tape.screener-tape-blue {
-  background-color: #0b3d91;
-  color: #ffffff;
+/* Light theme readability: base name/price/mcap colors assume a dark bar,
+   and change spans carry dark-theme inline colors — override them here. */
+#screener-ticker-tape.screener-tape-light .screener-ticker-name {
+  color: #202124 !important;
 }
-#screener-ticker-tape.screener-tape-blue .screener-tape-scroll-btn {
-  background: rgba(11, 61, 145, 0.94);
+#screener-ticker-tape.screener-tape-light .screener-ticker-item {
+  border-right-color: #dadce0;
 }
-
+#screener-ticker-tape.screener-tape-light .screener-ticker-mcap {
+  color: #5f6368;
+}
+#screener-ticker-tape.screener-tape-light .screener-ticker-change.screener-change-up,
+#screener-ticker-tape.screener-tape-light .screener-ticker-amount.screener-change-up {
+  color: #137333 !important;
+}
+#screener-ticker-tape.screener-tape-light .screener-ticker-change.screener-change-down,
+#screener-ticker-tape.screener-tape-light .screener-ticker-amount.screener-change-down {
+  color: #d93025 !important;
+}
 /* --- Content visibility toggles --- */
 #screener-ticker-tape.screener-tape-hide-change .screener-ticker-change {
   display: none !important;

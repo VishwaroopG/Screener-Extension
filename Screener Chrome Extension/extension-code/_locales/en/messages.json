@@ -265,7 +265,6 @@
   "settingsTheme": { "message": "Theme" },
   "settingsThemeDark": { "message": "Dark" },
   "settingsThemeLight": { "message": "Light" },
-  "settingsThemeBlue": { "message": "Blue" },
   "settingsSize": { "message": "Size" },
   "settingsSizeCompact": { "message": "Compact" },
   "settingsSizeComfort": { "message": "Comfortable" },

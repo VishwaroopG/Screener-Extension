@@ -1100,11 +1100,18 @@ function setupContextMenu() {
         id: "addToScreener",
         title: t('ctxAdd') || 'Add "%s" to Ticker Screener Watchlist',
         contexts: ["selection"]
+      }, () => {
+        // create() is async: overlapping setup calls (install + SW wake-up)
+        // surface duplicate-id here, never as a sync throw — swallow it.
+        if (chrome.runtime.lastError) {}
       });
     } catch (e) {}
   };
   try {
-    chrome.contextMenus.removeAll(() => create());
+    chrome.contextMenus.removeAll(() => {
+      if (chrome.runtime.lastError) {}
+      create();
+    });
   } catch (e) {
     create();
   }

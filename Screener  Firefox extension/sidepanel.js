@@ -990,7 +990,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.local.get(['tapePosition', 'tapeSize', 'tapeTheme', 'tapeDirection', 'tapePauseOnHover', 'tapeShowIndices', 'tapeShowChange', 'tapeShowAmount', 'tapeVisible', 'disabledDomains'], (res) => {
       const pos = res.tapePosition || TAPE_SETTING_DEFAULTS.tapePosition;
       paintPositionSegmented(pos);
-      if (settingsTheme) settingsTheme.value = res.tapeTheme || TAPE_SETTING_DEFAULTS.tapeTheme;
+      if (settingsTheme) settingsTheme.value = (res.tapeTheme === 'blue' ? 'dark' : (res.tapeTheme || TAPE_SETTING_DEFAULTS.tapeTheme));
       if (settingsSize) settingsSize.value = res.tapeSize || TAPE_SETTING_DEFAULTS.tapeSize;
       if (settingsDirection) settingsDirection.value = res.tapeDirection || TAPE_SETTING_DEFAULTS.tapeDirection;
       if (settingsPauseHover) settingsPauseHover.checked = res.tapePauseOnHover !== false;

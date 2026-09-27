@@ -44,9 +44,8 @@
     tapeDiv.classList.toggle('screener-tape-compact', tapeSize === 'compact');
     tapeDiv.classList.toggle('screener-tape-comfortable', tapeSize !== 'compact' && tapeSize !== 'large');
     tapeDiv.classList.toggle('screener-tape-large', tapeSize === 'large');
-    tapeDiv.classList.toggle('screener-tape-dark', tapeTheme !== 'light' && tapeTheme !== 'blue');
+    tapeDiv.classList.toggle('screener-tape-dark', tapeTheme !== 'light');
     tapeDiv.classList.toggle('screener-tape-light', tapeTheme === 'light');
-    tapeDiv.classList.toggle('screener-tape-blue', tapeTheme === 'blue');
     tapeDiv.classList.toggle('screener-tape-hide-change', tapeShowChange === false);
     tapeDiv.classList.toggle('screener-tape-hide-amount', tapeShowAmount === false);
     const root = document.documentElement;
@@ -62,7 +61,8 @@
     let changed = false;
     if (typeof res.tapePosition === 'string' && (res.tapePosition === 'top' || res.tapePosition === 'bottom') && res.tapePosition !== tapePosition) { tapePosition = res.tapePosition; changed = true; }
     if (typeof res.tapeSize === 'string' && ['compact', 'comfortable', 'large'].includes(res.tapeSize) && res.tapeSize !== tapeSize) { tapeSize = res.tapeSize; changed = true; }
-    if (typeof res.tapeTheme === 'string' && ['dark', 'light', 'blue'].includes(res.tapeTheme) && res.tapeTheme !== tapeTheme) { tapeTheme = res.tapeTheme; changed = true; }
+    if (res.tapeTheme === 'blue') res.tapeTheme = 'dark'; // blue theme removed
+    if (typeof res.tapeTheme === 'string' && ['dark', 'light'].includes(res.tapeTheme) && res.tapeTheme !== tapeTheme) { tapeTheme = res.tapeTheme; changed = true; }
     if (typeof res.tapeDirection === 'string' && (res.tapeDirection === 'left' || res.tapeDirection === 'right') && res.tapeDirection !== tapeDirection) { tapeDirection = res.tapeDirection; changed = true; }
     if (typeof res.tapePauseOnHover === 'boolean' && res.tapePauseOnHover !== tapePauseOnHover) { tapePauseOnHover = res.tapePauseOnHover; changed = true; }
     if (typeof res.tapeShowIndices === 'boolean' && res.tapeShowIndices !== tapeShowIndices) { tapeShowIndices = res.tapeShowIndices; changed = true; }
@@ -776,7 +776,7 @@
   }
   requestAnimationFrame(autoScrollStep);
 
-  // Absolute change text (e.g. "(+₹12.34)") derived from the displayed
+  // Absolute change text (e.g. "+₹12.34") derived from the displayed
   // price + % change. Shown when the "Show amount change" setting is on.
   function absChangeText(priceStr, pctStr, isUp) {
     try {
@@ -788,7 +788,7 @@
       const prefixMatch = String(priceStr || '').match(/^[^\d\-+.,\s]+/);
       const prefix = prefixMatch ? prefixMatch[0] : '';
       const sign = isUp ? '+' : '-';
-      return `(${sign}${prefix}${abs.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`;
+      return `${sign}${prefix}${abs.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     } catch (e) {
       return '';
     }
@@ -817,14 +817,15 @@
     const showAmt = tapeShowAmount === true;
     const color = isUp ? '#81c995' : '#f28b82';
     const arrow = isUp ? '▲' : '▼';
+    const dirClass = isUp ? 'screener-change-up' : 'screener-change-down';
     if (showPct && showAmt) {
       const amt = absChangeValue(priceStr, pctStr, isUp);
-      if (amt !== null) return `<span class="screener-ticker-change" style="color: ${color}; font-size: 12px;">${arrow} ${amt} (${pctDisplay})</span>`;
+      if (amt !== null) return `<span class="screener-ticker-change ${dirClass}" style="color: ${color}; font-size: 12px;">${arrow}${amt} (${pctDisplay})</span>`;
     }
-    if (showPct) return `<span class="screener-ticker-change" style="color: ${color}; font-size: 12px;">${arrow} ${pctDisplay}</span>`;
+    if (showPct) return `<span class="screener-ticker-change ${dirClass}" style="color: ${color}; font-size: 12px;">${arrow}${pctDisplay}</span>`;
     if (showAmt) {
       const amt = absChangeText(priceStr, pctStr, isUp);
-      if (amt) return `<span class="screener-ticker-amount" style="color: ${color};">${amt}</span>`;
+      if (amt) return `<span class="screener-ticker-amount ${dirClass}" style="color: ${color};">${amt}</span>`;
     }
     return '';
   }
@@ -879,9 +880,9 @@
               const sign = isUp ? '\u25B2' : '\u25BC';
 
               if (idx.flash && (Date.now() - (idx.flashTime || 0) < 1000)) {
-                 priceSpan.className = 'screener-ticker-price ' + (idx.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down');
+                 priceSpan.className = 'screener-ticker-price ' + (isUp ? 'screener-price-up' : 'screener-price-down') + ' ' + (idx.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down');
               } else {
-                 priceSpan.className = 'screener-ticker-price';
+                 priceSpan.className = 'screener-ticker-price ' + (isUp ? 'screener-price-up' : 'screener-price-down');
               }
               priceSpan.textContent = idx.price;
 
@@ -896,9 +897,9 @@
               const price = data.ratios['Current Price'] || '-';
               
               if (data.flash && (Date.now() - (data.flashTime || 0) < 1000)) {
-                priceSpan.className = 'screener-ticker-price ' + (data.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down');
+                priceSpan.className = 'screener-ticker-price ' + (data.changeDir === 'up' ? 'screener-price-up' : 'screener-price-down') + ' ' + (data.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down');
               } else {
-                priceSpan.className = 'screener-ticker-price';
+                priceSpan.className = 'screener-ticker-price ' + (data.changeDir === 'up' ? 'screener-price-up' : 'screener-price-down');
               }
               priceSpan.textContent = price;
 
@@ -932,7 +933,7 @@
         html += `
           <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${idxName}" data-is-index="true" style="cursor: pointer;">
             <span class="screener-ticker-name">${idxName}</span>
-            <span class="screener-ticker-price ${flashClass}">${idx.price}</span>
+            <span class="screener-ticker-price ${isUp ? 'screener-price-up' : 'screener-price-down'} ${flashClass}">${idx.price}</span>
             <span class="screener-ticker-moves" style="margin-left: 6px;">${changeAreaHtml(idx.price, idx.changePct, Math.abs(parseFloat(idx.changePct)).toFixed(2) + '%', isUp)}</span>
           </div>
         `;
@@ -954,7 +955,7 @@
           html += `
             <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${ticker}" style="cursor: pointer;">
               <span class="screener-ticker-name">${data.companyName || ticker}</span>
-              <span class="screener-ticker-price ${flashClass}">${price}</span>
+              <span class="screener-ticker-price ${data.changeDir === 'up' ? 'screener-price-up' : 'screener-price-down'} ${flashClass}">${price}</span>
               ${movesHtml}
             </div>
           `;
