@@ -204,8 +204,14 @@
   "loadingWord": { "message": "loading..." },
 
   "newsLoading": { "message": "Loading latest news..." },
-  "macroNewsTitle": { "message": "US MACRO NEWS" },
-  "fetchingMacroNews": { "message": "Fetching US Macro News..." },
+  "macroNewsTitle": { "message": "MACRO ECONOMIC NEWS" },
+  "fetchingMacroNews": { "message": "Fetching Macro Economic News..." },
+  "watchlistNewsTitle": { "message": "WATCHLIST STOCKS" },
+  "newsFilterAll": { "message": "All News" },
+  "newsFilterMacro": { "message": "Macro Economy" },
+  "newsFilterWatchlist": { "message": "Watchlist" },
+  "noMacroNews": { "message": "No macro economic news available right now." },
+  "noPortfolioNewsPrompt": { "message": "No stocks in this portfolio yet. Add stocks to track company news here." },
   "noPortfolioNews": { "message": "No stocks in this portfolio to fetch news for." },
   "fetchingNews": { "message": "Fetching latest financial news..." },
   "tickerNewsTitle": {

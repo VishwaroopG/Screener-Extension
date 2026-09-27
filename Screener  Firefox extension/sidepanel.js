@@ -74,6 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const extensionVersion = document.getElementById('extension-version');
 
   let activePortfolio = 'Sample';
+  let cachedMacroItems = null;
+  let cachedWatchlistHtml = null;
+  let cachedNewsTime = 0;
+  let currentNewsFilter = 'all';
 
   const DEFAULT_WEEKEND = ['Sat', 'Sun'];
   // Trading holidays are NOT bundled — they are fetched daily from the
@@ -556,6 +560,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   // Tab Switching Logic
   function switchTab(activeTab, activeView) {
+    const wasActive = activeTab.classList.contains('active');
     [tabSearch, tabMarkets, tabNews].forEach(t => t && t.classList.remove('active'));
     [viewSearch, viewMarkets, viewNews].forEach(v => v && v.classList.remove('active'));
 
@@ -570,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (typeof fetchMacroStats === 'function') fetchMacroStats(activeEconomy);
       if (typeof fetchOverview === 'function') fetchOverview(activeEconomy);
     }
-    if (activeTab === tabNews) renderNews();
+    if (activeTab === tabNews) renderNews(wasActive);
   }
 
   tabSearch.addEventListener('click', () => switchTab(tabSearch, viewSearch));
@@ -671,9 +676,21 @@ document.addEventListener('DOMContentLoaded', () => {
   refreshAlertsBadge();
   try {
     chrome.storage.onChanged.addListener((changes, area) => {
-      if (area === 'local' && changes.alerts) {
-        refreshAlertsBadge();
-        if (viewAlerts && viewAlerts.classList.contains('active')) renderAlertsList();
+      if (area === 'local') {
+        if (changes.alerts) {
+          refreshAlertsBadge();
+          if (viewAlerts && viewAlerts.classList.contains('active')) renderAlertsList();
+        }
+        if (changes.portfolios || changes.screenerWatchlist) {
+          cachedWatchlistHtml = null;
+          cachedNewsTime = 0;
+          if (viewNews && viewNews.classList.contains('active')) renderNews(true);
+        }
+        if (changes.overviewEconomy) {
+          cachedMacroItems = null;
+          cachedNewsTime = 0;
+          if (viewNews && viewNews.classList.contains('active')) renderNews(true);
+        }
       }
     });
   } catch (e) {}
@@ -1127,13 +1144,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function isBrave() {
+    try { return navigator.userAgent && navigator.userAgent.includes('Brave'); } catch (e) { return false; }
+  }
+
   function paintSyncUI(state) {
     const enabled = !state || state.enabled !== false;
     const supported = !state || state.supported !== false;
     // canReadIdentity is false on browsers where the profile email can't be
-    // read (e.g. Firefox) — there we must not claim "Not signed in".
+    // read (e.g. Firefox, Brave) — there we must not claim "Not signed in".
     const identityReadable = !state || state.canReadIdentity !== false;
-    const signedOut = !!(state && supported && identityReadable && state.canReadIdentity === true && !state.email);
+    const signedOut = !!(state && supported && identityReadable && state.canReadIdentity === true && !state.email && !isBrave());
     if (settingsSyncToggle) settingsSyncToggle.checked = enabled;
     if (settingsSyncToggle) settingsSyncToggle.disabled = !supported;
     if (btnSyncNow) btnSyncNow.disabled = !supported || !enabled;
@@ -1144,6 +1165,8 @@ document.addEventListener('DOMContentLoaded', () => {
         settingsAccountEmail.textContent = state.email;
       } else if (state && !identityReadable) {
         settingsAccountEmail.textContent = t('settingsBrowserSync') || 'Syncs with your browser account';
+      } else if (isBrave()) {
+        settingsAccountEmail.textContent = t('settingsBrowserSync') || 'Syncs with your browser account';
       } else if (signedOut) {
         settingsAccountEmail.textContent = t('settingsSignedOut') || 'Not signed in';
       } else {
@@ -1151,7 +1174,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     if (settingsAccountDot) {
-      settingsAccountDot.classList.toggle('is-signed-in', !!(state && state.email));
+      settingsAccountDot.classList.toggle('is-signed-in', !!(state && state.email) || (isBrave() && enabled));
     }
     if (settingsSyncTime) {
       if (!supported || signedOut) {
@@ -1407,19 +1430,41 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (e) {}
   if (isFullscreenTab) document.body.classList.add('screener-fullscreen');
   const btnFullscreen = document.getElementById('btn-fullscreen');
+  const btnSidebar = document.getElementById('btn-sidebar');
   if (btnFullscreen) {
     if (isFullscreenTab) {
       btnFullscreen.style.display = 'none';
+      if (btnSidebar) btnSidebar.style.display = '';
     } else {
       btnFullscreen.addEventListener('click', () => {
         const url = chrome.runtime.getURL('sidepanel.html?fullscreen=1');
         try {
-          chrome.tabs.create({ url });
+          chrome.tabs.create({ url }, () => {
+            // Close the side panel after opening fullscreen tab
+            try { window.close(); } catch (e) {}
+          });
         } catch (e) {
           window.open(url, '_blank');
+          try { window.close(); } catch (e) {}
         }
       });
     }
+  }
+  if (btnSidebar) {
+    btnSidebar.addEventListener('click', () => {
+      // Tell background to open sidebar, then close this tab
+      try {
+        chrome.runtime.sendMessage({ type: 'OPEN_SIDEBAR' }, () => {
+          chrome.tabs.getCurrent((tab) => {
+            if (tab && tab.id) {
+              setTimeout(() => { chrome.tabs.remove(tab.id); }, 300);
+            }
+          });
+        });
+      } catch (e) {
+        try { window.close(); } catch (e2) {}
+      }
+    });
   }
   if (aboutModal) {
     aboutModal.addEventListener('click', (e) => {
@@ -3652,79 +3697,125 @@ document.addEventListener('DOMContentLoaded', () => {
   }, true);
 
   // --- News Render ---
-  function renderNews() {
+  const ECONOMY_MACRO_CONFIG = {
+    'USA': { q: 'US+Economy+OR+"Federal+Reserve"+OR+Inflation+OR+"Interest+Rates"+OR+GDP', hl: 'en-US', gl: 'US', ceid: 'US:en' },
+    'India': { q: 'India+Economy+OR+RBI+OR+Inflation+OR+GDP+OR+"Indian+Economy"', hl: 'en-IN', gl: 'IN', ceid: 'IN:en' },
+    'UK': { q: 'UK+Economy+OR+"Bank+of+England"+OR+Inflation+OR+GDP', hl: 'en-GB', gl: 'GB', ceid: 'GB:en' },
+    'Singapore': { q: 'Singapore+Economy+OR+MAS+OR+Inflation+OR+GDP', hl: 'en-SG', gl: 'SG', ceid: 'SG:en' },
+    'Japan': { q: 'Japan+Economy+OR+"Bank+of+Japan"+OR+Inflation+OR+Yen', hl: 'en-US', gl: 'US', ceid: 'US:en' },
+    'Germany': { q: 'Germany+Economy+OR+ECB+OR+Inflation+OR+GDP', hl: 'en-US', gl: 'US', ceid: 'US:en' },
+    'France': { q: 'France+Economy+OR+ECB+OR+Inflation+OR+GDP', hl: 'en-US', gl: 'US', ceid: 'US:en' },
+    'Australia': { q: 'Australia+Economy+OR+RBA+OR+Inflation+OR+GDP', hl: 'en-AU', gl: 'AU', ceid: 'AU:en' },
+    'Canada': { q: 'Canada+Economy+OR+"Bank+of+Canada"+OR+Inflation+OR+GDP', hl: 'en-CA', gl: 'CA', ceid: 'CA:en' },
+    'Hong Kong': { q: 'Hong+Kong+Economy+OR+HKMA+OR+Inflation+OR+GDP', hl: 'en-US', gl: 'US', ceid: 'US:en' }
+  };
+
+  function buildNewsCardHtml(item) {
+    const title = item.querySelector('title')?.textContent || '';
+    const link = item.querySelector('link')?.textContent || '';
+    const pubDate = item.querySelector('pubDate')?.textContent || '';
+    const source = item.querySelector('source')?.textContent || t('newsSourceDefault');
+    const dateStr = pubDate ? new Date(pubDate).toLocaleDateString() : '';
+    const thumb = newsThumbHtml(item, source);
+
+    return `
+      <div style="padding: 10px 12px; border-bottom: 1px solid var(--border-color); display:flex; gap:10px; align-items:center;">
+        ${thumb}
+        <div style="min-width:0; flex:1;">
+          <a href="${link}" target="_blank" rel="noopener" style="color:var(--text-color); text-decoration:none; font-size:13px; font-weight:500; display:block; margin-bottom:3px; line-height:1.35;">${title}</a>
+          <div style="font-size:11px; color:var(--label-color);">${source} &bull; ${dateStr}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function displayNews(filter = currentNewsFilter) {
+    currentNewsFilter = filter;
+    let html = '';
+
+    const showMacro = filter === 'all' || filter === 'macro';
+    const showWatchlist = filter === 'all' || filter === 'watchlist';
+
+    if (showMacro) {
+      const items = (cachedMacroItems || []).slice(0, filter === 'macro' ? 12 : 5);
+      html += `
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-top:6px; margin-bottom:4px; padding:0 12px;">
+          <div style="font-size:11px; font-weight:700; letter-spacing:0.04em; color:var(--accent-color, #1a73e8); display:flex; align-items:center; gap:6px;">
+            <span>🌐</span>
+            <span>${t('macroNewsTitle')}</span>
+          </div>
+          <span style="font-size:10px; font-weight:600; padding:1px 6px; border-radius:10px; background:rgba(26,115,232,0.1); color:var(--accent-color, #1a73e8);">${activeEconomy}</span>
+        </div>
+      `;
+      if (items.length > 0) {
+        items.forEach(item => {
+          html += buildNewsCardHtml(item);
+        });
+      } else {
+        html += `<div style="text-align:center; color:var(--label-color); padding:16px; font-size:12px;">${t('noMacroNews')}</div>`;
+      }
+    }
+
+    if (showWatchlist) {
+      html += `
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-top:${showMacro ? '16px' : '6px'}; margin-bottom:4px; padding:0 12px;">
+          <div style="font-size:11px; font-weight:700; letter-spacing:0.04em; color:var(--accent-color, #1a73e8); display:flex; align-items:center; gap:6px;">
+            <span>📊</span>
+            <span>${t('watchlistNewsTitle')}</span>
+          </div>
+          <span style="font-size:10px; font-weight:600; padding:1px 6px; border-radius:10px; background:rgba(0,0,0,0.06); color:var(--label-color);">${activePortfolio}</span>
+        </div>
+      `;
+      if (cachedWatchlistHtml && cachedWatchlistHtml.trim()) {
+        html += cachedWatchlistHtml;
+      } else {
+        html += `<div style="text-align:center; color:var(--label-color); padding:16px; font-size:12px;">${t('noPortfolioNewsPrompt')}</div>`;
+      }
+    }
+
+    newsContainer.innerHTML = html;
+  }
+
+  function renderNews(force = false) {
+    const isCacheFresh = (Date.now() - cachedNewsTime) < 10 * 60 * 1000;
+    if (!force && isCacheFresh && cachedMacroItems !== null && cachedWatchlistHtml !== null) {
+      displayNews();
+      return;
+    }
+
+    newsContainer.innerHTML = '<div class="screener-loading" style="text-align:center; padding:20px;">' + t('newsLoading') + '</div>';
+
     chrome.storage.local.get(['portfolios'], async (res) => {
       const list = (res.portfolios || {})[activePortfolio] || [];
-      if (list.length === 0) {
-        newsContainer.innerHTML = '<div class="screener-loading" style="text-align:center; padding:20px;">' + t('fetchingMacroNews') + '</div>';
+      const cfg = ECONOMY_MACRO_CONFIG[activeEconomy] || ECONOMY_MACRO_CONFIG['USA'];
+
+      const fetchMacroPromise = (async () => {
         try {
-          const feedRes = await fetch(`https://news.google.com/rss/search?q=US+Economy+OR+Federal+Reserve+OR+S%26P+500&hl=en-US&gl=US&ceid=US:en`);
+          const feedRes = await fetch(`https://news.google.com/rss/search?q=${cfg.q}&hl=${cfg.hl}&gl=${cfg.gl}&ceid=${cfg.ceid}`);
           const text = await feedRes.text();
           const parser = new DOMParser();
           const xml = parser.parseFromString(text, 'text/xml');
-          const items = Array.from(xml.querySelectorAll('item')).slice(0, 6);
-          
-          if (items.length > 0) {
-            let allNewsHtml = `<div style="font-size:12px; font-weight:bold; color:var(--accent-color, #1a73e8); margin-top:12px; margin-bottom:4px; padding:0 12px;">${t('macroNewsTitle')}</div>`;
-            items.forEach(item => {
-              const title = item.querySelector('title')?.textContent || '';
-              const link = item.querySelector('link')?.textContent || '';
-              const pubDate = item.querySelector('pubDate')?.textContent || '';
-              const source = item.querySelector('source')?.textContent || t('newsSourceDefault');
-              const dateStr = pubDate ? new Date(pubDate).toLocaleDateString() : '';
-              const thumb = newsThumbHtml(item, source);
-
-              allNewsHtml += `
-                <div style="padding: 12px; border-bottom: 1px solid var(--border-color); display:flex; gap:10px; align-items:center;">
-                  ${thumb}
-                  <div style="min-width:0; flex:1;">
-                    <a href="${link}" target="_blank" style="color:var(--text-color); text-decoration:none; font-size:14px; display:block; margin-bottom:4px;">${title}</a>
-                    <div style="font-size:11px; color:var(--label-color);">${source} &bull; ${dateStr}</div>
-                  </div>
-                </div>
-              `;
-            });
-            newsContainer.innerHTML = allNewsHtml;
-            return;
-          }
+          return Array.from(xml.querySelectorAll('item'));
         } catch (e) {
-          console.error('US Macro News error', e);
+          console.error('Macro News fetch error', e);
+          return [];
         }
-        newsContainer.innerHTML = '<div style="text-align:center;color:var(--label-color);padding:20px;">' + t('noPortfolioNews') + '</div>';
-        return;
-      }
-      
-      newsContainer.innerHTML = '<div class="screener-loading" style="text-align:center; padding:20px;">' + t('fetchingNews') + '</div>';
-      
-      let allNewsHtml = '';
-      const results = await Promise.all(list.map(async (ticker) => {
+      })();
+
+      const fetchWatchlistPromise = (async () => {
+        if (list.length === 0) return '';
+        const results = await Promise.all(list.map(async (ticker) => {
           try {
-            const feedRes = await fetch(`https://news.google.com/rss/search?q=${ticker}+stock&hl=en-IN&gl=IN&ceid=IN:en`);
+            const feedRes = await fetch(`https://news.google.com/rss/search?q=${encodeURIComponent(ticker)}+stock&hl=${cfg.hl}&gl=${cfg.gl}&ceid=${cfg.ceid}`);
             const text = await feedRes.text();
             const parser = new DOMParser();
             const xml = parser.parseFromString(text, 'text/xml');
             const items = Array.from(xml.querySelectorAll('item')).slice(0, 2);
             let html = '';
-            
             if (items.length > 0) {
-              html += `<div style="font-size:12px; font-weight:bold; color:var(--accent-color, #1a73e8); margin-top:12px; margin-bottom:4px; padding:0 12px;">${t('tickerNewsTitle', ticker)}</div>`;
+              html += `<div style="font-size:11px; font-weight:600; color:var(--text-color); margin-top:8px; margin-bottom:2px; padding:0 12px; opacity:0.85;">${t('tickerNewsTitle', ticker)}</div>`;
               items.forEach(item => {
-                const title = item.querySelector('title')?.textContent || '';
-                const link = item.querySelector('link')?.textContent || '';
-                const pubDate = item.querySelector('pubDate')?.textContent || '';
-                const source = item.querySelector('source')?.textContent || t('newsSourceDefault');
-                const dateStr = pubDate ? new Date(pubDate).toLocaleDateString() : '';
-                const thumb = newsThumbHtml(item, source);
-
-                html += `
-                  <div style="padding: 12px; border-bottom: 1px solid var(--border-color); display:flex; gap:10px; align-items:center;">
-                    ${thumb}
-                    <div style="min-width:0; flex:1;">
-                      <a href="${link}" target="_blank" style="color:var(--text-color); text-decoration:none; font-size:14px; display:block; margin-bottom:4px;">${title}</a>
-                      <div style="font-size:11px; color:var(--label-color);">${source} &bull; ${dateStr}</div>
-                    </div>
-                  </div>
-                `;
+                html += buildNewsCardHtml(item);
               });
             }
             return html;
@@ -3732,14 +3823,30 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('News error for', ticker, e);
             return '';
           }
-      }));
-      allNewsHtml = results.join('');
-      
-      if (allNewsHtml === '') {
-        newsContainer.innerHTML = '<div style="text-align:center;color:#6c757d;padding:20px;">' + t('noRecentNews') + '</div>';
-      } else {
-        newsContainer.innerHTML = allNewsHtml;
+        }));
+        return results.join('');
+      })();
+
+      try {
+        const [macroItems, watchlistHtml] = await Promise.all([fetchMacroPromise, fetchWatchlistPromise]);
+        cachedMacroItems = macroItems;
+        cachedWatchlistHtml = watchlistHtml;
+        cachedNewsTime = Date.now();
+        displayNews();
+      } catch (err) {
+        console.error('renderNews error', err);
+        displayNews();
       }
+    });
+  }
+
+  // Setup news filter buttons
+  const newsFilterBar = document.getElementById('news-filter-bar');
+  if (newsFilterBar) {
+    newsFilterBar.querySelectorAll('input[name="news-filter"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        displayNews(e.target.value);
+      });
     });
   }
 

@@ -7,10 +7,10 @@
 <body>
   <!-- Header -->
   <div class="screener-header">
-    <div style="display:flex; align-items:center; gap:8px; min-width:0; flex:1 1 auto; overflow:hidden;">
+    <a href="https://vishwaroopg.github.io/Screener-Extension/" target="_blank" style="display:flex; align-items:center; gap:8px; min-width:0; flex:1 1 auto; overflow:hidden; text-decoration:none; color:inherit;">
       <img src="icon_48.png" alt="Ticker Screener logo" style="width:24px; height:24px; border-radius:6px;" />
       <h2>Ticker Screener</h2>
-    </div>
+    </a>
     <div class="screener-header-actions" style="position:relative;">
       <div style="position:static;">
         <button id="tape-speed-btn" class="md-chip-btn" data-i18n-title="speedTitleDefault" title="Tape Speed: 1.0x (Click to adjust 0.5x – 3.0x)">1.0x</button>
@@ -109,7 +109,21 @@
       <span style="font-size:15px;">✈</span>
       <span><span data-i18n="telegramJoin">Join @GlobalMarketPulseLive on Telegram</span><br><span data-i18n="telegramHint" style="font-weight:400; font-size:11px; color:var(--label-color);">Latest stock market updates & research reports, daily.</span></span>
     </a>
-    <div id="news-container" data-i18n="newsLoading" style="padding-top:8px;">Loading latest news...</div>
+    <div id="news-filter-bar" class="alert-segmented-control" style="margin-top:10px; margin-bottom:6px;">
+      <label class="alert-segment" id="news-filter-all">
+        <input type="radio" name="news-filter" value="all" checked>
+        <span data-i18n="newsFilterAll">All News</span>
+      </label>
+      <label class="alert-segment" id="news-filter-macro">
+        <input type="radio" name="news-filter" value="macro">
+        <span data-i18n="newsFilterMacro">Macro Economy</span>
+      </label>
+      <label class="alert-segment" id="news-filter-watchlist">
+        <input type="radio" name="news-filter" value="watchlist">
+        <span data-i18n="newsFilterWatchlist">Watchlist</span>
+      </label>
+    </div>
+    <div id="news-container" data-i18n="newsLoading" style="padding-top:4px;">Loading latest news...</div>
   </div>
 
   <!-- Alerts View -->
