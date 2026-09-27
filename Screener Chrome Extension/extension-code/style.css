@@ -1262,18 +1262,16 @@ body.dark-mode .settings-check input[type="checkbox"] {
 }
 /* Pinned Market Cards */
 .pinned-card-price {
-  font-size: 18px;
-  font-weight: 400;
+  font-size: 14px;
+  font-weight: 600;
   color: var(--text-color);
   margin-bottom: 4px;
   line-height: 1.2;
+  letter-spacing: -0.01em;
   font-variant-numeric: tabular-nums;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-body.dark-mode .pinned-card-price {
-  font-weight: 700;
 }
 
 /* Edit Pinned Modal Suggestions */
