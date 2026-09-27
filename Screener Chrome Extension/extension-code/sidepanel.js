@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeToggle = document.getElementById('theme-toggle');
   
   const portfolioSelect = document.getElementById('portfolio-select');
+  const tagFilterSelect = document.getElementById('tag-filter');
   const btnNewPortfolio = document.getElementById('btn-new-portfolio');
   const btnExportCsv = document.getElementById('btn-export-csv');
   const newsContainer = document.getElementById('news-container');
@@ -575,6 +576,97 @@ document.addEventListener('DOMContentLoaded', () => {
   tabSearch.addEventListener('click', () => switchTab(tabSearch, viewSearch));
   if (tabMarkets) tabMarkets.addEventListener('click', () => switchTab(tabMarkets, viewMarkets));
   tabNews.addEventListener('click', () => switchTab(tabNews, viewNews));
+
+  // --- Your Alerts view (header bell) ---
+  const btnAlerts = document.getElementById('btn-alerts');
+  const viewAlerts = document.getElementById('view-alerts');
+  const alertsList = document.getElementById('alerts-list');
+  const alertsEmpty = document.getElementById('alerts-empty');
+  const alertsBadge = document.getElementById('alerts-badge');
+  const alertsBack = document.getElementById('alerts-back');
+  const tabsBar = document.querySelector('.screener-tabs');
+  function openAlertsView() {
+    [tabSearch, tabMarkets, tabNews].forEach(t => t && t.classList.remove('active'));
+    [viewSearch, viewMarkets, viewNews].forEach(v => v && v.classList.remove('active'));
+    if (tabsBar) tabsBar.style.display = 'none';
+    if (viewAlerts) viewAlerts.classList.add('active');
+    renderAlertsList();
+  }
+  function closeAlertsView() {
+    if (viewAlerts) viewAlerts.classList.remove('active');
+    if (tabsBar) tabsBar.style.display = '';
+    switchTab(tabSearch, viewSearch);
+  }
+  if (btnAlerts) btnAlerts.addEventListener('click', openAlertsView);
+  if (alertsBack) alertsBack.addEventListener('click', (e) => { e.preventDefault(); closeAlertsView(); });
+  function countActiveAlerts(alerts) {
+    return Object.values(alerts || {}).filter(a => a && (a.above || a.below)).length;
+  }
+  function refreshAlertsBadge() {
+    try {
+      chrome.storage.local.get(['alerts'], (res) => {
+        const n = countActiveAlerts(res.alerts);
+        if (alertsBadge) {
+          alertsBadge.style.display = n ? '' : 'none';
+          alertsBadge.textContent = n > 99 ? '99+' : String(n);
+        }
+      });
+    } catch (e) {}
+  }
+  function renderAlertsList() {
+    if (!alertsList || !alertsEmpty) return;
+    try {
+      chrome.storage.local.get(['alerts', 'cachedData'], (res) => {
+        const alerts = res.alerts || {};
+        const cached = res.cachedData || {};
+        const tickers = Object.keys(alerts).filter(k => alerts[k] && (alerts[k].above || alerts[k].below));
+        if (!tickers.length) {
+          alertsList.innerHTML = '';
+          alertsEmpty.style.display = '';
+          return;
+        }
+        alertsEmpty.style.display = 'none';
+        alertsList.innerHTML = tickers.map((ticker) => {
+          const a = alerts[ticker] || {};
+          const d = cached[ticker] || {};
+          let prefix = '';
+          try { if (d.currency) prefix = mcapPrefixForCode(d.currency) || ''; } catch (e) {}
+          const parts = [];
+          if (a.above) parts.push((t('alertsAbove') || 'Above') + ' ' + prefix + a.above);
+          if (a.below) parts.push((t('alertsBelow') || 'Below') + ' ' + prefix + a.below);
+          return '<div style="display:flex; align-items:center; gap:8px; padding:10px 2px; border-bottom:1px solid var(--border-color);">'
+            + '<button class="screener-alert-edit" data-ticker="' + escHtml(ticker) + '" title="' + escHtml(t('setAlertTitle') || 'Set Alert') + '" style="background:none; border:none; cursor:pointer; font-size:13px; font-weight:700; color:var(--link-green); padding:0;">' + escHtml(ticker) + '</button>'
+            + '<span style="flex:1; font-size:12px; color:var(--label-color);">' + escHtml(parts.join(' · ')) + '</span>'
+            + '<button class="screener-alert-del" data-ticker="' + escHtml(ticker) + '" title="' + escHtml(t('alertsDelete') || 'Delete alert') + '" style="background:none; border:none; cursor:pointer; font-size:13px; color:var(--label-color); padding:2px 6px;">&#10005;</button>'
+            + '</div>';
+        }).join('');
+        alertsList.querySelectorAll('.screener-alert-del').forEach(b => b.onclick = () => {
+          const tk = b.getAttribute('data-ticker');
+          chrome.storage.local.get(['alerts'], (r2) => {
+            const al = r2.alerts || {};
+            delete al[tk];
+            chrome.storage.local.set({ alerts: al }, () => {
+              renderAlertsList();
+              refreshAlertsBadge();
+              try { renderWatchlist(); } catch (e) {}
+            });
+          });
+        });
+        alertsList.querySelectorAll('.screener-alert-edit').forEach(b => b.onclick = () => {
+          if (typeof window.openAlertModal === 'function') window.openAlertModal(b.getAttribute('data-ticker'));
+        });
+      });
+    } catch (e) {}
+  }
+  refreshAlertsBadge();
+  try {
+    chrome.storage.onChanged.addListener((changes, area) => {
+      if (area === 'local' && changes.alerts) {
+        refreshAlertsBadge();
+        if (viewAlerts && viewAlerts.classList.contains('active')) renderAlertsList();
+      }
+    });
+  } catch (e) {}
   // --- Google Material Design 3 Header Controls ---
   const svgMoon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>`;
   const svgSun = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 9c1.65 0 3 1.35 3 3s-1.35 3-3 3-3-1.35-3-3 1.35-3 3-3m0-2c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>`;
@@ -1397,6 +1489,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  if (tagFilterSelect) tagFilterSelect.addEventListener('change', (e) => {
+    activeTagFilter = e.target.value;
+    renderWatchlist();
+  });
+
+  const bulkToggle = document.getElementById('btn-bulk-select');
+  if (bulkToggle) bulkToggle.addEventListener('click', () => {
+    if (bulkMode) exitBulkMode(); else enterBulkMode();
+  });
+  // Delete key removes checked stocks while in bulk mode (not while typing).
+  document.addEventListener('keydown', (e) => {
+    if (!bulkMode || bulkSelected.size === 0) return;
+    if (e.key !== 'Delete' && e.key !== 'Backspace') return;
+    const tag = (e.target && e.target.tagName) || '';
+    if (/INPUT|TEXTAREA|SELECT/.test(tag)) return;
+    e.preventDefault();
+    bulkDelete();
+  });
+
   // Dashboard refresh: full re-sync + fast-price poll, list repaints on WATCHLIST_UPDATED
   const btnWatchlistRefresh = document.getElementById('btn-watchlist-refresh');
   if (btnWatchlistRefresh) btnWatchlistRefresh.addEventListener('click', () => {
@@ -1513,15 +1624,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Export to CSV ---
   btnExportCsv.addEventListener('click', () => {
     
-    chrome.storage.local.get(['portfolios', 'cachedData'], (res) => {
+    chrome.storage.local.get(['portfolios', 'cachedData', 'colorTags'], (res) => {
       const list = (res.portfolios || {})[activePortfolio] || [];
       const data = res.cachedData || {};
+      const tags = res.colorTags || {};
       
-      let csv = "Ticker,Company,Current Price,P/E,Market Cap,ROCE\n";
+      let csv = "Ticker,Company,Current Price,P/E,Market Cap,ROCE,Tag\n";
       for (const ticker of list) {
         const d = data[ticker];
         if (d && d.success) {
-          csv += `"${ticker}","${d.companyName}","${d.ratios['Current Price']||''}","${d.ratios['Stock P/E']||''}","${d.ratios['Market Cap']||''}","${d.ratios['ROCE']||''}"\n`;
+          csv += `"${ticker}","${d.companyName}","${d.ratios['Current Price']||''}","${d.ratios['Stock P/E']||''}","${d.ratios['Market Cap']||''}","${d.ratios['ROCE']||''}","${tagLabel(tags[ticker])}"\n`;
         }
       }
       
@@ -1761,6 +1873,64 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // --- Bulk edit: multi-select stocks to tag, move, copy or delete together ---
+  function enterBulkMode() {
+    bulkMode = true;
+    paintBulkToggle();
+    renderWatchlist();
+  }
+  function exitBulkMode() {
+    bulkMode = false;
+    bulkSelected.clear();
+    paintBulkToggle();
+    renderWatchlist();
+  }
+  function paintBulkToggle() {
+    const btn = document.getElementById('btn-bulk-select');
+    if (!btn) return;
+    btn.textContent = bulkMode ? (t('bulkDone') || 'Done') : (t('bulkSelect') || 'Select');
+    btn.style.background = bulkMode ? '#1a73e8' : '';
+    btn.style.color = bulkMode ? '#fff' : '';
+  }
+  function bulkDelete() {
+    if (bulkSelected.size === 0) return;
+    chrome.storage.local.get(['portfolios'], (res) => {
+      const ports = res.portfolios || {};
+      const list = ports[activePortfolio] || [];
+      ports[activePortfolio] = list.filter((tk) => !bulkSelected.has(tk));
+      bulkSelected.clear();
+      chrome.storage.local.set({ portfolios: ports, screenerWatchlist: ports[activePortfolio] }, () => renderWatchlist());
+    });
+  }
+  function bulkTag(tag) {
+    if (bulkSelected.size === 0 || !tag) return;
+    chrome.storage.local.get(['colorTags'], (res) => {
+      const tags = res.colorTags || {};
+      bulkSelected.forEach((tk) => { tags[tk] = tag; });
+      chrome.storage.local.set({ colorTags: tags }, () => renderWatchlist());
+    });
+  }
+  function bulkMoveCopy(mode) {
+    if (bulkSelected.size === 0) return;
+    const targetSel = document.getElementById('bulk-portfolio');
+    const target = targetSel ? targetSel.value : '';
+    if (!target) return;
+    chrome.storage.local.get(['portfolios'], (res) => {
+      const ports = res.portfolios || {};
+      const dest = ports[target] || [];
+      bulkSelected.forEach((tk) => { if (!dest.includes(tk)) dest.push(tk); });
+      ports[target] = dest;
+      const update = { portfolios: ports };
+      if (mode === 'move' && target !== activePortfolio) {
+        ports[activePortfolio] = (ports[activePortfolio] || []).filter((tk) => !bulkSelected.has(tk));
+        update.portfolios = ports;
+        update.screenerWatchlist = ports[activePortfolio];
+        bulkSelected.clear();
+      }
+      chrome.storage.local.set(update, () => renderWatchlist());
+    });
+  }
+
     // btnWlAdd logic removed
 
   // --- Modals Logic ---
@@ -1846,6 +2016,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentSortBy = null; // 'price', 'mcap'
   let currentSortDesc = true;
   let isDragging = false; // Prevent re-rendering while user is dragging
+  let bulkMode = false; // Bulk-edit multi-select mode
+  const bulkSelected = new Set(); // tickers checked in bulk mode
+  function escHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
 
   function getSortIndicator(col) {
     if (currentSortBy !== col) return '';
@@ -1862,18 +2037,212 @@ document.addEventListener('DOMContentLoaded', () => {
     renderWatchlist();
   }
 
+  // Platform quick links per watchlist row (TradingView / Screener.in /
+  // Zerodha Kite). URL shapes mirror the background.js resolveCtxStock
+  // builders; kept local so table rendering stays synchronous.
+  function rowBaseSymbol(symbol) {
+    return String(symbol || '').toUpperCase().replace(/\.(NS|BO)$/, '');
+  }
+  function rowIsIndian(ticker, data) {
+    if (ticker && ticker.startsWith('^')) return false;
+    if (data && data.source && data.source !== 'yahoo') return true;
+    return /\.(NS|BO)$/i.test(ticker || '');
+  }
+  function rowTvExchange(ticker, data) {
+    if (/\.BO$/i.test(ticker || '')) return 'BSE';
+    if (rowIsIndian(ticker, data)) return 'NSE';
+    return '';
+  }
+  function rowQuickLinks(ticker, data) {
+    const pill = (href, label, title) => `<a href="${href}" target="_blank" title="${title}" style="display:inline-block; margin:1px 2px; padding:2px 8px; border-radius:999px; border:1px solid rgba(26,115,232,.45); background:rgba(26,115,232,.1); color:#1a73e8; font-size:10px; font-weight:600; text-decoration:none; white-space:nowrap;">${label}</a>`;
+    const base = rowBaseSymbol(ticker);
+    const ex = rowTvExchange(ticker, data);
+    const tvSym = ex ? ex + ':' + base : base;
+    let out = pill('https://www.tradingview.com/chart/?symbol=' + encodeURIComponent(tvSym), 'TradingView', 'Open ' + ticker + ' in TradingView');
+    if (rowIsIndian(ticker, data)) {
+      out += pill('https://www.screener.in/company/' + encodeURIComponent(base) + '/', 'Screener.in', 'Open ' + ticker + ' on Screener.in');
+      out += pill('https://kite.zerodha.com/chart/ext/ciq/' + (ex === 'BSE' ? 'BSE' : 'NSE') + '/' + encodeURIComponent(base), 'Kite', 'Open ' + ticker + ' in Zerodha Kite');
+    }
+    return out;
+  }
+  // Color tags per stock (Entry Target / Watching / Exit Flag), stored in
+  // chrome.storage.local under `colorTags` as { TICKER: tagKey }.
+  const COLOR_TAGS = {
+    entry: { color: '#34a853' },
+    watching: { color: '#f29900' },
+    exit: { color: '#ea4335' }
+  };
+  let activeTagFilter = 'all';
+  function tagLabel(key) {
+    if (key === 'entry') return t('tagEntry') || 'Entry Target';
+    if (key === 'watching') return t('tagWatching') || 'Watching';
+    if (key === 'exit') return t('tagExit') || 'Exit Flag';
+    return '';
+  }
+  function setColorTag(ticker, tag) {
+    chrome.storage.local.get(['colorTags'], (res) => {
+      const tags = res.colorTags || {};
+      if (tag) tags[ticker] = tag; else delete tags[ticker];
+      chrome.storage.local.set({ colorTags: tags }, () => renderWatchlist());
+    });
+  }
+  function closeTagMenu() {
+    const m = document.getElementById('tag-menu');
+    if (m) m.remove();
+    document.removeEventListener('click', closeTagMenuOutside);
+  }
+  function closeTagMenuOutside(e) {
+    const m = document.getElementById('tag-menu');
+    if (m && !m.contains(e.target)) closeTagMenu();
+  }
+  function openTagMenu(anchor, ticker) {
+    closeTagMenu();
+    chrome.storage.local.get(['colorTags'], (res) => {
+      const current = (res.colorTags || {})[ticker];
+      const menu = document.createElement('div');
+      menu.id = 'tag-menu';
+      menu.style.cssText = 'position:fixed; z-index:9999; min-width:160px; padding:6px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-color); box-shadow:0 10px 30px rgba(0,0,0,.3); font-size:12px;';
+      let html = '';
+      for (const key of Object.keys(COLOR_TAGS)) {
+        const sel = current === key ? ' ✓' : '';
+        html += `<div data-tag="${key}" style="display:flex; align-items:center; gap:8px; padding:7px 9px; border-radius:7px; cursor:pointer; color:var(--text-color);"><span style="width:10px; height:10px; border-radius:50%; background:${COLOR_TAGS[key].color}; flex-shrink:0;"></span>${tagLabel(key)}${sel}</div>`;
+      }
+      html += `<div data-tag="" style="display:flex; align-items:center; gap:8px; padding:7px 9px; border-radius:7px; cursor:pointer; color:var(--label-color);"><span style="width:10px; height:10px; border-radius:50%; border:1px solid var(--label-color); flex-shrink:0;"></span>${t('tagClear') || 'Clear tag'}</div>`;
+      menu.innerHTML = html;
+      document.body.appendChild(menu);
+      try {
+        const r = anchor.getBoundingClientRect();
+        menu.style.left = Math.max(4, Math.min(r.left, window.innerWidth - 180)) + 'px';
+        menu.style.top = Math.min(r.bottom + 4, window.innerHeight - 170) + 'px';
+      } catch (e) {}
+      menu.querySelectorAll('[data-tag]').forEach((opt) => {
+        opt.addEventListener('click', (e) => {
+          e.stopPropagation();
+          setColorTag(ticker, opt.getAttribute('data-tag') || null);
+          closeTagMenu();
+        });
+        opt.addEventListener('mouseenter', () => { opt.style.background = 'var(--row-hover)'; });
+        opt.addEventListener('mouseleave', () => { opt.style.background = ''; });
+      });
+      setTimeout(() => document.addEventListener('click', closeTagMenuOutside), 0);
+    });
+  }
+  // Smart Focus: blue-dot highlight for stocks meeting active conditions —
+  // big price move, unusual daily swing vs its own history, or trading near
+  // the 52-week high/low. Derived fresh on every render, so the dot clears
+  // itself once the condition stops. Thresholds overridable via the
+  // `smartFocus` storage key { bigMovePct, swingX, nearPct }.
+  function smartFocusReasons(data, prefs) {
+    const out = [];
+    try {
+      const d = data || {};
+      const p = prefs || {};
+      const bigMove = Number(p.bigMovePct) || 5;
+      const swingX = Number(p.swingX) || 2.5;
+      const nearPct = Number(p.nearPct) || 2;
+      const move = parseFloat(String(d.changePct || '').replace(/[^\d.]/g, '')) || 0;
+      if (move >= bigMove) out.push(t('sfBigMove') || 'Big price move');
+      const sp = Array.isArray(d.sparkline) ? d.sparkline : [];
+      if (sp.length >= 8) {
+        const moves = [];
+        for (let i = 1; i < sp.length; i++) {
+          const a = Number(sp[i - 1]), b = Number(sp[i]);
+          if (a && isFinite(a) && isFinite(b) && a !== 0) moves.push(Math.abs(b - a) / Math.abs(a));
+        }
+        if (moves.length >= 7) {
+          const last = moves[moves.length - 1];
+          const prev = moves.slice(0, -1);
+          const mean = prev.reduce((s, v) => s + v, 0) / prev.length;
+          if (mean > 0 && last >= swingX * mean) out.push(t('sfSwing') || 'Unusual swing');
+        }
+      }
+      const ratios = d.ratios || {};
+      const cur = parseFloat(String(ratios['Current Price'] || '').replace(/[^\d.]/g, ''));
+      const parts = String(ratios['52W Range'] || '').split('-');
+      if (cur && parts.length === 2) {
+        const lo = parseFloat(parts[0].replace(/[^\d.]/g, ''));
+        const hi = parseFloat(parts[1].replace(/[^\d.]/g, ''));
+        if (lo && hi && hi > lo) {
+          if ((hi - cur) / hi * 100 <= nearPct) out.push(t('sfHigh') || 'Near 52-week high');
+          else if ((cur - lo) / lo * 100 <= nearPct) out.push(t('sfLow') || 'Near 52-week low');
+        }
+      }
+    } catch (e) {}
+    return out;
+  }
+  // Ticker click → platform menu (TradingView / Screener.in / Kite).
+  // Reuses the rowQuickLinks exchange helpers and the tag-menu floating
+  // pattern. Left-click opens the menu; middle-click still follows the
+  // ticker href directly.
+  function platformLinks(ticker, source) {
+    const data = source ? { source } : null;
+    const base = rowBaseSymbol(ticker);
+    const ex = rowTvExchange(ticker, data);
+    const tvSym = ex ? ex + ':' + base : base;
+    const links = [{ label: 'TradingView', url: 'https://www.tradingview.com/chart/?symbol=' + encodeURIComponent(tvSym) }];
+    if (rowIsIndian(ticker, data)) {
+      links.push({ label: 'Screener.in', url: 'https://www.screener.in/company/' + encodeURIComponent(base) + '/' });
+      links.push({ label: 'Zerodha Kite', url: 'https://kite.zerodha.com/chart/ext/ciq/' + (ex === 'BSE' ? 'BSE' : 'NSE') + '/' + encodeURIComponent(base) });
+    } else if (!(ticker && ticker.startsWith('^'))) {
+      links.push({ label: 'Yahoo Finance', url: 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) });
+    }
+    return links;
+  }
+  function closePlatformMenu() {
+    const m = document.getElementById('platform-menu');
+    if (m) m.remove();
+    document.removeEventListener('click', closePlatformMenuOutside);
+  }
+  function closePlatformMenuOutside(e) {
+    const m = document.getElementById('platform-menu');
+    if (m && !m.contains(e.target)) closePlatformMenu();
+  }
+  function openPlatformMenu(anchor, ticker, source) {
+    closePlatformMenu();
+    const links = platformLinks(ticker, source);
+    if (!links.length) return;
+    const menu = document.createElement('div');
+    menu.id = 'platform-menu';
+    menu.style.cssText = 'position:fixed; z-index:9999; min-width:170px; padding:6px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-color); box-shadow:0 10px 30px rgba(0,0,0,.3); font-size:12px;';
+    menu.innerHTML = links.map((l) => `<div data-url="${l.url}" style="padding:7px 9px; border-radius:7px; cursor:pointer; color:var(--text-color);">${l.label}<span style="float:right; color:var(--label-color);">↗</span></div>`).join('');
+    document.body.appendChild(menu);
+    try {
+      const r = anchor.getBoundingClientRect();
+      menu.style.left = Math.max(4, Math.min(r.left, window.innerWidth - 190)) + 'px';
+      menu.style.top = Math.min(r.bottom + 4, window.innerHeight - (links.length * 36 + 30)) + 'px';
+    } catch (e) {}
+    menu.querySelectorAll('[data-url]').forEach((opt) => {
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        try { chrome.tabs.create({ url: opt.getAttribute('data-url') }); } catch (err) {}
+        closePlatformMenu();
+      });
+      opt.addEventListener('mouseenter', () => { opt.style.background = 'var(--row-hover)'; });
+      opt.addEventListener('mouseleave', () => { opt.style.background = ''; });
+    });
+    setTimeout(() => document.addEventListener('click', closePlatformMenuOutside), 0);
+  }
   function renderWatchlist() {
     if (isDragging) return; // Do not interrupt drag and drop
 
     // Single consolidated fetch for instant rendering with zero network delay
-    chrome.storage.local.get(['portfolios', 'screenerWatchlist', 'cachedData', 'alerts'], (res) => {
+    chrome.storage.local.get(['portfolios', 'screenerWatchlist', 'cachedData', 'alerts', 'colorTags', 'smartFocus'], (res) => {
       const ports = res.portfolios || {};
       let list = ports[activePortfolio] || res.screenerWatchlist || [];
       const cached = res.cachedData || {};
       const alertsObj = res.alerts || {};
+      const colorTags = res.colorTags || {};
+      const sfPrefs = Object.assign({ bigMovePct: 5, swingX: 2.5, nearPct: 2 }, res.smartFocus || {});
+
+      // Tag filter row is only useful once at least one tag exists.
+      const tagRow = document.getElementById('tag-filter-row');
+      if (tagRow) tagRow.style.display = Object.keys(colorTags).length ? 'block' : 'none';
+      if (tagFilterSelect && tagFilterSelect.value !== activeTagFilter) tagFilterSelect.value = activeTagFilter;
+      if (activeTagFilter !== 'all') list = list.filter((tk) => colorTags[tk] === activeTagFilter);
 
       if (list.length === 0) {
-        wlItemsContainer.innerHTML = '<div style="text-align:center;color:var(--label-color);padding:24px 16px;font-size:13px;">' + t('watchlistEmpty') + '</div>';
+        const emptyMsg = activeTagFilter !== 'all' ? (t('tagEmpty') || 'No stocks with this tag.') : t('watchlistEmpty');
+        wlItemsContainer.innerHTML = '<div style="text-align:center;color:var(--label-color);padding:24px 16px;font-size:13px;">' + emptyMsg + '</div>';
         return;
       }
 
@@ -1907,7 +2276,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      let html = `<div style="width:100%; overflow-x:auto; border:1px solid var(--border-color); border-radius:8px;">
+      let bulkBar = '';
+      if (bulkMode) {
+        const bb = 'padding:4px 10px; border-radius:12px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); font-size:12px; cursor:pointer;';
+        const portOpts = Object.keys(ports).map((nm) => `<option value="${escHtml(nm)}"${nm === activePortfolio ? ' selected' : ''}>${escHtml(nm)}</option>`).join('');
+        const tagDots = Object.keys(COLOR_TAGS).map((key) => `<button data-bulk-tag="${key}" title="${tagLabel(key)}" style="background:none; border:none; cursor:pointer; font-size:14px; padding:0 2px; color:${COLOR_TAGS[key].color};">●</button>`).join('');
+        bulkBar = `<div id="bulk-bar" style="display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:10px; padding:8px 10px; border:1px solid var(--border-color); border-radius:8px; background:var(--header-bg); font-size:12px; color:var(--text-color);">
+          <b id="bulk-count">${bulkSelected.size} ${t('bulkSelected') || 'selected'}</b>
+          <span style="display:inline-flex; align-items:center;" title="${t('bulkTagTitle') || 'Apply color tag to selected'}">${tagDots}</span>
+          <select id="bulk-portfolio" title="${t('bulkTarget') || 'Target portfolio'}" style="max-width:110px; padding:4px 6px; border-radius:4px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); font-size:12px;">${portOpts}</select>
+          <button id="bulk-move" style="${bb}">${t('bulkMove') || 'Move'}</button>
+          <button id="bulk-copy" style="${bb}">${t('bulkCopy') || 'Copy'}</button>
+          <button id="bulk-delete" style="${bb} border-color:#d93025; color:#d93025;">${t('bulkDelete') || 'Delete'}</button>
+          <button id="bulk-cancel" style="${bb}">${t('bulkCancel') || 'Cancel'}</button>
+        </div>`;
+      }
+      let html = bulkBar + `<div style="width:100%; overflow-x:auto; border:1px solid var(--border-color); border-radius:8px;">
         <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:right; color:var(--text-color); white-space:nowrap;">
           <thead>
             <tr style="background:var(--header-bg); border-bottom:1px solid var(--border-color); font-weight:600;">
@@ -1917,6 +2301,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <td style="padding:10px;">${t('colPE')}</td>
               <td style="padding:10px; cursor:pointer;" id="sort-mcap" title="${t('sortByMCap')}">${t('colMCap')}${getSortIndicator('mcap')}</td>
               <td style="padding:10px; text-align:center;">${t('colActions')}</td>
+              <td style="padding:10px; text-align:center;">${t('colLinks') || 'Links'}</td>
             </tr>
           </thead>
           <tbody>`;
@@ -1928,7 +2313,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!data || data.success === false || !data.ratios) {
              const msg = data && data.success === false ? `Could not fetch ${ticker}. Retrying...` : `Waiting for sync (${ticker})...`;
              html += `<tr style="background:${idx % 2 === 0 ? 'var(--row-even)' : 'var(--row-odd)'}; border-bottom:1px solid var(--border-color);">
-               <td colspan="6" style="padding:10px; text-align:left;">${msg}</td>
+                <td colspan="7" style="padding:10px; text-align:left;">${msg}</td>
              </tr>`;
           } else {
             let pctHtml = '';
@@ -1942,6 +2327,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const hasAlert = !!(alertsObj[ticker] && (alertsObj[ticker].above || alertsObj[ticker].below));
             const ratios = data.ratios || {};
+            const tag = colorTags[ticker];
+            const tagColor = tag && COLOR_TAGS[tag] ? COLOR_TAGS[tag].color : '#c9c9c9';
+            const sfReasons = smartFocusReasons(data, sfPrefs);
+            const dotColor = tag && COLOR_TAGS[tag] ? COLOR_TAGS[tag].color : (sfReasons.length ? '#1a73e8' : '#c9c9c9');
+            const dotTitle = [tag ? tagLabel(tag) : null].concat(sfReasons).filter(Boolean).join(' · ') || (t('tagSetTitle') || 'Set color tag');
 
             const spark = createSparkline(data.sparkline);
 
@@ -1949,7 +2339,9 @@ document.addEventListener('DOMContentLoaded', () => {
               <tr class="watchlist-row" draggable="true" data-ticker="${ticker}" style="background:${idx % 2 === 0 ? 'var(--row-even)' : 'var(--row-odd)'}; border-bottom:1px solid var(--border-color); cursor:grab;">
                 <td style="text-align:left; padding:10px; font-weight:500;">
                   <span style="color:#aaa; margin-right:4px; font-size:10px;" title="${t('dragHint')}">⣿</span>
-                  <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + ticker + '/'}" target="_blank" title="${data.companyName || ticker}" style="color:var(--link-green); text-decoration:none;">${ticker}</a>
+                  ${bulkMode ? `<input type="checkbox" class="screener-bulk-check" data-ticker="${ticker}"${bulkSelected.has(ticker) ? ' checked' : ''} style="margin-right:6px; vertical-align:middle; accent-color:#1a73e8;">` : ''}
+                  <button class="screener-tag-btn" data-ticker="${ticker}" title="${dotTitle}" style="background:none; border:none; cursor:pointer; font-size:13px; padding:0 1px; color:${dotColor}; vertical-align:middle;">●</button>
+                  <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + ticker + '/'}" target="_blank" title="${data.companyName || ticker}" style="color:var(--link-green); text-decoration:none;" class="screener-ticker-link" data-source="${data.source || ''}">${ticker}</a>
                 </td>
                 <td style="padding:10px;">${spark}</td>
                 <td class="${flashClass}" style="padding:10px;">${ratios['Current Price']||'-'}<br/>${pctHtml}</td>
@@ -1959,6 +2351,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   <button class="screener-alert-btn" data-ticker="${ticker}" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px;" title="${t('setAlertTitle')}">${hasAlert ? '\uD83D\uDD14' : '\u23F0'}</button>
                   <button class="screener-del-btn" data-ticker="${ticker}" style="background:none; border:none; color:#d93025; cursor:pointer; font-size:14px; padding:2px;" title="${t('deleteTitle')}">&#128465;</button>
                 </td>
+                <td style="padding:10px; text-align:center; white-space:nowrap;">${rowQuickLinks(ticker, data)}</td>
               </tr>
             `;
           }
@@ -1977,6 +2370,29 @@ document.addEventListener('DOMContentLoaded', () => {
         // Wire up row action buttons (alert + delete)
         wlItemsContainer.querySelectorAll('.screener-del-btn').forEach(b => b.onclick = () => removeTicker(b.getAttribute('data-ticker')));
         wlItemsContainer.querySelectorAll('.screener-alert-btn').forEach(b => b.onclick = () => openAlertModal(b.getAttribute('data-ticker')));
+        wlItemsContainer.querySelectorAll('.screener-tag-btn').forEach(b => b.onclick = (e) => { e.stopPropagation(); openTagMenu(b, b.getAttribute('data-ticker')); });
+        wlItemsContainer.querySelectorAll('.screener-bulk-check').forEach(c => c.onchange = () => {
+          const tk = c.getAttribute('data-ticker');
+          if (c.checked) bulkSelected.add(tk); else bulkSelected.delete(tk);
+          const cnt = document.getElementById('bulk-count');
+          if (cnt) cnt.textContent = bulkSelected.size + ' ' + (t('bulkSelected') || 'selected');
+          const row = c.closest('tr');
+          if (row) row.style.outline = c.checked ? '2px solid rgba(26,115,232,.5)' : '';
+          if (row) row.style.outlineOffset = c.checked ? '-2px' : '';
+        });
+        const bulkCancelBtn = document.getElementById('bulk-cancel');
+        if (bulkCancelBtn) bulkCancelBtn.onclick = () => exitBulkMode();
+        const bulkDeleteBtn = document.getElementById('bulk-delete');
+        if (bulkDeleteBtn) bulkDeleteBtn.onclick = () => bulkDelete();
+        const bulkMoveBtn = document.getElementById('bulk-move');
+        if (bulkMoveBtn) bulkMoveBtn.onclick = () => bulkMoveCopy('move');
+        const bulkCopyBtn = document.getElementById('bulk-copy');
+        if (bulkCopyBtn) bulkCopyBtn.onclick = () => bulkMoveCopy('copy');
+        wlItemsContainer.querySelectorAll('[data-bulk-tag]').forEach(b => b.onclick = () => bulkTag(b.getAttribute('data-bulk-tag')));
+        wlItemsContainer.querySelectorAll('.screener-ticker-link').forEach(a => a.onclick = (e) => { e.preventDefault(); e.stopPropagation(); openPlatformMenu(a, a.getAttribute('data-ticker'), a.getAttribute('data-source')); });
+        if (bulkMode) wlItemsContainer.querySelectorAll('.watchlist-row').forEach(row => {
+          if (bulkSelected.has(row.getAttribute('data-ticker'))) { row.style.outline = '2px solid rgba(26,115,232,.5)'; row.style.outlineOffset = '-2px'; }
+        });
 
         // Wire up Drag and Drop
         let draggedRow = null;

@@ -52,6 +52,10 @@
       <button id="btn-about" class="md-icon-btn" data-i18n-title="aboutSupport" data-i18n-aria="aboutSupport" title="About & Support" aria-label="About & Support">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
       </button>
+      <button id="btn-alerts" class="md-icon-btn" data-i18n-title="alertsTitle" data-i18n-aria="alertsTitle" title="Your alerts" aria-label="Your alerts" style="position:relative;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span id="alerts-badge" style="display:none; position:absolute; top:1px; right:1px; min-width:14px; height:14px; line-height:14px; padding:0 3px; border-radius:7px; background:#d93025; color:#fff; font-size:9px; font-weight:700; text-align:center;">0</span>
+      </button>
       <button id="btn-fullscreen" class="md-icon-btn" data-i18n-title="fullScreenTitle" aria-label="Open full screen" title="Open full screen">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
       </button>
@@ -85,7 +89,16 @@
       </select>
       <button id="btn-rename-portfolio" class="screener-btn" data-i18n-title="renameTitle" style="margin-right:8px; width:32px; height:32px; padding:0; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:14px;" title="Rename Portfolio">✎</button>
       <button id="btn-new-portfolio" class="screener-btn" data-i18n-title="newTitle" style="margin-right:12px; width:32px; height:32px; padding:0; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:18px;" title="New Portfolio">+</button>
+      <button id="btn-bulk-select" class="screener-btn" data-i18n="bulkSelect" style="margin-right:8px; padding:8px 12px; border-radius:16px; font-size:12px; flex-shrink:0; line-height:1;" title="Select multiple stocks">Select</button>
       <button id="btn-export-csv" class="screener-btn" data-i18n-title="exportTitle" style="background:#188038; padding:8px 12px; border-radius:16px; font-size:12px; flex-shrink:0; line-height:1;" title="Export to Excel">CSV</button>
+    </div>
+    <div id="tag-filter-row" style="display:none; margin-bottom:12px;">
+      <select id="tag-filter" class="screener-input" data-i18n-title="tagFilterTitle" title="Filter by color tag" style="width:100%; padding:7px 10px; border-radius:4px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); cursor:pointer; font-size:12px;">
+        <option value="all" data-i18n="tagAll">All tags</option>
+        <option value="entry" data-i18n="tagEntry">Entry Target</option>
+        <option value="watching" data-i18n="tagWatching">Watching</option>
+        <option value="exit" data-i18n="tagExit">Exit Flag</option>
+      </select>
     </div>
     <div id="wl-items-container" class="screener-watchlist-items"></div>
   </div>
@@ -102,6 +115,22 @@
       <span><span data-i18n="telegramJoin">Join @GlobalMarketPulseLive on Telegram</span><br><span data-i18n="telegramHint" style="font-weight:400; font-size:11px; color:var(--label-color);">Latest stock market updates & research reports, daily.</span></span>
     </a>
     <div id="news-container" data-i18n="newsLoading" style="padding-top:8px;">Loading latest news...</div>
+  </div>
+
+  <!-- Alerts View -->
+  <div id="view-alerts" class="screener-view">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0;">
+      <a id="alerts-back" href="#" data-i18n="alertsBack" style="color:var(--text-color); text-decoration:none; font-size:13px;">&#8249; Back</a>
+      <strong data-i18n="alertsTitle" style="font-size:13px;">Your alerts</strong>
+    </div>
+    <div style="border-top:1px solid var(--border-color);"></div>
+    <div style="display:flex; align-items:center; gap:6px; padding:10px 0; font-size:13px; font-weight:700; color:var(--text-color);">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span data-i18n="alertsTitle">Your alerts</span>
+    </div>
+    <div style="border-top:1px solid var(--border-color);"></div>
+    <div id="alerts-list"></div>
+    <div id="alerts-empty" data-i18n="alertsComingSoon" style="text-align:center; color:#80868b; font-size:13px; padding:120px 0;">Coming soon</div>
   </div>
 
   <!-- Footer: Rate & Feedback (always visible at the bottom) -->

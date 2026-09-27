@@ -1122,19 +1122,33 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-// --- Context Menu Logic ("Add selection to Ticker Screener watchlist") ---
+// --- Context Menu Logic (watchlist + external chart links) ---
+// Note: native extension menus cannot show icons, so these render as text
+// rows: Add to Watchlist, Open in TradingView, Open in Screener,
+// Open in Zerodha Kite.
 function setupContextMenu() {
+  const items = [
+    { id: "addToScreener", title: t('ctxAdd') || 'Add "%s" to Ticker Screener Watchlist' },
+    { id: "ctxSep", type: "separator" },
+    { id: "openTradingView", title: t('ctxTradingView') || 'Open in TradingView' },
+    { id: "openScreener", title: t('ctxScreener') || 'Open in Screener' },
+    { id: "openKite", title: t('ctxKite') || 'Open in Zerodha Kite' }
+  ];
   const create = () => {
     try {
-      chrome.contextMenus.create({
-        id: "addToScreener",
-        title: t('ctxAdd') || 'Add "%s" to Ticker Screener Watchlist',
-        contexts: ["selection"]
-      }, () => {
-        // create() is async: overlapping setup calls (install + SW wake-up)
-        // surface duplicate-id here, never as a sync throw — swallow it.
-        if (chrome.runtime.lastError) {}
-      });
+      for (const item of items) {
+        if (item.type === "separator") {
+          chrome.contextMenus.create({ id: item.id, type: "separator", contexts: ["selection"] }, () => {
+            if (chrome.runtime.lastError) {}
+          });
+        } else {
+          chrome.contextMenus.create({ id: item.id, title: item.title, contexts: ["selection"] }, () => {
+            // create() is async: overlapping setup calls (install + SW wake-up)
+            // surface duplicate-id here, never as a sync throw — swallow it.
+            if (chrome.runtime.lastError) {}
+          });
+        }
+      }
     } catch (e) {}
   };
   try {
@@ -1148,6 +1162,17 @@ function setupContextMenu() {
 }
 chrome.runtime.onInstalled.addListener(() => {
   setupContextMenu();
+});
+// On fresh install, open the welcome page that shows users how to pin
+// the extension to the toolbar. Updates must not reopen it.
+chrome.runtime.onInstalled.addListener((details) => {
+  try {
+    if (details && details.reason === 'install') {
+      chrome.tabs.create({ url: chrome.runtime.getURL('welcome.html') }, () => {
+        if (chrome.runtime.lastError) {}
+      });
+    }
+  } catch (e) {}
 });
 try {
   if (chrome.runtime.onStartup) chrome.runtime.onStartup.addListener(setupContextMenu);
@@ -1194,9 +1219,34 @@ try {
   }
 } catch (e) {}
 
-// Resolve selected text to a watchlist ticker: Screener.in first (Indian
+// Resolve selected text to a stock: Screener.in first (Indian
 // stocks), Yahoo Finance search as fallback (global stocks/ETFs/indices).
-async function resolveCtxTicker(query) {
+// Returns { symbol, base, source, tvExchange, isIndian } — the exchange info
+// is needed to build TradingView / Kite links. `symbol` keeps the Yahoo
+// suffix (RELIANCE.NS) for watchlist storage; `base` is the bare symbol
+// (RELIANCE) used in Screener.in and Kite URLs.
+const TV_EXCHANGE_MAP = {
+  NSI: 'NSE', BSE: 'BSE', NSE: 'NSE',
+  NMS: 'NASDAQ', NGM: 'NASDAQ', NCM: 'NASDAQ',
+  NYQ: 'NYSE', NYS: 'NYSE', PCX: 'NYSE', ASE: 'AMEX'
+};
+function mapTvExchange(exchange, exchDisp, symbol) {
+  const ex = String(exchange || '').toUpperCase();
+  if (TV_EXCHANGE_MAP[ex]) return TV_EXCHANGE_MAP[ex];
+  const disp = String(exchDisp || '').toUpperCase();
+  if (disp.indexOf('NASDAQ') !== -1) return 'NASDAQ';
+  if (disp.indexOf('NYSE ARCA') !== -1) return 'NYSE';
+  if (disp.indexOf('NYSE') !== -1) return 'NYSE';
+  if (disp.indexOf('AMEX') !== -1) return 'AMEX';
+  if (disp === 'NSE' || /\.NS$/i.test(symbol || '')) return 'NSE';
+  if (disp === 'BSE' || /\.BO$/i.test(symbol || '')) return 'BSE';
+  if (disp.indexOf('LONDON') !== -1 || disp === 'LSE') return 'LSE';
+  return '';
+}
+function toBaseSymbol(symbol) {
+  return String(symbol || '').toUpperCase().replace(/\.(NS|BO)$/, '');
+}
+async function resolveCtxStock(query) {
   const q = (query || '').trim();
   if (!q) return null;
   try {
@@ -1209,7 +1259,10 @@ async function resolveCtxTicker(query) {
         const segs = String(results[0].url).split('/').filter(Boolean);
         const ci = segs.indexOf('company');
         const raw = (ci !== -1 && segs[ci + 1]) ? segs[ci + 1] : segs[segs.length - 1];
-        if (raw) return raw.toUpperCase();
+        if (raw) {
+          const base = toBaseSymbol(raw);
+          return { symbol: base, base, source: 'screener', tvExchange: 'NSE', isIndian: true };
+        }
       }
     }
   } catch (e) {}
@@ -1218,14 +1271,38 @@ async function resolveCtxTicker(query) {
     if (res.ok) {
       const data = await res.json();
       const quotes = (data && data.quotes) || [];
-      if (quotes.length > 0 && quotes[0].symbol) return String(quotes[0].symbol).toUpperCase();
+      if (quotes.length > 0 && quotes[0].symbol) {
+        const symbol = String(quotes[0].symbol).toUpperCase();
+        const base = toBaseSymbol(symbol);
+        const tvExchange = mapTvExchange(quotes[0].exchange, quotes[0].exchDisp, symbol);
+        const isIndian = tvExchange === 'NSE' || tvExchange === 'BSE';
+        return { symbol, base, source: 'yahoo', tvExchange, isIndian };
+      }
     }
   } catch (e) {}
   return null;
 }
 
+// External chart links for a resolved stock.
+function tradingViewUrl(stock, rawQuery) {
+  const sym = (stock && stock.base) ? stock.base : String(rawQuery || '').toUpperCase();
+  const tvSym = (stock && stock.tvExchange) ? `${stock.tvExchange}:${sym}` : sym;
+  return `https://www.tradingview.com/chart/?symbol=${encodeURIComponent(tvSym)}`;
+}
+function screenerInUrl(stock, rawQuery) {
+  if (stock && stock.source === 'screener' && stock.base) {
+    return `https://www.screener.in/company/${encodeURIComponent(stock.base)}/`;
+  }
+  return `https://www.screener.in/search/?q=${encodeURIComponent(rawQuery)}`;
+}
+// Kite only lists Indian (NSE/BSE) equities — null when unsupported.
+function kiteUrl(stock) {
+  if (!stock || !stock.isIndian || !stock.base) return null;
+  const ex = stock.tvExchange === 'BSE' ? 'BSE' : 'NSE';
+  return `https://kite.zerodha.com/chart/ext/ciq/${ex}/${encodeURIComponent(stock.base)}`;
+}
+
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-  if (info.menuItemId !== "addToScreener") return;
   const query = (info.selectionText || '').trim();
   if (!query) return;
   const notify = (title, message) => {
@@ -1239,13 +1316,43 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       });
     } catch (e) {}
   };
+  const openUrl = (url) => {
+    try {
+      if (url) chrome.tabs.create({ url });
+    } catch (e) {}
+  };
+  const notFound = () => {
+    notify(
+      t('ctxAddedTitle') || 'Ticker Screener Watchlist',
+      (t('ctxNotFound', query) || `Could not find "${query}". Try selecting the exact company name.`)
+    );
+  };
   try {
-    const ticker = await resolveCtxTicker(query);
+    const stock = await resolveCtxStock(query);
+    if (info.menuItemId === "openTradingView" || info.menuItemId === "openScreener" || info.menuItemId === "openKite") {
+      if (!stock) {
+        notFound();
+        return;
+      }
+      if (info.menuItemId === "openTradingView") openUrl(tradingViewUrl(stock, query));
+      else if (info.menuItemId === "openScreener") openUrl(screenerInUrl(stock, query));
+      else {
+        const url = kiteUrl(stock);
+        if (!url) {
+          notify(
+            t('ctxAddedTitle') || 'Ticker Screener Watchlist',
+            t('ctxKiteUnsupported') || 'Zerodha Kite supports Indian (NSE/BSE) stocks only.'
+          );
+          return;
+        }
+        openUrl(url);
+      }
+      return;
+    }
+    if (info.menuItemId !== "addToScreener") return;
+    const ticker = stock && stock.symbol ? stock.symbol : null;
     if (!ticker) {
-      notify(
-        t('ctxAddedTitle') || 'Ticker Screener Watchlist',
-        (t('ctxNotFound', query) || `Could not find "${query}". Try selecting the exact company name.`)
-      );
+      notFound();
       return;
     }
     const stored = await chrome.storage.local.get(['portfolios', 'screenerWatchlist', 'activePortfolioName']);

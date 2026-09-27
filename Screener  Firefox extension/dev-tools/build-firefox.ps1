@@ -11,7 +11,7 @@ $stage = Join-Path ([System.IO.Path]::GetTempPath()) 'screener-firefox-build'
 if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
 New-Item -ItemType Directory -Path $stage | Out-Null
 
-$files = @('background.js','sidepanel.html','sidepanel.js','style.css','ticker_tape.js','ticker_tape.css','icon_16.png','icon_48.png','icon_128.png','bmc_qr.png','manifest.json')
+$files = @('background.js','sidepanel.html','sidepanel.js','style.css','ticker_tape.js','ticker_tape.css','welcome.html','welcome.js','icon_16.png','icon_48.png','icon_128.png','bmc_qr.png','manifest.json')
 foreach ($f in $files) {
   $p = Join-Path $src $f
   if (!(Test-Path $p)) { throw "Missing required file: $f" }
