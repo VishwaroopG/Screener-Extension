@@ -24,4 +24,28 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=fed-to-fii-us-rates-indian-equities</loc>
+    <lastmod>2026-09-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=us-tariffs-china-plus-one-india</loc>
+    <lastmod>2026-09-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=global-commodities-building-material-margins</loc>
+    <lastmod>2026-09-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=us-slowdown-indian-portfolio-playbook</loc>
+    <lastmod>2026-09-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
