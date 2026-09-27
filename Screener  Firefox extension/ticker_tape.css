@@ -60,6 +60,7 @@
 }
 #screener-ticker-tape.screener-tape-light .screener-ticker-price {
   color: #202124 !important;
+  font-weight: 600 !important;
 }
 #screener-ticker-tape.screener-tape-light .screener-tape-scroll-btn {
   background: rgba(255, 255, 255, 0.94);
@@ -69,9 +70,10 @@
    and change spans carry dark-theme inline colors — override them here. */
 #screener-ticker-tape.screener-tape-light .screener-ticker-name {
   color: #202124 !important;
+  font-weight: 700 !important;
 }
 #screener-ticker-tape.screener-tape-light .screener-ticker-item {
-  border-right-color: #dadce0;
+  border-right: 2px solid #bdc1c6;
 }
 #screener-ticker-tape.screener-tape-light .screener-ticker-mcap {
   color: #5f6368;

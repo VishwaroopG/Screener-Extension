@@ -600,7 +600,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnAlerts) btnAlerts.addEventListener('click', openAlertsView);
   if (alertsBack) alertsBack.addEventListener('click', (e) => { e.preventDefault(); closeAlertsView(); });
   function countActiveAlerts(alerts) {
-    return Object.values(alerts || {}).filter(a => a && (a.above || a.below)).length;
+    return Object.values(alerts || {}).filter(a => a && (a.above || a.below || a.movePct || a.high52 || a.low52)).length;
   }
   function refreshAlertsBadge() {
     try {
@@ -619,7 +619,7 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.storage.local.get(['alerts', 'cachedData'], (res) => {
         const alerts = res.alerts || {};
         const cached = res.cachedData || {};
-        const tickers = Object.keys(alerts).filter(k => alerts[k] && (alerts[k].above || alerts[k].below));
+        const tickers = Object.keys(alerts).filter(k => alerts[k] && (alerts[k].above || alerts[k].below || alerts[k].movePct || alerts[k].high52 || alerts[k].low52));
         if (!tickers.length) {
           alertsList.innerHTML = '';
           alertsEmpty.style.display = '';
@@ -631,9 +631,19 @@ document.addEventListener('DOMContentLoaded', () => {
           const d = cached[ticker] || {};
           let prefix = '';
           try { if (d.currency) prefix = mcapPrefixForCode(d.currency) || ''; } catch (e) {}
+          prefix = prefix || (ticker.includes('.NS') || ticker.includes('.BO') ? '₹' : '$');
           const parts = [];
           if (a.above) parts.push((t('alertsAbove') || 'Above') + ' ' + prefix + a.above);
           if (a.below) parts.push((t('alertsBelow') || 'Below') + ' ' + prefix + a.below);
+          if (a.movePct) parts.push('±' + a.movePct + '%');
+          if (a.high52) parts.push('52W High');
+          if (a.low52) parts.push('52W Low');
+          if (a.repeat) parts.push('↻ Repeat');
+          if (a.expiresAt) {
+            const left = Math.ceil((a.expiresAt - Date.now()) / 86400000);
+            if (left > 0) parts.push(left + 'd left');
+          }
+          if (a.note) parts.push('"' + a.note + '"');
           return '<div style="display:flex; align-items:center; gap:8px; padding:10px 2px; border-bottom:1px solid var(--border-color);">'
             + '<button class="screener-alert-edit" data-ticker="' + escHtml(ticker) + '" title="' + escHtml(t('setAlertTitle') || 'Set Alert') + '" style="background:none; border:none; cursor:pointer; font-size:13px; font-weight:700; color:var(--link-green); padding:0;">' + escHtml(ticker) + '</button>'
             + '<span style="flex:1; font-size:12px; color:var(--label-color);">' + escHtml(parts.join(' · ')) + '</span>'
@@ -702,6 +712,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const nextTheme = isDark ? 'light' : 'dark';
       applyTheme(nextTheme);
       chrome.storage.local.set({ theme: nextTheme });
+      // Single theme control: the header toggle also drives the ticker tape
+      try { persistTapeSetting({ tapeTheme: nextTheme }); } catch (e) {}
     });
   }
 
@@ -1290,6 +1302,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputFeedbackEmail = document.getElementById('feedback-email');
   const inputFeedbackMsg = document.getElementById('feedback-message');
   const feedbackStatus = document.getElementById('feedback-status');
+  const inputFeedbackAttach = document.getElementById('feedback-attach');
+  const feedbackAttachPreview = document.getElementById('feedback-attach-preview');
+  const btnFeedbackAttachClear = document.getElementById('feedback-attach-clear');
+  let feedbackAttachment = null;
+  function clearAttachment() {
+    feedbackAttachment = null;
+    if (inputFeedbackAttach) inputFeedbackAttach.value = '';
+    if (feedbackAttachPreview) {
+      try { if (feedbackAttachPreview.src) URL.revokeObjectURL(feedbackAttachPreview.src); } catch (e) {}
+      feedbackAttachPreview.removeAttribute('src');
+      feedbackAttachPreview.style.display = 'none';
+    }
+    if (btnFeedbackAttachClear) btnFeedbackAttachClear.style.display = 'none';
+  }
+  if (inputFeedbackAttach) inputFeedbackAttach.addEventListener('change', () => {
+    const f = inputFeedbackAttach.files && inputFeedbackAttach.files[0];
+    if (!f || !/^image\//.test(f.type || '')) { clearAttachment(); return; }
+    if (f.size > 5 * 1024 * 1024) {
+      if (feedbackStatus) feedbackStatus.textContent = t('feedbackAttachBig') || 'Image must be smaller than 5 MB.';
+      clearAttachment();
+      return;
+    }
+    clearAttachment();
+    feedbackAttachment = f;
+    if (feedbackAttachPreview) {
+      feedbackAttachPreview.src = URL.createObjectURL(f);
+      feedbackAttachPreview.style.display = 'block';
+    }
+    if (btnFeedbackAttachClear) btnFeedbackAttachClear.style.display = '';
+  });
+  if (btnFeedbackAttachClear) btnFeedbackAttachClear.addEventListener('click', clearAttachment);
 
   function openFeedbackModal() {
     if (feedbackStatus) feedbackStatus.textContent = '';
@@ -1331,6 +1374,7 @@ document.addEventListener('DOMContentLoaded', () => {
         data.append('_subject', 'Ticker Screener feedback');
         data.append('_template', 'table');
         data.append('_captcha', 'false');
+        if (feedbackAttachment) data.append('attachment', feedbackAttachment, feedbackAttachment.name || 'screenshot.png');
         const r = await fetch('https://formsubmit.co/ajax/vishwaroopg8@gmail.com', {
           method: 'POST',
           headers: { 'Accept': 'application/json' },
@@ -1338,6 +1382,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (!r.ok) throw new Error('send failed');
         inputFeedbackMsg.value = '';
+        clearAttachment();
         if (feedbackStatus) feedbackStatus.textContent = t('feedbackSent') || 'Thanks — we read every message.';
         setTimeout(closeFeedbackModal, 1800);
       } catch (err) {
@@ -1479,6 +1524,79 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     bulkDelete();
   });
+
+  // --- Smart Focus UI: filter button + rules popover ---
+  // focusOnly is session state (resets when the panel reloads); rule
+  // on/off + thresholds persist in storage `smartFocus`.
+  let focusOnly = false;
+  function paintFocusToggle() {
+    const btn = document.getElementById('btn-focus-filter');
+    if (!btn) return;
+    btn.textContent = (t('sfFilter') || 'Focus') + (focusOnly ? ' ✓' : '');
+    btn.style.background = focusOnly ? '#1a73e8' : '';
+    btn.style.color = focusOnly ? '#fff' : '';
+  }
+  function closeFocusPopover() {
+    const m = document.getElementById('focus-popover');
+    if (m) m.remove();
+    document.removeEventListener('click', closeFocusPopoverOutside);
+  }
+  function closeFocusPopoverOutside(e) {
+    const m = document.getElementById('focus-popover');
+    if (m && !m.contains(e.target)) closeFocusPopover();
+  }
+  function openFocusPopover(anchor) {
+    closeFocusPopover();
+    chrome.storage.local.get(['smartFocus'], (res) => {
+      const p = Object.assign({ big: true, swing: true, near: true, bigMovePct: 5, swingX: 2.5, nearPct: 2 }, res.smartFocus || {});
+      const numStyle = 'margin-left:auto; width:58px; padding:3px 6px; border-radius:4px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); font-size:12px;';
+      const ruleRow = (key, label, numKey, numVal, suffix) => `<label style="display:flex; align-items:center; gap:8px; padding:7px 4px; cursor:pointer; color:var(--text-color);"><input type="checkbox" data-sf="${key}"${p[key] ? ' checked' : ''} style="accent-color:#1a73e8;">${label}<input type="number" data-sf-num="${numKey}" value="${numVal}" min="0" step="0.5" title="${label}" style="${numStyle}">${suffix}</label>`;
+      const pop = document.createElement('div');
+      pop.id = 'focus-popover';
+      pop.style.cssText = 'position:fixed; z-index:9999; width:238px; padding:10px 12px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-color); box-shadow:0 10px 30px rgba(0,0,0,.3); font-size:12px;';
+      pop.innerHTML = `<div style="font-weight:700; margin-bottom:4px; color:var(--text-color);">${t('sfTitle') || 'Smart Focus'}</div>`
+        + ruleRow('big', t('sfBigMove') || 'Big price move', 'bigMovePct', p.bigMovePct, '%')
+        + ruleRow('swing', t('sfSwing') || 'Unusual swing', 'swingX', p.swingX, '×')
+        + ruleRow('near', t('sfNear') || '52-week high/low', 'nearPct', p.nearPct, '%');
+      document.body.appendChild(pop);
+      try {
+        const r = anchor.getBoundingClientRect();
+        pop.style.left = Math.max(4, Math.min(r.left, window.innerWidth - 250)) + 'px';
+        pop.style.top = Math.min(r.bottom + 4, window.innerHeight - 220) + 'px';
+      } catch (e) {}
+      const save = () => {
+        const np = {
+          big: pop.querySelector('[data-sf="big"]').checked,
+          swing: pop.querySelector('[data-sf="swing"]').checked,
+          near: pop.querySelector('[data-sf="near"]').checked,
+          bigMovePct: parseFloat(pop.querySelector('[data-sf-num="bigMovePct"]').value) || 5,
+          swingX: parseFloat(pop.querySelector('[data-sf-num="swingX"]').value) || 2.5,
+          nearPct: parseFloat(pop.querySelector('[data-sf-num="nearPct"]').value) || 2
+        };
+        chrome.storage.local.set({ smartFocus: np }, () => renderWatchlist());
+      };
+      pop.querySelectorAll('input').forEach((i) => i.addEventListener('change', save));
+      setTimeout(() => document.addEventListener('click', closeFocusPopoverOutside), 0);
+    });
+  }
+  const focusBtn = document.createElement('button');
+  focusBtn.id = 'btn-focus-filter';
+  focusBtn.className = 'screener-btn';
+  focusBtn.textContent = t('sfFilter') || 'Focus';
+  focusBtn.title = t('sfFilterTitle') || 'Show only Smart Focus highlights';
+  focusBtn.style.cssText = 'margin-right:8px; padding:8px 12px; border-radius:16px; font-size:12px; flex-shrink:0; line-height:1;';
+  const focusGear = document.createElement('button');
+  focusGear.id = 'btn-focus-settings';
+  focusGear.className = 'screener-btn';
+  focusGear.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>';
+  focusGear.title = t('sfTitle') || 'Smart Focus settings';
+  focusGear.style.cssText = 'margin-right:8px; width:32px; height:32px; padding:0; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:14px;';
+  if (btnExportCsv && btnExportCsv.parentNode) {
+    btnExportCsv.parentNode.insertBefore(focusBtn, btnExportCsv);
+    btnExportCsv.parentNode.insertBefore(focusGear, btnExportCsv);
+  }
+  focusBtn.addEventListener('click', () => { focusOnly = !focusOnly; paintFocusToggle(); renderWatchlist(); });
+  focusGear.addEventListener('click', (e) => { e.stopPropagation(); openFocusPopover(focusGear); });
 
   // Dashboard refresh: full re-sync + fast-price poll, list repaints on WATCHLIST_UPDATED
   const btnWatchlistRefresh = document.getElementById('btn-watchlist-refresh');
@@ -1909,57 +2027,308 @@ document.addEventListener('DOMContentLoaded', () => {
   const alertModal = document.getElementById('alert-modal');
   const btnAlertCancel = document.getElementById('btn-alert-cancel');
   const btnAlertSave = document.getElementById('btn-alert-save');
+  const btnAlertDelete = document.getElementById('btn-alert-delete');
+  const btnAlertCloseX = document.getElementById('btn-alert-close-x');
   const inputAlertAbove = document.getElementById('alert-above');
   const inputAlertBelow = document.getElementById('alert-below');
+  const alertAboveClear = document.getElementById('alert-above-clear');
+  const alertBelowClear = document.getElementById('alert-below-clear');
+  const alertCurPriceBadge = document.getElementById('alert-cur-price-badge');
+  const alertCurSymbolAbove = document.getElementById('alert-cur-symbol-above');
+  const alertCurSymbolBelow = document.getElementById('alert-cur-symbol-below');
+  const alertAdvancedDetails = document.getElementById('alert-advanced');
+  const alertAdvancedBadge = document.getElementById('alert-advanced-badge');
+  const inputAlertMovePct = document.getElementById('alert-movepct');
+  const inputAlertHigh52 = document.getElementById('alert-high52');
+  const inputAlertLow52 = document.getElementById('alert-low52');
+  const alert52hVal = document.getElementById('alert-52h-val');
+  const alert52lVal = document.getElementById('alert-52l-val');
+  const alertFreqOnce = document.getElementById('alert-freq-once');
+  const alertFreqRepeat = document.getElementById('alert-freq-repeat');
+  const alertExpireSelect = document.getElementById('alert-expire-select');
+  const inputAlertNote = document.getElementById('alert-note');
+  const inputAlertSound = document.getElementById('alert-sound');
+
   let currentAlertTicker = '';
+  let currentAlertNumericPrice = 0;
+
+  function formatTargetPrice(val) {
+    if (!val || isNaN(val)) return '';
+    if (val >= 1000) return (Math.round(val * 10) / 10).toString();
+    if (val >= 10) return (Math.round(val * 100) / 100).toFixed(2);
+    if (val >= 1) return (Math.round(val * 100) / 100).toFixed(2);
+    return (Math.round(val * 10000) / 10000).toFixed(4);
+  }
+
+  function updateAdvancedBadge() {
+    const isMove = inputAlertMovePct && parseFloat(inputAlertMovePct.value) > 0;
+    const isHigh52 = inputAlertHigh52 && inputAlertHigh52.checked;
+    const isLow52 = inputAlertLow52 && inputAlertLow52.checked;
+    const isRepeat = alertFreqRepeat && alertFreqRepeat.checked;
+    const isExpire = alertExpireSelect && alertExpireSelect.value !== 'never';
+    const isNote = inputAlertNote && inputAlertNote.value.trim().length > 0;
+    const isSoundOff = inputAlertSound && !inputAlertSound.checked;
+    const count = [isMove, isHigh52, isLow52, isRepeat, isExpire, isNote, isSoundOff].filter(Boolean).length;
+    if (alertAdvancedBadge) {
+      if (count > 0) {
+        alertAdvancedBadge.style.display = 'inline-block';
+        alertAdvancedBadge.textContent = count + ' active';
+      } else {
+        alertAdvancedBadge.style.display = 'none';
+      }
+    }
+  }
+
+  // Quick % buttons for Above (+2%, +5%, +10%)
+  document.querySelectorAll('.alert-chip-above').forEach(btn => {
+    btn.onclick = () => {
+      if (!currentAlertNumericPrice) return;
+      const pct = parseFloat(btn.getAttribute('data-pct')) || 0;
+      const val = currentAlertNumericPrice * (1 + pct / 100);
+      if (inputAlertAbove) inputAlertAbove.value = formatTargetPrice(val);
+    };
+  });
+
+  // Quick % buttons for Below (-2%, -5%, -10%)
+  document.querySelectorAll('.alert-chip-below').forEach(btn => {
+    btn.onclick = () => {
+      if (!currentAlertNumericPrice) return;
+      const pct = parseFloat(btn.getAttribute('data-pct')) || 0;
+      const val = currentAlertNumericPrice * (1 + pct / 100);
+      if (inputAlertBelow) inputAlertBelow.value = formatTargetPrice(val);
+    };
+  });
+
+  // Quick % buttons for Move (±3%, ±5%, ±10%)
+  document.querySelectorAll('.alert-chip-move').forEach(btn => {
+    btn.onclick = () => {
+      const val = parseFloat(btn.getAttribute('data-val')) || 0;
+      if (inputAlertMovePct) inputAlertMovePct.value = val;
+      updateAdvancedBadge();
+    };
+  });
+
+  // Input clear buttons
+  if (alertAboveClear) alertAboveClear.onclick = () => { if (inputAlertAbove) inputAlertAbove.value = ''; };
+  if (alertBelowClear) alertBelowClear.onclick = () => { if (inputAlertBelow) inputAlertBelow.value = ''; };
+
+  // Listeners to update badge
+  [inputAlertMovePct, inputAlertHigh52, inputAlertLow52, alertFreqOnce, alertFreqRepeat, alertExpireSelect, inputAlertNote, inputAlertSound].forEach(el => {
+    if (el) {
+      el.addEventListener('change', updateAdvancedBadge);
+      el.addEventListener('input', updateAdvancedBadge);
+    }
+  });
 
   window.openAlertModal = function(ticker) {
     currentAlertTicker = ticker;
-    document.getElementById('alert-ticker').textContent = ticker;
-    // Show the asset's own currency in the alert labels (₹, $, …)
-    const paintAlertLabels = (prefix) => {
-      const aboveEl = document.getElementById('alert-above-label');
-      const belowEl = document.getElementById('alert-below-label');
-      if (aboveEl) aboveEl.textContent = (t('alertAboveDyn') || 'Alert if price goes ABOVE ({CUR}):').replace('{CUR}', prefix);
-      if (belowEl) belowEl.textContent = (t('alertBelowDyn') || 'Alert if price goes BELOW ({CUR}):').replace('{CUR}', prefix);
-    };
+    const tickerEl = document.getElementById('alert-ticker');
+    if (tickerEl) tickerEl.textContent = ticker;
+
+    const aboveEl = document.getElementById('alert-above-label');
+    const belowEl = document.getElementById('alert-below-label');
+
     try {
-      chrome.storage.local.get(['cachedData'], (res) => {
-        const d = (res.cachedData || {})[ticker] || {};
+      chrome.storage.local.get(['cachedData', 'alerts'], (res) => {
+        const cached = (res.cachedData || {})[ticker] || {};
+        const alerts = res.alerts || {};
+        const cur = alerts[ticker] || {};
+
         let prefix = '';
-        if (d.currency) prefix = mcapPrefixForCode(d.currency);
+        if (cached.currency) prefix = mcapPrefixForCode(cached.currency);
         if (!prefix) {
-          const m = String((d.ratios || {})['Current Price'] || '').match(/^[^\d\-+.,\s]+/);
+          const m = String((cached.ratios || {})['Current Price'] || '').match(/^[^\d\-+.,\s]+/);
           if (m) prefix = m[0];
         }
-        paintAlertLabels(prefix || '₹');
+        prefix = prefix || (ticker.includes('.NS') || ticker.includes('.BO') ? '₹' : '$');
+
+        if (alertCurSymbolAbove) alertCurSymbolAbove.textContent = prefix;
+        if (alertCurSymbolBelow) alertCurSymbolBelow.textContent = prefix;
+        if (aboveEl) aboveEl.textContent = (t('alertAboveDyn') || 'Alert if price goes ABOVE ({CUR}):').replace('{CUR}', prefix);
+        if (belowEl) belowEl.textContent = (t('alertBelowDyn') || 'Alert if price goes BELOW ({CUR}):').replace('{CUR}', prefix);
+
+        // Numeric current price
+        const rawPrice = (cached.ratios || {})['Current Price'] || '';
+        const numMatch = String(rawPrice).replace(/,/g, '').match(/[\d.]+/);
+        currentAlertNumericPrice = numMatch ? parseFloat(numMatch[0]) : 0;
+
+        if (alertCurPriceBadge) {
+          if (currentAlertNumericPrice > 0) {
+            const rawPct = cached.pctChange || (cached.ratios || {})['Day Change %'] || '';
+            const isUp = !String(rawPct).startsWith('-');
+            const color = isUp ? '#188038' : '#d93025';
+            const pctStr = rawPct ? ` <span style="color:${color}; font-weight:600;">(${rawPct})</span>` : '';
+            alertCurPriceBadge.innerHTML = `${t('alertCurPrice') || 'Current:'} <strong>${prefix}${currentAlertNumericPrice.toLocaleString()}</strong>${pctStr}`;
+          } else {
+            alertCurPriceBadge.textContent = '';
+          }
+        }
+
+        // 52-Week High / Low
+        const range52 = (cached.ratios || {})['52W Range'] || '';
+        if (range52) {
+          const parts = range52.split('-').map(s => s.trim());
+          if (parts[0] && alert52lVal) alert52lVal.textContent = `(${parts[0]})`;
+          if (parts[1] && alert52hVal) alert52hVal.textContent = `(${parts[1]})`;
+        } else {
+          if (alert52lVal) alert52lVal.textContent = '';
+          if (alert52hVal) alert52hVal.textContent = '';
+        }
+
+        // Populate fields
+        if (inputAlertAbove) inputAlertAbove.value = cur.above || '';
+        if (inputAlertBelow) inputAlertBelow.value = cur.below || '';
+        if (inputAlertMovePct) inputAlertMovePct.value = cur.movePct || '';
+        if (inputAlertHigh52) inputAlertHigh52.checked = !!cur.high52;
+        if (inputAlertLow52) inputAlertLow52.checked = !!cur.low52;
+        if (inputAlertNote) inputAlertNote.value = cur.note || '';
+        if (inputAlertSound) inputAlertSound.checked = cur.sound !== false;
+
+        if (cur.repeat) {
+          if (alertFreqRepeat) alertFreqRepeat.checked = true;
+        } else {
+          if (alertFreqOnce) alertFreqOnce.checked = true;
+        }
+
+        if (alertExpireSelect) {
+          if (cur.expiresAt && cur.expiresAt > Date.now()) {
+            const days = Math.ceil((cur.expiresAt - Date.now()) / 86400000);
+            if (days <= 1) alertExpireSelect.value = '1';
+            else if (days <= 7) alertExpireSelect.value = '7';
+            else if (days <= 30) alertExpireSelect.value = '30';
+            else alertExpireSelect.value = '90';
+          } else {
+            alertExpireSelect.value = 'never';
+          }
+        }
+
+        // Delete button visibility
+        const hasAny = !!(cur.above || cur.below || cur.movePct || cur.high52 || cur.low52);
+        if (btnAlertDelete) btnAlertDelete.style.display = hasAny ? 'block' : 'none';
+
+        // Advanced details auto-expand if any advanced option active
+        const hasAdv = !!(cur.movePct || cur.high52 || cur.low52 || cur.repeat || (cur.expiresAt && cur.expiresAt > Date.now()) || cur.note);
+        if (alertAdvancedDetails) alertAdvancedDetails.open = hasAdv;
+        updateAdvancedBadge();
+
+        alertModal.style.display = 'flex';
       });
-    } catch (e) { paintAlertLabels('₹'); }
-    chrome.storage.local.get(['alerts'], (res) => {
-      const alerts = res.alerts || {};
-      inputAlertAbove.value = alerts[ticker]?.above || '';
-      inputAlertBelow.value = alerts[ticker]?.below || '';
+    } catch (e) {
       alertModal.style.display = 'flex';
-    });
+    }
   };
 
-  btnAlertCancel.onclick = () => alertModal.style.display = 'none';
+  if (btnAlertCancel) btnAlertCancel.onclick = () => { alertModal.style.display = 'none'; };
+  if (btnAlertCloseX) btnAlertCloseX.onclick = () => { alertModal.style.display = 'none'; };
+  if (alertModal) {
+    alertModal.onclick = (e) => {
+      if (e.target === alertModal) alertModal.style.display = 'none';
+    };
+  }
+
+  if (btnAlertDelete) {
+    btnAlertDelete.onclick = () => {
+      chrome.storage.local.get(['alerts'], (res) => {
+        const alerts = res.alerts || {};
+        delete alerts[currentAlertTicker];
+        chrome.storage.local.set({ alerts }, () => {
+          alertModal.style.display = 'none';
+          renderWatchlist();
+          if (typeof renderAlertsList === 'function') renderAlertsList();
+          if (typeof refreshAlertsBadge === 'function') refreshAlertsBadge();
+        });
+      });
+    };
+  }
+
   btnAlertSave.onclick = () => {
     chrome.storage.local.get(['alerts'], (res) => {
       const alerts = res.alerts || {};
-      const above = parseFloat(inputAlertAbove.value) || null;
-      const below = parseFloat(inputAlertBelow.value) || null;
-      if (above || below) {
-        alerts[currentAlertTicker] = { above, below };
+      const above = (inputAlertAbove && parseFloat(inputAlertAbove.value)) || null;
+      const below = (inputAlertBelow && parseFloat(inputAlertBelow.value)) || null;
+      const movePct = (inputAlertMovePct && parseFloat(inputAlertMovePct.value)) || null;
+      const high52 = !!(inputAlertHigh52 && inputAlertHigh52.checked);
+      const low52 = !!(inputAlertLow52 && inputAlertLow52.checked);
+      const repeat = !!(alertFreqRepeat && alertFreqRepeat.checked);
+      const sound = !!(inputAlertSound && inputAlertSound.checked);
+      const note = (inputAlertNote && inputAlertNote.value.trim()) || '';
+
+      const expChoice = alertExpireSelect ? alertExpireSelect.value : 'never';
+      let expiresAt = null;
+      if (expChoice === '1') expiresAt = Date.now() + 1 * 86400000;
+      else if (expChoice === '7') expiresAt = Date.now() + 7 * 86400000;
+      else if (expChoice === '30') expiresAt = Date.now() + 30 * 86400000;
+      else if (expChoice === '90') expiresAt = Date.now() + 90 * 86400000;
+
+      if (above || below || movePct || high52 || low52) {
+        const prev = alerts[currentAlertTicker] || {};
+        alerts[currentAlertTicker] = {
+          above,
+          below,
+          movePct,
+          high52,
+          low52,
+          repeat,
+          sound,
+          note,
+          expiresAt,
+          aboveFired: prev.aboveFired && prev.above === above,
+          belowFired: prev.belowFired && prev.below === below,
+          moveFired: prev.moveFired && prev.movePct === movePct,
+          high52Fired: prev.high52Fired && prev.high52 === high52,
+          low52Fired: prev.low52Fired && prev.low52 === low52,
+        };
       } else {
         delete alerts[currentAlertTicker];
       }
+
       chrome.storage.local.set({ alerts }, () => {
         alertModal.style.display = 'none';
         renderWatchlist();
+        if (typeof renderAlertsList === 'function') renderAlertsList();
+        if (typeof refreshAlertsBadge === 'function') refreshAlertsBadge();
       });
     });
   };
+
+  // Sound chime synthesizer
+  function playAlertChime() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const now = ctx.currentTime;
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(587.33, now);
+      gain1.gain.setValueAtTime(0.2, now);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.35);
+
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(880, now + 0.12);
+      gain2.gain.setValueAtTime(0.25, now + 0.12);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.start(now + 0.12);
+      osc2.stop(now + 0.55);
+    } catch (e) {}
+  }
+
+  try {
+    chrome.runtime.onMessage.addListener((msg) => {
+      if (msg && msg.type === 'PLAY_ALERT_SOUND') {
+        playAlertChime();
+      }
+    });
+  } catch (e) {}
 
   function createSparkline(data) {
     if (!data || data.length < 2) return '';
@@ -1987,6 +2356,82 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentSortBy = null; // 'price', 'mcap'
   let currentSortDesc = true;
+  // Trend timeline selector: 1M / 3M / 6M / 1Y / 3Y / 5Y / MAX.
+  // The cached `sparkline` is 1Y; other ranges are fetched on demand via
+  // the background FETCH_CHART handler and kept in `trendCache`.
+  const TREND_OPTIONS = [
+    { label: '1M', range: '1mo', interval: '1d' },
+    { label: '3M', range: '3mo', interval: '1d' },
+    { label: '6M', range: '6mo', interval: '1d' },
+    { label: '1Y', range: '1y', interval: '1d' },
+    { label: '3Y', range: '3y', interval: '1wk' },
+    { label: '5Y', range: '5y', interval: '1wk' },
+    { label: 'MAX', range: 'max', interval: '1mo' }
+  ];
+  let trendRangeLabel = '1Y';
+  const trendCache = {}; // `${ticker}__${label}` -> price array
+  function trendParamsFor(label) {
+    const f = TREND_OPTIONS.find((o) => o.label === label);
+    return f ? { range: f.range, interval: f.interval } : { range: '1y', interval: '1d' };
+  }
+  function trendWord() {
+    try {
+      const raw = String(t('colTrend') || '1Y Trend');
+      const w = raw.replace(/1\s*Y|1\s*A|1\s*J|1\s*R|1\s*G|1\s*Å/gi, '').replace(/\s{2,}/g, ' ').trim();
+      return w || 'Trend';
+    } catch (e) { return 'Trend'; }
+  }
+  function trendTitle() {
+    return trendRangeLabel + ' ' + trendWord();
+  }
+  function yahooSymbolForTrend(ticker, data) {
+    try {
+      const tk = String(ticker || '');
+      if (!tk) return tk;
+      if (tk.startsWith('^') || tk.includes('=') || /-USD/i.test(tk) || /\.(NS|BO)$/i.test(tk)) return tk;
+      if (data && data.source === 'screener') return tk + '.NS';
+      return tk;
+    } catch (e) { return ticker; }
+  }
+  function resolveTrendData(ticker, data) {
+    if (!data) return [];
+    if (trendRangeLabel === '1Y') return data.sparkline;
+    const key = ticker + '__' + trendRangeLabel;
+    if (Array.isArray(trendCache[key]) && trendCache[key].length >= 2) return trendCache[key];
+    return data.sparkline;
+  }
+  function fetchMissingTrends(list, cached) {
+    if (trendRangeLabel === '1Y') return;
+    const p = trendParamsFor(trendRangeLabel);
+    list.forEach((ticker) => {
+      const key = ticker + '__' + trendRangeLabel;
+      if (trendCache[key]) return;
+      const data = cached[ticker];
+      if (!data || !data.ratios) return;
+      const sym = yahooSymbolForTrend(ticker, data);
+      try {
+        chrome.runtime.sendMessage({ type: 'FETCH_CHART', symbol: sym, range: p.range, interval: p.interval }, (res) => {
+          const arr = res && Array.isArray(res.data) ? res.data : [];
+          if (arr.length >= 2) {
+            trendCache[key] = arr;
+            try {
+              const cell = wlItemsContainer.querySelector('.trend-cell[data-ticker="' + CSS.escape(ticker) + '"]');
+              if (cell) cell.innerHTML = createSparkline(arr);
+            } catch (e) {}
+          }
+        });
+      } catch (e) {}
+    });
+  }
+  try {
+    chrome.storage.local.get(['trendRange'], (res) => {
+      const v = res && res.trendRange;
+      if (typeof v === 'string' && TREND_OPTIONS.some((o) => o.label === v) && v !== trendRangeLabel) {
+        trendRangeLabel = v;
+        try { renderWatchlist(); } catch (e) {}
+      }
+    });
+  } catch (e) {}
   let isDragging = false; // Prevent re-rendering while user is dragging
   let bulkMode = false; // Bulk-edit multi-select mode
   const bulkSelected = new Set(); // tickers checked in bulk mode
@@ -2025,18 +2470,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (rowIsIndian(ticker, data)) return 'NSE';
     return '';
   }
-  function rowQuickLinks(ticker, data) {
-    const pill = (href, label, title) => `<a href="${href}" target="_blank" title="${title}" style="display:inline-block; margin:1px 2px; padding:2px 8px; border-radius:999px; border:1px solid rgba(26,115,232,.45); background:rgba(26,115,232,.1); color:#1a73e8; font-size:10px; font-weight:600; text-decoration:none; white-space:nowrap;">${label}</a>`;
-    const base = rowBaseSymbol(ticker);
-    const ex = rowTvExchange(ticker, data);
-    const tvSym = ex ? ex + ':' + base : base;
-    let out = pill('https://www.tradingview.com/chart/?symbol=' + encodeURIComponent(tvSym), 'TradingView', 'Open ' + ticker + ' in TradingView');
-    if (rowIsIndian(ticker, data)) {
-      out += pill('https://www.screener.in/company/' + encodeURIComponent(base) + '/', 'Screener.in', 'Open ' + ticker + ' on Screener.in');
-      out += pill('https://kite.zerodha.com/chart/ext/ciq/' + (ex === 'BSE' ? 'BSE' : 'NSE') + '/' + encodeURIComponent(base), 'Kite', 'Open ' + ticker + ' in Zerodha Kite');
-    }
-    return out;
-  }
   // Color tags per stock (Entry Target / Watching / Exit Flag), stored in
   // chrome.storage.local under `colorTags` as { TICKER: tagKey }.
   const COLOR_TAGS = {
@@ -2069,17 +2502,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   function openTagMenu(anchor, ticker) {
     closeTagMenu();
-    chrome.storage.local.get(['colorTags'], (res) => {
+    chrome.storage.local.get(['colorTags', 'cachedData', 'smartFocus'], (res) => {
       const current = (res.colorTags || {})[ticker];
       const menu = document.createElement('div');
       menu.id = 'tag-menu';
-      menu.style.cssText = 'position:fixed; z-index:9999; min-width:160px; padding:6px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-color); box-shadow:0 10px 30px rgba(0,0,0,.3); font-size:12px;';
+      menu.style.cssText = 'position:fixed; z-index:9999; min-width:160px; max-width:230px; padding:6px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-color); box-shadow:0 10px 30px rgba(0,0,0,.3); font-size:12px;';
       let html = '';
       for (const key of Object.keys(COLOR_TAGS)) {
         const sel = current === key ? ' ✓' : '';
         html += `<div data-tag="${key}" style="display:flex; align-items:center; gap:8px; padding:7px 9px; border-radius:7px; cursor:pointer; color:var(--text-color);"><span style="width:10px; height:10px; border-radius:50%; background:${COLOR_TAGS[key].color}; flex-shrink:0;"></span>${tagLabel(key)}${sel}</div>`;
       }
       html += `<div data-tag="" style="display:flex; align-items:center; gap:8px; padding:7px 9px; border-radius:7px; cursor:pointer; color:var(--label-color);"><span style="width:10px; height:10px; border-radius:50%; border:1px solid var(--label-color); flex-shrink:0;"></span>${t('tagClear') || 'Clear tag'}</div>`;
+      // Blue-dot explainer: the dot turns blue when Smart Focus fires —
+      // show this stock's live reasons, or the generic conditions.
+      let sfText = '';
+      try {
+        const prefs = Object.assign({ big: true, swing: true, near: true, bigMovePct: 5, swingX: 2.5, nearPct: 2 }, (res.smartFocus || {}));
+        const reasons = smartFocusReasons(((res.cachedData || {})[ticker] || {}), prefs);
+        sfText = reasons.length ? reasons.join(' · ') : (t('tagBlueEmpty') || 'Big move, unusual swing, or near 52-week high/low');
+      } catch (e) { sfText = t('tagBlueEmpty') || 'Big move, unusual swing, or near 52-week high/low'; }
+      html += `<div style="border-top:1px solid var(--border-color); margin:5px 4px 2px;"></div>`
+        + `<div style="display:flex; align-items:flex-start; gap:8px; padding:7px 9px; color:var(--label-color); font-size:11px; line-height:1.45;"><span style="width:10px; height:10px; border-radius:50%; background:#1a73e8; flex-shrink:0; margin-top:2px;"></span><span><b>${escHtml(t('tagBlueHint') || 'Smart Focus')}</b> — ${escHtml(sfText)}</span></div>`;
       menu.innerHTML = html;
       document.body.appendChild(menu);
       try {
@@ -2113,7 +2556,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const swingX = Number(p.swingX) || 2.5;
       const nearPct = Number(p.nearPct) || 2;
       const move = parseFloat(String(d.changePct || '').replace(/[^\d.]/g, '')) || 0;
-      if (move >= bigMove) out.push(t('sfBigMove') || 'Big price move');
+      if (p.big !== false && move >= bigMove) out.push(t('sfBigMove') || 'Big price move');
       const sp = Array.isArray(d.sparkline) ? d.sparkline : [];
       if (sp.length >= 8) {
         const moves = [];
@@ -2125,7 +2568,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const last = moves[moves.length - 1];
           const prev = moves.slice(0, -1);
           const mean = prev.reduce((s, v) => s + v, 0) / prev.length;
-          if (mean > 0 && last >= swingX * mean) out.push(t('sfSwing') || 'Unusual swing');
+          if (mean > 0 && p.swing !== false && last >= swingX * mean) out.push(t('sfSwing') || 'Unusual swing');
         }
       }
       const ratios = d.ratios || {};
@@ -2135,15 +2578,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const lo = parseFloat(parts[0].replace(/[^\d.]/g, ''));
         const hi = parseFloat(parts[1].replace(/[^\d.]/g, ''));
         if (lo && hi && hi > lo) {
-          if ((hi - cur) / hi * 100 <= nearPct) out.push(t('sfHigh') || 'Near 52-week high');
-          else if ((cur - lo) / lo * 100 <= nearPct) out.push(t('sfLow') || 'Near 52-week low');
+          if (p.near !== false && (hi - cur) / hi * 100 <= nearPct) out.push(t('sfHigh') || 'Near 52-week high');
+          else if (p.near !== false && (cur - lo) / lo * 100 <= nearPct) out.push(t('sfLow') || 'Near 52-week low');
         }
       }
     } catch (e) {}
     return out;
   }
   // Ticker click → platform menu (TradingView / Screener.in / Kite).
-  // Reuses the rowQuickLinks exchange helpers and the tag-menu floating
+  // Reuses the row exchange helpers and the tag-menu floating
   // pattern. Left-click opens the menu; middle-click still follows the
   // ticker href directly.
   function platformLinks(ticker, source) {
@@ -2204,16 +2647,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const cached = res.cachedData || {};
       const alertsObj = res.alerts || {};
       const colorTags = res.colorTags || {};
-      const sfPrefs = Object.assign({ bigMovePct: 5, swingX: 2.5, nearPct: 2 }, res.smartFocus || {});
+      const sfPrefs = Object.assign({ big: true, swing: true, near: true, bigMovePct: 5, swingX: 2.5, nearPct: 2 }, res.smartFocus || {});
 
       // Tag filter row is only useful once at least one tag exists.
       const tagRow = document.getElementById('tag-filter-row');
       if (tagRow) tagRow.style.display = Object.keys(colorTags).length ? 'block' : 'none';
       if (tagFilterSelect && tagFilterSelect.value !== activeTagFilter) tagFilterSelect.value = activeTagFilter;
       if (activeTagFilter !== 'all') list = list.filter((tk) => colorTags[tk] === activeTagFilter);
+      if (focusOnly) list = list.filter((tk) => smartFocusReasons(cached[tk], sfPrefs).length > 0);
 
       if (list.length === 0) {
-        const emptyMsg = activeTagFilter !== 'all' ? (t('tagEmpty') || 'No stocks with this tag.') : t('watchlistEmpty');
+        const emptyMsg = focusOnly ? (t('sfEmpty') || 'No Smart Focus highlights right now.') : (activeTagFilter !== 'all' ? (t('tagEmpty') || 'No stocks with this tag.') : t('watchlistEmpty'));
         wlItemsContainer.innerHTML = '<div style="text-align:center;color:var(--label-color);padding:24px 16px;font-size:13px;">' + emptyMsg + '</div>';
         return;
       }
@@ -2252,7 +2696,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (bulkMode) {
         const bb = 'padding:4px 10px; border-radius:12px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); font-size:12px; cursor:pointer;';
         const portOpts = Object.keys(ports).map((nm) => `<option value="${escHtml(nm)}"${nm === activePortfolio ? ' selected' : ''}>${escHtml(nm)}</option>`).join('');
-        const tagDots = Object.keys(COLOR_TAGS).map((key) => `<button data-bulk-tag="${key}" title="${tagLabel(key)}" style="background:none; border:none; cursor:pointer; font-size:14px; padding:0 2px; color:${COLOR_TAGS[key].color};">●</button>`).join('');
+        const tagDots = Object.keys(COLOR_TAGS).map((key) => `<button data-bulk-tag="${key}" title="${tagLabel(key)}" style="background:none; border:none; cursor:pointer; padding:0 2px; line-height:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="${COLOR_TAGS[key].color}"><circle cx="12" cy="12" r="8"/></svg></button>`).join('');
         bulkBar = `<div id="bulk-bar" style="display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:10px; padding:8px 10px; border:1px solid var(--border-color); border-radius:8px; background:var(--header-bg); font-size:12px; color:var(--text-color);">
           <b id="bulk-count">${bulkSelected.size} ${t('bulkSelected') || 'selected'}</b>
           <span style="display:inline-flex; align-items:center;" title="${t('bulkTagTitle') || 'Apply color tag to selected'}">${tagDots}</span>
@@ -2266,14 +2710,13 @@ document.addEventListener('DOMContentLoaded', () => {
       let html = bulkBar + `<div style="width:100%; overflow-x:auto; border:1px solid var(--border-color); border-radius:8px;">
         <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:right; color:var(--text-color); white-space:nowrap;">
           <thead>
-            <tr style="background:var(--header-bg); border-bottom:1px solid var(--border-color); font-weight:600;">
-              <td style="text-align:left; padding:10px;">${t('colSymbol')}</td>
-              <td style="padding:10px; text-align:center;">${t('colTrend')}</td>
-              <td style="padding:10px; cursor:pointer;" id="sort-price" title="${t('sortByPrice')}">${t('colPrice')}${getSortIndicator('price')}</td>
-              <td style="padding:10px;">${t('colPE')}</td>
-              <td style="padding:10px; cursor:pointer;" id="sort-mcap" title="${t('sortByMCap')}">${t('colMCap')}${getSortIndicator('mcap')}</td>
+            <tr style="background:var(--header-bg); border-bottom:1px solid var(--border-color); font-weight:600; text-align:center;">
+              <td style="padding:10px; text-align:center;">${t('colSymbol')}</td>
+              <td style="padding:6px 10px;"><div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;"><div id="trend-title-label" style="font-weight:600; font-size:12px; text-align:center;">${trendTitle()}</div><select id="trend-range-select" title="${t('colTrend') || 'Change timeline'}" style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; border:1px solid var(--border-color); background:var(--header-bg); color:var(--text-color); cursor:pointer; text-align:center;">${TREND_OPTIONS.map((o) => `<option value="${o.label}"${o.label === trendRangeLabel ? ' selected' : ''}>${o.label}</option>`).join('')}</select></div></td>
+              <td style="padding:10px; cursor:pointer; text-align:center;" id="sort-price" title="${t('sortByPrice')}">${t('colPrice')}${getSortIndicator('price')}</td>
+              <td style="padding:10px; text-align:center;">${t('colPE')}</td>
+              <td style="padding:10px; cursor:pointer; text-align:center;" id="sort-mcap" title="${t('sortByMCap')}">${t('colMCap')}${getSortIndicator('mcap')}</td>
               <td style="padding:10px; text-align:center;">${t('colActions')}</td>
-              <td style="padding:10px; text-align:center;">${t('colLinks') || 'Links'}</td>
             </tr>
           </thead>
           <tbody>`;
@@ -2285,7 +2728,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!data || data.success === false || !data.ratios) {
              const msg = data && data.success === false ? `Could not fetch ${ticker}. Retrying...` : `Waiting for sync (${ticker})...`;
              html += `<tr style="background:${idx % 2 === 0 ? 'var(--row-even)' : 'var(--row-odd)'}; border-bottom:1px solid var(--border-color);">
-                <td colspan="7" style="padding:10px; text-align:left;">${msg}</td>
+                <td colspan="6" style="padding:10px; text-align:left;">${msg}</td>
              </tr>`;
           } else {
             let pctHtml = '';
@@ -2297,7 +2740,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             flashClass = data.flash && (Date.now() - (data.flashTime || 0) < 1500) ? (data.flash === 'up' ? 'screener-flash-up' : 'screener-flash-down') : '';
 
-            const hasAlert = !!(alertsObj[ticker] && (alertsObj[ticker].above || alertsObj[ticker].below));
+            const hasAlert = !!(alertsObj[ticker] && (alertsObj[ticker].above || alertsObj[ticker].below || alertsObj[ticker].movePct || alertsObj[ticker].high52 || alertsObj[ticker].low52));
             const ratios = data.ratios || {};
             const tag = colorTags[ticker];
             const tagColor = tag && COLOR_TAGS[tag] ? COLOR_TAGS[tag].color : '#c9c9c9';
@@ -2305,17 +2748,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const dotColor = tag && COLOR_TAGS[tag] ? COLOR_TAGS[tag].color : (sfReasons.length ? '#1a73e8' : '#c9c9c9');
             const dotTitle = [tag ? tagLabel(tag) : null].concat(sfReasons).filter(Boolean).join(' · ') || (t('tagSetTitle') || 'Set color tag');
 
-            const spark = createSparkline(data.sparkline);
+            const spark = createSparkline(resolveTrendData(ticker, data));
 
             html += `
               <tr class="watchlist-row" draggable="true" data-ticker="${ticker}" style="background:${idx % 2 === 0 ? 'var(--row-even)' : 'var(--row-odd)'}; border-bottom:1px solid var(--border-color); cursor:grab;">
                 <td style="text-align:left; padding:10px; font-weight:500;">
                   <span style="color:#aaa; margin-right:4px; font-size:10px;" title="${t('dragHint')}">⣿</span>
                   ${bulkMode ? `<input type="checkbox" class="screener-bulk-check" data-ticker="${ticker}"${bulkSelected.has(ticker) ? ' checked' : ''} style="margin-right:6px; vertical-align:middle; accent-color:#1a73e8;">` : ''}
-                  <button class="screener-tag-btn" data-ticker="${ticker}" title="${dotTitle}" style="background:none; border:none; cursor:pointer; font-size:13px; padding:0 1px; color:${dotColor}; vertical-align:middle;">●</button>
+                  <button class="screener-tag-btn" data-ticker="${ticker}" title="${dotTitle}" style="background:none; border:none; cursor:pointer; padding:2px; vertical-align:middle; line-height:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="${dotColor}"><circle cx="12" cy="12" r="8"/></svg></button>
                   <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + ticker + '/'}" target="_blank" title="${data.companyName || ticker}" style="color:var(--link-green); text-decoration:none;" class="screener-ticker-link" data-source="${data.source || ''}">${ticker}</a>
                 </td>
-                <td style="padding:10px;">${spark}</td>
+                <td class="trend-cell" data-ticker="${ticker}" style="padding:10px;">${spark}</td>
                 <td class="${flashClass}" style="padding:10px;">${ratios['Current Price']||'-'}<br/>${pctHtml}</td>
                 <td style="padding:10px;">${ratios['Stock P/E']||'-'}</td>
                 <td style="padding:10px;">${formatMcapCell(ratios['Market Cap'], data)}</td>
@@ -2323,7 +2766,6 @@ document.addEventListener('DOMContentLoaded', () => {
                   <button class="screener-alert-btn" data-ticker="${ticker}" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px;" title="${t('setAlertTitle')}">${hasAlert ? '\uD83D\uDD14' : '\u23F0'}</button>
                   <button class="screener-del-btn" data-ticker="${ticker}" style="background:none; border:none; color:#d93025; cursor:pointer; font-size:14px; padding:2px;" title="${t('deleteTitle')}">&#128465;</button>
                 </td>
-                <td style="padding:10px; text-align:center; white-space:nowrap;">${rowQuickLinks(ticker, data)}</td>
               </tr>
             `;
           }
@@ -2338,6 +2780,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const sortMcap = document.getElementById('sort-mcap');
         if (sortPrice) sortPrice.onclick = () => handleSort('price');
         if (sortMcap) sortMcap.onclick = () => handleSort('mcap');
+
+        // Wire up trend timeline selector (persists choice, lazy-loads data)
+        const trendSelect = document.getElementById('trend-range-select');
+        if (trendSelect) trendSelect.onchange = () => {
+          const v = trendSelect.value;
+          if (!TREND_OPTIONS.some((o) => o.label === v)) return;
+          trendRangeLabel = v;
+          try { chrome.storage.local.set({ trendRange: v }); } catch (e) {}
+          renderWatchlist();
+        };
+        try { fetchMissingTrends(list, cached); } catch (e) {}
 
         // Wire up row action buttons (alert + delete)
         wlItemsContainer.querySelectorAll('.screener-del-btn').forEach(b => b.onclick = () => removeTicker(b.getAttribute('data-ticker')));
@@ -2464,19 +2917,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const displayPct = data.changePct ? `${Math.abs(changeVal).toFixed(2)}%` : '0.00%';
 
         html += `
-          <div class="pinned-card" data-slot="${slot}" style="background:var(--verdict-bg); border:1px solid var(--border-color); border-radius:8px; padding:12px 10px; text-align:center; position:relative; cursor:pointer; transition:border-color 0.2s, box-shadow 0.2s;" title="${t('clickEditCard', item.key)}">
-            <div style="font-weight:600; color:var(--text-color); font-size:13px; margin-bottom:6px; padding:0 14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${item.key}">${item.key}</div>
-            <div class="${flashClass}" style="font-weight:bold; font-size:15px; color:var(--text-color); margin-bottom:4px;">${displayPrice}</div>
-            <div style="color:${changeColor}; font-size:11px; font-weight:500;">${changeSign} ${displayPct}</div>
+          <div class="pinned-card" data-slot="${slot}" style="background:var(--verdict-bg); border:1px solid var(--border-color); border-radius:8px; padding:12px 10px; text-align:center; position:relative; cursor:pointer; transition:border-color 0.2s, box-shadow 0.2s; display:flex; flex-direction:column; justify-content:center; min-height:84px; box-sizing:border-box;" title="${t('clickEditCard', item.key)}">
+            <div style="font-weight:600; color:var(--label-color); font-size:11px; margin-bottom:4px; padding:0 4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-transform:uppercase; letter-spacing:0.04em;" title="${item.key}">${item.key}</div>
+            <div class="pinned-card-price ${flashClass}">${displayPrice}</div>
+            <div style="color:${changeColor}; font-size:12px; font-weight:600; line-height:1.2;">${changeSign ? `${changeSign} ` : ''}${displayPct}</div>
           </div>
         `;
       });
       
       for (let slot = pinned.length; slot < 4; slot++) {
         html += `
-          <div class="pinned-card empty-slot" data-slot="${slot}" style="background:var(--verdict-bg); border:1px dashed var(--border-color); border-radius:8px; padding:12px 10px; text-align:center; position:relative; cursor:pointer; display:flex; flex-direction:column; justify-content:center; align-items:center; opacity:0.6; transition:border-color 0.2s, opacity 0.2s;" title="${t('addNewSlot')}">
-            <div style="font-size:24px; color:var(--label-color); line-height:1;">+</div>
-            <div style="font-size:12px; font-weight:500; color:var(--label-color); margin-top:4px;">${t('addTicker')}</div>
+          <div class="pinned-card empty-slot" data-slot="${slot}" style="background:var(--verdict-bg); border:1px dashed var(--border-color); border-radius:8px; padding:12px 10px; text-align:center; position:relative; cursor:pointer; display:flex; flex-direction:column; justify-content:center; align-items:center; opacity:0.6; min-height:84px; box-sizing:border-box; transition:border-color 0.2s, opacity 0.2s;" title="${t('addNewSlot')}">
+            <div style="font-size:22px; color:var(--label-color); line-height:1; margin-bottom:4px;">+</div>
+            <div style="font-size:11px; font-weight:600; color:var(--label-color); text-transform:uppercase; letter-spacing:0.04em;">${t('addTicker')}</div>
           </div>
         `;
       }
@@ -3222,7 +3675,7 @@ document.addEventListener('DOMContentLoaded', () => {
               const thumb = newsThumbHtml(item, source);
 
               allNewsHtml += `
-                <div style="padding: 12px; border-bottom: 1px solid var(--border-color); display:flex; gap:10px; align-items:flex-start;">
+                <div style="padding: 12px; border-bottom: 1px solid var(--border-color); display:flex; gap:10px; align-items:center;">
                   ${thumb}
                   <div style="min-width:0; flex:1;">
                     <a href="${link}" target="_blank" style="color:var(--text-color); text-decoration:none; font-size:14px; display:block; margin-bottom:4px;">${title}</a>
@@ -3264,7 +3717,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const thumb = newsThumbHtml(item, source);
 
                 html += `
-                  <div style="padding: 12px; border-bottom: 1px solid var(--border-color); display:flex; gap:10px; align-items:flex-start;">
+                  <div style="padding: 12px; border-bottom: 1px solid var(--border-color); display:flex; gap:10px; align-items:center;">
                     ${thumb}
                     <div style="min-width:0; flex:1;">
                       <a href="${link}" target="_blank" style="color:var(--text-color); text-decoration:none; font-size:14px; display:block; margin-bottom:4px;">${title}</a>

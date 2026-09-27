@@ -639,37 +639,164 @@ async function refreshMarketHolidays() {
 }
 
 async function checkPriceAlerts() {
-  chrome.storage.local.get(['alerts', 'portfolios'], async (res) => {
+  chrome.storage.local.get(['alerts', 'cachedData'], async (res) => {
     const alerts = res.alerts || {};
-    // Collect all tickers that have active alerts
-    const activeTickers = Object.keys(alerts).filter(t => alerts[t].above || alerts[t].below);
-    if (activeTickers.length === 0) return;
+    const cached = res.cachedData || {};
+    const now = Date.now();
+
+    // 1. Drop expired alerts
+    let changed = false;
+    for (const tk of Object.keys(alerts)) {
+      if (alerts[tk] && alerts[tk].expiresAt && now > alerts[tk].expiresAt) {
+        delete alerts[tk];
+        changed = true;
+      }
+    }
+
+    // Collect all tickers that have active alert conditions
+    const activeTickers = Object.keys(alerts).filter(t => {
+      const a = alerts[t];
+      return a && (a.above || a.below || a.movePct || a.high52 || a.low52);
+    });
+
+    if (activeTickers.length === 0) {
+      if (changed) chrome.storage.local.set({ alerts });
+      return;
+    }
 
     for (const ticker of activeTickers) {
       try {
-        const fetchRes = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}.NS?range=1d&interval=1d`);
-        const data = await fetchRes.json();
-        const price = data.chart.result[0].meta.regularMarketPrice;
-        
-        const threshold = alerts[ticker];
-        if (threshold.above && price > threshold.above) {
-          chrome.notifications.create({
-            type: 'basic',
-            iconUrl: 'icon_128.png',
-            title: t('notifAboveTitle'),
-            message: t('notifAbove', [ticker, String(threshold.above), String(price)]),
-          });
-          // Remove the alert once triggered
-          delete alerts[ticker].above;
+        let sym = ticker;
+        let fetchRes = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=1d&interval=1d`);
+        // Fallback to .NS only for plain Indian tickers without dots, hyphens, equals, carats
+        if (!fetchRes.ok && !sym.startsWith('^') && !sym.includes('.') && !sym.includes('=') && !sym.includes('-')) {
+          sym = `${ticker}.NS`;
+          fetchRes = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=1d&interval=1d`);
         }
-        if (threshold.below && price < threshold.below) {
-          chrome.notifications.create({
-            type: 'basic',
-            iconUrl: 'icon_128.png',
-            title: t('notifBelowTitle'),
-            message: t('notifBelow', [ticker, String(threshold.below), String(price)]),
-          });
-          delete alerts[ticker].below;
+        if (!fetchRes.ok) continue;
+
+        const data = await fetchRes.json();
+        const meta = ((data.chart || {}).result || [])[0]?.meta || {};
+        const price = meta.regularMarketPrice;
+        const prev = meta.chartPreviousClose || meta.previousClose || 0;
+        const high52 = meta.fiftyTwoWeekHigh;
+        const low52 = meta.fiftyTwoWeekLow;
+        const priceOk = typeof price === 'number' && isFinite(price);
+        if (!priceOk) continue;
+
+        const threshold = alerts[ticker];
+        if (!threshold) continue;
+        const repeat = !!threshold.repeat;
+        const noteSuffix = threshold.note ? ` · Note: ${threshold.note}` : '';
+
+        // Dynamic currency prefix
+        let curPrefix = '$';
+        if (meta.currency === 'INR' || /\.NS$|\.BO$/i.test(sym)) curPrefix = '₹';
+        else if (meta.currency === 'EUR') curPrefix = '€';
+        else if (meta.currency === 'GBP') curPrefix = '£';
+
+        // Check Above
+        if (threshold.above && price >= threshold.above) {
+          if (!repeat || !threshold.aboveFired) {
+            chrome.notifications.create({
+              type: 'basic',
+              iconUrl: 'icon_128.png',
+              title: t('notifAboveTitle') || 'Price Alert Triggered! 📈',
+              message: `${ticker} crossed above ${curPrefix}${threshold.above} (Current: ${curPrefix}${price.toFixed(2)})${noteSuffix}`,
+            });
+            if (threshold.sound) {
+              chrome.runtime.sendMessage({ type: 'PLAY_ALERT_SOUND' }).catch(() => {});
+            }
+          }
+          if (repeat) threshold.aboveFired = true;
+          else delete alerts[ticker].above;
+        } else if (threshold.above) {
+          threshold.aboveFired = false;
+        }
+
+        // Check Below
+        if (threshold.below && price <= threshold.below) {
+          if (!repeat || !threshold.belowFired) {
+            chrome.notifications.create({
+              type: 'basic',
+              iconUrl: 'icon_128.png',
+              title: t('notifBelowTitle') || 'Price Alert Triggered! 📉',
+              message: `${ticker} dropped below ${curPrefix}${threshold.below} (Current: ${curPrefix}${price.toFixed(2)})${noteSuffix}`,
+            });
+            if (threshold.sound) {
+              chrome.runtime.sendMessage({ type: 'PLAY_ALERT_SOUND' }).catch(() => {});
+            }
+          }
+          if (repeat) threshold.belowFired = true;
+          else delete alerts[ticker].below;
+        } else if (threshold.below) {
+          threshold.belowFired = false;
+        }
+
+        // Check Move Pct
+        if (threshold.movePct && prev > 0) {
+          const dayPct = ((price - prev) / prev) * 100;
+          if (Math.abs(dayPct) >= threshold.movePct) {
+            if (!repeat || !threshold.moveFired) {
+              const signed = (dayPct >= 0 ? '+' : '') + dayPct.toFixed(2);
+              chrome.notifications.create({
+                type: 'basic',
+                iconUrl: 'icon_128.png',
+                title: t('notifMoveTitle') || 'Big Move Alert! ⚡',
+                message: `${ticker} moved ${signed}% today (Current: ${curPrefix}${price.toFixed(2)})${noteSuffix}`,
+              });
+              if (threshold.sound) {
+                chrome.runtime.sendMessage({ type: 'PLAY_ALERT_SOUND' }).catch(() => {});
+              }
+            }
+            if (repeat) threshold.moveFired = true;
+            else delete alerts[ticker].movePct;
+          } else {
+            threshold.moveFired = false;
+          }
+        }
+
+        // Check 52W High
+        if (threshold.high52 && high52 && price >= high52) {
+          if (!repeat || !threshold.high52Fired) {
+            chrome.notifications.create({
+              type: 'basic',
+              iconUrl: 'icon_128.png',
+              title: t('notifHigh52Title') || '52-Week High Breakout! 🚀',
+              message: `${ticker} hit a new 52-Week High! (Current: ${curPrefix}${price.toFixed(2)})${noteSuffix}`,
+            });
+            if (threshold.sound) {
+              chrome.runtime.sendMessage({ type: 'PLAY_ALERT_SOUND' }).catch(() => {});
+            }
+          }
+          if (repeat) threshold.high52Fired = true;
+          else delete alerts[ticker].high52;
+        } else if (threshold.high52) {
+          threshold.high52Fired = false;
+        }
+
+        // Check 52W Low
+        if (threshold.low52 && low52 && price <= low52) {
+          if (!repeat || !threshold.low52Fired) {
+            chrome.notifications.create({
+              type: 'basic',
+              iconUrl: 'icon_128.png',
+              title: t('notifLow52Title') || '52-Week Low Alert! 🔻',
+              message: `${ticker} hit a new 52-Week Low! (Current: ${curPrefix}${price.toFixed(2)})${noteSuffix}`,
+            });
+            if (threshold.sound) {
+              chrome.runtime.sendMessage({ type: 'PLAY_ALERT_SOUND' }).catch(() => {});
+            }
+          }
+          if (repeat) threshold.low52Fired = true;
+          else delete alerts[ticker].low52;
+        } else if (threshold.low52) {
+          threshold.low52Fired = false;
+        }
+
+        // If no more conditions are active for this ticker, clean it up
+        if (!alerts[ticker].above && !alerts[ticker].below && !alerts[ticker].movePct && !alerts[ticker].high52 && !alerts[ticker].low52) {
+          delete alerts[ticker];
         }
       } catch (e) {}
     }
