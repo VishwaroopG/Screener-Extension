@@ -407,8 +407,8 @@ h1 .accent { color: var(--accent-warm); }
   color: var(--text);
 }
 .tape b { color: var(--text); font-weight: 600; }
-.tape .up { color: var(--patina); }
-.tape .down { color: var(--red); }
+.tape .up { color: var(--red); }
+.tape .down { color: var(--patina); }
 @keyframes tape-scroll { to { transform: translateX(-50%); } }
 
 /* Live Ticker Flash Animations */
@@ -419,13 +419,13 @@ h1 .accent { color: var(--accent-warm); }
   animation: tickDownFlash 1.2s cubic-bezier(0.23, 1, 0.32, 1);
 }
 @keyframes tickUpFlash {
-  0% { background: rgba(78, 203, 148, 0.4); transform: scale(1.12); color: #fff; }
-  50% { background: rgba(78, 203, 148, 0.15); }
+  0% { background: rgba(217, 79, 79, 0.4); transform: scale(1.12); color: #fff; }
+  50% { background: rgba(217, 79, 79, 0.15); }
   100% { background: transparent; transform: scale(1); }
 }
 @keyframes tickDownFlash {
-  0% { background: rgba(217, 79, 79, 0.4); transform: scale(1.12); color: #fff; }
-  50% { background: rgba(217, 79, 79, 0.15); }
+  0% { background: rgba(78, 203, 148, 0.4); transform: scale(1.12); color: #fff; }
+  50% { background: rgba(78, 203, 148, 0.15); }
   100% { background: transparent; transform: scale(1); }
 }
 
@@ -679,11 +679,12 @@ h1 .accent { color: var(--accent-warm); }
   position: relative;
   z-index: 2;
   transform: translateZ(10px);
-  margin: 0;
+  margin: 0 0 12px;
   color: var(--text-muted);
   font-size: 0.9rem;
   line-height: 1.7;
 }
+.tile p:last-child { margin-bottom: 0; }
 .tile figure {
   position: relative;
   z-index: 2;
