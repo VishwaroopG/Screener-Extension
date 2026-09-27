@@ -1259,6 +1259,7 @@ function setupContextMenu() {
     { id: "ctxSep", type: "separator" },
     { id: "openTradingView", title: t('ctxTradingView') || 'Open in TradingView' },
     { id: "openScreener", title: t('ctxScreener') || 'Open in Screener' },
+    { id: "openStockAnalysis", title: t('ctxStockAnalysis') || 'Open in Stock Analysis' },
     { id: "openKite", title: t('ctxKite') || 'Open in Zerodha Kite' }
   ];
   const create = () => {
@@ -1422,6 +1423,10 @@ function screenerInUrl(stock, rawQuery) {
   }
   return `https://www.screener.in/search/?q=${encodeURIComponent(rawQuery)}`;
 }
+function stockAnalysisUrl(stock, rawQuery) {
+  const sym = (stock && stock.base) ? stock.base : String(rawQuery || '').toUpperCase();
+  return `https://stockanalysis.com/stocks/${encodeURIComponent(sym.toLowerCase())}/`;
+}
 // Kite only lists Indian (NSE/BSE) equities — null when unsupported.
 function kiteUrl(stock) {
   if (!stock || !stock.isIndian || !stock.base) return null;
@@ -1456,13 +1461,14 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   };
   try {
     const stock = await resolveCtxStock(query);
-    if (info.menuItemId === "openTradingView" || info.menuItemId === "openScreener" || info.menuItemId === "openKite") {
+    if (info.menuItemId === "openTradingView" || info.menuItemId === "openScreener" || info.menuItemId === "openStockAnalysis" || info.menuItemId === "openKite") {
       if (!stock) {
         notFound();
         return;
       }
       if (info.menuItemId === "openTradingView") openUrl(tradingViewUrl(stock, query));
       else if (info.menuItemId === "openScreener") openUrl(screenerInUrl(stock, query));
+      else if (info.menuItemId === "openStockAnalysis") openUrl(stockAnalysisUrl(stock, query));
       else {
         const url = kiteUrl(stock);
         if (!url) {

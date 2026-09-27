@@ -2639,12 +2639,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const base = rowBaseSymbol(ticker);
     const ex = rowTvExchange(ticker, data);
     const tvSym = ex ? ex + ':' + base : base;
+    const isInd = rowIsIndian(ticker, data);
+    const isIndex = ticker && ticker.startsWith('^');
     const links = [{ label: 'TradingView', url: 'https://www.tradingview.com/chart/?symbol=' + encodeURIComponent(tvSym) }];
-    if (rowIsIndian(ticker, data)) {
-      links.push({ label: 'Screener.in', url: 'https://www.screener.in/company/' + encodeURIComponent(base) + '/' });
-      links.push({ label: 'Zerodha Kite', url: 'https://kite.zerodha.com/chart/ext/ciq/' + (ex === 'BSE' ? 'BSE' : 'NSE') + '/' + encodeURIComponent(base) });
-    } else if (!(ticker && ticker.startsWith('^'))) {
+    if (!isIndex) {
+      links.push({ label: 'Screener', url: 'https://www.screener.in/company/' + encodeURIComponent(base) + '/' });
+      links.push({ label: 'Stock Analysis', url: 'https://stockanalysis.com/stocks/' + encodeURIComponent(base.toLowerCase()) + '/' });
       links.push({ label: 'Yahoo Finance', url: 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) });
+    } else {
+      links.push({ label: 'Yahoo Finance', url: 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) });
+    }
+    if (isInd) {
+      links.push({ label: 'Zerodha Kite', url: 'https://kite.zerodha.com/chart/ext/ciq/' + (ex === 'BSE' ? 'BSE' : 'NSE') + '/' + encodeURIComponent(base) });
     }
     return links;
   }

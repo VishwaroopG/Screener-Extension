@@ -14,5 +14,8 @@
     "jimp": "^1.6.1",
     "playwright": "^1.63.0",
     "puppeteer": "^25.9.0"
+  },
+  "devDependencies": {
+    "terser": "^5.51.2"
   }
 }

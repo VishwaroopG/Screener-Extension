@@ -13,11 +13,9 @@ New-Item -ItemType Directory -Path $stage | Out-Null
 
 Copy-Item (Join-Path $src '*') $stage -Recurse -Force
 
-# Minify locale files in the package only (sources stay readable).
-# NOTE: uses node on purpose — PowerShell ConvertTo-Json escapes all
-# non-ASCII as \uXXXX, which makes CJK/Indic/Arabic files BIGGER.
-node (Join-Path $PSScriptRoot 'minify-locales.cjs') $stage
-if ($LASTEXITCODE -ne 0) { throw 'Locale minify failed' }
+# Minify locale files, JS, CSS, and HTML in the staged package (sources stay readable).
+node (Join-Path $PSScriptRoot 'minify-package.cjs') $stage
+if ($LASTEXITCODE -ne 0) { throw 'Package minification failed' }
 
 # Validate Chrome manifest parses and has required keys
 $m = Get-Content (Join-Path $stage 'manifest.json') -Raw | ConvertFrom-Json
