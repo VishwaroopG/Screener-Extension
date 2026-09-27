@@ -871,6 +871,9 @@
   "ctxScreener": {
     "message": "Open in Screener"
   },
+  "ctxStockAnalysis": {
+    "message": "Open in Stock Analysis"
+  },
   "ctxKite": {
     "message": "Open in Zerodha Kite"
   },
