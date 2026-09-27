@@ -3740,11 +3740,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const items = (cachedMacroItems || []).slice(0, filter === 'macro' ? 12 : 5);
       html += `
         <div style="display:flex; align-items:center; justify-content:space-between; margin-top:6px; margin-bottom:4px; padding:0 12px;">
-          <div style="font-size:11px; font-weight:700; letter-spacing:0.04em; color:var(--accent-color, #1a73e8); display:flex; align-items:center; gap:6px;">
+          <div style="font-size:11px; font-weight:700; letter-spacing:0.04em; color:var(--label-color); display:flex; align-items:center; gap:6px;">
             <span>🌐</span>
             <span>${t('macroNewsTitle')}</span>
           </div>
-          <span style="font-size:10px; font-weight:600; padding:1px 6px; border-radius:10px; background:rgba(26,115,232,0.1); color:var(--accent-color, #1a73e8);">${activeEconomy}</span>
+          <span style="font-size:10px; font-weight:600; padding:1px 6px; border-radius:10px; background:var(--tag-bg, rgba(0,0,0,0.06)); color:var(--label-color);">${activeEconomy}</span>
         </div>
       `;
       if (items.length > 0) {
@@ -3759,11 +3759,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (showWatchlist) {
       html += `
         <div style="display:flex; align-items:center; justify-content:space-between; margin-top:${showMacro ? '16px' : '6px'}; margin-bottom:4px; padding:0 12px;">
-          <div style="font-size:11px; font-weight:700; letter-spacing:0.04em; color:var(--accent-color, #1a73e8); display:flex; align-items:center; gap:6px;">
+          <div style="font-size:11px; font-weight:700; letter-spacing:0.04em; color:var(--label-color); display:flex; align-items:center; gap:6px;">
             <span>📊</span>
             <span>${t('watchlistNewsTitle')}</span>
           </div>
-          <span style="font-size:10px; font-weight:600; padding:1px 6px; border-radius:10px; background:rgba(0,0,0,0.06); color:var(--label-color);">${activePortfolio}</span>
+          <span style="font-size:10px; font-weight:600; padding:1px 6px; border-radius:10px; background:var(--tag-bg, rgba(0,0,0,0.06)); color:var(--label-color);">${activePortfolio}</span>
         </div>
       `;
       if (cachedWatchlistHtml && cachedWatchlistHtml.trim()) {
