@@ -426,11 +426,14 @@ body.dark-mode .wl-circle-btn:hover {
 
 .world-clock-time {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-color, #202124);
   font-variant-numeric: tabular-nums;
   line-height: 1.2;
   margin-bottom: 3px;
+}
+body.dark-mode .world-clock-time {
+  font-weight: 700;
 }
 
 .world-clock-status {
