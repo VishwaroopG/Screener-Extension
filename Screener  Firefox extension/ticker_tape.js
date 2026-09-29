@@ -12,6 +12,13 @@
     }
   }
   if (!isContextValid()) return;
+  const t = (key, subs) => {
+    try {
+      return chrome.i18n.getMessage(key, subs);
+    } catch (e) {
+      return '';
+    }
+  };
   if (document.getElementById('screener-ticker-tape')) return; // Already injected
 
   const tapeDiv = document.createElement('div');
@@ -20,10 +27,10 @@
 
   // --- User-configurable tape settings (managed via side-panel Settings) ---
   const TAPE_DEFAULTS = {
-    tapePosition: 'bottom',
-    tapeSize: 'comfortable',
-    tapeTheme: 'dark',
-    tapeDirection: 'left',
+    tapePosition: 'bottom',      // 'top' | 'bottom'
+    tapeSize: 'comfortable',     // 'compact' | 'comfortable' | 'large'
+    tapeTheme: 'dark',           // 'dark' | 'light'
+    tapeDirection: 'left',       // 'left' (default scroll) | 'right'
     tapePauseOnHover: true,
     tapeShowIndices: true,
     tapeShowChange: true,
@@ -48,6 +55,7 @@
     tapeDiv.classList.toggle('screener-tape-light', tapeTheme === 'light');
     tapeDiv.classList.toggle('screener-tape-hide-change', tapeShowChange === false);
     tapeDiv.classList.toggle('screener-tape-hide-amount', tapeShowAmount === false);
+    // Keep the page offset in sync with the tape height + position
     const root = document.documentElement;
     const sizeH = tapeSize === 'compact' ? '26px' : (tapeSize === 'large' ? '38px' : '30px');
     root.style.setProperty('--screener-tape-h', sizeH);
@@ -80,10 +88,10 @@
   const tapeControls = document.createElement('div');
   tapeControls.className = 'screener-tape-controls';
   tapeControls.innerHTML = `
-    <button class="screener-tape-scroll-btn" data-direction="left" type="button" title="Scroll tape left" aria-label="Scroll tape left">
+    <button class="screener-tape-scroll-btn" data-direction="left" type="button" title="${t('tapeScrollLeft')}" aria-label="${t('tapeScrollLeft')}">
       <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
     </button>
-    <button class="screener-tape-scroll-btn" data-direction="right" type="button" title="Scroll tape right" aria-label="Scroll tape right">
+    <button class="screener-tape-scroll-btn" data-direction="right" type="button" title="${t('tapeScrollRight')}" aria-label="${t('tapeScrollRight')}">
       <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m8.59 16.59 1.41 1.41 6-6-6-6-1.41 1.41L13.17 12z"/></svg>
     </button>
   `;
@@ -103,7 +111,7 @@
       <div class="screener-modal-header">
         <div>
           <h3 class="screener-modal-title" id="screener-modal-title">Company Name</h3>
-          <div class="screener-modal-subtitle" id="screener-modal-subtitle">Details</div>
+          <div class="screener-modal-subtitle" id="screener-modal-subtitle">${t('modalDetails')}</div>
         </div>
         <button class="screener-modal-close" id="screener-modal-close">&times;</button>
       </div>
@@ -122,7 +130,7 @@
         <div class="screener-metrics-grid" id="screener-metrics-grid"></div>
       </div>
       <div class="screener-modal-footer">
-        <a href="#" target="_blank" class="screener-btn-details" id="screener-btn-details">View Details</a>
+        <a href="#" target="_blank" class="screener-btn-details" id="screener-btn-details">${t('viewDetails')}</a>
       </div>
     </div>
   `;
@@ -147,7 +155,7 @@
     const points = chartData?.data || (Array.isArray(chartData) ? chartData : []);
     const timestamps = chartData?.timestamps || [];
     if (points.length < 2) {
-      containerEl.innerHTML = '<span style="color:#9aa0a6;font-size:12px;">No chart data</span>';
+      containerEl.innerHTML = '<span style="color:#9aa0a6;font-size:12px;">' + t('chartNoData') + '</span>';
       return;
     }
     const min = Math.min(...points);
@@ -353,7 +361,7 @@
       const labelEl = modalBackdrop.querySelector('#screener-return-label');
       const valEl = modalBackdrop.querySelector('#screener-period-return');
       if (!labelEl || !valEl) return;
-      const labelMap = { '1mo': '1M Return', '6mo': '6M Return', '1y': '1Y Return', '3y': '3Y Return', '5y': '5Y Return', '10y': '10Y Return', 'max': 'Overall Return' };
+      const labelMap = { '1mo': t('ret1M'), '6mo': t('ret6M'), '1y': t('ret1Y'), '3y': t('ret3Y'), '5y': t('ret5Y'), '10y': t('ret10Y'), 'max': t('retMax') };
       labelEl.textContent = labelMap[range] || `${range} Return`;
       if (!dataArray || dataArray.length < 2) {
         valEl.textContent = '-';
@@ -685,7 +693,7 @@
 
     if (isIndex) {
       titleEl.innerText = ticker; // e.g. "S&P 500 (USA)"
-      subtitleEl.innerText = `Market Index • ${data.symbol || ''}`;
+      subtitleEl.innerText = t('modalSubtitleIndex', data.symbol || '');
       descEl.innerText = '';
       
       const price = data.price || '';
@@ -694,11 +702,11 @@
       
       metricsHtml = `
         <div class="screener-metric-box">
-          <span class="screener-metric-label">Last Price</span>
+          <span class="screener-metric-label">${t('metricLastPrice')}</span>
           <span class="screener-metric-val">${price}</span>
         </div>
         <div class="screener-metric-box">
-          <span class="screener-metric-label" id="screener-return-label">1M Return</span>
+          <span class="screener-metric-label" id="screener-return-label">${t('ret1M')}</span>
           <span class="screener-metric-val ${colorCls}" id="screener-period-return">${pct}</span>
         </div>
       `;
@@ -709,8 +717,8 @@
       titleEl.innerText = data.companyName || ticker;
       
       const ratios = data.ratios || {};
-      const sector = ratios['Type'] || ratios['Sector'] || 'Equity';
-      const exchange = ratios['Exchange'] || (data.source === 'yahoo' ? 'Global' : 'NSE/BSE');
+      const sector = ratios['Type'] || ratios['Sector'] || t('modalSectorDefault');
+      const exchange = ratios['Exchange'] || (data.source === 'yahoo' ? t('modalGlobal') : t('modalExchangeDefault'));
       subtitleEl.innerText = `${sector} • ${exchange} • ${ticker}`;
       
       descEl.innerText = data.aboutText || '';
@@ -719,11 +727,11 @@
       const colorCls = data.changeDir === 'up' ? 'screener-metric-up' : 'screener-metric-down';
 
       const metrics = [
-        { label: 'Last Price', val: ratios['Current Price'] || '-' },
-        { label: '1M Return', val: `<span class="${colorCls}" id="screener-period-return">${pct}</span>`, labelId: 'screener-return-label' },
-        { label: 'Market Cap', val: formatMcapWithCurrency(ratios['Market Cap'], data) },
-        { label: 'P/E Ratio', val: ratios['Stock P/E'] || '-' },
-        { label: 'Div Yield', val: ratios['Dividend Yield'] || '-' },
+        { label: t('metricLastPrice'), val: ratios['Current Price'] || '-' },
+        { label: t('ret1M'), val: `<span class="${colorCls}" id="screener-period-return">${pct}</span>`, labelId: 'screener-return-label' },
+        { label: t('ratioMCap'), val: formatMcapWithCurrency(ratios['Market Cap'], data) },
+        { label: t('metricPERatio'), val: ratios['Stock P/E'] || '-' },
+        { label: t('metricDivYield'), val: ratios['Dividend Yield'] || '-' },
         { label: 'ROCE', val: ratios['ROCE'] || '-' }
       ];
 
@@ -895,17 +903,18 @@
             const data = cached[ticker];
             if (data && data.success && priceSpan) {
               const price = data.ratios['Current Price'] || '-';
-              
+              const isUp = data.changeDir === 'up';
+
               if (data.flash && (Date.now() - (data.flashTime || 0) < 1000)) {
-                priceSpan.className = 'screener-ticker-price ' + (data.changeDir === 'up' ? 'screener-price-up' : 'screener-price-down') + ' ' + (data.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down');
+                priceSpan.className = 'screener-ticker-price ' + (isUp ? 'screener-price-up' : 'screener-price-down') + ' ' + (data.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down');
               } else {
-                priceSpan.className = 'screener-ticker-price ' + (data.changeDir === 'up' ? 'screener-price-up' : 'screener-price-down');
+                priceSpan.className = 'screener-ticker-price ' + (isUp ? 'screener-price-up' : 'screener-price-down');
               }
               priceSpan.textContent = price;
 
               const movesWrap = node.querySelector('.screener-ticker-moves');
               if (movesWrap && data.changePct) {
-                movesWrap.innerHTML = changeAreaHtml(price, data.changePct, data.changePct, data.changeDir === 'up');
+                movesWrap.innerHTML = changeAreaHtml(price, data.changePct, data.changePct, isUp);
               }
             }
           }
@@ -932,7 +941,7 @@
 
         html += `
           <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${idxName}" data-is-index="true" style="cursor: pointer;">
-            <span class="screener-ticker-name">${idxName}</span>
+            <span class="screener-ticker-name">${idxName.replace(/\s*\(.*\)\s*$/, '')}</span>
             <span class="screener-ticker-price ${isUp ? 'screener-price-up' : 'screener-price-down'} ${flashClass}">${idx.price}</span>
             <span class="screener-ticker-moves" style="margin-left: 6px;">${changeAreaHtml(idx.price, idx.changePct, Math.abs(parseFloat(idx.changePct)).toFixed(2) + '%', isUp)}</span>
           </div>
@@ -954,7 +963,7 @@
 
           html += `
             <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${ticker}" style="cursor: pointer;">
-              <span class="screener-ticker-name">${data.companyName || ticker}</span>
+              <span class="screener-ticker-name">${ticker}</span>
               <span class="screener-ticker-price ${data.changeDir === 'up' ? 'screener-price-up' : 'screener-price-down'} ${flashClass}">${price}</span>
               ${movesHtml}
             </div>
@@ -963,7 +972,7 @@
       }
       
       if (html === '') {
-        marquee.innerHTML = `<div class="screener-ticker-item">Loading Screener Watchlist...</div>`;
+        marquee.innerHTML = `<div class="screener-ticker-item">${t('tapeLoading')}</div>`;
       } else {
         let itemsCount = Object.keys(visibleIndices).length + list.length;
         let gapHtml = '';
@@ -979,10 +988,128 @@
     } catch (e) { /* context invalidated mid-render — stop quietly */ }
   }
 
+  // ── Watchlist import: scrape tickers from the open page ─────────────
+  // Handles Zerodha Kite, Screener.in and TradingView with site-specific
+  // selectors, plus a conservative generic fallback. Runs in page context
+  // so login-walled watchlists (Kite) are readable. Responds via
+  // chrome.tabs.sendMessage from the side panel — no extra permissions.
+  function cleanRawToken(s) {
+    let v = String(s || '').trim();
+    // TradingView "EXCHANGE:SYMBOL" -> keep both parts (exchange helps resolve)
+    const tv = v.match(/^([A-Z]{2,12}):([A-Za-z0-9.\-^=_]{1,24})$/);
+    if (tv) return { token: tv[2].toUpperCase(), tvExchange: tv[1].toUpperCase() };
+    // Kite rows sometimes render "RELIANCE NSE" / "INFY BSE"
+    v = v.replace(/\s+(NSE|BSE|NFO|CDS|MCX)$/i, '').trim();
+    v = v.replace(/^(NSE|BSE|NASDAQ|NYSE|AMEX)[:\s-]+/i, '').trim();
+    return { token: v.toUpperCase(), tvExchange: '' };
+  }
+  function isPlausibleTicker(tok) {
+    if (!tok) return false;
+    if (tok.length < 1 || tok.length > 24) return false;
+    if (!/^[A-Z0-9.\-^=_]+$/.test(tok)) return false;
+    if (/^[0-9.\-^=_]+$/.test(tok)) return false; // pure numbers aren't tickers
+    const junk = ['NSE', 'BSE', 'BUY', 'SELL', 'OPEN', 'HIGH', 'LOW', 'CLOSE', 'VOLUME', 'CHANGE', 'PRICE', 'MARKET', 'WATCHLIST', 'HOLDINGS', 'POSITIONS', 'ORDER', 'ORDERS', 'TRADE', 'CHART'];
+    if (junk.indexOf(tok) !== -1) return false;
+    return true;
+  }
+  function pushTokens(out, seen, values) {
+    (values || []).forEach((entry) => {
+      const c = cleanRawToken(entry && entry.value !== undefined ? entry.value : entry);
+      const tok = c.token;
+      if (!isPlausibleTicker(tok) || seen[tok]) return;
+      seen[tok] = true;
+      out.push({ raw: tok, tvExchange: (entry && entry.tvExchange) || c.tvExchange || '' });
+    });
+  }
+  function textOf(el) { try { return (el.textContent || '').trim(); } catch (e) { return ''; } }
+  function extractWatchlistForImport() {
+    const host = String(location.hostname || '').toLowerCase();
+    const url = String(location.href || '');
+    const out = [];
+    const seen = {};
+    let site = 'generic';
+    try {
+      if (host.indexOf('kite.zerodha.com') !== -1 || host.indexOf('kite.trade') !== -1) {
+        site = 'kite';
+        // Kite 3 web: each watchlist row is .instrument with .symbol/.nice-name
+        const rows = document.querySelectorAll('.instrument, [class*="instrument-"], [data-instrument_token], .marketwatch .vddl-draggable');
+        rows.forEach((row) => {
+          const symEl = row.querySelector('.symbol, [class*="symbol"], .nice-name, [class*="nice-name"]');
+          const txt = textOf(symEl || row).split('\n')[0];
+          if (txt) pushTokens(out, seen, [txt.split(/\s{2,}|\t/)[0]]);
+        });
+        // Fallback: dedicated symbol spans
+        if (!out.length) {
+          pushTokens(out, seen, Array.prototype.map.call(
+            document.querySelectorAll('.marketwatch .symbol, .watchlist .symbol, span.instrument-symbol'),
+            textOf));
+        }
+      } else if (host.indexOf('screener.in') !== -1) {
+        site = 'screener';
+        // Watchlist / screens / search results link to /company/<SYMBOL>/
+        const links = document.querySelectorAll('a[href*="/company/"]');
+        const vals = [];
+        links.forEach((a) => {
+          const m = String(a.getAttribute('href') || '').match(/\/company\/([A-Za-z0-9.\-&]+)\/?/);
+          if (m) vals.push(m[1].toUpperCase());
+          else if (textOf(a)) vals.push(textOf(a).split('\n')[0]);
+        });
+        pushTokens(out, seen, vals);
+        // Screen tables: first column company link text
+        if (!out.length) {
+          pushTokens(out, seen, Array.prototype.map.call(
+            document.querySelectorAll('table td a'), textOf));
+        }
+      } else if (host.indexOf('tradingview.com') !== -1) {
+        site = 'tradingview';
+        const vals = [];
+        document.querySelectorAll('[data-symbol-short], [data-ticker], [data-symbol]').forEach((el) => {
+          const v = el.getAttribute('data-symbol-short') || el.getAttribute('data-ticker') || el.getAttribute('data-symbol');
+          if (v) vals.push(v);
+        });
+        // Watchlist rows: title like "NSE:RELIANCE" inside row aria-labels/titles
+        document.querySelectorAll('[class*="watchlist"] [class*="symbol"], [class*="listRow"] [class*="ticker"], .tv-watch-list__symbol').forEach((el) => {
+          const ttxt = textOf(el).split('\n')[0];
+          const title = el.getAttribute('title') || el.getAttribute('aria-label') || '';
+          if (title && title.indexOf(':') !== -1) vals.push(title.split(' ').pop());
+          else if (ttxt) vals.push(ttxt);
+        });
+        pushTokens(out, seen, vals);
+      }
+      // Generic fallback (any broker/screener page): company links + data-symbol
+      // attributes + dense uppercase token scan of table first columns.
+      if (!out.length) {
+        site = host.replace(/^www\./, '') || 'generic';
+        const vals = [];
+        document.querySelectorAll('a[href*="/company/"]').forEach((a) => {
+          const m = String(a.getAttribute('href') || '').match(/\/company\/([A-Za-z0-9.\-&]+)\/?/);
+          if (m) vals.push(m[1].toUpperCase());
+        });
+        document.querySelectorAll('[data-symbol-short], [data-ticker], [data-symbol], [data-instrument_token]').forEach((el) => {
+          const v = el.getAttribute('data-symbol-short') || el.getAttribute('data-ticker') || el.getAttribute('data-symbol');
+          if (v) vals.push(v);
+        });
+        document.querySelectorAll('table tbody tr').forEach((tr) => {
+          const first = tr.querySelector('td a, td strong, td');
+          if (first) {
+            const ttxt = textOf(first).split('\n')[0].trim();
+            if (ttxt && ttxt.length <= 24) vals.push(ttxt);
+          }
+        });
+        pushTokens(out, seen, vals);
+      }
+    } catch (e) { /* DOM scrape must never break the tape */ }
+    return { site, url, items: out.slice(0, 200) };
+  }
+
   // Listen for updates from background script and sidepanel
   try {
-  chrome.runtime.onMessage.addListener((msg) => {
+  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (!isContextValid()) return;
+    if (msg.type === 'SCREENER_EXTRACT_WATCHLIST') {
+      try { sendResponse(extractWatchlistForImport()); } catch (e) {}
+      return true;
+    }
     if (msg.type === 'WATCHLIST_UPDATED') {
       renderTape();
     }

@@ -988,10 +988,128 @@
     } catch (e) { /* context invalidated mid-render — stop quietly */ }
   }
 
+  // ── Watchlist import: scrape tickers from the open page ─────────────
+  // Handles Zerodha Kite, Screener.in and TradingView with site-specific
+  // selectors, plus a conservative generic fallback. Runs in page context
+  // so login-walled watchlists (Kite) are readable. Responds via
+  // chrome.tabs.sendMessage from the side panel — no extra permissions.
+  function cleanRawToken(s) {
+    let v = String(s || '').trim();
+    // TradingView "EXCHANGE:SYMBOL" -> keep both parts (exchange helps resolve)
+    const tv = v.match(/^([A-Z]{2,12}):([A-Za-z0-9.\-^=_]{1,24})$/);
+    if (tv) return { token: tv[2].toUpperCase(), tvExchange: tv[1].toUpperCase() };
+    // Kite rows sometimes render "RELIANCE NSE" / "INFY BSE"
+    v = v.replace(/\s+(NSE|BSE|NFO|CDS|MCX)$/i, '').trim();
+    v = v.replace(/^(NSE|BSE|NASDAQ|NYSE|AMEX)[:\s-]+/i, '').trim();
+    return { token: v.toUpperCase(), tvExchange: '' };
+  }
+  function isPlausibleTicker(tok) {
+    if (!tok) return false;
+    if (tok.length < 1 || tok.length > 24) return false;
+    if (!/^[A-Z0-9.\-^=_]+$/.test(tok)) return false;
+    if (/^[0-9.\-^=_]+$/.test(tok)) return false; // pure numbers aren't tickers
+    const junk = ['NSE', 'BSE', 'BUY', 'SELL', 'OPEN', 'HIGH', 'LOW', 'CLOSE', 'VOLUME', 'CHANGE', 'PRICE', 'MARKET', 'WATCHLIST', 'HOLDINGS', 'POSITIONS', 'ORDER', 'ORDERS', 'TRADE', 'CHART'];
+    if (junk.indexOf(tok) !== -1) return false;
+    return true;
+  }
+  function pushTokens(out, seen, values) {
+    (values || []).forEach((entry) => {
+      const c = cleanRawToken(entry && entry.value !== undefined ? entry.value : entry);
+      const tok = c.token;
+      if (!isPlausibleTicker(tok) || seen[tok]) return;
+      seen[tok] = true;
+      out.push({ raw: tok, tvExchange: (entry && entry.tvExchange) || c.tvExchange || '' });
+    });
+  }
+  function textOf(el) { try { return (el.textContent || '').trim(); } catch (e) { return ''; } }
+  function extractWatchlistForImport() {
+    const host = String(location.hostname || '').toLowerCase();
+    const url = String(location.href || '');
+    const out = [];
+    const seen = {};
+    let site = 'generic';
+    try {
+      if (host.indexOf('kite.zerodha.com') !== -1 || host.indexOf('kite.trade') !== -1) {
+        site = 'kite';
+        // Kite 3 web: each watchlist row is .instrument with .symbol/.nice-name
+        const rows = document.querySelectorAll('.instrument, [class*="instrument-"], [data-instrument_token], .marketwatch .vddl-draggable');
+        rows.forEach((row) => {
+          const symEl = row.querySelector('.symbol, [class*="symbol"], .nice-name, [class*="nice-name"]');
+          const txt = textOf(symEl || row).split('\n')[0];
+          if (txt) pushTokens(out, seen, [txt.split(/\s{2,}|\t/)[0]]);
+        });
+        // Fallback: dedicated symbol spans
+        if (!out.length) {
+          pushTokens(out, seen, Array.prototype.map.call(
+            document.querySelectorAll('.marketwatch .symbol, .watchlist .symbol, span.instrument-symbol'),
+            textOf));
+        }
+      } else if (host.indexOf('screener.in') !== -1) {
+        site = 'screener';
+        // Watchlist / screens / search results link to /company/<SYMBOL>/
+        const links = document.querySelectorAll('a[href*="/company/"]');
+        const vals = [];
+        links.forEach((a) => {
+          const m = String(a.getAttribute('href') || '').match(/\/company\/([A-Za-z0-9.\-&]+)\/?/);
+          if (m) vals.push(m[1].toUpperCase());
+          else if (textOf(a)) vals.push(textOf(a).split('\n')[0]);
+        });
+        pushTokens(out, seen, vals);
+        // Screen tables: first column company link text
+        if (!out.length) {
+          pushTokens(out, seen, Array.prototype.map.call(
+            document.querySelectorAll('table td a'), textOf));
+        }
+      } else if (host.indexOf('tradingview.com') !== -1) {
+        site = 'tradingview';
+        const vals = [];
+        document.querySelectorAll('[data-symbol-short], [data-ticker], [data-symbol]').forEach((el) => {
+          const v = el.getAttribute('data-symbol-short') || el.getAttribute('data-ticker') || el.getAttribute('data-symbol');
+          if (v) vals.push(v);
+        });
+        // Watchlist rows: title like "NSE:RELIANCE" inside row aria-labels/titles
+        document.querySelectorAll('[class*="watchlist"] [class*="symbol"], [class*="listRow"] [class*="ticker"], .tv-watch-list__symbol').forEach((el) => {
+          const ttxt = textOf(el).split('\n')[0];
+          const title = el.getAttribute('title') || el.getAttribute('aria-label') || '';
+          if (title && title.indexOf(':') !== -1) vals.push(title.split(' ').pop());
+          else if (ttxt) vals.push(ttxt);
+        });
+        pushTokens(out, seen, vals);
+      }
+      // Generic fallback (any broker/screener page): company links + data-symbol
+      // attributes + dense uppercase token scan of table first columns.
+      if (!out.length) {
+        site = host.replace(/^www\./, '') || 'generic';
+        const vals = [];
+        document.querySelectorAll('a[href*="/company/"]').forEach((a) => {
+          const m = String(a.getAttribute('href') || '').match(/\/company\/([A-Za-z0-9.\-&]+)\/?/);
+          if (m) vals.push(m[1].toUpperCase());
+        });
+        document.querySelectorAll('[data-symbol-short], [data-ticker], [data-symbol], [data-instrument_token]').forEach((el) => {
+          const v = el.getAttribute('data-symbol-short') || el.getAttribute('data-ticker') || el.getAttribute('data-symbol');
+          if (v) vals.push(v);
+        });
+        document.querySelectorAll('table tbody tr').forEach((tr) => {
+          const first = tr.querySelector('td a, td strong, td');
+          if (first) {
+            const ttxt = textOf(first).split('\n')[0].trim();
+            if (ttxt && ttxt.length <= 24) vals.push(ttxt);
+          }
+        });
+        pushTokens(out, seen, vals);
+      }
+    } catch (e) { /* DOM scrape must never break the tape */ }
+    return { site, url, items: out.slice(0, 200) };
+  }
+
   // Listen for updates from background script and sidepanel
   try {
-  chrome.runtime.onMessage.addListener((msg) => {
+  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (!isContextValid()) return;
+    if (msg.type === 'SCREENER_EXTRACT_WATCHLIST') {
+      try { sendResponse(extractWatchlistForImport()); } catch (e) {}
+      return true;
+    }
     if (msg.type === 'WATCHLIST_UPDATED') {
       renderTape();
     }

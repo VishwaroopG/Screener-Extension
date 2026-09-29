@@ -1781,6 +1781,322 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // --- Import watchlist (Zerodha Kite / Screener.in / TradingView / paste / CSV) ---
+  // Merges into the active portfolio. Flow: scrape open tab OR paste text OR
+  // upload CSV -> preview with checkboxes -> resolve via background
+  // (RESOLVE_IMPORT_TICKERS) -> merge missing symbols -> FORCE_SYNC.
+  const btnImportWatchlist = document.getElementById('btn-import-watchlist');
+  const importModal = document.getElementById('import-modal');
+  const btnImportClose = document.getElementById('btn-import-close');
+  const btnImportCancel = document.getElementById('btn-import-cancel');
+  const btnImportScrape = document.getElementById('btn-import-scrape');
+  const importScrapeStatus = document.getElementById('import-scrape-status');
+  const importPaste = document.getElementById('import-paste');
+  const importFile = document.getElementById('import-file');
+  const importFileName = document.getElementById('import-file-name');
+  const importPreviewWrap = document.getElementById('import-preview-wrap');
+  const importPreview = document.getElementById('import-preview');
+  const importPreviewCount = document.getElementById('import-preview-count');
+  const btnImportSelectAll = document.getElementById('btn-import-select-all');
+  const importStatus = document.getElementById('import-status');
+  const btnImportConfirm = document.getElementById('btn-import-confirm');
+  let importCandidates = []; // [{ raw, tvExchange, checked }]
+
+  function openImportModal() {
+    if (!importModal) return;
+    importModal.style.display = 'flex';
+    setImportStatus('');
+    if (importScrapeStatus) importScrapeStatus.textContent = '';
+  }
+  function closeImportModal() {
+    if (!importModal) return;
+    importModal.style.display = 'none';
+  }
+  function setImportStatus(msg) {
+    if (importStatus) importStatus.textContent = msg || '';
+  }
+  function setScrapeStatus(msg) {
+    if (importScrapeStatus) importScrapeStatus.textContent = msg || '';
+  }
+  function normalizeImportToken(s) {
+    let v = String(s || '').trim();
+    if (!v) return '';
+    // TradingView "EXCHANGE:SYMBOL" -> symbol; keep NSE/BSE hint in tvExchange
+    let tvExchange = '';
+    const tv = v.match(/^([A-Za-z]{2,12}):([A-Za-z0-9.\-^=_]{1,24})$/);
+    if (tv) { tvExchange = tv[1].toUpperCase(); v = tv[2]; }
+    v = v.toUpperCase().replace(/^["'\s]+|["'\s]+$/g, '');
+    v = v.replace(/^(NSE|BSE)[:-]\s*/i, '');
+    if (!/^[A-Z0-9.\-^=_]{1,24}$/.test(v)) return '';
+    if (/^[0-9.\-^=_]+$/.test(v)) return '';
+    return v ? { raw: v, tvExchange } : '';
+  }
+  function setImportCandidates(list, sourceLabel) {
+    const seen = {};
+    importCandidates = [];
+    (list || []).forEach((entry) => {
+      const norm = normalizeImportToken(entry && entry.raw !== undefined ? entry.raw : entry);
+      if (!norm || seen[norm.raw]) return;
+      seen[norm.raw] = true;
+      importCandidates.push({ raw: norm.raw, tvExchange: (entry && entry.tvExchange) || norm.tvExchange || '', checked: true });
+    });
+    renderImportPreview();
+    if (importCandidates.length) {
+      setImportStatus((t('importFound') || 'Found {N} tickers') .replace('{N}', String(importCandidates.length)) + (sourceLabel ? ' — ' + sourceLabel : ''));
+    } else {
+      setImportStatus(t('importNoneFound') || 'No tickers found. Try pasting or a CSV file.');
+    }
+  }
+  function paintImportSelection() {
+    const total = importCandidates.length;
+    const sel = importCandidates.filter((c) => c.checked).length;
+    if (importPreviewCount) {
+      importPreviewCount.textContent = (t('importSelectedCount') || '{S} of {N} selected')
+        .replace('{S}', String(sel)).replace('{N}', String(total));
+    }
+    if (btnImportSelectAll) {
+      const allOn = total > 0 && sel === total;
+      btnImportSelectAll.textContent = allOn
+        ? (t('importSelectNone') || 'None')
+        : (t('importSelectAll') || 'All');
+    }
+  }
+  function renderImportPreview() {
+    if (!importPreview || !importPreviewWrap) return;
+    if (!importCandidates.length) {
+      importPreviewWrap.style.display = 'none';
+      return;
+    }
+    importPreviewWrap.style.display = '';
+    importPreview.innerHTML = '';
+    importCandidates.forEach((c, idx) => {
+      const label = document.createElement('label');
+      label.className = 'import-preview-row' + (c.checked ? ' checked' : '');
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = c.checked;
+      cb.setAttribute('aria-label', c.raw);
+      cb.addEventListener('change', () => {
+        importCandidates[idx].checked = cb.checked;
+        label.classList.toggle('checked', cb.checked);
+        paintImportSelection();
+      });
+      const num = document.createElement('span');
+      num.className = 'import-preview-idx';
+      num.textContent = String(idx + 1);
+      const span = document.createElement('span');
+      span.className = 'import-preview-ticker';
+      span.textContent = c.raw;
+      span.title = c.raw + (c.tvExchange ? ' (' + c.tvExchange + ')' : '');
+      label.appendChild(cb);
+      label.appendChild(num);
+      label.appendChild(span);
+      importPreview.appendChild(label);
+    });
+    paintImportSelection();
+  }
+  // Paste box -> candidates (live, debounced)
+  let importPasteTimer = null;
+  if (importPaste) importPaste.addEventListener('input', () => {
+    clearTimeout(importPasteTimer);
+    importPasteTimer = setTimeout(() => {
+      const text = importPaste.value || '';
+      if (!text.trim()) return;
+      const parts = text.split(/[,;\s|]+/);
+      setImportCandidates(parts, t('importSourcePaste') || 'pasted');
+    }, 400);
+  });
+  // CSV / TXT file -> candidates. Handles Zerodha holdings (Instrument/Scrip),
+  // Screener.in exports and TradingView exports (Ticker like NSE:RELIANCE).
+  function splitCsvLine(line) {
+    const cells = [];
+    let cur = '';
+    let inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') {
+        if (inQ && line[i + 1] === '"') { cur += '"'; i++; }
+        else inQ = !inQ;
+      } else if ((ch === ',' || ch === ';' || ch === '\t') && !inQ) {
+        cells.push(cur.trim());
+        cur = '';
+      } else {
+        cur += ch;
+      }
+    }
+    cells.push(cur.trim());
+    return cells.map((c) => c.replace(/^"|"$/g, '').trim());
+  }
+  function parseImportCsv(text) {
+    const lines = String(text || '').split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+    if (!lines.length) return [];
+    let startIdx = 0;
+    let symIdx = 0;
+    const headerCells = splitCsvLine(lines[0]);
+    const isHeader = headerCells.some((c) => /instrument|symbol|scrip|ticker|security|tradingsymbol|company/i.test(c));
+    if (isHeader) {
+      startIdx = 1;
+      let best = -1;
+      headerCells.forEach((c, i) => {
+        if (/tradingsymbol|symbol|ticker/i.test(c) && best === -1) best = i;
+      });
+      if (best === -1) headerCells.forEach((c, i) => {
+        if (/instrument|scrip|security/i.test(c) && best === -1) best = i;
+      });
+      symIdx = best === -1 ? 0 : best;
+    } else if (lines.length && splitCsvLine(lines[0]).length > 1) {
+      // No header but multi-column (e.g. holdings with qty): symbol usually col 0
+      symIdx = 0;
+    }
+    const vals = [];
+    for (let i = startIdx; i < lines.length; i++) {
+      const cells = splitCsvLine(lines[i]);
+      const cell = cells[Math.min(symIdx, cells.length - 1)] || cells[0] || '';
+      // Skip summary/footer rows (totals, dates, numbers)
+      if (/total|grand|summary|^\d{4}-\d{2}-\d{2}/i.test(cell)) continue;
+      if (cell) vals.push(cell);
+    }
+    return vals;
+  }
+  if (importFile) importFile.addEventListener('change', () => {
+    const f = importFile.files && importFile.files[0];
+    if (importFileName) importFileName.textContent = f ? f.name : '';
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        setImportCandidates(parseImportCsv(reader.result), f.name);
+      } catch (e) {
+        setImportStatus(t('importFileError') || 'Could not read that file.');
+      }
+    };
+    reader.onerror = () => setImportStatus(t('importFileError') || 'Could not read that file.');
+    reader.readAsText(f);
+  });
+  // Scrape the active tab via the already-injected content script
+  // (ticker_tape.js answers SCREENER_EXTRACT_WATCHLIST). No new permissions.
+  function scrapeActiveTab() {
+    setScrapeStatus(t('importDetecting') || 'Detecting tickers on the open tab…');
+    setImportStatus('');
+    try {
+      if (chrome.tabs && chrome.tabs.query) {
+        chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+          if (chrome.runtime.lastError) {
+            setScrapeStatus(t('importTabBlocked') || 'Cannot read this tab. Paste tickers or upload a CSV instead.');
+            return;
+          }
+          const tab = tabs && tabs[0];
+          if (!tab || !tab.id) {
+            setScrapeStatus(t('importTabBlocked') || 'Cannot read this tab. Paste tickers or upload a CSV instead.');
+            return;
+          }
+          const url = String(tab.url || '');
+          if (!/^https?:\/\//i.test(url)) {
+            setScrapeStatus(t('importTabBlocked') || 'Cannot read this tab. Paste tickers or upload a CSV instead.');
+            return;
+          }
+          let responded = false;
+          try {
+            chrome.tabs.sendMessage(tab.id, { type: 'SCREENER_EXTRACT_WATCHLIST' }, (res) => {
+              responded = true;
+              if (chrome.runtime.lastError || !res) {
+                setScrapeStatus(t('importTabEmpty') || 'Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry — or paste below.');
+                return;
+              }
+              const items = (res.items || []).map((it) => (typeof it === 'string' ? { raw: it } : it));
+              if (!items.length) {
+                setScrapeStatus(t('importTabEmpty') || 'Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry — or paste below.');
+                return;
+              }
+              setImportCandidates(items, res.site || '');
+              setScrapeStatus((t('importDetected') || 'Detected {N} from {S}').replace('{N}', String(items.length)).replace('{S}', res.site || url));
+            });
+          } catch (e) {
+            setScrapeStatus(t('importTabBlocked') || 'Cannot read this tab. Paste tickers or upload a CSV instead.');
+            return;
+          }
+          setTimeout(() => {
+            if (!responded) setScrapeStatus(t('importTabEmpty') || 'Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry — or paste below.');
+          }, 5000);
+        });
+      } else {
+        setScrapeStatus(t('importTabBlocked') || 'Cannot read this tab. Paste tickers or upload a CSV instead.');
+      }
+    } catch (e) {
+      setScrapeStatus(t('importTabBlocked') || 'Cannot read this tab. Paste tickers or upload a CSV instead.');
+    }
+  }
+  if (btnImportScrape) btnImportScrape.addEventListener('click', scrapeActiveTab);
+  if (btnImportSelectAll) btnImportSelectAll.addEventListener('click', () => {
+    const allOn = !importCandidates.every((c) => c.checked);
+    importCandidates.forEach((c) => { c.checked = allOn; });
+    renderImportPreview();
+  });
+  // Resolve checked candidates, then merge missing symbols into active portfolio
+  if (btnImportConfirm) btnImportConfirm.addEventListener('click', () => {
+    const selected = importCandidates.filter((c) => c.checked);
+    if (!selected.length) {
+      setImportStatus(t('importSelectFirst') || 'Select at least one ticker first.');
+      return;
+    }
+    btnImportConfirm.disabled = true;
+    setImportStatus(t('importResolving') || 'Resolving tickers…');
+    const payload = selected.map((c) => ({ raw: c.raw, tvExchange: c.tvExchange }));
+    const mergeSymbols = (symbols) => {
+      chrome.storage.local.get(['portfolios'], (res) => {
+        const ports = res.portfolios || {};
+        const list = ports[activePortfolio] || [];
+        const have = {};
+        list.forEach((s) => { have[String(s).toUpperCase()] = true; });
+        let added = 0;
+        let skipped = 0;
+        const addedNow = [];
+        symbols.forEach((sym) => {
+          const up = String(sym || '').toUpperCase();
+          if (!up) return;
+          if (have[up]) { skipped++; return; }
+          have[up] = true;
+          list.push(up);
+          addedNow.push(up);
+          added++;
+        });
+        ports[activePortfolio] = list;
+        const update = { portfolios: ports };
+        if (activePortfolio === 'Sample' || true) update.screenerWatchlist = ports[activePortfolio];
+        chrome.storage.local.set(update, () => {
+          renderWatchlist();
+          try { chrome.runtime.sendMessage({ type: 'FORCE_SYNC' }); } catch (e) {}
+          btnImportConfirm.disabled = false;
+          const parts = [];
+          if (added) parts.push((t('importAdded') || 'Added {N}').replace('{N}', String(added)));
+          if (skipped) parts.push((t('importSkipped') || '{N} already in watchlist').replace('{N}', String(skipped)));
+          setImportStatus(parts.join(' · ') || (t('importDone') || 'Done.'));
+          if (added) {
+            importCandidates = importCandidates.filter((c) => addedNow.indexOf(c.raw) === -1);
+            renderImportPreview();
+          }
+        });
+      });
+    };
+    try {
+      chrome.runtime.sendMessage({ type: 'RESOLVE_IMPORT_TICKERS', tickers: payload }, (res) => {
+        if (chrome.runtime.lastError || !res || !Array.isArray(res.results)) {
+          mergeSymbols(selected.map((c) => c.raw));
+          return;
+        }
+        mergeSymbols(res.results.map((r) => (r && r.symbol) || (r && r.raw)));
+      });
+    } catch (e) {
+      mergeSymbols(selected.map((c) => c.raw));
+    }
+  });
+  if (btnImportWatchlist) btnImportWatchlist.addEventListener('click', openImportModal);
+  if (btnImportClose) btnImportClose.addEventListener('click', closeImportModal);
+  if (btnImportCancel) btnImportCancel.addEventListener('click', closeImportModal);
+  if (importModal) importModal.addEventListener('click', (e) => {
+    if (e.target === importModal) closeImportModal();
+  });
+
   // --- Smart Verdict Engine ---
   function generateVerdict(ratios) {
     const peRaw = ratios['Stock P/E'];

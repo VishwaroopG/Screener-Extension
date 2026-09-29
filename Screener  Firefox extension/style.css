@@ -956,6 +956,56 @@ body.dark-mode .screener-btn-secondary:hover {
   background-color: #3c4043;
 }
 
+/* Import watchlist: ticker preview (selection) list */
+#import-preview {
+  background: var(--bg-color);
+}
+.import-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-color);
+  cursor: pointer;
+  border-radius: 6px;
+  border-bottom: 1px solid var(--border-color);
+}
+.import-preview-row:last-child {
+  border-bottom: none;
+}
+.import-preview-row:hover {
+  background: rgba(26, 115, 232, 0.08);
+}
+.import-preview-row input[type="checkbox"] {
+  accent-color: #1a73e8;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.import-preview-idx {
+  color: var(--label-color);
+  font-size: 11px;
+  min-width: 20px;
+  text-align: right;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+.import-preview-ticker {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.import-preview-row:not(.checked) .import-preview-ticker {
+  color: var(--label-color);
+  font-weight: 400;
+}
+
 /* Global Theme Transitions */
 body, 
 body *,

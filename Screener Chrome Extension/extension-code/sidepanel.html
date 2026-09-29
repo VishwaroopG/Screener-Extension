@@ -79,12 +79,12 @@
     <div id="world-clocks" class="world-clocks" role="region" data-i18n-aria="clocksLabel" aria-label="World market clocks"></div>
     <div id="results-search" class="screener-results"></div>
 
-    <h3 style="margin:12px 0 8px 0; padding-top:10px; border-top:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;" class="dashboard-section-title"><span style="display:flex; align-items:center; gap:8px; min-width:0;"><span data-i18n="watchlistTitle">Your Watchlist</span><button id="btn-rename-portfolio" class="wl-circle-btn" data-i18n-title="renameTitle" title="Rename Portfolio"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button><button id="btn-new-portfolio" class="wl-circle-btn" data-i18n-title="newTitle" title="New Portfolio"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></button></span><span style="font-size:11px; font-weight:500; color:#188038; display:flex; align-items:center; gap:5px;"><span class="screener-live-dot"></span> <span data-i18n="liveBadge">Live</span><button id="btn-watchlist-refresh" data-i18n-title="refreshWatchlistTitle" title="Refresh watchlist" style="background:none; border:1px solid var(--border-color); border-radius:6px; color:var(--label-color); cursor:pointer; font-size:12px; padding:0 7px; margin-left:2px; line-height:1.6;">↻</button></span></h3>
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <select id="portfolio-select" class="screener-input" style="flex:1; margin-right:8px; padding:8px 10px; border-radius:4px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); cursor:pointer;">
+    <h3 style="margin:12px 0 8px 0; padding-top:10px; border-top:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;" class="dashboard-section-title"><span style="display:flex; align-items:center; gap:8px; min-width:0; flex:1 1 auto;"><span data-i18n="watchlistTitle" style="flex-shrink:0;">Your Watchlist</span><button id="btn-rename-portfolio" class="wl-circle-btn" data-i18n-title="renameTitle" title="Rename Portfolio"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button><button id="btn-new-portfolio" class="wl-circle-btn" data-i18n-title="newTitle" title="New Portfolio"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></button><select id="portfolio-select" class="screener-input" style="flex:1 1 60px; min-width:60px; max-width:170px; padding:6px 8px; border-radius:4px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); cursor:pointer; font-size:12px;">
         <option value="Sample">Sample</option>
-      </select>
-      <button id="btn-bulk-select" class="screener-btn" data-i18n="bulkSelect" style="margin-right:8px; padding:8px 12px; border-radius:16px; font-size:12px; flex-shrink:0; line-height:1;" title="Select multiple stocks">Select</button>
+      </select></span><span style="font-size:11px; font-weight:500; color:#188038; display:flex; align-items:center; gap:5px; flex-shrink:0;"><span class="screener-live-dot"></span> <span data-i18n="liveBadge">Live</span><button id="btn-watchlist-refresh" data-i18n-title="refreshWatchlistTitle" title="Refresh watchlist" style="background:none; border:1px solid var(--border-color); border-radius:6px; color:var(--label-color); cursor:pointer; font-size:12px; padding:0 7px; margin-left:2px; line-height:1.6;">↻</button></span></h3>
+    <div style="display:flex; align-items:center; margin-bottom:12px; gap:8px; flex-wrap:wrap;">
+      <button id="btn-bulk-select" class="screener-btn" data-i18n="bulkSelect" style="padding:8px 12px; border-radius:16px; font-size:12px; flex-shrink:0; line-height:1;" title="Select multiple stocks">Select</button>
+      <button id="btn-import-watchlist" class="screener-btn" data-i18n="importTitle" data-i18n-title="importTitle" style="padding:8px 12px; border-radius:16px; font-size:12px; flex-shrink:0; line-height:1; background:#1a73e8;" title="Import watchlist from Zerodha, Screener.in or TradingView">Import</button>
       <button id="btn-export-csv" class="screener-btn" data-i18n-title="exportTitle" style="background:#188038; padding:8px 12px; border-radius:16px; font-size:12px; flex-shrink:0; line-height:1;" title="Export to Excel">CSV</button>
     </div>
     <div id="tag-filter-row" style="display:none; margin-bottom:12px;">
@@ -293,6 +293,38 @@
         <div style="flex:1;"></div>
         <button id="btn-alert-cancel" class="screener-btn screener-btn-secondary" data-i18n="cancelBtn">Cancel</button>
         <button id="btn-alert-save" class="screener-btn screener-btn-primary" data-i18n="saveBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import Watchlist Modal (Zerodha / Screener.in / TradingView / paste / CSV) -->
+  <div id="import-modal" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:flex-start; overflow-y:auto; padding:16px 12px;">
+    <div class="screener-watchlist-card" style="width:100%; max-width:300px; padding:18px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.3);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+        <h3 data-i18n="importTitle" style="margin:0; font-size:15px; font-weight:600; color:var(--text-color);">Import watchlist</h3>
+        <button id="btn-import-close" class="md-icon-btn" data-i18n-title="closeBtn" title="Close" aria-label="Close import">&times;</button>
+      </div>
+      <div data-i18n="importSubtitle" style="font-size:11px; color:var(--label-color); margin-bottom:12px;">From Zerodha Kite, Screener.in or TradingView — merged into this portfolio.</div>
+      <button id="btn-import-scrape" class="screener-btn" data-i18n="importScrapeBtn" style="width:100%; padding:8px 0; font-size:12px; background:#1a73e8; margin-bottom:6px;">Detect from open tab</button>
+      <div id="import-scrape-status" style="font-size:11px; color:var(--label-color); margin-bottom:10px; min-height:15px;"></div>
+      <label data-i18n="importPasteLabel" style="display:block; font-size:11px; font-weight:600; color:var(--label-color); margin-bottom:4px;">Or paste tickers (comma / space / newline separated):</label>
+      <textarea id="import-paste" class="screener-input" data-i18n-ph="importPastePh" placeholder="e.g. RELIANCE, INFY, AAPL&#10;HDFCBANK&#10;TCS" rows="3" style="width:100%; padding:8px 10px; border-radius:6px; font-size:12px; resize:vertical; font-family:inherit; box-sizing:border-box;"></textarea>
+      <div style="display:flex; align-items:center; gap:8px; margin-top:10px;">
+        <label for="import-file" class="screener-btn screener-btn-secondary" data-i18n="importFileBtn" style="padding:6px 12px; font-size:12px; cursor:pointer; flex-shrink:0;">Choose CSV file</label>
+        <input type="file" id="import-file" accept=".csv,.txt,text/csv,text/plain" style="display:none;">
+        <span id="import-file-name" style="font-size:11px; color:var(--label-color); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; flex:1;"></span>
+      </div>
+      <div id="import-preview-wrap" style="display:none; margin-top:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <span id="import-preview-count" style="font-size:11px; font-weight:600; color:var(--text-color);"></span>
+          <button id="btn-import-select-all" class="screener-btn screener-btn-secondary" style="padding:3px 10px; font-size:11px;">All</button>
+        </div>
+        <div id="import-preview" style="max-height:150px; overflow-y:auto; border:1px solid var(--border-color); border-radius:8px; padding:6px;"></div>
+      </div>
+      <div id="import-status" style="font-size:11px; color:var(--label-color); margin-top:8px; min-height:16px;"></div>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px; flex-wrap:wrap;">
+        <button id="btn-import-cancel" class="screener-btn screener-btn-secondary" data-i18n="cancelBtn" style="padding:6px 14px; font-size:12px;">Cancel</button>
+        <button id="btn-import-confirm" class="screener-btn" data-i18n="importAddBtn" style="padding:6px 16px; font-size:12px; background:#188038;">Add to watchlist</button>
       </div>
     </div>
   </div>

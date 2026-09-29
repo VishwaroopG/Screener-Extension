@@ -257,6 +257,78 @@
   "exportTitle": {
     "message": "Export to Excel"
   },
+  "importTitle": {
+    "message": "Import watchlist"
+  },
+  "importSubtitle": {
+    "message": "From Zerodha Kite, Screener.in or TradingView — merged into this portfolio."
+  },
+  "importScrapeBtn": {
+    "message": "Detect from open tab"
+  },
+  "importPasteLabel": {
+    "message": "Or paste tickers (comma / space / newline separated):"
+  },
+  "importPastePh": {
+    "message": "e.g. RELIANCE, INFY, AAPL"
+  },
+  "importFileBtn": {
+    "message": "Choose CSV file"
+  },
+  "importAddBtn": {
+    "message": "Add to watchlist"
+  },
+  "importFound": {
+    "message": "Found {N} tickers"
+  },
+  "importNoneFound": {
+    "message": "No tickers found. Try pasting or a CSV file."
+  },
+  "importPreviewCount": {
+    "message": "{N} tickers"
+  },
+  "importSelectedCount": {
+    "message": "{S} of {N} selected"
+  },
+  "importSelectAll": {
+    "message": "All"
+  },
+  "importSelectNone": {
+    "message": "None"
+  },
+  "importSourcePaste": {
+    "message": "pasted"
+  },
+  "importFileError": {
+    "message": "Could not read that file."
+  },
+  "importDetecting": {
+    "message": "Detecting tickers on the open tab…"
+  },
+  "importTabBlocked": {
+    "message": "Cannot read this tab. Paste tickers or upload a CSV instead."
+  },
+  "importTabEmpty": {
+    "message": "Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry — or paste below."
+  },
+  "importDetected": {
+    "message": "Detected {N} from {S}"
+  },
+  "importSelectFirst": {
+    "message": "Select at least one ticker first."
+  },
+  "importResolving": {
+    "message": "Resolving tickers…"
+  },
+  "importAdded": {
+    "message": "Added {N}"
+  },
+  "importSkipped": {
+    "message": "{N} already in watchlist"
+  },
+  "importDone": {
+    "message": "Done."
+  },
   "portfolioExists": {
     "message": "A portfolio with this name already exists!"
   },

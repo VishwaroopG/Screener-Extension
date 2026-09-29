@@ -949,6 +949,42 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 
+  if (message.type === 'RESOLVE_IMPORT_TICKERS') {
+    const rawList = Array.isArray(message.tickers) ? message.tickers : [];
+    (async () => {
+      // Resolve each pasted/scraped token to a canonical watchlist symbol via
+      // the same Screener.in -> Yahoo pipeline as right-click "Add to Watchlist".
+      // Bounded concurrency (5) to stay kind to the APIs on 100+ symbol imports.
+      const queue = rawList.map((r) => ({
+        raw: String((r && r.raw !== undefined ? r.raw : r) || '').toUpperCase().slice(0, 32),
+        tvExchange: String((r && r.tvExchange) || '').toUpperCase()
+      })).filter((r) => r.raw);
+      const results = new Array(queue.length);
+      let cursor = 0;
+      async function worker() {
+        while (cursor < queue.length) {
+          const idx = cursor++;
+          const item = queue[idx];
+          try {
+            const stock = await resolveCtxStock(item.raw);
+            if (stock && stock.symbol) {
+              results[idx] = { raw: item.raw, symbol: String(stock.symbol).toUpperCase(), ok: true };
+            } else {
+              // Unresolvable but plausible: keep the raw token so the user
+              // doesn't lose it — the fetch engine retries with .NS etc.
+              results[idx] = { raw: item.raw, symbol: item.raw, ok: false };
+            }
+          } catch (e) {
+            results[idx] = { raw: item.raw, symbol: item.raw, ok: false };
+          }
+        }
+      }
+      await Promise.all([worker(), worker(), worker(), worker(), worker()]);
+      sendResponse({ results });
+    })();
+    return true;
+  }
+
   if (message.type === 'OPEN_SIDEBAR') {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs && tabs[0] && tabs[0].id) {
