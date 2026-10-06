@@ -7,6 +7,12 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/privacy.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://vishwaroopg.github.io/Screener-Extension/blog/</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>

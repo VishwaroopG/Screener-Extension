@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Privacy Policy for Ticker Screener Chrome extension: user data collection, use, storage, and sharing disclosures.">
+  <meta name="color-scheme" content="light dark">
+  <title>Privacy Policy | Ticker Screener</title>
+  <link rel="stylesheet" href="site.css?v=35">
+  <link rel="icon" type="image/png" sizes="16x16" href="store-assets/icon_16.png?v=logo-transparent">
+  <link rel="icon" type="image/png" sizes="48x48" href="store-assets/icon_48.png?v=logo-transparent">
+  <link rel="apple-touch-icon" href="store-assets/icon_128.png?v=logo-transparent">
+  <style>
+    .policy-wrap { max-width: 860px; margin: 0 auto; padding: 48px 20px 80px; }
+    .policy-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 40px 36px; box-shadow: var(--shadow-md); }
+    .policy-card h1 { margin: 0 0 8px; font-size: 2rem; line-height: 1.2; }
+    .policy-meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; }
+    .policy-card h2 { margin-top: 32px; font-size: 1.25rem; }
+    .policy-card h3 { margin-top: 20px; font-size: 1.05rem; }
+    .policy-card p, .policy-card li { color: var(--text-secondary); font-size: 0.97rem; }
+    .policy-card ul { padding-left: 22px; }
+    .policy-card table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.92rem; }
+    .policy-card th, .policy-card td { text-align: left; padding: 10px 12px; border: 1px solid var(--border-strong); vertical-align: top; }
+    .policy-card th { background: var(--bg-deep); }
+    .policy-card code { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.85em; }
+    .policy-nav { margin-bottom: 20px; }
+    .inline-link { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <div class="site-shell">
+    <div class="nav-wrap" id="nav-wrap">
+      <header class="container nav">
+        <a class="brand" href="./"><img class="brand-mark" src="store-assets/icon_128.png?v=logo-transparent" alt="Ticker Screener icon"><span class="brand-text">Ticker <em>Screener</em></span></a>
+        <nav class="nav-links" aria-label="Primary navigation"><a href="./#features">Features</a><a href="./#markets">Markets</a><a href="blog/">Blog</a><a href="./#developer">Developer</a></nav>
+        <span class="nav-meta">v2.6.1</span>
+        <a class="button button-primary" href="https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&amp;hl=en">Get the extension</a>
+      </header>
+    </div>
+
+    <main>
+      <div class="policy-wrap">
+        <p class="policy-nav"><a class="inline-link" href="./">&larr; Back to Ticker Screener</a></p>
+        <article class="policy-card">
+          <h1>Privacy Policy — Ticker Screener</h1>
+          <p class="policy-meta"><strong>Effective date:</strong> 6 October 2026 &middot; <strong>Applies to:</strong> Ticker Screener Chrome Extension v2.6.1 and later &middot; <strong>Developer / Data controller:</strong> Vishwaroop Galgali &middot; <strong>Contact:</strong> <a class="inline-link" href="mailto:vishwaroopg8@gmail.com">vishwaroopg8@gmail.com</a></p>
+
+          <h2>1. Overview</h2>
+          <p>Ticker Screener (“the extension”) has a single purpose: to provide an integrated stock-market watchlist and real-time ticker tape so users can monitor stock prices, financial metrics, and market news across global and Indian markets directly within browser tabs and the side panel.</p>
+          <p>This policy, together with the extension’s in-product disclosures (permission prompts, Settings &rarr; Account &amp; Sync, and the feedback form), comprehensively discloses <strong>how the extension collects, uses, handles, stores, and shares all user data</strong>, and <strong>all parties user data is shared with</strong>. There is no separate mobile app. The companion website at <code>https://vishwaroopg.github.io/Screener-Extension/</code> and the <code>/uninstall/</code> feedback page follow this same policy.</p>
+          <p>Short version: watchlists and settings stay on your device (and optionally in your own browser-profile sync storage). Ticker symbols you look up are sent to public market-data providers to fetch quotes. Feedback is sent to the developer only when you press Send. We do not sell data, run ads, use tracking SDKs, or build advertising profiles.</p>
+
+          <h2>2. User Data Collection — what we collect</h2>
+          <p>We collect only what is needed for the single purpose above. “Collection” includes data you type, data the extension reads via declared Chrome permissions, and query strings sent over the network to retrieve market data.</p>
+          <h3>2.1 Data you provide directly</h3>
+          <table>
+            <tr><th>Data</th><th>Examples</th><th>When collected</th></tr>
+            <tr><td>Watchlist &amp; portfolio content</td><td>Ticker symbols (e.g. RELIANCE.NS, AAPL), portfolio names, tags, notes, pinned indices, custom market cards</td><td>Only when you add, import, or edit them</td></tr>
+            <tr><td>Alert &amp; preference settings</td><td>Price-alert targets, tape position/size/theme/speed/visibility, dark mode, disabled-domain list, clock/economy/macro-tile choices, sync on/off</td><td>Only when you change a setting</td></tr>
+            <tr><td>Feedback content (optional)</td><td>Name, reply email, message text, optional screenshot image</td><td>Only when you submit the in-panel feedback form or the uninstall feedback page</td></tr>
+            <tr><td>Highlighted text via right-click</td><td>Text you highlight and choose “Add to Screener Watchlist” on via the context menu</td><td>Only when you invoke that menu item; used once to resolve the ticker</td></tr>
+          </table>
+          <h3>2.2 Data read via Chrome permissions (on-device, not a server database)</h3>
+          <table>
+            <tr><th>Permission / API</th><th>Data read</th><th>How it is used</th></tr>
+            <tr><td><code>identity</code> (<code>chrome.identity.getProfileUserInfo</code>)</td><td>Signed-in browser-profile email address (may be empty if signed out or on Brave)</td><td>Displayed locally in Settings &rarr; Account &amp; Sync so you can verify which profile your preferences sync to. Never transmitted to our servers or any analytics service.</td></tr>
+            <tr><td><code>tabs</code> (<code>query</code>, <code>onActivated</code>, <code>onUpdated</code>)</td><td>Active tab’s domain hostname only (e.g. <code>example.com</code>, via <code>new URL(tab.url).hostname</code>) to enforce your per-website ticker on/off choice</td><td>Compared locally against your <code>disabledDomains</code> list. Full URLs, page titles, page contents, and browsing history are never read, stored, or transmitted.</td></tr>
+            <tr><td><code>storage</code></td><td>Extension settings and caches listed in §2.1 (see §4 for exact keys)</td><td>Saved on-device; a subset mirrored to your browser-profile sync area only if you leave sync enabled.</td></tr>
+            <tr><td><code>alarms</code>, <code>notifications</code>, <code>contextMenus</code>, <code>sidePanel</code></td><td>No additional personal data. Alarms schedule local price checks; notifications show your own alert results; contextMenus exposes the “Add to Watchlist” item; sidePanel renders the UI.</td><td>Local operation only.</td></tr>
+          </table>
+          <h3>2.3 Data we do NOT collect</h3>
+          <ul>
+            <li>We do <strong>not</strong> collect browsing history, full URLs, page titles, page DOM/content, cookies, passwords, payment data, precise location, contacts, or files outside the optional feedback screenshot.</li>
+            <li>The ticker-tape content script (<code>ticker_tape.js</code>, matches <code>&lt;all_urls&gt;</code>) only <strong>renders</strong> your watchlist bar on pages you allow. It does not scrape, keylog, or exfiltrate page content, and it skips domains you disable.</li>
+            <li>We use <strong>no</strong> advertising SDKs, analytics SDKs (no Google Analytics, Mixpanel, Sentry, etc.), fingerprinting, or cross-site trackers in the extension.</li>
+          </ul>
+
+          <h2>3. How We Use User Data (handling &amp; use)</h2>
+          <ul>
+            <li><strong>Watchlists, portfolios, alerts, and UI preferences:</strong> used solely to render the side panel, ticker tape, charts, and desktop price alerts you configured, and to restore them across browser sessions.</li>
+            <li><strong>Profile email (identity):</strong> used solely for local display in Settings &rarr; Account &amp; Sync. Not used for authentication, tracking, or marketing.</li>
+            <li><strong>Active-tab hostname (tabs):</strong> used solely to respect your per-website ticker enable/disable choice.</li>
+            <li><strong>Highlighted text (contextMenus):</strong> used solely to resolve the selected company/ticker into a watchlist entry at the moment you click the menu item.</li>
+            <li><strong>Ticker/search/macro queries:</strong> used solely to fetch the market data you requested (quotes, sparklines, ratios, news, macro indicators, holiday calendar).</li>
+            <li><strong>Feedback name/email/message/screenshot:</strong> used solely to read and reply to your feedback. Email is optional and used only to reply if you provide it.</li>
+            <li>We do <strong>not</strong> use user data for advertising, marketing, credit decisions, or sale to third parties.</li>
+          </ul>
+
+          <h2>4. User Data Storage — where and how long</h2>
+          <ul>
+            <li><strong>On-device storage (<code>chrome.storage.local</code>):</strong> watchlists (<code>portfolios</code>, <code>screenerWatchlist</code>, <code>activePortfolioName</code>), alerts (<code>alerts</code>, <code>priceAlerts</code>), preferences (<code>theme</code>, <code>tape*</code>, <code>clockKeys</code>, <code>pinnedIndices</code>, <code>disabledDomains</code>, <code>overviewEconomy</code>, <code>macroTiles</code>, <code>syncEnabled</code>), and performance caches (<code>cachedData</code>, <code>marketIndices</code>, <code>macroStats</code>, <code>marketHolidays</code>). Data stays on your device until you delete it.</li>
+            <li><strong>Browser-profile sync (<code>chrome.storage.sync</code>):</strong> only the small preference subset listed above is mirrored to Chrome’s sync area when sync is enabled (default on; toggle in Settings). That copy is stored by <strong>Google</strong> as part of your browser-profile sync infrastructure (governed by Google’s privacy policy), not on a developer server. Bulky caches (<code>cachedData</code>, <code>marketIndices</code>, <code>macroStats</code>) intentionally stay local-only. The developer has no access to your sync area.</li>
+            <li><strong>No developer server database:</strong> we operate no account system and no central database of watchlists. The only data that reaches the developer is feedback you explicitly send (see §5.7).</li>
+            <li><strong>Retention:</strong> local data persists until you remove it (edit/delete in the panel, turn off sync, use “Clear data”, or uninstall the extension, which removes <code>chrome.storage.local</code>). Cached quotes/macro/holiday data refresh roughly every 5 minutes to 24 hours and are overwritten automatically.</li>
+            <li><strong>Deletion:</strong> delete a watchlist/alert in the panel to remove it immediately; disable “Account &amp; Sync” to stop sync mirroring (existing synced values remain in your Google account until you clear synced data via Chrome settings); uninstall to wipe local extension storage from the device.</li>
+          </ul>
+
+          <h2>5. User Data Sharing — all parties data is shared with</h2>
+          <p>We share the minimum necessary query data with each provider below <strong>only to fulfil your request</strong> (e.g. the ticker symbol you asked to quote). We never sell data and never share your watchlist, email, or feedback with advertisers or data brokers. Each recipient’s handling of the query is governed by its own privacy policy.</p>
+          <table>
+            <tr><th>Recipient (party)</th><th>What is sent</th><th>Purpose</th></tr>
+            <tr><td>Yahoo Finance — <code>query1.finance.yahoo.com</code>, <code>query2.finance.yahoo.com</code></td><td>Ticker symbols and search text you enter or watch (e.g. <code>AAPL</code>, <code>RELIANCE.NS</code>)</td><td>Real-time quotes, sparkline/chart data, and search results for your selected stocks</td></tr>
+            <tr><td>Screener.in — <code>www.screener.in</code></td><td>Indian ticker/company search text and company page requests for tickers in your watchlist</td><td>Indian financial ratios, quarterly data, and company search for the side-panel watchlist</td></tr>
+            <tr><td>Finviz — <code>finviz.com</code></td><td>US ticker symbols in your watchlist</td><td>Financial overview metrics for US tickers</td></tr>
+            <tr><td>World Bank API — <code>api.worldbank.org</code></td><td>Country codes for the economy you view (e.g. <code>US</code>, <code>IN</code>)</td><td>Macroeconomic indicators (inflation, unemployment, GDP) for the Markets overview</td></tr>
+            <tr><td>Google News RSS — <code>news.google.com</code></td><td>Ticker/market search terms for the News tab</td><td>Latest financial and stock-news feed items</td></tr>
+            <tr><td>GitHub Pages (developer site) — <code>vishwaroopg.github.io</code></td><td>No user data sent; the extension downloads the public <code>market-holidays.json</code> calendar</td><td>Show market open/close status</td></tr>
+            <tr><td>FormSubmit — <code>formsubmit.co/ajax/vishwaroopg8@gmail.com</code></td><td>Only when you press Send: feedback name, reply email, message, optional screenshot</td><td>Deliver your feedback email to the developer’s inbox. Mailto fallback opens your own email app instead.</td></tr>
+            <tr><td>Google (browser sync infrastructure)</td><td>Only the small preference subset in §4, only if you leave sync enabled and are signed into Chrome</td><td>Sync your own preferences across your signed-in devices. Google stores/processes this under Google’s policies; the developer cannot read it.</td></tr>
+          </table>
+          <p>No other third parties receive user data. Queries to the providers above are made directly from your browser to the provider; they are not proxied through a developer server.</p>
+
+          <h2>6. Extension Permissions &amp; Host Access — why each is needed</h2>
+          <ul>
+            <li><code>sidePanel</code> — render the watchlist, quotes, charts, and metrics UI.</li>
+            <li><code>storage</code> — save watchlists, alerts, and preferences locally and sync them via <code>chrome.storage.sync</code>.</li>
+            <li><code>alarms</code> — run 5-minute background quote checks for your price alerts while the browser is open.</li>
+            <li><code>notifications</code> — show desktop alerts when your own price/metric thresholds are crossed.</li>
+            <li><code>contextMenus</code> — add the “Add to Screener Watchlist” right-click item for highlighted tickers.</li>
+            <li><code>tabs</code> — read only the active tab’s domain to enforce your per-site ticker on/off list; send display updates to open tabs. No history/URL collection.</li>
+            <li><code>identity</code> — read the signed-in profile email for local display only (Settings &rarr; Account &amp; Sync).</li>
+            <li>Host permissions (<code>screener.in</code>, <code>query1/query2.finance.yahoo.com</code>, <code>finviz.com</code>, <code>api.worldbank.org</code>, <code>news.google.com</code>, <code>formsubmit.co</code>, <code>vishwaroopg.github.io</code>) — fetch exactly the data described in §5. Content-script matches (<code>&lt;all_urls&gt;</code>) render only the ticker-tape bar you configured; page content is never collected.</li>
+          </ul>
+          <p>No remote code is used: all JavaScript/WebAssembly ships inside the extension package; no external <code>&lt;script&gt;</code>, external modules, or <code>eval()</code> of remote strings.</p>
+
+          <h2>7. Data Security</h2>
+          <ul>
+            <li>All provider fetches use HTTPS. Feedback posts use HTTPS POST to FormSubmit.</li>
+            <li>Local data is protected by the browser/OS profile protections; sync copies inherit your Google account’s protections.</li>
+            <li>No method is 100% secure; avoid putting sensitive personal information in watchlist notes or feedback screenshots.</li>
+          </ul>
+
+          <h2>8. Your Controls &amp; Choices</h2>
+          <ul>
+            <li>Per-website ticker control: disable the tape on any domain from the side panel.</li>
+            <li>Sync control: turn “Account &amp; Sync” off at any time to keep everything local-only.</li>
+            <li>Delete control: remove watchlists, alerts, or notes in the panel; uninstall the extension to wipe local storage.</li>
+            <li>Feedback is entirely optional; you can use the whole extension without ever submitting it.</li>
+          </ul>
+
+          <h2>9. Children’s Privacy</h2>
+          <p>The extension is a general-audience market utility and is not directed to children under 13. We do not knowingly collect data from children. Contact us for deletion if you believe a child provided feedback data.</p>
+
+          <h2>10. Changes to This Policy</h2>
+          <p>We will update this page and the Effective date when the extension’s data practices change, and will note material changes in the release notes. Continued use after an update constitutes acceptance of the revised policy.</p>
+
+          <h2>11. Contact &amp; Data Requests</h2>
+          <p>Developer / data controller: <strong>Vishwaroop Galgali</strong>. For access, correction, deletion, or any privacy question: <a class="inline-link" href="mailto:vishwaroopg8@gmail.com">vishwaroopg8@gmail.com</a>. Because most data lives only on your device, the fastest deletion is in-product (see §8); emailed feedback is deleted from the inbox on request.</p>
+
+          <h2>Appendix — full host list (manifest parity, v2.6.1)</h2>
+          <p><code>https://www.screener.in/*</code> · <code>https://query1.finance.yahoo.com/*</code> · <code>https://query2.finance.yahoo.com/*</code> · <code>https://finviz.com/*</code> · <code>https://api.worldbank.org/*</code> · <code>https://news.google.com/*</code> · <code>https://formsubmit.co/*</code> · <code>https://vishwaroopg.github.io/*</code> · content-script match <code>&lt;all_urls&gt;</code> (render ticker bar only).</p>
+        </article>
+      </div>
+    </main>
+
+    <footer class="container footer"><div class="footer-row"><span>&copy; 2026 Ticker Screener. Built for focused market watching.</span><span><a href="privacy.html">Privacy Policy</a> &middot; <a href="uninstall/">Feedback</a> &middot; <a href="https://buymeacoffee.com/vgexperiments">Support the developer</a> &middot; <a href="https://www.vishwaroopgalgali.com/" target="_blank" rel="noopener">About the developer</a></span></div></footer>
+  </div>
+</body>
+</html>
