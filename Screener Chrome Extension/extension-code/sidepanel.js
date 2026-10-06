@@ -1578,8 +1578,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById('btn-focus-filter');
     if (!btn) return;
     btn.textContent = (t('sfFilter') || 'Focus') + (focusOnly ? ' ✓' : '');
-    btn.style.background = focusOnly ? '#1a73e8' : '';
-    btn.style.color = focusOnly ? '#fff' : '';
+    // Active state uses an inset ring so the button keeps the theme color.
+    btn.style.boxShadow = focusOnly ? 'inset 0 0 0 2px currentColor' : '';
   }
   function closeFocusPopover() {
     const m = document.getElementById('focus-popover');
@@ -2340,8 +2340,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById('btn-bulk-select');
     if (!btn) return;
     btn.textContent = bulkMode ? (t('bulkDone') || 'Done') : (t('bulkSelect') || 'Select');
-    btn.style.background = bulkMode ? '#1a73e8' : '';
-    btn.style.color = bulkMode ? '#fff' : '';
+    // Active state uses an inset ring so the button keeps the theme color.
+    btn.style.boxShadow = bulkMode ? 'inset 0 0 0 2px currentColor' : '';
   }
   function bulkDelete() {
     if (bulkSelected.size === 0) return;

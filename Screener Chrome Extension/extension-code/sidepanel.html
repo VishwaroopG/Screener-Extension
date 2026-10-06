@@ -84,8 +84,8 @@
       </select></span><span style="font-size:11px; font-weight:500; color:#188038; display:flex; align-items:center; gap:5px; flex-shrink:0;"><span class="screener-live-dot"></span> <span data-i18n="liveBadge">Live</span><button id="btn-watchlist-refresh" data-i18n-title="refreshWatchlistTitle" title="Refresh watchlist" style="background:none; border:1px solid var(--border-color); border-radius:6px; color:var(--label-color); cursor:pointer; font-size:12px; padding:0 7px; margin-left:2px; line-height:1.6;">↻</button></span></h3>
     <div style="display:flex; align-items:center; margin-bottom:12px; gap:8px; flex-wrap:wrap;">
       <button id="btn-bulk-select" class="screener-btn" data-i18n="bulkSelect" style="padding:8px 12px; border-radius:16px; font-size:12px; flex-shrink:0; line-height:1;" title="Select multiple stocks">Select</button>
-      <button id="btn-import-watchlist" class="screener-btn" data-i18n="importTitle" data-i18n-title="importTitle" style="padding:8px 12px; border-radius:16px; font-size:12px; flex-shrink:0; line-height:1; background:#1a73e8;" title="Import watchlist from Zerodha, Screener.in or TradingView">Import</button>
-      <button id="btn-export-csv" class="screener-btn" data-i18n-title="exportTitle" style="background:#188038; padding:8px 12px; border-radius:16px; font-size:12px; flex-shrink:0; line-height:1;" title="Export to Excel">CSV</button>
+      <button id="btn-import-watchlist" class="screener-btn" data-i18n="importTitle" data-i18n-title="importTitle" style="padding:8px 12px; border-radius:16px; font-size:12px; flex-shrink:0; line-height:1;" title="Import watchlist from Zerodha, Screener.in or TradingView">Import</button>
+      <button id="btn-export-csv" class="screener-btn" data-i18n-title="exportTitle" style="padding:8px 12px; border-radius:16px; font-size:12px; flex-shrink:0; line-height:1;" title="Export to Excel">CSV</button>
     </div>
     <div id="tag-filter-row" style="display:none; margin-bottom:12px;">
       <select id="tag-filter" class="screener-input" data-i18n-title="tagFilterTitle" title="Filter by color tag" style="width:100%; padding:7px 10px; border-radius:4px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); cursor:pointer; font-size:12px;">
@@ -96,6 +96,11 @@
       </select>
     </div>
     <div id="wl-items-container" class="screener-watchlist-items"></div>
+    <div class="screener-footer">
+      <a href="https://chromewebstore.google.com/detail/pfaifjhdbnpfdjieppkhciemgccbpifi/reviews" target="_blank" rel="noopener" data-i18n-title="footerRateTitle" title="Rate Ticker Screener">⭐ <span data-i18n="footerRate">Rate us</span></a>
+      <span class="screener-footer-sep">·</span>
+      <a id="footer-feedback" href="#" data-i18n-title="footerFeedbackTitle" title="Send feedback">💬 <span data-i18n="footerFeedback">Feedback</span></a>
+    </div>
   </div>
 
   <!-- Markets View (Top Gainers / Losers) -->
@@ -140,13 +145,6 @@
     <div style="border-top:1px solid var(--border-color);"></div>
     <div id="alerts-list"></div>
     <div id="alerts-empty" data-i18n="alertsComingSoon" style="text-align:center; color:#80868b; font-size:13px; padding:120px 0;">Coming soon</div>
-  </div>
-
-  <!-- Footer: Rate & Feedback (always visible at the bottom) -->
-  <div class="screener-footer">
-    <a href="https://chromewebstore.google.com/detail/pfaifjhdbnpfdjieppkhciemgccbpifi/reviews" target="_blank" rel="noopener" data-i18n-title="footerRateTitle" title="Rate Ticker Screener">⭐ <span data-i18n="footerRate">Rate us</span></a>
-    <span class="screener-footer-sep">·</span>
-    <a id="footer-feedback" href="#" data-i18n-title="footerFeedbackTitle" title="Send feedback">💬 <span data-i18n="footerFeedback">Feedback</span></a>
   </div>
 
   <script src="sidepanel.js"></script>

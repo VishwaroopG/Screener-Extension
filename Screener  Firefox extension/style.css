@@ -260,16 +260,15 @@ body.dark-mode .wl-circle-btn:hover {
   display: flex;
 }
 
-/* Footer: Rate & Feedback — pinned to the bottom of the panel */
+/* Footer: Rate & Feedback — plain in-flow links below the watchlist, scrolls with the page */
 .screener-footer {
-  flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  border-top: 1px solid var(--border-color, #dadce0);
-  background-color: var(--header-bg, #ffffff);
+  padding: 12px 0 8px;
+  background: none;
+  border: none;
   font-size: 12px;
   font-weight: 500;
 }
