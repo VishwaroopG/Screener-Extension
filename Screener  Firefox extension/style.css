@@ -470,7 +470,7 @@ body.dark-mode .world-clock.is-closed .world-clock-status {
 .dashboard-section-title > span:first-child {
   color: var(--text-color, #202124);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 /* Google-like Input Pill */
@@ -1054,6 +1054,28 @@ body.dark-mode {
   --btn-wl-bg: #188038;
 }
 
+/* Native dropdowns (trend 1M/3M/6M/1Y/3Y/5Y/MAX, ratio, portfolios):
+   options use OS popup rendering — force readable colors per theme
+   so the open list never shows light-on-light / dark-on-dark. */
+select {
+  color-scheme: light;
+}
+select option {
+  background-color: #ffffff;
+  color: #202124;
+}
+body.dark-mode select {
+  color-scheme: dark;
+}
+body.dark-mode select option {
+  background-color: #2d3139;
+  color: #f0f2f5;
+}
+#trend-range-select,
+#ratio-col-select {
+  max-width: 100%;
+}
+
 @keyframes pulseLive {
   0% { transform: scale(0.9); opacity: 0.6; }
   50% { transform: scale(1.2); opacity: 1; }
@@ -1068,11 +1090,23 @@ body.dark-mode {
   animation: pulseLive 1.5s infinite;
 }
 
-/* Speed Popover */
+/* Speed Popover — position:fixed so .screener-header-actions overflow-x:auto never clips it */
 #speed-popover {
   background-color: #ffffff;
   border: 1px solid #dadce0;
   color: #202124;
+  position: fixed;
+  z-index: 9999;
+}
+.speed-preset {
+  padding: 4px 6px;
+  border-radius: 4px;
+  user-select: none;
+}
+.speed-preset:hover {
+  background-color: #e8f0fe;
+  color: #1a73e8;
+  text-decoration: underline;
 }
 #speed-display-val {
   color: #188038;
@@ -1269,7 +1303,7 @@ body.dark-mode .settings-check input[type="checkbox"] {
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 .overview-heat-name {
-  font-weight: 600;
+  font-weight: 400;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -1280,7 +1314,7 @@ body.dark-mode .settings-check input[type="checkbox"] {
   margin-bottom: 4px;
 }
 .overview-heat-price {
-  font-weight: 700;
+  font-weight: 400;
   font-size: 15px;
   color: var(--text-color);
   margin-bottom: 2px;
@@ -1309,10 +1343,60 @@ body.dark-mode .settings-check input[type="checkbox"] {
 .overview-mover-row:hover {
   background: var(--row-hover);
 }
+/* Street Mood proxy gauge (Markets tab top) */
+.mood-gauge-svg {
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  display: block;
+  margin: 2px auto 0;
+}
+/* Custom hover label for gauge zones (follows the cursor) */
+.mood-tip {
+  display: none;
+  position: absolute;
+  z-index: 5;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(32, 33, 36, 0.92);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 400;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, -140%);
+}
+body.dark-mode .mood-tip {
+  background: rgba(240, 242, 245, 0.94);
+  color: #202124;
+}
+/* Long (wrapped) variant for the factors explainer: drops below the cursor */
+.mood-tip.is-long {
+  white-space: normal;
+  max-width: 230px;
+  text-align: left;
+  transform: translate(-50%, 20px);
+}
+/* Small info icon in the mood card corner (hover shows the factors) */
+.mood-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color, #dadce0);
+  color: var(--label-color, #5f6368);
+  font-size: 9px;
+  font-style: italic;
+  font-weight: 600;
+  cursor: default;
+  flex-shrink: 0;
+}
 /* Pinned Market Cards */
 .pinned-card-price {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   color: var(--text-color);
   margin-bottom: 4px;
   line-height: 1.2;
@@ -1786,6 +1870,53 @@ body.dark-mode .alert-segment:has(input:checked) {
 
 .screener-btn-danger-ghost:active {
   transform: scale(0.95);
+}
+
+/* Native select popups: <option> lists ignore the header's transparent
+   background, so paint them explicitly per theme. Without this the
+   watchlist header dropdowns (P/E, M.Cap, Div Yld, ROCE, ROE, P/B and the
+   trend-range picker) render unreadable in dark mode. */
+#ratio-col-select,
+#trend-range-select {
+  color-scheme: light;
+}
+#ratio-col-select option,
+#trend-range-select option {
+  background-color: #ffffff;
+  color: #202124;
+}
+body.dark-mode #ratio-col-select,
+body.dark-mode #trend-range-select {
+  color-scheme: dark;
+}
+body.dark-mode #ratio-col-select option,
+body.dark-mode #trend-range-select option {
+  background-color: #353a45;
+  color: #f0f2f5;
+}
+/* Same guard for the other native dropdowns (portfolio, tag filter,
+   bulk-move target, market overview, alert expiry). */
+select.screener-input,
+#bulk-portfolio,
+#overview-economy-select {
+  color-scheme: light;
+}
+select.screener-input option,
+#bulk-portfolio option,
+#overview-economy-select option {
+  background-color: #ffffff;
+  color: #202124;
+}
+body.dark-mode select.screener-input,
+body.dark-mode #bulk-portfolio,
+body.dark-mode #overview-economy-select {
+  color-scheme: dark;
+}
+body.dark-mode select.screener-input option,
+body.dark-mode #bulk-portfolio option,
+body.dark-mode #overview-economy-select option {
+  background-color: #353a45;
+  color: #f0f2f5;
 }
 
 

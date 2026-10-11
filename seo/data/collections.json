@@ -1,0 +1,490 @@
+[
+  {
+    "slug": "railway-stocks",
+    "title": "Best Railway Stocks in India 2026: IRFC, RVNL, IRCTC & More | Ticker Screener",
+    "h1": "Railway stocks in India",
+    "shortName": "railway stocks",
+    "meta": "Railway stocks in India — IRFC, RVNL, IRCTC, Titagarh and more — with screening criteria, order-book metrics to watch, risks and FAQs.",
+    "updated": "2026-10-11",
+    "tags": ["India", "Railways", "PSU", "Infrastructure"],
+    "intro": [
+      "India's railway capex has turned wagon makers, financiers and caterers into market favourites. The theme runs on three rails: <strong>government orders</strong> (Vande Bharat trainsets, freight corridors, station redevelopment), <strong>financing</strong> (IRFC funds most rolling-stock purchases) and <strong>services</strong> (IRCTC's ticketing and catering franchise).",
+      "Because order inflows are lumpy and valuations swing with Budget headlines, railway stocks reward investors who track <strong>order books, execution pace and dividend yield</strong> rather than chasing announcements. The screen below separates compounders from announcement rallies."
+    ],
+    "stocks": [
+      { "ticker": "IRFC", "exchange": "NSE / BSE", "company": "Indian Railway Finance Corp", "note": "The lender behind most railway rolling stock; watch loan-book growth, margins and dividend yield." },
+      { "ticker": "RVNL", "exchange": "NSE / BSE", "company": "Rail Vikas Nigam", "note": "Project execution plus growing non-railway orders; watch order book and execution pace." },
+      { "ticker": "IRCTC", "exchange": "NSE / BSE", "company": "Indian Railway Catering & Tourism", "note": "Ticketing and catering franchise; watch internet-ticketing volumes and catering margins." },
+      { "ticker": "IRCON", "exchange": "NSE / BSE", "company": "Ircon International", "note": "Railway and highway EPC; watch order inflows and working-capital days." },
+      { "ticker": "TITAGARH", "exchange": "NSE / BSE", "company": "Titagarh Rail Systems", "note": "Wagons plus passenger-coach joint ventures; watch wagon deliveries and coach ramp-up." },
+      { "ticker": "TEXRAIL", "exchange": "NSE / BSE", "company": "Texmaco Rail & Engineering", "note": "Wagons and rail EPC; watch capacity utilisation and debt levels." }
+    ],
+    "screenWith": [
+      "<strong>Order book of at least 2x trailing revenue</strong> — two years of visible work before you pay a premium multiple.",
+      "<strong>Rising execution ratio</strong> — quarterly revenue divided by opening order book should trend up, not stall.",
+      "<strong>ROCE above 15%</strong> for manufacturers; financiers like IRFC are judged on margins and asset quality instead.",
+      "<strong>Dividend yield as cushion</strong> — PSU rail names often pay 2–4%, softening drawdowns between order cycles.",
+      "<strong>Stable government holding</strong> — offer-for-sale announcements routinely dent prices; check past floor-price history."
+    ],
+    "avoid": [
+      "<strong>Budget-day spikes.</strong> Allocations get priced in within hours; buying the headline candle usually means buying the top.",
+      "<strong>Announcements without order value.</strong> MOUs and lowest-bidder status are not revenue — wait for signed contract value.",
+      "<strong>Working-capital blowouts.</strong> EPC names funding receivables with debt see profits evaporate when rates rise."
+    ],
+    "faqs": [
+      { "q": "Which is the biggest railway stock in India?", "a": "By market value it is usually IRCTC or IRFC, depending on the cycle. Size is not a buy signal though — compare order-book coverage and return ratios before choosing." },
+      { "q": "Are railway stocks PSU stocks?", "a": "Most large ones are: IRFC, RVNL, IRCTC and IRCON are government-owned. That brings dependable dividends and big orders, but also offer-for-sale supply and policy-driven cycles." },
+      { "q": "What P/E is fair for railway stocks?", "a": "There is no fixed number — order-backed growers have traded anywhere from 20x to 60x earnings across cycles. Anchor on earnings growth and order coverage, not the multiple alone. See our <a href=\"../glossary/pe-ratio.html\">P/E ratio</a> guide." }
+    ],
+    "relatedCollections": ["defence-stocks", "dividend-stocks-india", "penny-stocks-under-10"],
+    "relatedGlossary": ["pe-ratio", "roce", "dividend-yield", "market-cap"],
+    "relatedPosts": ["india-critical-mineral-parks-rees-lithium-nickel", "us-tariffs-china-plus-one-india"]
+  },
+  {
+    "slug": "defence-stocks",
+    "title": "Best Defence Stocks in India 2026: HAL, BEL, Mazagon Dock & More | Ticker Screener",
+    "h1": "Defence stocks in India",
+    "shortName": "defence stocks",
+    "meta": "Defence stocks in India — HAL, BEL, Mazagon Dock, Cochin Shipyard and more — with screening criteria, order-book metrics, risks and FAQs.",
+    "updated": "2026-10-11",
+    "tags": ["India", "Defence", "PSU", "Make in India"],
+    "intro": [
+      "Import embargo lists, a rising defence budget and export orders have given Indian defence stocks a multi-year order pipeline. The theme splits into <strong>platforms</strong> (HAL aircraft, Mazagon and Cochin shipyards), <strong>electronics</strong> (BEL radars and systems) and <strong>private precision players</strong> (missiles, drones, components).",
+      "Defence rewards patience: development cycles run for years, then execution compounds. Screen on <strong>order-book coverage, indigenisation content and export share</strong> — and size positions knowing these stocks correct 20–30% whenever euphoria peaks."
+    ],
+    "stocks": [
+      { "ticker": "HAL", "exchange": "NSE / BSE", "company": "Hindustan Aeronautics", "note": "Tejas, helicopters, aero-engines; watch aircraft delivery schedules and export deals." },
+      { "ticker": "BEL", "exchange": "NSE / BSE", "company": "Bharat Electronics", "note": "Radars, defence electronics; watch order inflows and working-capital discipline." },
+      { "ticker": "MAZDOCK", "exchange": "NSE / BSE", "company": "Mazagon Dock Shipbuilders", "note": "Submarines and warships; watch submarine timelines — delays move the stock." },
+      { "ticker": "COCHINSHIP", "exchange": "NSE / BSE", "company": "Cochin Shipyard", "note": "Aircraft carrier builder expanding into commercial ships; watch order mix." },
+      { "ticker": "GRSE", "exchange": "NSE", "company": "Garden Reach Shipbuilders", "note": "Warship exporter; watch export-order conversion and margins." },
+      { "ticker": "PARAS", "exchange": "NSE / BSE", "company": "Paras Defence", "note": "Optics and specialty systems; small base, so watch order wins versus valuation." },
+      { "ticker": "DATAPATTNS", "exchange": "NSE / BSE", "company": "Data Patterns", "note": "Radar and avionics subsystems; watch design-win conversions and R&D intensity." }
+    ],
+    "screenWith": [
+      "<strong>Order book of 3x revenue or more</strong> — shipyards and HAL routinely carry multi-year backlogs; that visibility justifies premium multiples.",
+      "<strong>Indigenisation content rising</strong> — higher domestic value-add means better margins and policy protection.",
+      "<strong>Export share</strong> — exports de-risk dependence on domestic budget cycles; even 10–15% changes the story.",
+      "<strong>ROCE above 18%</strong> with positive free cash flow — defence advances can flatter profits while cash lags.",
+      "<strong>Delivery milestones, not headlines</strong> — track commissioning and handover dates, the events that actually convert backlog to revenue."
+    ],
+    "avoid": [
+      "<strong>Paying 60x+ for private names on hope.</strong> Small defence stocks can be excellent businesses and terrible investments at peak multiples.",
+      "<strong>Ignoring execution delays.</strong> A submarine delayed two years is two years of missing cash flow — read management commentary on timelines.",
+      "<strong>Geopolitical spike-chasing.</strong> Conflict headlines lift the whole basket intraday and fade just as fast."
+    ],
+    "faqs": [
+      { "q": "Which is the best defence stock in India?", "a": "HAL and BEL anchor most portfolios for scale and dividends; shipyards add growth with lumpier execution; private names add torque with higher risk. There is no single best — match the pick to your risk appetite." },
+      { "q": "Why are defence stocks falling or so volatile?", "a": "Long contracts plus high multiples equal volatility: any delay, budget signal or promoter stake sale reprices years of expectations at once. Volatility is the entry fee for this theme." },
+      { "q": "Do defence stocks pay dividends?", "a": "The PSU majors (HAL, BEL) generally do. Private precision players usually reinvest. Check <a href=\"../glossary/dividend-yield.html\">dividend yield</a> before assuming income." }
+    ],
+    "relatedCollections": ["railway-stocks", "penny-stocks-under-10", "bank-stocks-india"],
+    "relatedGlossary": ["pe-ratio", "roce", "market-cap", "52-week-high-low"],
+    "relatedPosts": ["us-tariffs-china-plus-one-india", "india-critical-mineral-parks-rees-lithium-nickel"]
+  },
+  {
+    "slug": "penny-stocks-under-10",
+    "title": "Penny Stocks Under Rs 10: Screen Safely, Avoid Traps | Ticker Screener",
+    "h1": "Penny stocks under Rs 10",
+    "shortName": "sub-Rs-10 stocks",
+    "meta": "Penny stocks under Rs 10 — a safe screening framework, red flags that kill capital, and the only metrics that matter before you touch them.",
+    "updated": "2026-10-11",
+    "tags": ["India", "Penny Stocks", "High Risk", "Screening"],
+    "intro": [
+      "A Rs 7 stock that doubles feels like free money — until you learn why it trades at Rs 7. Sub-Rs-10 stocks are usually cheap for structural reasons: heavy debt, pledged promoter shares, years of losses, or businesses the market has stopped trusting. A few are genuine turnarounds; most are traps with good storytelling.",
+      "This page deliberately has <strong>no fixed buy list</strong> — penny membership changes weekly and any static list goes stale. Instead, here is the exact screen professionals run, the red flags that disqualify 9 out of 10 candidates, and how to track survivors live without staring at charts all day."
+    ],
+    "stocks": [],
+    "stocksNote": "No static list — by the time you read one, prices and fundamentals have moved. Run the screen below inside your watchlist instead, where prices update live.",
+    "screenWith": [
+      "<strong>Market cap above Rs 500 crore</strong> — filters out illiquid shells where you cannot exit.",
+      "<strong>Positive operating cash flow in the last year</strong> — profits can be engineered; cash is harder to fake.",
+      "<strong>Promoter holding above 40% with zero pledging</strong> — pledged shares trigger forced selling spirals.",
+      "<strong>Debt-to-equity below 1</strong> — leveraged pennies rarely survive rate cycles.",
+      "<strong>Delivery percentage above 50%</strong> — confirms real buyers, not intraday operator churn."
+    ],
+    "avoid": [
+      "<strong>Circuit-filter locks.</strong> Many pennies hit upper circuits you cannot buy and lower circuits you cannot sell — check the circuit filter before entering.",
+      "<strong>Bonus/split mirages.</strong> A split changes nothing fundamental; operators use the buzz to distribute.",
+      "<strong>SMS and social-media tips.</strong> Pump-and-dump schemes live in this segment. If the tip arrived free, you are the exit liquidity.",
+      "<strong>Averaging down.</strong> A falling penny is usually falling for a reason. Fixed position sizes, hard stop-losses, no exceptions."
+    ],
+    "faqs": [
+      { "q": "Can penny stocks make you rich?", "a": "Rarely, and survivorship bias hides the graveyard. For every multibagger penny, hundreds get suspended or fade to zero. Treat the segment as a lottery ticket allocation — small, losable, rules-based." },
+      { "q": "What is a safe quantity of penny stocks to buy?", "a": "Sizing matters more than picking: risk only what you can lose entirely, use stop-losses, and never let one penny exceed a few percent of your portfolio." },
+      { "q": "Why do penny stocks hit circuits every day?", "a": "Low floats plus speculative demand. Exchanges apply price bands (circuits) that freeze trading — which is exactly why exits fail when you need them most. See <a href=\"../glossary/circuit-breaker.html\">circuit breakers</a>." }
+    ],
+    "relatedCollections": ["railway-stocks", "defence-stocks", "dividend-stocks-india"],
+    "relatedGlossary": ["market-cap", "circuit-breaker", "52-week-high-low", "pe-ratio"],
+    "relatedPosts": ["pe-ratio-us-stocks-cheap-expensive", "us-slowdown-indian-portfolio-playbook"]
+  },
+  {
+    "slug": "gold-etfs",
+    "title": "Best Gold ETFs 2026: GLD, IAU, GoldBeES & How to Choose | Ticker Screener",
+    "h1": "Gold ETFs in India and the US",
+    "shortName": "gold ETFs",
+    "meta": "Gold ETFs — GLD, IAU, SGOL, GoldBeES and more — expense ratios, tracking error, physical vs sovereign gold, and FAQs.",
+    "updated": "2026-10-11",
+    "tags": ["Gold", "ETF", "India", "US", "Safe Haven"],
+    "intro": [
+      "Gold ETFs let you own gold at market price without lockers, making charges or theft risk. Each unit tracks domestic gold prices (India) or spot bullion (US), and you buy and sell them like any stock — which also means you can watch them on the same tape as your equities.",
+      "Choosing between them comes down to three numbers: <strong>expense ratio</strong> (yearly fee), <strong>tracking error</strong> (how tightly it follows gold) and <strong>liquidity</strong> (spreads and volumes). US investors pick from giants like GLD and IAU; Indian investors compare GoldBeES-style ETFs against Sovereign Gold Bonds and physical gold."
+    ],
+    "stocks": [
+      { "ticker": "GLD", "exchange": "NYSE Arca", "company": "SPDR Gold Shares", "note": "The world's largest gold ETF; maximum liquidity, slightly higher fee than rivals." },
+      { "ticker": "IAU", "exchange": "NYSE Arca", "company": "iShares Gold Trust", "note": "Same physical-gold exposure as GLD with a lower expense ratio; favourite for buy-and-hold." },
+      { "ticker": "SGOL", "exchange": "NYSE Arca", "company": "Aberdeen Physical Gold Shares", "note": "Low fee with vaulted allocated bars; watch spreads versus GLD/IAU." },
+      { "ticker": "GOLDBEES", "exchange": "NSE / BSE", "company": "Nippon India Gold BeES", "note": "India's most liquid gold ETF; watch tracking error around volatile gold days." },
+      { "ticker": "AXISGOLD", "exchange": "NSE / BSE", "company": "Axis Gold ETF", "note": "Lower-fee Indian alternative; compare volumes before large orders." },
+      { "ticker": "GLDM", "exchange": "NYSE Arca", "company": "SPDR Gold MiniShares", "note": "Low share price suits small SIP-style accumulation in the US." }
+    ],
+    "screenWith": [
+      "<strong>Expense ratio under 0.40% (US) or 0.60% (India)</strong> — fees compound against you every year gold goes sideways.",
+      "<strong>Tracking error under 1%</strong> — the ETF should mirror gold, not the fund manager's timing calls.",
+      "<strong>Daily value traded above Rs 5 crore / $5 million</strong> — thin ETFs punish you with wide bid-ask spreads.",
+      "<strong>Physical backing for core holdings</strong> — synthetic or leveraged gold products are trading tools, not savings."
+    ],
+    "avoid": [
+      "<strong>Leveraged gold ETFs as investments.</strong> Daily-reset leverage decays over months — fine for a trade, ruinous as a holding.",
+      "<strong>Ignoring tax treatment.</strong> Indian gold ETF gains and SGB redemption rules differ materially; check current tax law before choosing.",
+      "<strong>Over-allocating.</strong> Gold hedges equity drawdowns but earns nothing; 5–15% is a hedge, 50% is a different portfolio."
+    ],
+    "faqs": [
+      { "q": "Which is better: gold ETF or physical gold?", "a": "ETFs win on liquidity, purity and zero making charges; physical wins for gifting and worst-case access. For investment purposes, ETFs (or sovereign bonds where available) are cleaner. See <a href=\"../glossary/etf.html\">what an ETF is</a>." },
+      { "q": "GLD vs IAU — which should I buy?", "a": "Same exposure, different wrappers: GLD has the tightest spreads for traders, IAU charges less per year for holders. Split by horizon, not hype." },
+      { "q": "Do gold ETFs pay dividends?", "a": "No — gold earns nothing, so there is nothing to distribute. Returns come purely from price appreciation." }
+    ],
+    "relatedCollections": ["sp500-stocks", "dividend-stocks-india", "magnificent-7-us-stocks"],
+    "relatedGlossary": ["etf", "expense-ratio", "market-cap", "stock-index"],
+    "relatedPosts": ["global-commodities-building-material-margins", "us-slowdown-indian-portfolio-playbook"]
+  },
+  {
+    "slug": "dividend-stocks-india",
+    "title": "Best Dividend Stocks in India 2026: High Yield PSU & Blue-Chips | Ticker Screener",
+    "h1": "Dividend stocks in India",
+    "shortName": "dividend stocks",
+    "meta": "High dividend stocks in India — Coal India, ONGC, Power Grid, ITC and more — dividend yield screens, payout traps and FAQs.",
+    "updated": "2026-10-11",
+    "tags": ["India", "Dividends", "PSU", "Income"],
+    "intro": [
+      "India's highest sustainable dividends mostly come from two wells: <strong>cash-cow PSUs</strong> (coal, oil, power-grid monopolies that the government nudges to pay out) and <strong>mature blue-chips</strong> (ITC, HCL Tech) converting steady cash flows into rising payouts.",
+      "Yield alone misleads — a 9% yield on a falling stock is a trap, not income. Screen for <strong>payout ratio, dividend growth streak and free-cash-flow cover</strong>, and remember dividends are now taxable in the shareholder's hands."
+    ],
+    "stocks": [
+      { "ticker": "COALINDIA", "exchange": "NSE / BSE", "company": "Coal India", "note": "Perennial top-yielder; watch coal offtake volumes and e-auction premiums." },
+      { "ticker": "ONGC", "exchange": "NSE / BSE", "company": "Oil & Natural Gas Corp", "note": "Crude-linked payouts; watch oil prices and subsidy burden." },
+      { "ticker": "POWERGRID", "exchange": "NSE / BSE", "company": "Power Grid Corp", "note": "Regulated transmission returns fund steady dividends; watch capex cycle." },
+      { "ticker": "NTPC", "exchange": "NSE / BSE", "company": "NTPC", "note": "Thermal plus green pivot; watch capacity additions and receivables from discoms." },
+      { "ticker": "ITC", "exchange": "NSE / BSE", "company": "ITC", "note": "FMCG cash machine with a rising payout habit; watch cigarette-tax headlines." },
+      { "ticker": "HCLTECH", "exchange": "NSE / BSE", "company": "HCL Technologies", "note": "IT's most consistent dividend payer; watch deal wins and margins." }
+    ],
+    "screenWith": [
+      "<strong>Yield between 2% and 7%</strong> — above that, suspect a price collapse rather than generosity.",
+      "<strong>Payout ratio under 80%</strong> — leaves room to sustain dividends when earnings dip a year.",
+      "<strong>Dividend growth over 5 years</strong> — growers beat static high-yielders on total return.",
+      "<strong>Free-cash-flow cover above 1.2x</strong> — dividends paid from borrowings are a countdown, not income."
+    ],
+    "avoid": [
+      "<strong>One-off special dividends.</strong> Asset-sale payouts inflate trailing yield and vanish next year.",
+      "<strong>Ignoring dividend taxation.</strong> Since dividends are taxed as income, compare post-tax yield with debt options.",
+      "<strong>Yield-chasing into cyclicals at peak.</strong> Commodity dividends look fattest exactly when the cycle is about to turn."
+    ],
+    "faqs": [
+      { "q": "Which Indian stock pays the highest dividend?", "a": "It rotates yearly among PSU cash cows like Coal India, ONGC and oil marketers. Rank by sustainable yield — payout ratio plus cash cover — not last year's cheque. Learn <a href=\"../glossary/dividend-yield.html\">dividend yield</a> first." },
+      { "q": "Are dividends better than growth?", "a": "Different jobs: dividends suit income needs and volatile markets; growth suits long horizons. Total return (price + dividends) is the only fair scoreboard." },
+      { "q": "Do I pay tax on dividends in India?", "a": "Yes — dividends are taxable in your hands at your slab rate, with TDS above thresholds. Factor this into yield math." }
+    ],
+    "relatedCollections": ["bank-stocks-india", "railway-stocks", "gold-etfs"],
+    "relatedGlossary": ["dividend-yield", "pe-ratio", "roe", "market-cap"],
+    "relatedPosts": ["us-slowdown-indian-portfolio-playbook", "fed-to-fii-us-rates-indian-equities"]
+  },
+  {
+    "slug": "bank-stocks-india",
+    "title": "Best Bank Stocks in India 2026: HDFC, ICICI, SBI & More | Ticker Screener",
+    "h1": "Bank stocks in India",
+    "shortName": "bank stocks",
+    "meta": "Bank stocks in India — HDFC Bank, ICICI, SBI, Kotak and more — CASA, NIM, GNPA screens, private vs PSU, risks and FAQs.",
+    "updated": "2026-10-11",
+    "tags": ["India", "Banking", "Nifty Bank", "Financials"],
+    "intro": [
+      "Banks are the economy in stock form: credit growth tracks nominal GDP, and asset quality tracks the cycle. India's pack divides into <strong>private leaders</strong> (HDFC Bank, ICICI, Kotak, Axis) prized for CASA deposits and tech, and <strong>PSU giants</strong> (SBI, Bank of Baroda) prized for reach and improving balance sheets.",
+      "Bank analysis has its own vocabulary — <strong>CASA, NIM, GNPA, PCR, ROA</strong> — and P/E means little without them. The screen below is the five-number health check professionals run first."
+    ],
+    "stocks": [
+      { "ticker": "HDFCBANK", "exchange": "NSE / BSE", "company": "HDFC Bank", "note": "Largest private lender; watch CASA ratio and merger-integration metrics." },
+      { "ticker": "ICICIBANK", "exchange": "NSE / BSE", "company": "ICICI Bank", "note": "Best-in-class ROA and tech; watch unsecured retail slippages." },
+      { "ticker": "SBIN", "exchange": "NSE / BSE", "company": "State Bank of India", "note": "The PSU bellwether; watch GNPA recovery and subsidiary value." },
+      { "ticker": "KOTAKBANK", "exchange": "NSE / BSE", "company": "Kotak Mahindra Bank", "note": "Conservative underwriter; watch RBI restrictions and growth rebound." },
+      { "ticker": "AXISBANK", "exchange": "NSE / BSE", "company": "Axis Bank", "note": "Citi-portfolio integration story; watch deposit growth versus credit." },
+      { "ticker": "BANKBARODA", "exchange": "NSE / BSE", "company": "Bank of Baroda", "note": "PSU turnaround with strong recoveries; watch margins and provisions." }
+    ],
+    "screenWith": [
+      "<strong>CASA above 40%</strong> — cheap deposits are the moat; falling CASA foreshadows margin pressure.",
+      "<strong>NIM defended above 3% (private) / 2.5% (PSU)</strong> — margins, not loan growth, decide returns.",
+      "<strong>GNPA under 2% with PCR above 70%</strong> — clean books first, growth second.",
+      "<strong>ROA above 1%</strong> — the line between an average bank and a compounding one.",
+      "<strong>Credit-deposit ratio under 85%</strong> — headroom to grow without expensive bulk deposits."
+    ],
+    "avoid": [
+      "<strong>Valuing banks on P/E alone.</strong> Use price-to-book adjusted for asset quality — a cheap P/E often prices hidden NPAs.",
+      "<strong>Unsecured-lending euphoria.</strong> Personal-loan booms flatter growth until the cycle turns; watch RBI risk-weight signals.",
+      "<strong>Ignoring deposit wars.</strong> When every bank chases deposits, margins compress across the board."
+    ],
+    "faqs": [
+      { "q": "HDFC Bank vs ICICI Bank — which is better?", "a": "Both are quality franchises; compare CASA, NIM trajectory and ROA rather than brand. ICICI has led on returns recently while HDFC digests its merger — the numbers, not narratives, decide." },
+      { "q": "Are PSU bank stocks good investments?", "a": "They have rerated on cleaner books and record dividends, but trade cheaper for a reason: government ownership caps. They suit value-style allocations, not buy-and-forget compounding." },
+      { "q": "What is CASA and why does it matter?", "a": "Current and savings account deposits — the cheapest funding a bank gets. Higher CASA means lower costs and fatter margins. Defined in our <a href=\"../glossary/casa.html\">CASA glossary</a>." }
+    ],
+    "relatedCollections": ["dividend-stocks-india", "it-stocks-india", "defence-stocks"],
+    "relatedGlossary": ["pe-ratio", "roe", "market-cap", "dividend-yield"],
+    "relatedPosts": ["fed-to-fii-us-rates-indian-equities", "us-slowdown-indian-portfolio-playbook"]
+  },
+  {
+    "slug": "it-stocks-india",
+    "title": "Best IT Stocks in India 2026: TCS, Infosys, HCL Tech & More | Ticker Screener",
+    "h1": "IT stocks in India",
+    "shortName": "IT stocks",
+    "meta": "IT stocks in India — TCS, Infosys, HCL Tech, Persistent and more — deal wins, attrition and margin screens, US-recession risks, FAQs.",
+    "updated": "2026-10-11",
+    "tags": ["India", "IT", "Nifty IT", "US Exposure"],
+    "intro": [
+      "Indian IT earns mostly in dollars and spends mostly in rupees — so every stock here is a joint bet on <strong>US corporate tech budgets and the USD-INR rate</strong>. Tier-1 giants (TCS, Infosys, HCL Tech, Wipro, Tech Mahindra) offer stability and dividends; mid-caps (Persistent, Coforge) offer growth at richer multiples.",
+      "The cycle turns on three data points: <strong>large-deal TCV, BFSI commentary and attrition</strong>. Screen on those plus margins, and never buy IT for dividend yield alone when growth stalls."
+    ],
+    "stocks": [
+      { "ticker": "TCS", "exchange": "NSE / BSE", "company": "Tata Consultancy Services", "note": "The anchor; watch deal TCV and BSNL-ramp effects on growth." },
+      { "ticker": "INFY", "exchange": "NSE / BSE", "company": "Infosys", "note": "Large-deal engine; watch guidance revisions and margin levers." },
+      { "ticker": "HCLTECH", "exchange": "NSE / BSE", "company": "HCL Technologies", "note": "Services plus software; watch product revenue and dividend consistency." },
+      { "ticker": "WIPRO", "exchange": "NSE / BSE", "company": "Wipro", "note": "Turnaround under new leadership; watch BFSI recovery and consulting growth." },
+      { "ticker": "TECHM", "exchange": "NSE / BSE", "company": "Tech Mahindra", "note": "Telecom-heavy; watch margin-expansion milestones." },
+      { "ticker": "PERSISTENT", "exchange": "NSE / BSE", "company": "Persistent Systems", "note": "High-growth mid-cap; watch whether growth justifies the premium multiple." },
+      { "ticker": "COFORGE", "exchange": "NSE / BSE", "company": "Coforge", "note": "BFSI and travel verticals; watch deal concentration andSwitcher attrition." }
+    ],
+    "screenWith": [
+      "<strong>Large-deal TCV growing year-on-year</strong> — the forward order book of IT services.",
+      "<strong>EBIT margin defended (tier-1: 20%+, mid-cap: 14%+)</strong> — pricing power shows up here first.",
+      "<strong>Attrition stabilising under 15%</strong> — spiking attrition means wage pressure and delivery risk.",
+      "<strong>BFSI commentary improving</strong> — banks are the biggest spenders; their budgets lead sector revenue by quarters.",
+      "<strong>Free-cash-flow conversion near 100%</strong> — IT should convert profits to cash; if not, ask why."
+    ],
+    "avoid": [
+      "<strong>Buying US-recession dips too early.</strong> IT underperforms for quarters after US slowdown signals — wait for deal-win confirmation.",
+      "<strong>Paying 50x for mid-cap growth that slows.</strong> Mid-cap IT premiums evaporate the quarter growth converges to tier-1 levels.",
+      "<strong>Ignoring currency.</strong> A sharp rupee rally can erase a quarter's operational gains."
+    ],
+    "faqs": [
+      { "q": "Why do IT stocks fall when US markets fall?", "a": "Roughly 60%+ of revenue comes from the US. Recession fears mean budget cuts, delayed deals and pricing pressure — the stocks price that chain instantly." },
+      { "q": "TCS vs Infosys — which is better?", "a": "TCS for consistency and buybacks, Infosys for large-deal momentum. Compare TCV, margin trajectory and capital return rather than stock tips." },
+      { "q": "Are IT stocks good for dividends?", "a": "Tier-1 IT pays generously (HCL Tech, TCS, Infosys all return cash), but buy them for total return — dividends alone cannot offset a growth downgrade." }
+    ],
+    "relatedCollections": ["bank-stocks-india", "pharma-stocks-india", "dividend-stocks-india"],
+    "relatedGlossary": ["pe-ratio", "roe", "market-cap", "52-week-high-low"],
+    "relatedPosts": ["fed-to-fii-us-rates-indian-equities", "us-slowdown-indian-portfolio-playbook"]
+  },
+  {
+    "slug": "pharma-stocks-india",
+    "title": "Best Pharma Stocks in India 2026: Sun, Cipla, Divi's & More | Ticker Screener",
+    "h1": "Pharma stocks in India",
+    "shortName": "pharma stocks",
+    "meta": "Pharma stocks in India — Sun Pharma, Cipla, Divi's, Lupin and more — USFDA screens, API vs formulations, risks and FAQs.",
+    "updated": "2026-10-11",
+    "tags": ["India", "Pharma", "Nifty Pharma", "Healthcare"],
+    "intro": [
+      "Indian pharma sells generics to America, vaccines to the world and branded drugs at home. The money sits in three layers: <strong>formulations</strong> (Sun, Cipla, Lupin — high margin, USFDA-sensitive), <strong>APIs and CRDMO</strong> (Divi's — China's-plus-one beneficiary) and <strong>domestic brands</strong> (steady, price-controlled).",
+      "One regulatory letter can halve a stock, so screening here means reading <strong>USFDA inspection history, US revenue share and ANDA pipelines</strong> — not just P/E ratios."
+    ],
+    "stocks": [
+      { "ticker": "SUNPHARMA", "exchange": "NSE / BSE", "company": "Sun Pharmaceutical", "note": "Specialty pivot (Ilumya, Winlevi); watch specialty ramp versus generic drag." },
+      { "ticker": "CIPLA", "exchange": "NSE / BSE", "company": "Cipla", "note": "Respiratory franchise plus US generics; watch USFDA plant status." },
+      { "ticker": "DRREDDY", "exchange": "NSE / BSE", "company": "Dr Reddy's", "note": "US generics plus Revlimid-type opportunities; watchExcluded-product cliffs." },
+      { "ticker": "DIVISLAB", "exchange": "NSE / BSE", "company": "Divi's Laboratories", "note": "API/CRDMO leader; watch custom-synthesis growth and China-plus-one share gains." },
+      { "ticker": "LUPIN", "exchange": "NSE / BSE", "company": "Lupin", "note": "US + India mix; watch facility remediation and complex-generic launches." },
+      { "ticker": "AUROPHARMA", "exchange": "NSE / BSE", "company": "Aurobindo Pharma", "note": "Volume generics plus injectables; watch Eugia demerger value unlocking." }
+    ],
+    "screenWith": [
+      "<strong>Clean USFDA record (no OAI/Warning Letter on key plants)</strong> — check the FDA database, not just management commentary.",
+      "<strong>US revenue under 40% or diversified</strong> — concentration plus price erosion is the classic double blow.",
+      "<strong>ANDA pipeline with limited-competition launches</strong> — plain-vanilla generics erode 10–20% yearly on price.",
+      "<strong>Domestic growth above IPM average</strong> — India business stability funds US volatility.",
+      "<strong>Net cash or minimal debt</strong> — regulatory shocks hurt less when the balance sheet is clean."
+    ],
+    "avoid": [
+      "<strong>Single-plant dependence.</strong> If one facility makes 40% of US revenue, one Form 483 can define your year.",
+      "<strong>Ignoring price erosion.</strong> US generic prices fall most years — volume growth must outrun it.",
+      "<strong>Paying specialty multiples for generic earnings.</strong> Reserve premium P/Es for proven specialty or CRDMO franchises."
+    ],
+    "faqs": [
+      { "q": "Why do pharma stocks crash on USFDA news?", "a": "America is the profit pool. An import alert or warning letter can block a plant's US sales overnight — revenue, margins and multiples all reset together." },
+      { "q": "Sun Pharma vs Divi's — which is better?", "a": "Different sports: Sun is a specialty-formulations compounder, Divi's an API/CRDMO margin machine. Own the exposure you understand, or split across both layers." },
+      { "q": "What is an ANDA?", "a": "Abbreviated New Drug Application — the US approval that lets a generic maker sell a copy of a branded drug. Pending ANDAs are the visible pipeline; approvals are the revenue events." }
+    ],
+    "relatedCollections": ["it-stocks-india", "ev-stocks-india", "defence-stocks"],
+    "relatedGlossary": ["pe-ratio", "roe", "market-cap", "52-week-high-low"],
+    "relatedPosts": ["us-tariffs-china-plus-one-india", "global-commodities-building-material-margins"]
+  },
+  {
+    "slug": "ev-stocks-india",
+    "title": "Best EV Stocks in India 2026: Tata Motors, M&M, Ola & More | Ticker Screener",
+    "h1": "EV stocks in India",
+    "shortName": "EV stocks",
+    "meta": "EV stocks in India — Tata Motors, Mahindra, Ola Electric, Exide, Tata Power and more — penetration metrics, battery screens, risks, FAQs.",
+    "updated": "2026-10-11",
+    "tags": ["India", "EV", "Auto", "Green Energy"],
+    "intro": [
+      "India's EV story is really three stories: <strong>two-wheelers</strong> (Ola, TVS, Bajaj — where penetration is highest), <strong>passenger EVs</strong> (Tata Motors and Mahindra fighting for early adopters) and the <strong>supply chain</strong> (Exide and Amara Raja on batteries, Tata Power on charging).",
+      "Penetration is still single-digit in cars, so this theme runs on <strong>monthly sales data, subsidy policy (FAME/PM E-DRIVE) and battery-cost curves</strong>. Screen for EV mix disclosure and balance-sheet strength — laggards burn cash for years."
+    ],
+    "stocks": [
+      { "ticker": "TATAMOTORS", "exchange": "NSE / BSE", "company": "Tata Motors", "note": "EV market leader plus JLR; watch EV mix, JLR margins and demerger overhang." },
+      { "ticker": "M&M", "exchange": "NSE / BSE", "company": "Mahindra & Mahindra", "note": "SUV dominance plus Born-Electric lineup; watch BE/ Scorpio-E booking data." },
+      { "ticker": "OLA", "exchange": "NSE / BSE", "company": "Ola Electric", "note": "Two-wheeler EV scale story; watch deliveries, service quality and cash burn." },
+      { "ticker": "TVSMOTOR", "exchange": "NSE / BSE", "company": "TVS Motor", "note": "iQube plus strong ICE cash flows funding the transition; watch EV mix." },
+      { "ticker": "EXIDEIND", "exchange": "NSE / BSE", "company": "Exide Industries", "note": "Lead-acid cash cow funding lithium cell plant; watch cell-plant capex and tie-ups." },
+      { "ticker": "AMARAJABAT", "exchange": "NSE / BSE", "company": "Amara Raja Energy", "note": "Battery maker pivoting to lithium; watch gigafactory timelines." },
+      { "ticker": "TATAPOWER", "exchange": "NSE / BSE", "company": "Tata Power", "note": "Charging-network proxy; watch charger installations and utilisation." }
+    ],
+    "screenWith": [
+      "<strong>Monthly EV sales trend, not quarterly narratives</strong> — Vahan registration data is public; verify claims against it.",
+      "<strong>EV revenue mix disclosed and rising</strong> — vague 'green' talk without numbers is a flag.",
+      "<strong>ICE cash flows funding the burn</strong> — pure-play EV makers without profits need repeated dilution.",
+      "<strong>Battery cost per kWh falling</strong> — the single biggest driver of EV affordability and margins.",
+      "<strong>Policy awareness</strong> — subsidy redesigns move two-wheeler demand within weeks."
+    ],
+    "avoid": [
+      "<strong>Valuing on 2030 dreams.</strong> EV leaders deserve premiums, but triple-digit multiples need flawless execution for a decade.",
+      "<strong>Ignoring competition from incumbents.</strong> Legacy players with dealer networks and cash flows catch up fast.",
+      "<strong>Forgetting hybrids and CNG.</strong> India's transition is multi-fuel; pure-EV bets face detours."
+    ],
+    "faqs": [
+      { "q": "Which is the best EV stock in India?", "a": "Tata Motors leads car EVs, Ola/TVS/Bajaj contest two-wheelers, Exide/Amara Raja play batteries. Each carries different risk — manufacturers face competition, battery makers face capex cycles." },
+      { "q": "Are EV stocks profitable yet?", "a": "Mostly not on a standalone EV basis — ICE profits subsidise the transition. That is exactly why balance-sheet strength tops the screen." },
+      { "q": "How do subsidies affect EV stocks?", "a": "Directly and fast: FAME-II cuts slowed two-wheeler EV sales within weeks in 2023. Track policy as closely as products." }
+    ],
+    "relatedCollections": ["bank-stocks-india", "pharma-stocks-india", "railway-stocks"],
+    "relatedGlossary": ["market-cap", "pe-ratio", "52-week-high-low", "stock-index"],
+    "relatedPosts": ["india-critical-mineral-parks-rees-lithium-nickel", "global-commodities-building-material-margins"]
+  },
+  {
+    "slug": "magnificent-7-us-stocks",
+    "title": "Magnificent 7 Stocks: AAPL, NVDA, MSFT & More Explained | Ticker Screener",
+    "h1": "Magnificent 7 US stocks",
+    "shortName": "Magnificent 7",
+    "meta": "Magnificent 7 stocks — Apple, Nvidia, Microsoft, Amazon, Alphabet, Meta, Tesla — weights, AI exposure, concentration risks and FAQs.",
+    "updated": "2026-10-11",
+    "tags": ["US", "Big Tech", "AI", "S&P 500"],
+    "intro": [
+      "Seven companies — <strong>Apple, Microsoft, Nvidia, Amazon, Alphabet, Meta and Tesla</strong> — drive roughly a third of the S&P 500's value. They are called the Magnificent 7 because market returns in recent years have depended disproportionately on them.",
+      "Owning the Mag 7 means owning the AI capex cycle, cloud growth and digital advertising in one basket — plus concentration risk no diversified investor should ignore. Track them as a group: when they move together, the whole index follows."
+    ],
+    "stocks": [
+      { "ticker": "AAPL", "exchange": "NASDAQ", "company": "Apple", "note": "iPhone cash machine; watch services growth and AI-feature adoption." },
+      { "ticker": "MSFT", "exchange": "NASDAQ", "company": "Microsoft", "note": "Azure + Copilot monetisation; watch cloud growth and AI capex returns." },
+      { "ticker": "NVDA", "exchange": "NASDAQ", "company": "Nvidia", "note": "AI-chip standard; watch data-centre revenue and hyperscaler capex guidance." },
+      { "ticker": "AMZN", "exchange": "NASDAQ", "company": "Amazon", "note": "AWS plus retail margin expansion; watch AWS reacceleration." },
+      { "ticker": "GOOGL", "exchange": "NASDAQ", "company": "Alphabet", "note": "Search plus Cloud; watch ad growth versus AI-Overviews impact." },
+      { "ticker": "META", "exchange": "NASDAQ", "company": "Meta Platforms", "note": "Ads plus Reality Labs spend; watch engagement and capex discipline." },
+      { "ticker": "TSLA", "exchange": "NASDAQ", "company": "Tesla", "note": "EVs plus autonomy bets; watch deliveries, margins and robotaxi milestones." }
+    ],
+    "screenWith": [
+      "<strong>Revenue growth vs multiple</strong> — 30x+ earnings needs 15%+ sustained growth; check PEG, not just P/E.",
+      "<strong>Free-cash-flow after AI capex</strong> — record spending is fine only if cash generation keeps up.",
+      "<strong>Cloud/ad growth reacceleration</strong> — AWS, Azure, GCP and ad prints lead Mag 7 earnings reactions.",
+      "<strong>Weight in your own portfolio</strong> — index funds already give you ~30% Mag 7; adding more doubles down knowingly or not."
+    ],
+    "avoid": [
+      "<strong>Treating all seven as identical.</strong> Nvidia is cyclical semis, Apple is consumer hardware, Tesla is autos-plus-options — different risks, different cycles.",
+      "<strong>Ignoring concentration.</strong> When the Mag 7 sneeze, the S&P 500 catches cold — diversify deliberately, not accidentally.",
+      "<strong>Chasing earnings gaps.</strong> These stocks routinely swing 5–10% post-earnings; position before, don't chase after."
+    ],
+    "faqs": [
+      { "q": "What are the Magnificent 7 stocks?", "a": "Apple, Microsoft, Nvidia, Amazon, Alphabet, Meta and Tesla — the seven mega-caps dominating US index weights and returns. The label stuck around 2023 as AI spending concentrated gains." },
+      { "q": "Should I buy all 7 or an index fund?", "a": "An S&P 500 or Nasdaq-100 fund already holds all seven at market weight — stock-picking here is an overweight bet, so size it as one." },
+      { "q": "Why is Tesla in the Mag 7 with lower earnings?", "a": "Inclusion reflects market-cap dominance and narrative weight (EVs, autonomy, AI), not earnings parity. It is the most volatile of the seven — see <a href=\"../glossary/market-cap.html\">market cap</a> vs earnings." }
+    ],
+    "relatedCollections": ["sp500-stocks", "nasdaq-100-stocks", "gold-etfs"],
+    "relatedGlossary": ["market-cap", "pe-ratio", "stock-index", "sp500"],
+    "relatedPosts": ["us-indexes-sp500-nasdaq-dow-explained", "pe-ratio-us-stocks-cheap-expensive"]
+  },
+  {
+    "slug": "sp500-stocks",
+    "title": "S&P 500 Stocks List: Top Holdings & How to Track Them | Ticker Screener",
+    "h1": "S&P 500 stocks",
+    "shortName": "S&P 500",
+    "meta": "S&P 500 stocks — top holdings, sector weights, index methodology, how the Mag 7 dominate, and how to track all 500 live.",
+    "updated": "2026-10-11",
+    "tags": ["US", "Index", "S&P 500", "Benchmark"],
+    "intro": [
+      "The <strong>S&P 500</strong> holds 500 large US companies weighted by market value — the default scoreboard for American equities and the benchmark most funds fail to beat. Tech now dominates a third of it, with the <a href=\"magnificent-7-us-stocks.html\">Magnificent 7</a> alone deciding many trading days.",
+      "You cannot buy the index directly, but you can track every constituent: index funds mirror it, and a watchlist of its heavyweights shows you where the day's move really comes from."
+    ],
+    "stocks": [
+      { "ticker": "AAPL", "exchange": "NASDAQ", "company": "Apple", "note": "Largest weight; iPhone + services." },
+      { "ticker": "MSFT", "exchange": "NASDAQ", "company": "Microsoft", "note": "Cloud-led mega-cap; Azure growth driver." },
+      { "ticker": "NVDA", "exchange": "NASDAQ", "company": "Nvidia", "note": "AI infrastructure bellwether." },
+      { "ticker": "AMZN", "exchange": "NASDAQ", "company": "Amazon", "note": "Retail + AWS dual engine." },
+      { "ticker": "GOOGL", "exchange": "NASDAQ", "company": "Alphabet", "note": "Search, YouTube, Cloud." },
+      { "ticker": "META", "exchange": "NASDAQ", "company": "Meta Platforms", "note": "Social ads at scale." },
+      { "ticker": "BRK.B", "exchange": "NYSE", "company": "Berkshire Hathaway", "note": "The non-tech anchor; insurance + equities." }
+    ],
+    "screenWith": [
+      "<strong>Sector weights, not stock tips</strong> — know tech is ~30%+ before blaming 'the market' for a Nasdaq-led fall.",
+      "<strong>Equal-weight (RSP) vs cap-weight (SPY)</strong> — breadth lives in the equal-weight version; narrow rallies show up as divergence.",
+      "<strong>Earnings season participation</strong> — 70%+ beating estimates is normal; guidance, not beats, moves prices.",
+      "<strong>Advance/decline inside the 500</strong> — when the index rises on 150 winners, the rally is fragile."
+    ],
+    "avoid": [
+      "<strong>Assuming 500 stocks means diversified.</strong> Cap-weighting means ten stocks decide your fate.",
+      "<strong>Timing the index on headlines.</strong> Time in beats timing — the 500's long-run return comes from compounding, not trading.",
+      "<strong>Ignoring currency as an Indian investor.</strong> Your S&P 500 return in rupees includes the USD-INR move."
+    ],
+    "faqs": [
+      { "q": "How many stocks are in the S&P 500?", "a": "500 large-cap US companies (technically 503 securities, since some firms have two share classes). Membership is decided by an S&P committee on size, liquidity and profitability." },
+      { "q": "S&P 500 vs Nasdaq 100 — which is better?", "a": "The S&P 500 is broader across sectors; the Nasdaq 100 is tech-concentrated and historically faster-growing but more volatile. Many investors hold both. Compare in our <a href=\"../blog/post.html?slug=us-indexes-sp500-nasdaq-dow-explained\">index guide</a>." },
+      { "q": "Can Indians invest in the S&P 500?", "a": "Yes — via Indian feeder mutual funds/ETFs or direct US-stock platforms under the LRS limit. Check expense ratios, tracking error and tax rules before choosing a route." }
+    ],
+    "relatedCollections": ["magnificent-7-us-stocks", "nasdaq-100-stocks", "gold-etfs"],
+    "relatedGlossary": ["sp500", "stock-index", "market-cap", "etf"],
+    "relatedPosts": ["us-indexes-sp500-nasdaq-dow-explained", "us-slowdown-indian-portfolio-playbook"]
+  },
+  {
+    "slug": "nasdaq-100-stocks",
+    "title": "Nasdaq 100 Stocks List: Top Holdings & Tech Exposure | Ticker Screener",
+    "h1": "Nasdaq 100 stocks",
+    "shortName": "Nasdaq 100",
+    "meta": "Nasdaq 100 stocks — top holdings, tech concentration, QQQ tracking, how it differs from the S&P 500, and live tracking tips.",
+    "updated": "2026-10-11",
+    "tags": ["US", "Index", "Nasdaq", "Tech"],
+    "intro": [
+      "The <strong>Nasdaq 100</strong> holds 100 large non-financial companies listed on Nasdaq — in practice, America's technology growth index. Apple, Microsoft and Nvidia alone decide a large share of its daily move, which is why it outruns the S&P 500 in rallies and underperforms in sell-offs.",
+      "Track it through QQQ (the mirroring ETF) plus a watchlist of its top weights: when mega-cap tech earnings land, this index tells you the market's verdict within minutes."
+    ],
+    "stocks": [
+      { "ticker": "AAPL", "exchange": "NASDAQ", "company": "Apple", "note": "Top weight; consumer-tech anchor." },
+      { "ticker": "MSFT", "exchange": "NASDAQ", "company": "Microsoft", "note": "Enterprise cloud anchor." },
+      { "ticker": "NVDA", "exchange": "NASDAQ", "company": "Nvidia", "note": "The index's highest-beta heavyweight." },
+      { "ticker": "AMZN", "exchange": "NASDAQ", "company": "Amazon", "note": "Consumer + cloud hybrid." },
+      { "ticker": "AVGO", "exchange": "NASDAQ", "company": "Broadcom", "note": "Semis plus enterprise software; watch AI-networking revenue." },
+      { "ticker": "COST", "exchange": "NASDAQ", "company": "Costco", "note": "The non-tech stabiliser; watch membership-fee income." },
+      { "ticker": "NFLX", "exchange": "NASDAQ", "company": "Netflix", "note": "Ads-tier growth story; watch subscriber adds and ad revenue." }
+    ],
+    "screenWith": [
+      "<strong>Mega-cap earnings calendar</strong> — six reporting days a year decide most of the index's annual move; never be surprised by them.",
+      "<strong>Growth-vs-multiple check</strong> — the index trades well above the S&P 500's P/E; confirm earnings growth justifies it each quarter.",
+      "<strong>Non-tech participation</strong> — Costco, PepsiCo and Amgen holding up means breadth; tech-only rallies are fragile.",
+      "<strong>QQQ premium/discount and volumes</strong> — the ETF should track tightly; persistent gaps signal stress."
+    ],
+    "avoid": [
+      "<strong>Assuming Nasdaq means all-tech.</strong> Consumer (Costco, PepsiCo), healthcare (Amgen) and others dilute purity — check actual weights.",
+      "<strong>Leveraged QQQ products as holdings.</strong> TQQQ-style daily leverage decays; trade them or skip them.",
+      "<strong>Forgetting rate sensitivity.</strong> Long-duration growth valuations fall fastest when yields spike."
+    ],
+    "faqs": [
+      { "q": "Nasdaq vs Nasdaq 100 — what's the difference?", "a": "The Nasdaq Composite holds 3,000+ stocks; the Nasdaq 100 holds the top 100 non-financials. QQQ tracks the 100 — that is the tradable one." },
+      { "q": "Why is the Nasdaq 100 so volatile?", "a": "Concentration plus growth multiples: a handful of mega-caps with 25–35x earnings swing harder than a broad market on every rate or earnings headline." },
+      { "q": "S&P 500 vs Nasdaq 100 — which should beginners pick?", "a": "The S&P 500 for core breadth, Nasdaq 100 as a growth satellite. Our <a href=\"../blog/post.html?slug=us-indexes-sp500-nasdaq-dow-explained\">index guide</a> compares all three US benchmarks." }
+    ],
+    "relatedCollections": ["sp500-stocks", "magnificent-7-us-stocks", "it-stocks-india"],
+    "relatedGlossary": ["stock-index", "market-cap", "pe-ratio", "etf"],
+    "relatedPosts": ["us-indexes-sp500-nasdaq-dow-explained", "fed-to-fii-us-rates-indian-equities"]
+  }
+]

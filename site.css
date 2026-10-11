@@ -1153,3 +1153,33 @@ h1 .accent { color: var(--accent-warm); }
     animation-duration: 400ms;
   }
 }
+
+/* Programmatic SEO: collections / glossary / learn */
+.breadcrumb { margin-bottom: 18px; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; }
+.breadcrumb a { color: var(--text-muted); }
+.breadcrumb a:hover { color: var(--accent-warm); }
+.hub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0 8px; }
+.hub-card {
+  display: block;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out);
+}
+.hub-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.hub-card h3 { margin: 0 0 8px; font-size: 1.05rem; font-weight: 600; line-height: 1.35; color: var(--text); }
+.hub-card:hover h3 { color: var(--accent-warm); }
+.hub-card p { margin: 0; color: var(--text-muted); font-size: 0.88rem; line-height: 1.65; }
+.table-wrap { overflow-x: auto; margin: 20px 0 24px; border: 1px solid var(--border); border-radius: var(--radius-md); }
+.fact-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; line-height: 1.6; }
+.fact-table th, .fact-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+.fact-table thead th { background: var(--surface); color: var(--text); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+.fact-table tbody tr:last-child th, .fact-table tbody tr:last-child td { border-bottom: 0; }
+.fact-table td { color: var(--text-secondary); }
+.fact-table td strong { color: var(--text); white-space: nowrap; }
+.disclaimer { margin-top: 28px; color: var(--text-muted); font-size: 0.82rem; line-height: 1.7; border-top: 1px solid var(--border); padding-top: 16px; }
+@media (max-width: 800px) {
+  .hub-grid { grid-template-columns: 1fr; }
+}

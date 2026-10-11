@@ -9,7 +9,7 @@
 - **🚀 Ticker tape:** Live prices on any page. Pause, 0.5x–3.0x speed, top/bottom position, themes, sizes, scroll direction, per-site disable.
 - **📉 Interactive charts:** 1M–MAX ranges, hover price-and-date crosshair; the line is green when the period return is positive, red when negative.
 - **🕒 World market clocks:** Draggable tiles across 15 markets, time-ordered by default, click to swap.
-- **🔔 Price alerts, 🖱️ right-click to add any company, 🌙 dark mode, 🌐 55 languages, 🔄 cross-device sync.**
+- **🔔 Price alerts, 🖱️ right-click to add any company, 🌙 dark mode, 🌐 10 languages, 🔄 cross-device sync.**
 
 ## ⚙️ How it works
 

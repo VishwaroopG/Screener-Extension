@@ -1108,5 +1108,123 @@
   },
   "notifLow52Title": {
     "message": "52-Week Low Alert! 🔻"
+  },
+  "moodTitle": {
+    "message": "Street Mood"
+  },
+  "moodLoading": {
+    "message": "Loading street mood…"
+  },
+  "moodExtremeFear": {
+    "message": "Extreme Fear"
+  },
+  "moodFear": {
+    "message": "Fear"
+  },
+  "moodGreed": {
+    "message": "Greed"
+  },
+  "moodExtremeGreed": {
+    "message": "Extreme Greed"
+  },
+  "moodBreadth": {
+    "message": "Breadth"
+  },
+  "moodTrend": {
+    "message": "Trend"
+  },
+  "moodVolatility": {
+    "message": "Vol"
+  },
+  "moodDay": {
+    "message": "Day"
+  },
+  "moodMethod": {
+    "message": "Proxy: breadth 35% · trend vs 50-day 35% · VIX 20% · day move 10%"
+  },
+  "moodStale": {
+    "message": "cached (offline)"
+  },
+  "moodDisclaimer": {
+    "message": "Own estimate from public market data"
+  },
+  "moodNeutral": {
+    "message": "Neutral"
+  },
+  "moodMMITitle": {
+    "message": "Market Mood Index (MMI)"
+  },
+  "moodFGTitle": {
+    "message": "Fear & Greed Index"
+  },
+  "moodJustNow": {
+    "message": "just now"
+  },
+  "moodMinsAgo": {
+    "message": "$X$m",
+    "placeholders": {
+      "x": {
+        "content": "$1"
+      }
+    }
+  },
+  "moodHoursAgo": {
+    "message": "$X$h",
+    "placeholders": {
+      "x": {
+        "content": "$1"
+      }
+    }
+  },
+  "moodDaysAgo": {
+    "message": "$X$d",
+    "placeholders": {
+      "x": {
+        "content": "$1"
+      }
+    }
+  },
+  "moodUpdatedAgo": {
+    "message": "Updated $X$ ago",
+    "placeholders": {
+      "x": {
+        "content": "$1"
+      }
+    }
+  },
+  "moodPrevDay": {
+    "message": "Prev"
+  },
+  "moodPrevWeek": {
+    "message": "Wk"
+  },
+  "moodPrevMonth": {
+    "message": "Mo"
+  },
+  "moodPrevClose": {
+    "message": "Prev close $X$",
+    "placeholders": {
+      "x": {
+        "content": "$1"
+      }
+    }
+  },
+  "moodLiveOn": {
+    "message": "Live on Tickertape"
+  },
+  "moodCNNLink": {
+    "message": "CNN Fear & Greed"
+  },
+  "moodTickertapeHint": {
+    "message": "Live Tickertape MMI: FII activity · volatility + skew · momentum · breadth · price strength · gold demand"
+  },
+  "moodCNNHint": {
+    "message": "CNN Fear & Greed (USA): momentum · strength · breadth · put/call options · junk bond demand · volatility · safe-haven demand"
+  },
+  "moodHintFear": {
+    "message": "Extreme fear (<30): markets may be oversold — historically a good time to open fresh positions"
+  },
+  "moodHintGreed": {
+    "message": "Extreme greed (>70): markets may be overbought — be cautious opening fresh positions"
   }
 }

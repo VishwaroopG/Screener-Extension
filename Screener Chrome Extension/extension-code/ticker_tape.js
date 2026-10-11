@@ -117,6 +117,7 @@
       </div>
       <div class="screener-modal-body">
         <div class="screener-modal-desc" id="screener-modal-desc"></div>
+        <button class="screener-desc-toggle" id="screener-desc-toggle" type="button" style="display:none;"></button>
         <div class="screener-chart-periods" id="screener-chart-periods">
           <button class="screener-period-btn active" data-range="1mo" data-interval="1d">1M</button>
           <button class="screener-period-btn" data-range="6mo" data-interval="1d">6M</button>
@@ -142,6 +143,17 @@
     closeBtn.addEventListener('click', () => {
       modalBackdrop.classList.remove('visible');
       isPaused = false; // Resume tape
+    });
+  }
+  // Description Read more / Read less toggle (wired once; label + visibility
+  // are reset every time the modal opens for a stock).
+  const descToggleBtn = modalBackdrop.querySelector('#screener-desc-toggle');
+  if (descToggleBtn) {
+    descToggleBtn.addEventListener('click', () => {
+      const d = modalBackdrop.querySelector('#screener-modal-desc');
+      if (!d) return;
+      const expanded = d.classList.toggle('expanded');
+      descToggleBtn.innerText = expanded ? (t('readLess') || 'Read less') : (t('readMore') || 'Read more');
     });
   }
   modalBackdrop.addEventListener('click', (e) => {
@@ -416,6 +428,18 @@
       const num = Number(match.replace(/,/g, ''));
       return Number.isFinite(num)
         ? num.toLocaleString('en-IN', { maximumFractionDigits: 0 })
+        : match;
+    });
+  }
+
+  // Trim forced trailing zeros on pure ratios (51.50 -> 51.5).
+  function formatPureRatioDisplay(value) {
+    if (value === null || value === undefined || value === '-') return value;
+    return String(value).replace(/[\d,]+\.\d+|[\d,]+/g, (match) => {
+      if (/^[.,]+$/.test(match)) return match;
+      const num = Number(match.replace(/,/g, ''));
+      return Number.isFinite(num)
+        ? num.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 2 })
         : match;
     });
   }
@@ -730,9 +754,9 @@
         { label: t('metricLastPrice'), val: ratios['Current Price'] || '-' },
         { label: t('ret1M'), val: `<span class="${colorCls}" id="screener-period-return">${pct}</span>`, labelId: 'screener-return-label' },
         { label: t('ratioMCap'), val: formatMcapWithCurrency(ratios['Market Cap'], data) },
-        { label: t('metricPERatio'), val: ratios['Stock P/E'] || '-' },
-        { label: t('metricDivYield'), val: ratios['Dividend Yield'] || '-' },
-        { label: 'ROCE', val: ratios['ROCE'] || '-' }
+        { label: t('metricPERatio'), val: formatPureRatioDisplay(ratios['Stock P/E'] || '-') },
+        { label: t('metricDivYield'), val: formatPureRatioDisplay(ratios['Dividend Yield'] || '-') },
+        { label: 'ROCE', val: formatPureRatioDisplay(ratios['ROCE'] || '-') }
       ];
 
       metrics.forEach(m => {
@@ -755,31 +779,65 @@
       loadChartForPeriod('1mo', '1d');
     }
 
+    // Description Read more: the text is CSS-clamped to 3 lines. Reset the
+    // expanded state on every open and only offer the toggle when the text
+    // is actually clamped (measured after layout).
+    try {
+      const descToggleEl = modalBackdrop.querySelector('#screener-desc-toggle');
+      descEl.classList.remove('expanded');
+      if (descToggleEl) {
+        descToggleEl.innerText = t('readMore') || 'Read more';
+        descToggleEl.style.display = 'none';
+        requestAnimationFrame(() => {
+          try {
+            if (descEl.innerText && descEl.scrollHeight > descEl.clientHeight + 2) {
+              descToggleEl.style.display = '';
+            }
+          } catch (e) {}
+        });
+      }
+    } catch (e) {}
+
     metricsGrid.innerHTML = metricsHtml;
   });
 
   // --- Continuous GPU-Accelerated Auto-Scroll Engine ---
-  // Uses translate3d which never hits DOM scroll limits or integer truncation issues
-  function autoScrollStep() {
-    const hoverPauses = tapePauseOnHover !== false && isHovered;
-    if (!isPaused && !isDragging && !hoverPauses && isVisible && !isDomainDisabled) {
-      if (Math.abs(arrowScrollRemaining) > 0.25) {
-        const step = Math.sign(arrowScrollRemaining) * Math.max(0.5, Math.abs(arrowScrollRemaining) * 0.16);
-        currentX += step;
-        arrowScrollRemaining -= step;
-      } else {
-        arrowScrollRemaining = 0;
-        const dirSign = tapeDirection === 'right' ? 1 : -1;
-        currentX += dirSign * speed;
-      }
-      const halfWidth = marquee.scrollWidth / 2;
-      
-      // Use modulo to prevent massive negative values if it ever gets out of sync
-      if (halfWidth > 0 && Math.abs(currentX) >= halfWidth) {
-        currentX = currentX % halfWidth;
-      }
-      marquee.style.transform = `translate3d(${currentX}px, 0, 0)`;
+  // Uses translate3d which never hits DOM scroll limits or integer truncation issues.
+  // Time-based (not per-frame) so 60Hz / 120Hz / throttled tabs all move at the
+  // same px/sec. Wrap keeps currentX in (-halfWidth, 0] so the loop seam is
+  // seamless in BOTH directions (old modulo left positive X = blank gap).
+  function wrapTapeX() {
+    const halfWidth = marquee.scrollWidth / 2;
+    if (!(halfWidth > 0)) return;
+    if (currentX > 0) {
+      currentX = currentX % halfWidth;
+      if (currentX > 0) currentX -= halfWidth;
+    } else if (currentX <= -halfWidth) {
+      currentX = -((-currentX) % halfWidth);
     }
+  }
+  let lastFrameT = 0;
+  function autoScrollStep(now) {
+    try {
+      if (!lastFrameT) lastFrameT = now || 0;
+      const dtMs = Math.min(100, Math.max(0, (now || 0) - lastFrameT)); // clamp tab-switch jumps
+      lastFrameT = now || 0;
+      const dt = dtMs / 16.6667; // 1.0 == one 60fps frame (1x feel unchanged)
+      const hoverPauses = tapePauseOnHover !== false && isHovered;
+      if (dt > 0 && !isPaused && !isDragging && !hoverPauses && isVisible && !isDomainDisabled) {
+        if (Math.abs(arrowScrollRemaining) > 0.25) {
+          const step = Math.sign(arrowScrollRemaining) * Math.max(0.5 * dt, Math.abs(arrowScrollRemaining) * Math.min(1, 0.16 * dt));
+          currentX += step;
+          arrowScrollRemaining -= step;
+        } else {
+          arrowScrollRemaining = 0;
+          const dirSign = tapeDirection === 'right' ? 1 : -1;
+          currentX += dirSign * speed * dt; // speed is px/frame @60fps
+        }
+        wrapTapeX();
+        marquee.style.transform = `translate3d(${currentX}px, 0, 0)`;
+      }
+    } catch (e) {}
     requestAnimationFrame(autoScrollStep);
   }
   requestAnimationFrame(autoScrollStep);
@@ -887,16 +945,20 @@
               const color = isUp ? '#81c995' : '#f28b82';
               const sign = isUp ? '\u25B2' : '\u25BC';
 
+              // Only touch the DOM when something actually changed —
+              // rewriting textContent/className every poll restarts the flash
+              // animation and shifts scrollWidth, which reads as a glitch.
+              let nextClass = 'screener-ticker-price ' + (isUp ? 'screener-price-up' : 'screener-price-down');
               if (idx.flash && (Date.now() - (idx.flashTime || 0) < 1000)) {
-                 priceSpan.className = 'screener-ticker-price ' + (isUp ? 'screener-price-up' : 'screener-price-down') + ' ' + (idx.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down');
-              } else {
-                 priceSpan.className = 'screener-ticker-price ' + (isUp ? 'screener-price-up' : 'screener-price-down');
+                nextClass += ' ' + (idx.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down');
               }
-              priceSpan.textContent = idx.price;
+              if (priceSpan.className !== nextClass) priceSpan.className = nextClass;
+              if (priceSpan.textContent !== idx.price) priceSpan.textContent = idx.price;
 
               const movesWrap = node.querySelector('.screener-ticker-moves');
               if (movesWrap) {
-                movesWrap.innerHTML = changeAreaHtml(idx.price, idx.changePct, Math.abs(parseFloat(idx.changePct)).toFixed(2) + '%', isUp);
+                const nextMoves = changeAreaHtml(idx.price, idx.changePct, Math.abs(parseFloat(idx.changePct)).toFixed(2) + '%', isUp);
+                if (node._lastMoves !== nextMoves) { node._lastMoves = nextMoves; movesWrap.innerHTML = nextMoves; }
               }
             }
           } else {
@@ -905,16 +967,17 @@
               const price = data.ratios['Current Price'] || '-';
               const isUp = data.changeDir === 'up';
 
+              let nextClass = 'screener-ticker-price ' + (isUp ? 'screener-price-up' : 'screener-price-down');
               if (data.flash && (Date.now() - (data.flashTime || 0) < 1000)) {
-                priceSpan.className = 'screener-ticker-price ' + (isUp ? 'screener-price-up' : 'screener-price-down') + ' ' + (data.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down');
-              } else {
-                priceSpan.className = 'screener-ticker-price ' + (isUp ? 'screener-price-up' : 'screener-price-down');
+                nextClass += ' ' + (data.flash === 'up' ? 'screener-tape-flash-up' : 'screener-tape-flash-down');
               }
-              priceSpan.textContent = price;
+              if (priceSpan.className !== nextClass) priceSpan.className = nextClass;
+              if (priceSpan.textContent !== price) priceSpan.textContent = price;
 
               const movesWrap = node.querySelector('.screener-ticker-moves');
               if (movesWrap && data.changePct) {
-                movesWrap.innerHTML = changeAreaHtml(price, data.changePct, data.changePct, isUp);
+                const nextMoves = changeAreaHtml(price, data.changePct, data.changePct, isUp);
+                if (node._lastMoves !== nextMoves) { node._lastMoves = nextMoves; movesWrap.innerHTML = nextMoves; }
               }
             }
           }
@@ -982,7 +1045,9 @@
         const block = html + gapHtml;
         marquee.innerHTML = block + block;
       }
-      // If we just rebuilt, don't clobber currentX immediately if tape is running
+      // Rebuilds change scrollWidth — re-wrap into (-halfWidth, 0] so the
+      // seam doesn't jump, then keep the current scroll position.
+      try { wrapTapeX(); } catch (e) {}
       marquee.style.transform = `translate3d(${currentX}px, 0, 0)`;
     });
     } catch (e) { /* context invalidated mid-render — stop quietly */ }

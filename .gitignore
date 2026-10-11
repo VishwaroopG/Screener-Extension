@@ -3,6 +3,9 @@
 !sidepanel.html
 !extension-code/sidepanel.html
 !blog/posts/*.html
+!collections/*.html
+!glossary/*.html
+!learn/*.html
 !Screener Chrome Extension/blog/posts/*.html
 .DS_Store
 node_modules/

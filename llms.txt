@@ -13,18 +13,45 @@
 
 ## Features (what questions this answers)
 
-- Live US watchlist in the browser side panel (NYSE/Nasdaq price, day change, sparklines, market cap, P/E, ratios). Shortcut: Ctrl+Shift+S (Command+Shift+S on Mac).
-- Live ticker tape on every website (S&P 500, Nasdaq, Dow, watchlist; pause, 0.5x–3.0x speed, per-site disable; % change, amount change, or both combined like +$5.20 (+0.37%)).
-- Markets tab: opens on the USA, plus UK, India, Singapore, Japan, Hong Kong, Germany, France, Australia, Canada  index heatmap, top gainers/losers, World Bank macro tiles (inflation, unemployment, GDP growth, GDP per capita).
+- Live US watchlist in the browser side panel (NYSE/Nasdaq price, day change, sparklines, market cap, switchable P/E / Div Yld / ROCE / ROE / P/B column, Screener-style 51.5 formatting with auto P/B). Shortcut: Ctrl+Shift+S (Command+Shift+S on Mac).
+- Watchlist power: color tags + tag filter, Smart Focus blue-dot (big >5% move, unusual swing, near 52w high/low) with Focus-only view and per-stock mute, bulk Select mode with header Select-All (tag / move / delete), preserved horizontal scroll.
+- One-click import from Zerodha Kite, Screener.in, TradingView: Detect from open tab (read only on click, checkbox preview), paste list, or upload CSV/TXT; auto-resolve + deduped merge.
+- Live ticker tape on every website (S&P 500, Nasdaq, Dow, watchlist; pause, 0.5x–3.0x speed, per-site disable; % change, amount change, or both combined like +$5.20 (+0.37%)). v2.6.3 silk engine: time-based 60Hz/120Hz-identical speed, seamless both-direction loop, jitter-free background-only flashes, fixed speed popover + ESC, dark-mode readable dropdowns.
+- Markets tab: opens on the USA, plus UK, India, Singapore, Japan, Hong Kong, Germany, France, Australia, Canada — Market Mood gauge on top (live Tickertape MMI for India, CNN Fear & Greed for the USA, market-data proxy elsewhere; hover arcs for zones, ⓘ lists factors), whole-market advance/decline breadth (Nifty 500 for India via Moneycontrol, NYSE + Nasdaq for USA via WSJ, 10-min cache), index heatmap, top gainers/losers, World Bank macro tiles (inflation, unemployment, GDP growth, GDP per capita).
 - Smart verdicts from P/E + ROCE (undervalued / overvalued / high risk) + custom price alerts with notifications.
+- v2.7.0 Fundamentals Depth on every stock search: free checklist score /10, SWOT from Screener pros/cons, forensic red-flags, promoter/FII/DII/public shareholding with trend, concall transcripts with PPT links, research shortcuts (Screener, Tickertape, Trendlyne Superstars) + one-click PDF.
 - Add stocks from any webpage via right-click; Screener.in Top Ratios sync when logged in.
-- Multiple portfolios, CSV export, stock news feed with publisher thumbnails, dark mode, interactive 1M–MAX charts, dashboard refresh button, full-screen tab view (fullscreen header button).
+- Multiple portfolios, CSV export, stock news feed with publisher thumbnails, dark mode, interactive 1M–MAX charts (hardened popup buttons + Read more/less), dashboard refresh button, full-screen tab view (fullscreen header button).
 
 ## Blog posts
 
 - Ticker Screener Explained: Live NSE/BSE Watchlist, Ticker Tape & Stock Alerts in Your Browser: https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=welcome-to-screener-pro-blog
 - India's 4 Critical Mineral Parks (Rare Earths, Lithium, Nickel): What Investors Should Watch: https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=india-critical-mineral-parks-rees-lithium-nickel
 
+## Stock collections (programmatic SEO: seo/data/collections.json + node seo/seo-build.cjs)
+
+- Hub: https://vishwaroopg.github.io/Screener-Extension/collections/
+- Railway stocks: https://vishwaroopg.github.io/Screener-Extension/collections/railway-stocks.html
+- Defence stocks: https://vishwaroopg.github.io/Screener-Extension/collections/defence-stocks.html
+- Penny stocks under Rs 10 (screening framework, no fixed list): https://vishwaroopg.github.io/Screener-Extension/collections/penny-stocks-under-10.html
+- Gold ETFs: https://vishwaroopg.github.io/Screener-Extension/collections/gold-etfs.html
+- Dividend stocks India: https://vishwaroopg.github.io/Screener-Extension/collections/dividend-stocks-india.html
+- Bank stocks India: https://vishwaroopg.github.io/Screener-Extension/collections/bank-stocks-india.html
+- IT stocks India: https://vishwaroopg.github.io/Screener-Extension/collections/it-stocks-india.html
+- Pharma stocks India: https://vishwaroopg.github.io/Screener-Extension/collections/pharma-stocks-india.html
+- EV stocks India: https://vishwaroopg.github.io/Screener-Extension/collections/ev-stocks-india.html
+- Magnificent 7 US stocks: https://vishwaroopg.github.io/Screener-Extension/collections/magnificent-7-us-stocks.html
+- S&P 500 stocks: https://vishwaroopg.github.io/Screener-Extension/collections/sp500-stocks.html
+- Nasdaq 100 stocks: https://vishwaroopg.github.io/Screener-Extension/collections/nasdaq-100-stocks.html
+
+## Glossary (seo/data/glossary.json; 24 terms: P/E, ROCE, ROE, P/B, dividend yield, market cap, EPS, Nifty 50, Sensex, S&P 500, Nasdaq, FII & DII, circuit breaker, Fear & Greed, MMI, advance-decline, 52-week high/low, ETF, stock index, IPO, CASA, expense ratio, order book, bull vs bear)
+
+- Hub: https://vishwaroopg.github.io/Screener-Extension/glossary/
+
+## Learn (seo/data/learn.json; 3 tracks, 7 lessons)
+
+- Hub: https://vishwaroopg.github.io/Screener-Extension/learn/
+
 ## Data sources
 
-- Prices/indices/charts: Yahoo Finance. US fundamentals: Finviz (with Yahoo Finance fallback). Indian ratios: Screener.in (login required for custom ratios). Macro: World Bank. News: Google News RSS.
+- Prices/indices/charts: Yahoo Finance. US fundamentals: Finviz (with Yahoo Finance fallback). Indian ratios: Screener.in (login required for custom ratios). Market breadth: Moneycontrol (India Nifty 500), WSJ Markets Diary (USA NYSE + Nasdaq). Market mood: Tickertape MMI API (India), CNN Fear & Greed (USA). Macro: World Bank. News: Google News RSS.

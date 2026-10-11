@@ -249,6 +249,18 @@ function roundStringValue(str, decimals = 2) {
   });
 }
 
+// Pure ratios (P/E, ROCE, ROE, yields, P/B) must not carry forced trailing
+// zeros — Screener shows 51.5, not 51.50. Max 2 decimals, min 0.
+function formatPureRatio(str) {
+  return String(str).replace(/[\d,]+\.\d+|[\d,]+/g, (match) => {
+    if (/^[.,]+$/.test(match)) return match;
+    const num = parseFloat(match.replace(/,/g, ''));
+    if (isNaN(num)) return match;
+    return num.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  });
+}
+const PURE_RATIO_KEYS = new Set(['Stock P/E', 'Dividend Yield', 'ROCE', 'ROE', 'Price to book value']);
+
 function formatMarketCap(value) {
   if (value === null || value === undefined || value === '-') return value;
   return String(value).replace(/[\d,]+(?:\.\d+)?/g, (match) => {
@@ -446,7 +458,13 @@ async function fetchYahooData(symbol) {
         if (!ratios['Stock P/E']) {
           const tpe = meta.trailingPE ?? meta.forwardPE;
           if (typeof tpe === 'number' && isFinite(tpe) && tpe > 0) {
-            ratios['Stock P/E'] = tpe.toFixed(2);
+            ratios['Stock P/E'] = formatPureRatio(tpe.toFixed(2));
+          }
+        }
+        if (!ratios['Price to book value']) {
+          const pbm = meta.priceToBook ?? meta.priceToBookRatio;
+          if (typeof pbm === 'number' && isFinite(pbm) && pbm > 0) {
+            ratios['Price to book value'] = formatPureRatio(pbm.toFixed(2));
           }
         }
       } catch(e) {}
@@ -484,17 +502,14 @@ async function fetchScreenerData(ticker) {
       response = await fetch(`https://www.screener.in/company/${ticker}/`);
       if (!response.ok) throw new Error('Not found on Screener');
     }
-    const htmlText = await response.text();
-    
-    const extractName = htmlText.match(/<h1[^>]*>([^<]+)<\/h1>/);
-    const companyName = extractName ? extractName[1].trim() : ticker;
+    let htmlText = await response.text();
 
-    const ratios = {};
-    const ratiosMatch = htmlText.match(/<ul id="top-ratios">([\s\S]*?)<\/ul>/);
-    if (ratiosMatch) {
-      const listHtml = ratiosMatch[1];
+    const parseTopRatios = (html) => {
+      const out = {};
+      const m = html.match(/<ul id="top-ratios">([\s\S]*?)<\/ul>/);
+      if (!m) return out;
+      const listHtml = m[1];
       const liRegex = /<li[^>]*>([\s\S]*?)<\/li>/g;
-      
       let match;
       while ((match = liRegex.exec(listHtml)) !== null) {
         const liHtml = match[1];
@@ -503,16 +518,49 @@ async function fetchScreenerData(ticker) {
           let name = nameMatch[1].trim();
           let afterName = liHtml.substring(nameMatch.index + nameMatch[0].length);
           let valueStr = afterName.replace(/<[^>]+>/g, '').trim().replace(/\s+/g, ' ');
+          // Banks / insurers (e.g. KARURVYSYA, ICICIGI) have no consolidated
+          // statements — that page returns 200 OK with empty numbers
+          // ("₹ Cr."). Skip digitless values so they can be backfilled.
+          if (!/\d/.test(valueStr)) continue;
           if (name === 'Market Cap') {
             const formattedMcap = formatMarketCap(valueStr);
             // Screener.in values are in INR — ensure the ₹ prefix is stored
-            ratios[name] = /^[^\d\-+.,\s]+/.test(formattedMcap) ? formattedMcap : '₹' + formattedMcap;
+            out[name] = /^[^\d\-+.,\s]+/.test(formattedMcap) ? formattedMcap : '₹' + formattedMcap;
+          } else if (PURE_RATIO_KEYS.has(name)) {
+            out[name] = formatPureRatio(valueStr);
           } else {
-            ratios[name] = roundStringValue(valueStr);
+            out[name] = roundStringValue(valueStr);
           }
         }
       }
+      return out;
+    };
+    const hasNumbers = (ratios) => Object.values(ratios).some((v) => /\d/.test(String(v || '')));
+
+    let ratios = parseTopRatios(htmlText);
+    // Standalone-only companies return an empty consolidated shell with HTTP
+    // 200 — fall back to the base page and backfill any missing ratios.
+    if (!hasNumbers(ratios)) {
+      try {
+        const stdRes = await fetch(`https://www.screener.in/company/${ticker}/`);
+        if (stdRes.ok) {
+          const stdHtml = await stdRes.text();
+          const stdRatios = parseTopRatios(stdHtml);
+          if (hasNumbers(stdRatios)) {
+            htmlText = stdHtml;
+            ratios = stdRatios;
+          } else {
+            // Merge whatever digits either page managed to render.
+            for (const [k, v] of Object.entries(stdRatios)) {
+              if (!ratios[k] || !/\d/.test(String(ratios[k]))) ratios[k] = v;
+            }
+          }
+        }
+      } catch (e) {}
     }
+
+    const extractName = htmlText.match(/<h1[^>]*>([^<]+)<\/h1>/);
+    const companyName = extractName ? extractName[1].trim() : ticker;
 
     const pctMatch = htmlText.match(/class="[^"]*\b(up|down)\b[^"]*">\s*<i[^>]+><\/i>\s*([-+\d\.]+%)\s*<\/span>/);
     let changeDir = '';
@@ -537,6 +585,19 @@ async function fetchScreenerData(ticker) {
         sparkline = quotes.close.filter(p => p !== null && p !== undefined).map(p => parseFloat(p.toFixed(2)));
       }
     } catch (e) {}
+
+    // Screener.in top-ratios gives "Book Value" (e.g. ₹668), not a P/B
+    // ratio — derive P/B as Current Price / Book Value so the P/B
+    // column never shows "-" for Indian stocks.
+    if (!ratios['Price to book value'] && ratios['Current Price'] && ratios['Book Value']) {
+      try {
+        const p = parseFloat(String(ratios['Current Price']).replace(/[^\d.-]/g, ''));
+        const b = parseFloat(String(ratios['Book Value']).replace(/[^\d.-]/g, ''));
+        if (isFinite(p) && isFinite(b) && b !== 0) {
+          ratios['Price to book value'] = formatPureRatio((p / b).toFixed(2));
+        }
+      } catch (e) {}
+    }
 
     return { success: true, ticker, companyName, ratios, aboutText, changeDir, changePct, sparkline, source: 'screener', currency: 'INR' };
   } catch (err) {
@@ -920,6 +981,80 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 // Run once on startup
 syncWatchlistData();
 
+// --- Whole-market breadth (Advance / Decline) ---
+// India: Moneycontrol's advance/decline page server-renders __NEXT_DATA__
+// JSON with per-index advance/decline (NIFTY 500, NIFTY 50, ...). No key,
+// no session cookies needed — plain fetch + text parse (no DOM in SW).
+// USA: WSJ markets-diary JSON gives NYSE + NASDAQ advancing / declining /
+// unchanged. Both responses are cached 10 min in local-only storage
+// (same pattern as macroStats — never synced across devices).
+const BREADTH_TTL_MS = 10 * 60 * 1000;
+
+function parseBreadthNum(v) {
+  if (typeof v === 'number' && isFinite(v)) return Math.round(v);
+  const n = parseInt(String(v == null ? '' : v).replace(/[^0-9]/g, ''), 10);
+  return isFinite(n) ? n : 0;
+}
+
+async function fetchIndiaBreadth() {
+  const r = await fetch('https://www.moneycontrol.com/stocksmarketsindia/heat-map-advance-decline-ratio-nse-bse', {
+    headers: { 'Accept': 'text/html' }
+  });
+  if (!r.ok) throw new Error('Moneycontrol HTTP ' + r.status);
+  const html = await r.text();
+  const m = html.match(/<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/);
+  if (!m) throw new Error('Moneycontrol breadth markup not found');
+  let j;
+  try { j = JSON.parse(m[1]); } catch (e) { throw new Error('Moneycontrol breadth JSON parse failed'); }
+  const list = j && j.props && j.props.pageProps && j.props.pageProps.adRatioData && j.props.pageProps.adRatioData.indexList;
+  if (!Array.isArray(list) || !list.length) throw new Error('Moneycontrol breadth list empty');
+  const pick = (name) => list.find((x) => x && x.indexName === name);
+  // Broadest honest whole-market proxy first, headline index as fallback.
+  const broad = pick('NIFTY 500') || pick('NIFTY 50');
+  if (!broad) throw new Error('Moneycontrol breadth index missing');
+  const adv = parseBreadthNum(broad.advance);
+  const dec = parseBreadthNum(broad.decline);
+  if (!adv && !dec) throw new Error('Moneycontrol breadth counts empty');
+  const size = /500/.test(broad.indexName || '') ? 500 : 50;
+  let asOn = null;
+  try { asOn = (j.props.pageProps.adRatioData.asOnDate || '').trim() || null; } catch (e) {}
+  return {
+    scope: broad.indexName || 'NIFTY 500',
+    advances: adv,
+    declines: dec,
+    unchanged: Math.max(0, size - adv - dec),
+    asOn,
+    source: 'Moneycontrol'
+  };
+}
+
+async function fetchUsBreadth() {
+  const url = 'https://www.wsj.com/market-data/stocks?id=%7B%22application%22%3A%22WSJ%22%2C%22marketsDiaryType%22%3A%22overview%22%7D&type=mdc_marketsdiary';
+  const r = await fetch(url, { headers: { 'Accept': 'application/json' } });
+  if (!r.ok) throw new Error('WSJ HTTP ' + r.status);
+  const j = await r.json();
+  const sets = j && j.data && j.data.instrumentSets;
+  if (!Array.isArray(sets) || !sets.length) throw new Error('WSJ breadth sets empty');
+  const issues = sets[0].instruments || [];
+  const row = (n) => issues.find((x) => x && x.name === n) || {};
+  const nyse = { a: parseBreadthNum(row('Advancing').NYSE), d: parseBreadthNum(row('Declining').NYSE), u: parseBreadthNum(row('Unchanged').NYSE) };
+  const nasdaq = { a: parseBreadthNum(row('Advancing').NASDAQ), d: parseBreadthNum(row('Declining').NASDAQ), u: parseBreadthNum(row('Unchanged').NASDAQ) };
+  const adv = nyse.a + nasdaq.a;
+  const dec = nyse.d + nasdaq.d;
+  if (!adv && !dec) throw new Error('WSJ breadth counts empty');
+  let asOn = null;
+  try { asOn = (j.data.timestamp || '').trim() || null; } catch (e) {}
+  return {
+    scope: 'NYSE + NASDAQ',
+    advances: adv,
+    declines: dec,
+    unchanged: nyse.u + nasdaq.u,
+    asOn,
+    source: 'WSJ Markets Diary',
+    detail: { nyse, nasdaq }
+  };
+}
+
 // Consolidated message listener for all extension components
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'PING' || message.type === 'POLL_NOW') {
@@ -1097,6 +1232,289 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse({ stats: data });
       } catch (e) {
         sendResponse({ stats: {} });
+      }
+    })();
+    return true;
+  }
+
+  if (message.type === 'FETCH_MARKET_BREADTH') {
+    const economy = message.economy;
+    (async () => {
+      try {
+        if (economy !== 'India' && economy !== 'USA') { sendResponse({ breadth: null }); return; }
+        const now = Date.now();
+        const cached = await chrome.storage.local.get(['marketBreadth']);
+        const store = cached.marketBreadth || {};
+        if (store[economy] && (now - (store[economy].fetchedAt || 0)) < BREADTH_TTL_MS) {
+          sendResponse({ breadth: store[economy].data });
+          return;
+        }
+        let data = null;
+        try {
+          data = economy === 'India' ? await fetchIndiaBreadth() : await fetchUsBreadth();
+        } catch (e) {
+          data = null;
+        }
+        if (data) {
+          store[economy] = { fetchedAt: now, data };
+          await chrome.storage.local.set({ marketBreadth: store });
+          sendResponse({ breadth: data });
+        } else if (store[economy] && store[economy].data) {
+          sendResponse({ breadth: store[economy].data, stale: true });
+        } else {
+          sendResponse({ breadth: null });
+        }
+      } catch (e) {
+        sendResponse({ breadth: null });
+      }
+    })();
+    return true;
+  }
+
+  // ---- Street Mood proxy (Fear / Greed 0-100) ---
+// Own computation from Yahoo Finance + existing breadth sources — no
+// Tickertape scraping. Breadth 35% + Trend vs 50-day 35% +
+// Volatility (inverted VIX) 20% + Day move 10%. Missing components are
+// dropped and the remaining weights renormalized (min 2 components).
+const MOOD_TTL_MS = 10 * 60 * 1000;
+const MOOD_MAIN_INDEX = {
+  'USA': '^GSPC', 'India': '^NSEI', 'UK': '^FTSE', 'Singapore': '^STI',
+  'Japan': '^N225', 'Hong Kong': '^HSI', 'Germany': '^GDAXI',
+  'France': '^FCHI', 'Australia': '^AXJO', 'Canada': '^GSPTSE'
+};
+const MOOD_VIX_SYMBOL = { 'USA': '^VIX', 'India': '^INDIAVIX' };
+const MOOD_DEFAULT_VIX = '^VIX';
+
+function moodClamp(v, lo, hi) {
+  const n = Number(v);
+  if (!isFinite(n)) return null;
+  return Math.min(hi, Math.max(lo, n));
+}
+
+async function moodFetchCloses(symbol, range, interval) {
+  const r = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?range=${range}&interval=${interval}`);
+  if (!r.ok) throw new Error('Yahoo HTTP ' + r.status);
+  const j = await r.json();
+  const result = ((j && j.chart && j.chart.result) || [])[0];
+  if (!result) throw new Error('Yahoo empty chart');
+  const meta = result.meta || {};
+  const raw = (result.indicators && result.indicators.quote && result.indicators.quote[0] && result.indicators.quote[0].close) || [];
+  const closes = raw.filter((v) => typeof v === 'number' && isFinite(v));
+  const price = (typeof meta.regularMarketPrice === 'number' && isFinite(meta.regularMarketPrice))
+    ? meta.regularMarketPrice
+    : (closes.length ? closes[closes.length - 1] : null);
+  const prev = meta.chartPreviousClose ?? meta.previousClose ?? null;
+  return { closes, price, prev, meta };
+}
+
+function moodBandFor(score) {
+  if (score < 30) return 'extremeFear';
+  if (score < 50) return 'fear';
+  if (score <= 70) return 'greed';
+  return 'extremeGreed';
+}
+
+async function computeMood(economy, fallbackBreadth) {
+  const mainSymbol = MOOD_MAIN_INDEX[economy] || '^GSPC';
+  const vixSymbol = MOOD_VIX_SYMBOL[economy] || MOOD_DEFAULT_VIX;
+  // 1. Breadth: native whole-market source for India/USA, else the
+  // sidepanel's overview gainers/losers fallback (passed in).
+  let breadthScore = null;
+  let breadthScope = null;
+  let breadthSource = null;
+  try {
+    if (economy === 'India' || economy === 'USA') {
+      const b = economy === 'India' ? await fetchIndiaBreadth() : await fetchUsBreadth();
+      const adv = parseBreadthNum(b.advances);
+      const dec = parseBreadthNum(b.declines);
+      if (adv + dec > 0) {
+        breadthScore = (adv / (adv + dec)) * 100;
+        breadthScope = b.scope;
+        breadthSource = b.source;
+      }
+    } else if (fallbackBreadth && (fallbackBreadth.adv + fallbackBreadth.dec) > 0) {
+      breadthScore = (fallbackBreadth.adv / (fallbackBreadth.adv + fallbackBreadth.dec)) * 100;
+      breadthScope = fallbackBreadth.scope || economy;
+      breadthSource = 'tracked stocks';
+    }
+  } catch (e) {
+    breadthScore = null;
+  }
+  // 2+3. Trend (vs 50-day SMA) and day move from the main index 6mo chart.
+  let trendScore = null;
+  let dayScore = null;
+  let dayPct = null;
+  try {
+    const h = await moodFetchCloses(mainSymbol, '6mo', '1d');
+    if (h.closes.length >= 55 && h.price) {
+      const last50 = h.closes.slice(-50);
+      const sma = last50.reduce((a, b) => a + b, 0) / last50.length;
+      if (sma > 0) {
+        const dist = ((h.price - sma) / sma) * 100;
+        trendScore = moodClamp(((dist + 5) / 10) * 100, 0, 100);
+      }
+    } else if (h.closes.length >= 10 && h.price) {
+      // Young/short history: compare against the oldest available close.
+      const base = h.closes[0];
+      if (base > 0) {
+        const dist = ((h.price - base) / base) * 100;
+        trendScore = moodClamp(((dist + 10) / 20) * 100, 0, 100);
+      }
+    }
+    if (typeof h.price === 'number' && typeof h.prev === 'number' && h.prev > 0) {
+      dayPct = ((h.price - h.prev) / h.prev) * 100;
+      dayScore = moodClamp(((dayPct + 2) / 4) * 100, 0, 100);
+    }
+  } catch (e) {}
+  // 4. Volatility: VIX level, inverted (high VIX = fear = low score).
+  let volScore = null;
+  let vixValue = null;
+  try {
+    const v = await moodFetchCloses(vixSymbol, '5d', '1d');
+    const last = (typeof v.price === 'number') ? v.price : (v.closes.length ? v.closes[v.closes.length - 1] : null);
+    if (typeof last === 'number' && isFinite(last) && last > 0) {
+      vixValue = last;
+      volScore = moodClamp(((50 - last) / (50 - 12)) * 100, 0, 100);
+    }
+  } catch (e) {}
+  const parts = [
+    { w: 0.35, v: breadthScore },
+    { w: 0.35, v: trendScore },
+    { w: 0.20, v: volScore },
+    { w: 0.10, v: dayScore }
+  ].filter((p) => typeof p.v === 'number' && isFinite(p.v));
+  if (parts.length < 2) return null;
+  const wSum = parts.reduce((a, p) => a + p.w, 0);
+  const score = Math.round(parts.reduce((a, p) => a + (p.v * p.w) / wSum, 0) * 10) / 10;
+  return {
+    score,
+    band: moodBandFor(score),
+    components: {
+      breadth: breadthScore === null ? null : Math.round(breadthScore * 10) / 10,
+      trend: trendScore === null ? null : Math.round(trendScore * 10) / 10,
+      volatility: volScore === null ? null : Math.round(volScore * 10) / 10,
+      day: dayScore === null ? null : Math.round(dayScore * 10) / 10
+    },
+    breadthScope,
+    breadthSource,
+    indexSymbol: mainSymbol,
+    vixSymbol,
+    vixValue: vixValue === null ? null : Math.round(vixValue * 100) / 100,
+    dayPct: dayPct === null ? null : Math.round(dayPct * 100) / 100
+  };
+}
+
+// ---- Native mood sources: Tickertape MMI (India) + CNN Fear & Greed (USA) ---
+// Genuine vendor values, not our proxy. All other economies use computeMood().
+const MOOD_NATIVE_TTL_MS = 30 * 60 * 1000;
+const TICKERTAPE_MMI_URL = 'https://api.tickertape.in/mmi/now';
+const TICKERTAPE_MMI_PAGE = 'https://www.tickertape.in/market-mood-index';
+const CNN_FG_URL = 'https://production.dataviz.cnn.io/index/fearandgreed/graphdata';
+const CNN_FG_PAGE = 'https://www.cnn.com/markets/fear-and-greed';
+
+function moodBandForCNN(score) {
+  if (score < 25) return 'extremeFear';
+  if (score < 45) return 'fear';
+  if (score <= 55) return 'neutral';
+  if (score <= 75) return 'greed';
+  return 'extremeGreed';
+}
+
+async function fetchTickertapeMMI() {
+  const r = await fetch(TICKERTAPE_MMI_URL, { headers: { 'Accept': 'application/json' } });
+  if (!r.ok) throw new Error('Tickertape HTTP ' + r.status);
+  const j = await r.json();
+  const d = j && j.data;
+  if (!d || typeof d.indicator !== 'number' || !isFinite(d.indicator)) throw new Error('Tickertape shape');
+  const pick = (x) => (x && typeof x.indicator === 'number' && isFinite(x.indicator) ? Math.round(x.indicator * 100) / 100 : null);
+  return {
+    source: 'tickertape',
+    score: Math.round(d.indicator * 100) / 100,
+    band: moodBandFor(d.indicator),
+    asOn: d.date || null,
+    link: TICKERTAPE_MMI_PAGE,
+    prev: { day: pick(d.lastDay), week: pick(d.lastWeek), month: pick(d.lastMonth) }
+  };
+}
+
+async function fetchCNNFearGreed() {
+  // CNN's bot filter (HTTP 418 "You're a bot") rejects bare requests —
+  // browser-like headers unblock it. Accept-Language is used (not Referer/
+  // Origin: those are forbidden headers that fetch() cannot set).
+  const r = await fetch(CNN_FG_URL, { headers: { 'Accept': 'application/json, text/plain, */*', 'Accept-Language': 'en-US,en;q=0.9' } });
+  if (!r.ok) throw new Error('CNN HTTP ' + r.status);
+  const j = await r.json();
+  const fg = j && j.fear_and_greed;
+  if (!fg || typeof fg.score !== 'number' || !isFinite(fg.score)) throw new Error('CNN shape');
+  return {
+    source: 'cnn',
+    score: Math.round(fg.score * 10) / 10,
+    band: moodBandForCNN(fg.score),
+    asOn: fg.timestamp || null,
+    link: CNN_FG_PAGE,
+    prev: { close: (typeof fg.previous_close === 'number' && isFinite(fg.previous_close)) ? Math.round(fg.previous_close * 10) / 10 : null }
+  };
+}
+
+if (message.type === 'FETCH_MOOD_METER') {
+    const economy = message.economy;
+    const fallbackBreadth = message.fallbackBreadth || null;
+    const skipCache = message.force === true;
+    (async () => {
+      try {
+        if (!economy || !MOOD_MAIN_INDEX[economy]) { sendResponse({ mood: null }); return; }
+        const now = Date.now();
+        const hasFallback = !!(fallbackBreadth && (fallbackBreadth.adv + fallbackBreadth.dec) > 0);
+        const cached = await chrome.storage.local.get(['marketMood']);
+        const store = cached.marketMood || {};
+        // Drop cache entries saved by older builds whose source doesn't match
+        // what this economy must show — e.g. a proxy snapshot for India would
+        // otherwise keep rendering as "Street Mood" instead of live MMI.
+        if (economy === 'India' && store[economy] && store[economy].data && store[economy].data.source !== 'tickertape') {
+          delete store[economy];
+        }
+        // Cache key includes fallback breadth for non-native economies so a
+        // fresh overview (gainers/losers) invalidates the proxy score.
+        const fbKey = hasFallback ? `${fallbackBreadth.adv}/${fallbackBreadth.dec}` : '-';
+        // Native vendor values refresh on a longer TTL (MMI is daily-ish).
+        const ttl = (economy === 'India' || economy === 'USA') ? MOOD_NATIVE_TTL_MS : MOOD_TTL_MS;
+        if (!skipCache && store[economy] && (now - (store[economy].fetchedAt || 0)) < ttl && store[economy].fbKey === fbKey) {
+          sendResponse({ mood: store[economy].data });
+          return;
+        }
+        let data = null;
+        try {
+          if (economy === 'India') {
+            data = await fetchTickertapeMMI();
+          } else if (economy === 'USA') {
+            // USA falls back to the clearly-labeled proxy when CNN is
+            // unreachable and nothing is cached yet.
+            try { data = await fetchCNNFearGreed(); }
+            catch (e) {
+              data = await computeMood(economy, null);
+              // Surfaced in the card so a proxy rendering is never
+              // mistaken for the CNN value.
+              if (data) data.note = 'cnn-fallback:' + String((e && e.message) || 'fetch failed');
+            }
+          } else {
+            data = await computeMood(economy, hasFallback ? fallbackBreadth : null);
+          }
+          if (data && !data.source) data.source = 'proxy';
+        } catch (e) {
+          data = null;
+        }
+        if (data) {
+          data.fetchedAt = now;
+          store[economy] = { fetchedAt: now, fbKey, data };
+          await chrome.storage.local.set({ marketMood: store });
+          sendResponse({ mood: data });
+        } else if (store[economy] && store[economy].data) {
+          sendResponse({ mood: store[economy].data, stale: true });
+        } else {
+          sendResponse({ mood: null });
+        }
+      } catch (e) {
+        sendResponse({ mood: null });
       }
     })();
     return true;

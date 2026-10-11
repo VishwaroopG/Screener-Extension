@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Ticker Screener – Live Watchlist & Ticker",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "default_locale": "en",
   "browser_specific_settings": {
     "gecko": {
@@ -34,7 +34,11 @@
     "*://api.worldbank.org/*",
     "*://news.google.com/*",
     "https://formsubmit.co/*",
-    "https://vishwaroopg.github.io/*"
+    "https://vishwaroopg.github.io/*",
+    "https://www.moneycontrol.com/*",
+    "https://www.wsj.com/*",
+    "https://api.tickertape.in/*",
+    "https://production.dataviz.cnn.io/*"
   ],
   "action": {
     "default_title": "__MSG_actionTitle__"
