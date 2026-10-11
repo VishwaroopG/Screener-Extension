@@ -81,7 +81,7 @@ function shell(o) {
 }
 
 function crumbs(items) {
-  // items: [{name, url?}] — rendered + BreadcrumbList
+  // items: [{name, url?}] - rendered + BreadcrumbList
   const html = '<nav class="breadcrumb" aria-label="Breadcrumb">' + items.map((c, i) =>
     i < items.length - 1 ? '<a href="' + c.url + '">' + esc(c.name) + '</a><span aria-hidden="true"> / </span>' : '<span aria-current="page">' + esc(c.name) + '</span>'
   ).join('') + '</nav>';
@@ -179,7 +179,7 @@ function collectionsHub() {
     + '\n</div>';
   const ld = [cr.ld, { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Stock collections', description: 'Curated Indian and US stock collections with screening criteria.', url,
     mainEntity: { '@type': 'ItemList', itemListElement: collections.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.h1, url: SITE + '/collections/' + c.slug + '.html' })) } }];
-  return shell({ title: 'Stock Collections: Railway, Defence, Penny Stocks, ETFs & More | Ticker Screener', description: 'Curated stock collections — railway, defence, penny stocks under Rs 10, gold ETFs, banks, IT, pharma, EVs, Magnificent 7 — with screening criteria and risks.', canonical: url, jsonld: ld, body, active: 'collections' });
+  return shell({ title: 'Stock Collections: Railway, Defence, Penny Stocks, ETFs & More | Ticker Screener', description: 'Curated stock collections - railway, defence, penny stocks under Rs 10, gold ETFs, banks, IT, pharma, EVs, Magnificent 7 - with screening criteria and risks.', canonical: url, jsonld: ld, body, active: 'collections' });
 }
 
 // ── Glossary ─────────────────────────────────────────────────
@@ -226,7 +226,7 @@ function glossaryHub() {
     + '\n<p class="section-copy">Every ratio, indicator and market term the extension shows \u2014 explained in under a minute each, with an example and where to see it live.</p>'
     + '\n<div class="article-body">\n' + sections + '\n</div>';
   const ld = [cr.ld, { '@context': 'https://schema.org', '@type': 'DefinedTermSet', name: 'Ticker Screener investing glossary', url }];
-  return shell({ title: 'Investing Glossary: P/E, ROCE, Market Cap & More | Ticker Screener', description: 'Plain-language definitions of investing ratios and market terms — P/E, ROCE, ROE, market cap, FII, circuit breakers, Fear & Greed and more.', canonical: url, jsonld: ld, body, active: 'glossary' });
+  return shell({ title: 'Investing Glossary: P/E, ROCE, Market Cap & More | Ticker Screener', description: 'Plain-language definitions of investing ratios and market terms - P/E, ROCE, ROE, market cap, FII, circuit breakers, Fear & Greed and more.', canonical: url, jsonld: ld, body, active: 'glossary' });
 }
 
 // ── Learn ────────────────────────────────────────────────────
@@ -284,7 +284,7 @@ function learnHub() {
     + '\n</div>';
   const ld = [cr.ld, { '@context': 'https://schema.org', '@type': 'LearningResource', name: 'Ticker Screener Learn', description: 'Short investing lessons: reading quotes, screening stocks, ratios, ETFs.', url,
     mainEntity: { '@type': 'ItemList', itemListElement: learn.lessons.map((l, i) => ({ '@type': 'ListItem', position: i + 1, name: l.title, url: SITE + '/learn/' + l.slug + '.html' })) } }];
-  return shell({ title: 'Learn Investing: Short Lessons for Beginners | Ticker Screener', description: 'Free bite-size investing lessons — read stock quotes, compare stocks, screen like a pro, ETFs vs stocks — each under 10 minutes.', canonical: url, jsonld: ld, body, active: 'learn' });
+  return shell({ title: 'Learn Investing: Short Lessons for Beginners | Ticker Screener', description: 'Free bite-size investing lessons - read stock quotes, compare stocks, screen like a pro, ETFs vs stocks - each under 10 minutes.', canonical: url, jsonld: ld, body, active: 'learn' });
 }
 
 // ── Write + sitemap ──────────────────────────────────────────

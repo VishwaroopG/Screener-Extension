@@ -34,7 +34,7 @@ if ($null -eq $m.browser_specific_settings.gecko.id) { throw 'Firefox manifest m
 
 $dest = Join-Path $root "Screener-Extension-Firefox-v$version.zip"
 if (Test-Path $dest) { Remove-Item $dest -Force }
-# NOTE: Do NOT use Compress-Archive here — it stores Windows backslash paths
+# NOTE: Do NOT use Compress-Archive here - it stores Windows backslash paths
 # (_locales\am\messages.json) which AMO rejects as "Invalid file name in archive".
 # Build the zip via .NET with explicit forward-slash entry names instead.
 Add-Type -AssemblyName System.IO.Compression.FileSystem

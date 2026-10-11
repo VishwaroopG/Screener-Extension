@@ -374,7 +374,7 @@
     "message": "المؤشرات غير متوفرة."
   },
   "clickAnalyze": {
-    "message": "$NAME$ — انقر للتحليل",
+    "message": "$NAME$ - انقر للتحليل",
     "placeholders": {
       "name": {
         "content": "$1"
@@ -382,7 +382,7 @@
     }
   },
   "macroEditTitle": {
-    "message": "$LABEL$$YEAR$ — انقر للتحرير",
+    "message": "$LABEL$$YEAR$ - انقر للتحرير",
     "placeholders": {
       "label": {
         "content": "$1"

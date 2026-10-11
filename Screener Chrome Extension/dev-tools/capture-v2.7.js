@@ -44,7 +44,7 @@ function stagePanel(page) {
     try {
       background = await context.waitForEvent('serviceworker', { timeout: 20000 });
     } catch (e) {
-      console.log('No service worker seen — continuing anyway.');
+      console.log('No service worker seen - continuing anyway.');
     }
   }
   const extensionId = background ? background.url().split('/')[2] : null;
@@ -102,17 +102,45 @@ function stagePanel(page) {
       return el && !/waiting for sync/i.test(el.textContent || '');
     }, { timeout: 90000 });
     console.log('Watchlist synced.');
-  } catch (e) { console.log('Watchlist still syncing — continuing anyway.'); }
-  await sleep(2500);
+  } catch (e) { console.log('Watchlist still syncing - continuing anyway.'); }
+  await sleep(12000); // allow Finviz/Screener ratios to fill P/E column
 
   const shot = (name) => page.screenshot({ path: path.join(OUT_DIR, name) }).then(() => console.log('Saved', name));
 
-  // 1 — Dashboard: live multi-asset watchlist (P/E toggle, tags, sparklines, Live badge).
+  // 1 - Dashboard: clean live watchlist (world clocks, indices, P/E toggle,
+  // tag filter, Focus/Import/CSV, sparklines, Live badge). No search card.
   await page.locator('#tab-search').click().catch(() => {});
   await sleep(1200);
   await shot('screenshot_v2_7_1_dashboard_1280x800.png');
 
-  // 2 — Import modal: paste tickers to show Zerodha/Screener/TradingView import.
+  // 1b - Crypto/precision: BTC-USD card (Crypto badges + live prices).
+  // Settles before shooting so the verdict line finishes rendering.
+  try {
+    await page.locator('#input-search').fill('BTC-USD');
+    await sleep(600);
+    await page.locator('#btn-search').click();
+    try {
+      await page.waitForFunction(() => {
+        const el = document.getElementById('results-search');
+        return el && !/scraping|loading/i.test(el.textContent || '');
+      }, { timeout: 45000 });
+    } catch (e) { console.log('Crypto search slow - continuing.'); }
+    await sleep(4000);
+    // Suggestions dropdown overlaps the result card - dismiss it so the
+    // crypto card (badges, live price, 52W range) is fully visible.
+    await page.evaluate(() => {
+      const s = document.getElementById('search-suggestions');
+      if (s) s.style.display = 'none';
+    });
+    await sleep(500);
+    await shot('screenshot_v2_7_7_crypto_1280x800.png');
+    // Return to the clean watchlist so later shots start unpolluted.
+    const backBtn = page.getByRole('button', { name: /back/i });
+    if (await backBtn.count()) await backBtn.first().click().catch(() => {});
+    await sleep(600);
+  } catch (e) { console.log('Crypto shot skipped:', e.message); }
+
+  // 2 - Import modal: paste tickers to show Zerodha/Screener/TradingView import.
   try {
     await page.locator('#btn-import-watchlist').click();
     await sleep(800);
@@ -123,14 +151,14 @@ function stagePanel(page) {
     await sleep(500);
   } catch (e) { console.log('Import shot skipped:', e.message); }
 
-  // 3 — Markets: Mood gauge + breadth bar + heatmaps (the v2.6.6 headline).
+  // 3 - Markets: Mood gauge + breadth bar + heatmaps (the v2.6.6 headline).
   try {
     await page.locator('#tab-markets').click();
     await sleep(4000);
     await shot('screenshot_v2_7_3_markets_1280x800.png');
   } catch (e) { console.log('Markets shot skipped:', e.message); }
 
-  // 4 — Advanced alerts modal: day-move spike, 52w breakouts, frequency, expiry, note, sound.
+  // 4 - Advanced alerts modal: day-move spike, 52w breakouts, frequency, expiry, note, sound.
   try {
     await page.locator('#tab-search').click().catch(() => {});
     await sleep(800);
@@ -141,6 +169,14 @@ function stagePanel(page) {
       if (t) t.textContent = 'NVDA';
       const badge = document.getElementById('alert-cur-price-badge');
       if (badge) badge.textContent = '$218.29';
+      const symA = document.getElementById('alert-cur-symbol-above');
+      if (symA) symA.textContent = '$';
+      const symB = document.getElementById('alert-cur-symbol-below');
+      if (symB) symB.textContent = '$';
+      const lblA = document.getElementById('alert-above-label');
+      if (lblA) lblA.textContent = 'Alert if price goes ABOVE ($):';
+      const lblB = document.getElementById('alert-below-label');
+      if (lblB) lblB.textContent = 'Alert if price goes BELOW ($):';
       const above = document.getElementById('alert-above');
       if (above) above.value = '240.00';
       const below = document.getElementById('alert-below');
@@ -165,26 +201,27 @@ function stagePanel(page) {
     await sleep(400);
   } catch (e) { console.log('Alerts shot skipped:', e.message); }
 
-  // 5 — News: portfolio + macro feeds with thumbnails.
+  // 5 - News: portfolio + macro feeds with thumbnails.
   try {
     await page.locator('#tab-news').click();
     await sleep(3000);
     await shot('screenshot_v2_7_5_news_1280x800.png');
   } catch (e) { console.log('News shot skipped:', e.message); }
 
-  // 6 — Ticker tape on a real site (content-script overlay at page bottom).
+  // 6 - Ticker tape on a real site (content-script overlay at page bottom).
   try {
     await page.goto('https://www.screener.in', { waitUntil: 'domcontentloaded', timeout: 30000 }).catch(() => {});
     try {
       await page.waitForSelector('#screener-ticker-tape', { timeout: 25000 });
-    } catch (e) { console.log('Tape element not detected — continuing.'); }
+    } catch (e) { console.log('Tape element not detected - continuing.'); }
     await sleep(2000);
     await page.setViewportSize({ width: 1280, height: 800 });
     await shot('screenshot_v2_7_6_tickertape_1280x800.png');
   } catch (e) { console.log('Tape shot skipped:', e.message); }
 
-  await context.close();
+  await Promise.race([context.close(), sleep(10000)]).catch(() => {});
   console.log('Done! Check store-assets for screenshot_v2_7_*_1280x800.png');
+  process.exit(0);
 })().catch((e) => {
   console.error('FAILED:', e.message);
   process.exit(1);

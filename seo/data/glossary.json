@@ -6,12 +6,12 @@
     "short": "Price-to-earnings: what you pay for each rupee or dollar of yearly profit. The starting lens for cheap vs expensive.",
     "definition": [
       "The <strong>price-to-earnings (P/E) ratio</strong> divides a stock's price by its earnings per share over the last twelve months. A P/E of 20 means investors pay Rs 20 (or $20) for every Rs 1 ($1) of annual profit.",
-      "Rough landmarks: under ~15 is value territory, 15–25 is the broad-market norm, above ~30 prices in serious future growth. Always compare <strong>within a sector</strong> — a utility at 12x and software at 35x can both be fairly priced."
+      "Rough landmarks: under ~15 is value territory, 15–25 is the broad-market norm, above ~30 prices in serious future growth. Always compare <strong>within a sector</strong> - a utility at 12x and software at 35x can both be fairly priced."
     ],
-    "example": "A stock at Rs 500 earning Rs 25 per share trades at 20x. If earnings double to Rs 50 and the price stays put, the P/E halves to 10x — the classic value-setup arithmetic.",
+    "example": "A stock at Rs 500 earning Rs 25 per share trades at 20x. If earnings double to Rs 50 and the price stays put, the P/E halves to 10x - the classic value-setup arithmetic.",
     "inExtension": "Every watchlist row shows P/E beside price, and the AI Verdict combines it with ROCE for a one-glance cheap-or-expensive call. Tap the column header to switch to Div Yld, ROCE, ROE or P/B.",
     "faqs": [
-      { "q": "Is a low P/E always a buy?", "a": "No — it can signal a bargain or a business in decline. Check earnings trend, debt and peers first." },
+      { "q": "Is a low P/E always a buy?", "a": "No - it can signal a bargain or a business in decline. Check earnings trend, debt and peers first." },
       { "q": "Why do loss-making companies show no P/E?", "a": "Negative or zero earnings make the ratio meaningless. Use price-to-sales or cash-flow multiples instead." }
     ],
     "related": ["roce", "eps", "market-cap"],
@@ -24,12 +24,12 @@
     "short": "Return on capital employed: how efficiently a company turns invested money into profit. Above 15–20% signals quality.",
     "definition": [
       "<strong>ROCE (return on capital employed)</strong> measures operating profit against the total capital tied up in the business. It answers: for every Rs 100 invested in this company, how much operating profit comes back each year?",
-      "Sustained ROCE above 15–20% usually marks a genuine moat — pricing power, asset lightness or scale. Below ~10%, the business likely destroys value once its cost of capital is counted."
+      "Sustained ROCE above 15–20% usually marks a genuine moat - pricing power, asset lightness or scale. Below ~10%, the business likely destroys value once its cost of capital is counted."
     ],
-    "example": "Two railway suppliers earn the same profit, but one uses half the factories and working capital. Its ROCE is double — and it can fund growth without borrowing.",
+    "example": "Two railway suppliers earn the same profit, but one uses half the factories and working capital. Its ROCE is double - and it can fund growth without borrowing.",
     "inExtension": "ROCE pairs with P/E to build the AI Verdict: cheap (low P/E) plus efficient (high ROCE) flags possible bargains; expensive plus weak ROCE flags risk.",
     "faqs": [
-      { "q": "ROCE vs ROE — what's the difference?", "a": "ROCE counts all capital including debt; ROE counts only shareholder equity. ROCE is harder to inflate with borrowing, so quality investors prefer it." }
+      { "q": "ROCE vs ROE - what's the difference?", "a": "ROCE counts all capital including debt; ROE counts only shareholder equity. ROCE is harder to inflate with borrowing, so quality investors prefer it." }
     ],
     "related": ["roe", "pe-ratio", "pb-ratio"],
     "relatedPosts": []
@@ -43,8 +43,8 @@
       "<strong>ROE (return on equity)</strong> divides net profit by shareholder equity. A 20% ROE means each Rs 100 of shareholder funds generated Rs 20 of profit this year.",
       "Read it with leverage in mind: heavy borrowing shrinks equity and flatters ROE. Pair it with ROCE and debt-to-equity before concluding a company is excellent."
     ],
-    "example": "A bank earning 1.2% on assets (ROA) with 8x leverage posts roughly 15%+ ROE — normal for banking, alarming anywhere else. Context decides.",
-    "inExtension": "ROE is one tap away on the switchable ratio column — compare it across banks, IT and FMCG names without opening new tabs.",
+    "example": "A bank earning 1.2% on assets (ROA) with 8x leverage posts roughly 15%+ ROE - normal for banking, alarming anywhere else. Context decides.",
+    "inExtension": "ROE is one tap away on the switchable ratio column - compare it across banks, IT and FMCG names without opening new tabs.",
     "faqs": [
       { "q": "What is a good ROE?", "a": "Above 15% sustained over 5+ years is strong in most sectors; banks run higher on leverage, utilities lower on asset intensity. Trend beats level." }
     ],
@@ -58,12 +58,12 @@
     "short": "Price-to-book: market price versus net asset value per share. The classic yardstick for banks and asset-heavy firms.",
     "definition": [
       "The <strong>price-to-book (P/B) ratio</strong> compares market price to book value per share (assets minus liabilities). A P/B of 2 means investors pay twice the accounting net worth.",
-      "It works best where book value is meaningful — banks, insurers, utilities. It misleads for asset-light software or brand businesses whose real value never sits on the balance sheet."
+      "It works best where book value is meaningful - banks, insurers, utilities. It misleads for asset-light software or brand businesses whose real value never sits on the balance sheet."
     ],
-    "example": "A bank trading at 1.2x book with 1%+ ROA is usually cheaper than a rival at 0.8x book hiding bad loans — asset quality adjusts every P/B reading.",
+    "example": "A bank trading at 1.2x book with 1%+ ROA is usually cheaper than a rival at 0.8x book hiding bad loans - asset quality adjusts every P/B reading.",
     "inExtension": "P/B auto-derives for Indian stocks so the column never shows blank, and formats Screener-style (2.4, not 2.40).",
     "faqs": [
-      { "q": "Is P/B under 1 always cheap?", "a": "Often it prices distress — bad loans, stranded assets or structural decline. Cheap on book still needs clean assets underneath." }
+      { "q": "Is P/B under 1 always cheap?", "a": "Often it prices distress - bad loans, stranded assets or structural decline. Cheap on book still needs clean assets underneath." }
     ],
     "related": ["roe", "pe-ratio", "market-cap"],
     "relatedPosts": []
@@ -72,13 +72,13 @@
     "term": "Dividend Yield",
     "slug": "dividend-yield",
     "group": "Ratios",
-    "short": "Annual dividend divided by share price. A 4% yield pays Rs 4 yearly per Rs 100 invested — if the payout lasts.",
+    "short": "Annual dividend divided by share price. A 4% yield pays Rs 4 yearly per Rs 100 invested - if the payout lasts.",
     "definition": [
       "<strong>Dividend yield</strong> is yearly dividend per share divided by current price. It tells income investors what the stock pays them to wait.",
       "High yield needs verification: divide by a crashed price and any dividend looks generous. Check payout ratio (under ~80%) and free-cash-flow cover before trusting yields above ~6%."
     ],
     "example": "Coal India paying Rs 24 on a Rs 400 price yields 6%. If earnings cover it 1.5x from operating cash, the income thesis holds; if paid from debt, it does not.",
-    "inExtension": "Div Yld sits on the switchable ratio column — scan an entire watchlist's income at a glance, then set price alerts at your target entry yields.",
+    "inExtension": "Div Yld sits on the switchable ratio column - scan an entire watchlist's income at a glance, then set price alerts at your target entry yields.",
     "faqs": [
       { "q": "Are dividends taxed in India?", "a": "Yes, in the shareholder's hands at slab rates. Compare post-tax yield with debt options before choosing income stocks." }
     ],
@@ -91,14 +91,14 @@
     "group": "Ratios",
     "short": "Price times shares outstanding: the market's price tag for the whole company. Defines large, mid and small caps.",
     "definition": [
-      "<strong>Market capitalisation</strong> is share price multiplied by total shares — what buying every share would cost. India broadly calls the top 100 large-caps, 101–250 mid-caps, the rest small-caps.",
+      "<strong>Market capitalisation</strong> is share price multiplied by total shares - what buying every share would cost. India broadly calls the top 100 large-caps, 101–250 mid-caps, the rest small-caps.",
       "Size predicts behaviour: large-caps offer liquidity and stability, small-caps offer growth with gut-wrenching drawdowns. Most multibaggers start small; most frauds do too."
     ],
     "example": "A Rs 50 stock with 100 crore shares (Rs 5,000 crore cap) is 'bigger' than a Rs 5,000 stock with 10 lakh shares (Rs 500 crore). Price per share alone says nothing about size.",
-    "inExtension": "Market cap shows on every row and inside tape popups with sparkline, period returns and AI verdict — size context without leaving the page.",
+    "inExtension": "Market cap shows on every row and inside tape popups with sparkline, period returns and AI verdict - size context without leaving the page.",
     "faqs": [
-      { "q": "Large-cap vs small-cap — which returns more?", "a": "Small-caps have outperformed over long stretches with far deeper crashes. Match the cap to your stomach, not just your spreadsheet." },
-      { "q": "Can market cap change without price moving?", "a": "Yes — bonuses, splits, buybacks and fresh issuance all change share count. Watch corporate actions alongside price." }
+      { "q": "Large-cap vs small-cap - which returns more?", "a": "Small-caps have outperformed over long stretches with far deeper crashes. Match the cap to your stomach, not just your spreadsheet." },
+      { "q": "Can market cap change without price moving?", "a": "Yes - bonuses, splits, buybacks and fresh issuance all change share count. Watch corporate actions alongside price." }
     ],
     "related": ["pe-ratio", "stock-index", "eps"],
     "relatedPosts": []
@@ -112,10 +112,10 @@
       "<strong>EPS (earnings per share)</strong> splits net profit across every share. Growing EPS is what ultimately drags stock prices upward over years.",
       "Distinguish trailing EPS (last twelve months, factual) from forward EPS (analyst estimates, hopeful). P/E ratios built on forward EPS look cheaper by construction."
     ],
-    "example": "Profit of Rs 100 crore across 10 crore shares = Rs 10 EPS. At Rs 200, the P/E is 20x — now you see how the two metrics lock together.",
-    "inExtension": "The tape popup's period-returns and P/E views both derive from earnings data — one click shows whether price or earnings moved faster.",
+    "example": "Profit of Rs 100 crore across 10 crore shares = Rs 10 EPS. At Rs 200, the P/E is 20x - now you see how the two metrics lock together.",
+    "inExtension": "The tape popup's period-returns and P/E views both derive from earnings data - one click shows whether price or earnings moved faster.",
     "faqs": [
-      { "q": "Diluted vs basic EPS?", "a": "Diluted counts convertible options and warrants too — always use diluted for conservative valuation." }
+      { "q": "Diluted vs basic EPS?", "a": "Diluted counts convertible options and warrants too - always use diluted for conservative valuation." }
     ],
     "related": ["pe-ratio", "market-cap", "pb-ratio"],
     "relatedPosts": ["pe-ratio-us-stocks-cheap-expensive"]
@@ -127,12 +127,12 @@
     "short": "India's benchmark: 50 large stocks across 14+ sectors on the NSE. When India 'is up 1%', this is usually the number.",
     "definition": [
       "The <strong>Nifty 50</strong> tracks fifty large, liquid Indian stocks weighted by market value. Banks and IT dominate, so financial results season moves the index disproportionately.",
-      "Foreign investors benchmark India allocations to it, and derivatives on it are among the world's most traded — expiry-day swings often start here."
+      "Foreign investors benchmark India allocations to it, and derivatives on it are among the world's most traded - expiry-day swings often start here."
     ],
-    "example": "A 200-point Nifty move on HDFC Bank and Reliance earnings day can happen while most small-caps fall — index versus portfolio divergence is normal.",
+    "example": "A 200-point Nifty move on HDFC Bank and Reliance earnings day can happen while most small-caps fall - index versus portfolio divergence is normal.",
     "inExtension": "The Markets tab opens economies with native indices and whole-market breadth (Nifty 500 advance/decline for India), so you see past the headline number.",
     "faqs": [
-      { "q": "Nifty vs Sensex — which to follow?", "a": "Both mirror India's large-caps and move together; Nifty (NSE, 50 stocks) leads derivatives, Sensex (BSE, 30 stocks) leads headlines. Either works as a benchmark." }
+      { "q": "Nifty vs Sensex - which to follow?", "a": "Both mirror India's large-caps and move together; Nifty (NSE, 50 stocks) leads derivatives, Sensex (BSE, 30 stocks) leads headlines. Either works as a benchmark." }
     ],
     "related": ["sensex", "stock-index", "market-cap"],
     "relatedPosts": ["fed-to-fii-us-rates-indian-equities"]
@@ -143,13 +143,13 @@
     "group": "Markets",
     "short": "BSE's 30-stock benchmark and India's oldest market barometer. Asia's first exchange, still the headline number.",
     "definition": [
-      "The <strong>Sensex</strong> tracks thirty large BSE-listed stocks. Launched in 1986, it remains the number TV tickers quote — even though professionals benchmark to the broader Nifty.",
+      "The <strong>Sensex</strong> tracks thirty large BSE-listed stocks. Launched in 1986, it remains the number TV tickers quote - even though professionals benchmark to the broader Nifty.",
       "Same market, slightly narrower basket: expect near-identical long-run returns with marginally higher concentration."
     ],
-    "example": "'Sensex crosses 80,000' headlines mark sentiment milestones — useful for gauging euphoria, useless for timing entries.",
+    "example": "'Sensex crosses 80,000' headlines mark sentiment milestones - useful for gauging euphoria, useless for timing entries.",
     "inExtension": "Watch Indian benchmarks beside your holdings in the Markets tab, with macro tiles (inflation, GDP) for context behind the number.",
     "faqs": [
-      { "q": "Can I invest directly in the Sensex?", "a": "Via Sensex ETFs and index funds from multiple AMCs — compare expense ratio and tracking error first." }
+      { "q": "Can I invest directly in the Sensex?", "a": "Via Sensex ETFs and index funds from multiple AMCs - compare expense ratio and tracking error first." }
     ],
     "related": ["nifty-50", "stock-index", "etf"],
     "relatedPosts": []
@@ -158,13 +158,13 @@
     "term": "S&P 500",
     "slug": "sp500",
     "group": "Markets",
-    "short": "500 large US companies, cap-weighted. The default scoreboard for American equities — and your global benchmark.",
+    "short": "500 large US companies, cap-weighted. The default scoreboard for American equities - and your global benchmark.",
     "definition": [
       "The <strong>S&P 500</strong> holds five hundred leading US companies chosen by committee for size, liquidity and profitability. Roughly a third of its weight sits in the <a href=\"../collections/magnificent-7-us-stocks.html\">Magnificent 7</a>.",
-      "Most active US funds underperform it over a decade, which is why it anchors global portfolios — including those of Indian investors diversifying abroad."
+      "Most active US funds underperform it over a decade, which is why it anchors global portfolios - including those of Indian investors diversifying abroad."
     ],
-    "example": "When Nvidia reports, the S&P 500 often moves more on that one print than on the other 499 combined — concentration in action.",
-    "inExtension": "The homepage tape and Markets tab track the S&P 500, Nasdaq and Dow live in dollars — open the extension on any tab to see them.",
+    "example": "When Nvidia reports, the S&P 500 often moves more on that one print than on the other 499 combined - concentration in action.",
+    "inExtension": "The homepage tape and Markets tab track the S&P 500, Nasdaq and Dow live in dollars - open the extension on any tab to see them.",
     "faqs": [
       { "q": "How can Indians invest in the S&P 500?", "a": "Feeder mutual funds, ETFs, or direct US-stock platforms under LRS limits. Compare fees, tracking error and tax treatment across routes." }
     ],
@@ -175,15 +175,15 @@
     "term": "Nasdaq",
     "slug": "nasdaq",
     "group": "Markets",
-    "short": "The US tech-heavy exchange and its indices (Composite, Nasdaq 100). Growth's home — faster rallies, harder falls.",
+    "short": "The US tech-heavy exchange and its indices (Composite, Nasdaq 100). Growth's home - faster rallies, harder falls.",
     "definition": [
       "<strong>Nasdaq</strong> is both an exchange and shorthand for its indices. The Composite covers 3,000+ stocks; the <a href=\"../collections/nasdaq-100-stocks.html\">Nasdaq 100</a> holds the top 100 non-financials and underlies the QQQ ETF.",
       "Tech concentration means rate sensitivity: when yields spike, long-duration growth valuations compress and Nasdaq leads declines."
     ],
-    "example": "A 1% Fed-surprise repricing often moves Nasdaq 2%+ while the Dow barely blinks — duration explains the gap.",
+    "example": "A 1% Fed-surprise repricing often moves Nasdaq 2%+ while the Dow barely blinks - duration explains the gap.",
     "inExtension": "The Markets tab shows Nasdaq beside S&P 500 and Dow with whole-market NYSE + Nasdaq breadth, so narrow tech rallies can't fool you.",
     "faqs": [
-      { "q": "Nasdaq vs NYSE — what's the difference?", "a": "Two rival exchanges: Nasdaq is electronic and tech-heavy; NYSE hosts more old-economy giants. Listings, not quality, separate them." }
+      { "q": "Nasdaq vs NYSE - what's the difference?", "a": "Two rival exchanges: Nasdaq is electronic and tech-heavy; NYSE hosts more old-economy giants. Listings, not quality, separate them." }
     ],
     "related": ["sp500", "stock-index", "etf"],
     "relatedPosts": ["us-indexes-sp500-nasdaq-dow-explained"]
@@ -192,12 +192,12 @@
     "term": "FII & DII",
     "slug": "fii-dii",
     "group": "Markets",
-    "short": "Foreign vs domestic institutional investors. Their tug-of-war sets India's market tone — FIIs flee, DIIs absorb.",
+    "short": "Foreign vs domestic institutional investors. Their tug-of-war sets India's market tone - FIIs flee, DIIs absorb.",
     "definition": [
-      "<strong>FIIs (foreign institutional investors)</strong> now called FPIs, deploy global capital into India; <strong>DIIs (domestic institutions)</strong> — mutual funds, insurers, NPS — invest local savings. Daily buy/sell figures move sentiment more than fundamentals short-term.",
+      "<strong>FIIs (foreign institutional investors)</strong> now called FPIs, deploy global capital into India; <strong>DIIs (domestic institutions)</strong> - mutual funds, insurers, NPS - invest local savings. Daily buy/sell figures move sentiment more than fundamentals short-term.",
       "The structural shift: monthly SIP flows made DIIs persistent buyers, cushioning FII exits that once crashed markets. Watch the net, not one side."
     ],
-    "example": "Rs 2.45 lakh crore of FPI outflows in a risk-off year were absorbed without a bear market — DII SIPs did the heavy lifting.",
+    "example": "Rs 2.45 lakh crore of FPI outflows in a risk-off year were absorbed without a bear market - DII SIPs did the heavy lifting.",
     "inExtension": "When FII selling hits your watchlist, Smart Focus blue-dots the big movers so you triage damage in seconds.",
     "faqs": [
       { "q": "Why do FII outflows crash small-caps most?", "a": "Foreign selling hits large-cap liquidity first, then sentiment and margin calls cascade down the market-cap ladder." }
@@ -209,12 +209,12 @@
     "term": "Circuit Breaker",
     "slug": "circuit-breaker",
     "group": "Markets",
-    "short": "Exchange price bands that freeze trading after sharp moves — usually 2%, 5%, 10% or 20% per stock.",
+    "short": "Exchange price bands that freeze trading after sharp moves - usually 2%, 5%, 10% or 20% per stock.",
     "definition": [
-      "<strong>Circuit breakers (price bands)</strong> cap how far a stock can move in a day. Hit the upper circuit and buyers queue with no sellers; hit lower and you cannot exit — the classic penny-stock trap.",
+      "<strong>Circuit breakers (price bands)</strong> cap how far a stock can move in a day. Hit the upper circuit and buyers queue with no sellers; hit lower and you cannot exit - the classic penny-stock trap.",
       "Bands revise with volatility and corporate actions. Index-level market-wide halts (Nifty/Sensex ±10/15/20%) pause the whole market instead."
     ],
-    "example": "A 20% lower-circuit lock means your sell order sits unfilled all day while the quote blinks red — liquidity risk made visible.",
+    "example": "A 20% lower-circuit lock means your sell order sits unfilled all day while the quote blinks red - liquidity risk made visible.",
     "inExtension": "Price alerts notify you before extremes, and movement highlights flag threshold crosses the moment they happen.",
     "faqs": [
       { "q": "Can circuits be revised mid-day?", "a": "Exchanges revise bands periodically; special pre-open sessions handle520%+ corporate-action adjustments. Check the day's applicable filter before trading." }
@@ -228,13 +228,13 @@
     "group": "Indicators",
     "short": "CNN's 0–100 gauge of US market sentiment across seven inputs. Extreme fear often marks opportunity; extreme greed marks danger.",
     "definition": [
-      "The <strong>Fear & Greed Index</strong> blends seven signals — momentum, put/call ratios, volatility, safe-haven demand and more — into one 0 (extreme fear) to 100 (extreme greed) reading for US stocks.",
+      "The <strong>Fear & Greed Index</strong> blends seven signals - momentum, put/call ratios, volatility, safe-haven demand and more - into one 0 (extreme fear) to 100 (extreme greed) reading for US stocks.",
       "It is contrarian fuel, not a timer: extremes persist for weeks. Pair it with breadth and valuations before acting."
     ],
-    "example": "Readings under 20 have historically clustered near tradable bottoms; above 80, rallies keep working until breadth breaks — sentiment confirms, positioning decides.",
-    "inExtension": "The Market Mood gauge shows the live CNN Fear & Greed value for the USA right above gainers, losers and breadth — hover the arc for its zone.",
+    "example": "Readings under 20 have historically clustered near tradable bottoms; above 80, rallies keep working until breadth breaks - sentiment confirms, positioning decides.",
+    "inExtension": "The Market Mood gauge shows the live CNN Fear & Greed value for the USA right above gainers, losers and breadth - hover the arc for its zone.",
     "faqs": [
-      { "q": "Does India have a Fear & Greed index?", "a": "Tickertape's Market Mood Index (MMI) plays that role — the extension shows it live for India. See <a href=\"market-mood-index.html\">Market Mood Index</a>." }
+      { "q": "Does India have a Fear & Greed index?", "a": "Tickertape's Market Mood Index (MMI) plays that role - the extension shows it live for India. See <a href=\"market-mood-index.html\">Market Mood Index</a>." }
     ],
     "related": ["market-mood-index", "advance-decline-ratio", "sp500"],
     "relatedPosts": ["us-slowdown-indian-portfolio-playbook"]
@@ -243,15 +243,15 @@
     "term": "Market Mood Index (MMI)",
     "slug": "market-mood-index",
     "group": "Indicators",
-    "short": "Tickertape's live 0–100 sentiment gauge for Indian stocks — the desi Fear & Greed, from extreme fear to extreme greed.",
+    "short": "Tickertape's live 0–100 sentiment gauge for Indian stocks - the desi Fear & Greed, from extreme fear to extreme greed.",
     "definition": [
       "The <strong>Market Mood Index</strong> compresses volatility, momentum and demand signals for Indian equities into a single live number. Under ~30 reads fear, above ~70 greed.",
       "Like all sentiment tools it works best against the crowd: fear zones favour staggered buying quality, greed zones favour booking profits and tightening stops."
     ],
     "example": "MMI under 20 during FII-selling panics has repeatedly marked zones where SIPs and staggered large-cap buys compounded well.",
-    "inExtension": "The Market Mood gauge pulls the live Tickertape MMI for India (CNN Fear & Greed for the USA, data proxy elsewhere) — tap the info icon for the factors behind the number.",
+    "inExtension": "The Market Mood gauge pulls the live Tickertape MMI for India (CNN Fear & Greed for the USA, data proxy elsewhere) - tap the info icon for the factors behind the number.",
     "faqs": [
-      { "q": "Is MMI a buy/sell signal?", "a": "No — a sentiment thermometer. Combine it with valuations, breadth and your asset allocation before acting." }
+      { "q": "Is MMI a buy/sell signal?", "a": "No - a sentiment thermometer. Combine it with valuations, breadth and your asset allocation before acting." }
     ],
     "related": ["fear-greed-index", "advance-decline-ratio", "nifty-50"],
     "relatedPosts": []
@@ -260,13 +260,13 @@
     "term": "Advance-Decline Ratio",
     "slug": "advance-decline-ratio",
     "group": "Indicators",
-    "short": "Winners divided by losers across the market. Above 1 means broad gains; below 1, broad pain — breadth in one number.",
+    "short": "Winners divided by losers across the market. Above 1 means broad gains; below 1, broad pain - breadth in one number.",
     "definition": [
-      "The <strong>advance-decline ratio</strong> divides rising stocks by falling ones. A 2:1 day means twice as many winners — healthy participation. A rising index with a sub-1 ratio means a few giants mask broad weakness.",
+      "The <strong>advance-decline ratio</strong> divides rising stocks by falling ones. A 2:1 day means twice as many winners - healthy participation. A rising index with a sub-1 ratio means a few giants mask broad weakness.",
       "Professionals distrust rallies the ratio doesn't confirm: narrow leadership breaks first when sentiment turns."
     ],
-    "example": "Nifty up 0.5% while the advance-decline reads 1:2 warns the headline is HDFC Bank and Reliance carrying 1,800 fallers — fragile, not strong.",
-    "inExtension": "True whole-market breadth sits above gainers and losers: Nifty 500 totals for India, NYSE + Nasdaq for the USA — not partial counts.",
+    "example": "Nifty up 0.5% while the advance-decline reads 1:2 warns the headline is HDFC Bank and Reliance carrying 1,800 fallers - fragile, not strong.",
+    "inExtension": "True whole-market breadth sits above gainers and losers: Nifty 500 totals for India, NYSE + Nasdaq for the USA - not partial counts.",
     "faqs": [
       { "q": "Where do I see advance-decline data?", "a": "Moneycontrol (India) and WSJ Market Diary (US) publish it; the extension's Markets tab surfaces both with a 10-minute cache." }
     ],
@@ -277,15 +277,15 @@
     "term": "52-Week High / Low",
     "slug": "52-week-high-low",
     "group": "Indicators",
-    "short": "A stock's highest and lowest price over the past year. Breakouts signal strength; breakdowns signal trouble — both demand volume proof.",
+    "short": "A stock's highest and lowest price over the past year. Breakouts signal strength; breakdowns signal trouble - both demand volume proof.",
     "definition": [
       "The <strong>52-week high/low</strong> frames today's price against a full year of trading. Stocks near highs carry momentum and overhead-supply tests; stocks near lows carry turnaround hopes or terminal decline.",
       "New highs on rising volume confirm institutional accumulation; new lows on volume confirm distribution. Price alone, without volume, is half the story."
     ],
-    "example": "A railway stock breaking its 52-week high after a Rs 10,000-crore order win differs completely from one drifting to highs on thin volume — same price, opposite meaning.",
+    "example": "A railway stock breaking its 52-week high after a Rs 10,000-crore order win differs completely from one drifting to highs on thin volume - same price, opposite meaning.",
     "inExtension": "Smart Focus blue-dots stocks near 52-week extremes so they surface automatically; hit Focus to see only firing stocks.",
     "faqs": [
-      { "q": "Should I buy 52-week highs?", "a": "Momentum works until it doesn't — buy highs with volume confirmation and stop-losses, never on hope. Breakdowns deserve even stricter exits." }
+      { "q": "Should I buy 52-week highs?", "a": "Momentum works until it doesn't - buy highs with volume confirmation and stop-losses, never on hope. Breakdowns deserve even stricter exits." }
     ],
     "related": ["circuit-breaker", "market-cap", "advance-decline-ratio"],
     "relatedPosts": []
@@ -296,13 +296,13 @@
     "group": "Investing Basics",
     "short": "Exchange-traded fund: a basket of stocks, bonds or gold bought like one share. Instant diversification, tiny fees.",
     "definition": [
-      "An <strong>ETF (exchange-traded fund)</strong> holds a basket — an index, gold, bonds — and trades on exchange like a stock, with live prices through the day (unlike mutual funds' once-daily NAV).",
+      "An <strong>ETF (exchange-traded fund)</strong> holds a basket - an index, gold, bonds - and trades on exchange like a stock, with live prices through the day (unlike mutual funds' once-daily NAV).",
       "Costs run far below active funds, but check tracking error (does it mirror its target?) and liquidity (can you exit at fair spreads?)."
     ],
-    "example": "One Nifty 50 ETF unit gives you all fifty large-caps for under 0.1% yearly — diversification that once needed lakhs and a broker's patience.",
+    "example": "One Nifty 50 ETF unit gives you all fifty large-caps for under 0.1% yearly - diversification that once needed lakhs and a broker's patience.",
     "inExtension": "ETFs sit naturally in watchlists and the tape: track GoldBeES beside GLD, or Nifty ETFs beside the index, with alerts on each.",
     "faqs": [
-      { "q": "ETF vs mutual fund — which is better?", "a": "ETFs win on cost and intraday liquidity; index mutual funds win on SIP automation. Many investors hold both." }
+      { "q": "ETF vs mutual fund - which is better?", "a": "ETFs win on cost and intraday liquidity; index mutual funds win on SIP automation. Many investors hold both." }
     ],
     "related": ["stock-index", "expense-ratio", "market-cap"],
     "relatedPosts": []
@@ -311,7 +311,7 @@
     "term": "Index",
     "slug": "stock-index",
     "group": "Investing Basics",
-    "short": "A rule-based basket measuring a market slice — Nifty 50, S&P 500, gold prices. The benchmark everything gets judged against.",
+    "short": "A rule-based basket measuring a market slice - Nifty 50, S&P 500, gold prices. The benchmark everything gets judged against.",
     "definition": [
       "An <strong>index</strong> tracks a defined basket by fixed rules: membership criteria, weighting (usually market-cap) and review schedules. It turns 'the market' from a feeling into a number.",
       "Indices power ETFs and index funds, benchmark active managers, and settle derivatives. Know an index's construction before concluding anything from its level."
@@ -319,7 +319,7 @@
     "example": "Judging your 12% return? Against a Nifty at +8% you won; against Nasdaq-100 at +25% you chose the wrong arena. Benchmarks make returns honest.",
     "inExtension": "S&P 500, Nasdaq, Dow and nine more economies' indices stream in the Markets tab with native currencies and macro context.",
     "faqs": [
-      { "q": "Can I buy an index directly?", "a": "No — buy its ETF or index fund shadow. Compare expense ratio and tracking error between shadows of the same index." }
+      { "q": "Can I buy an index directly?", "a": "No - buy its ETF or index fund shadow. Compare expense ratio and tracking error between shadows of the same index." }
     ],
     "related": ["etf", "nifty-50", "sp500"],
     "relatedPosts": ["us-indexes-sp500-nasdaq-dow-explained"]
@@ -328,12 +328,12 @@
     "term": "IPO",
     "slug": "ipo",
     "group": "Investing Basics",
-    "short": "Initial public offering: a private company selling shares to the public first. Hype is high, history is short — screen harder.",
+    "short": "Initial public offering: a private company selling shares to the public first. Hype is high, history is short - screen harder.",
     "definition": [
       "An <strong>IPO</strong> lists a company publicly via a price band, subscription window and allotment. Oversubscription makes headlines; fundamentals make returns.",
       "New listings lack price history, so screen the prospectus: use of proceeds, promoter holding, anchor investors, and whether private-equity sellers are exiting at your entry price."
     ],
-    "example": "IPOs subscribed 100x+ on retail frenzy routinely list flat and drift for a year — demand for the paper exceeded demand for the business.",
+    "example": "IPOs subscribed 100x+ on retail frenzy routinely list flat and drift for a year - demand for the paper exceeded demand for the business.",
     "inExtension": "Add IPO allotments to a dedicated portfolio the listing morning; price alerts catch the post-listing base forming while hype fades.",
     "faqs": [
       { "q": "Are IPOs good investments?", "a": "Selectively. Established-profit IPOs at sane multiples compound; loss-making story IPOs at peak multiples mostly transfer wealth from public to promoters." }
@@ -345,13 +345,13 @@
     "term": "CASA",
     "slug": "casa",
     "group": "Investing Basics",
-    "short": "Current + savings account deposits — a bank's cheapest funding. Higher CASA means fatter margins and a stronger moat.",
+    "short": "Current + savings account deposits - a bank's cheapest funding. Higher CASA means fatter margins and a stronger moat.",
     "definition": [
       "<strong>CASA (current account + savings account)</strong> deposits cost banks ~3% versus ~7% for term deposits. A 45% CASA ratio structurally lowers funding cost and defends margins when rates rise.",
       "Falling CASA industry-wide signals deposit wars: every bank pays more for funds, and net interest margins compress across the board."
     ],
-    "example": "Two banks with identical loan books: the 45%-CASA one earns ~0.5% extra margin yearly — compounding into a valuation gap within three years.",
-    "inExtension": "Compare bank holdings on the switchable ROE column while reading CASA commentary in results — ratios plus narrative, one screen.",
+    "example": "Two banks with identical loan books: the 45%-CASA one earns ~0.5% extra margin yearly - compounding into a valuation gap within three years.",
+    "inExtension": "Compare bank holdings on the switchable ROE column while reading CASA commentary in results - ratios plus narrative, one screen.",
     "faqs": [
       { "q": "What CASA is good?", "a": "Above 40% is strong for large banks; SBI-scale CASA above 42% is exceptional. Trend matters more than a single quarter." }
     ],
@@ -362,15 +362,15 @@
     "term": "Expense Ratio",
     "slug": "expense-ratio",
     "group": "Investing Basics",
-    "short": "A fund's yearly fee as % of assets. A 1% fee silently eats a quarter of long-run gains — minimise it.",
+    "short": "A fund's yearly fee as % of assets. A 1% fee silently eats a quarter of long-run gains - minimise it.",
     "definition": [
-      "The <strong>expense ratio</strong> is what ETFs and mutual funds charge yearly. Active equity funds take ~1–2%, index funds under ~0.3% — the gap compounds brutally over decades.",
+      "The <strong>expense ratio</strong> is what ETFs and mutual funds charge yearly. Active equity funds take ~1–2%, index funds under ~0.3% - the gap compounds brutally over decades.",
       "On a 12% gross return over 20 years, 2% fees versus 0.2% fees is the difference between ~9.6x and ~13.6x your money. Fees are the most reliable predictor of fund underperformance."
     ],
-    "example": "Two identical Nifty index funds at 0.05% and 0.30% fees diverge by lakhs on a crore-sized SIP over 15 years — for zero extra service.",
+    "example": "Two identical Nifty index funds at 0.05% and 0.30% fees diverge by lakhs on a crore-sized SIP over 15 years - for zero extra service.",
     "inExtension": "Screen your fund/ETF watchlist the same way you screen stocks: lowest fee among identical exposures usually wins.",
     "faqs": [
-      { "q": "Does expense ratio include exit load?", "a": "No — exit loads and taxes are separate. Total cost = expense ratio drag + loads + your tax on gains." }
+      { "q": "Does expense ratio include exit load?", "a": "No - exit loads and taxes are separate. Total cost = expense ratio drag + loads + your tax on gains." }
     ],
     "related": ["etf", "stock-index", "ipo"],
     "relatedPosts": []
@@ -379,7 +379,7 @@
     "term": "Order Book",
     "slug": "order-book",
     "group": "Investing Basics",
-    "short": "Confirmed-but-unexecuted contracts — future revenue already signed. The visibility metric for rail, defence and EPC stocks.",
+    "short": "Confirmed-but-unexecuted contracts - future revenue already signed. The visibility metric for rail, defence and EPC stocks.",
     "definition": [
       "An <strong>order book</strong> totals signed contracts awaiting execution. Divide it by yearly revenue ('book-to-bill' or coverage) to see how many years of work are already secured.",
       "Quality beats size: government orders pay slowly but surely, private orders pay faster but cancel easier. Watch execution (conversion to revenue), not just addition."
@@ -401,7 +401,7 @@
       "A <strong>bull market</strong> rises 20%+ amid confidence, liquidity and earnings growth; a <strong>bear market</strong> falls 20%+ amid fear, tightening or recession. The labels describe sustained regimes, not single weeks.",
       "Strategy follows regime: bulls reward buying dips and riding momentum; bears reward cash, quality balance sheets and staggered entries. Most investor damage comes from using bull tactics in bear markets."
     ],
-    "example": "2020–21's liquidity bull forgave every mistake; 2022's rate-shock bear punished them. Same investors, opposite outcomes — regime did the work.",
+    "example": "2020–21's liquidity bull forgave every mistake; 2022's rate-shock bear punished them. Same investors, opposite outcomes - regime did the work.",
     "inExtension": "Market Mood, breadth and heatmaps show regime shifts forming: narrowing breadth plus greed-zone mood has preceded most recent pullbacks.",
     "faqs": [
       { "q": "Are we in a bull or bear market now?", "a": "Check the gauges, not gurus: index vs 200-day average, breadth trend, MMI/Fear-Greed zone. The extension surfaces all three live." }

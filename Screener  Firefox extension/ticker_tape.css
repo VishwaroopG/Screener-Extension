@@ -67,7 +67,7 @@
   color: #202124;
 }
 /* Light theme readability: base name/price/mcap colors assume a dark bar,
-   and change spans carry dark-theme inline colors — override them here. */
+   and change spans carry dark-theme inline colors - override them here. */
 #screener-ticker-tape.screener-tape-light .screener-ticker-name {
   color: #202124 !important;
   font-weight: 700 !important;
@@ -322,7 +322,7 @@ html.screener-tape-active-top body {
   width: 100%;
 }
 
-/* Period Selector Buttons — hardened against host-page CSS.
+/* Period Selector Buttons - hardened against host-page CSS.
    The modal is injected into arbitrary sites (many with dark-mode
    resets / Tailwind preflight that force buttons to display:block
    full-width, which stacks 1M/3M/6M/1Y… vertically). High-specificity
@@ -455,6 +455,13 @@ html.screener-tape-active-top body {
   .screener-modal-footer {
     background: #292a2d;
     border-top-color: #3c4043;
+  }
+  .screener-btn-details {
+    background: #8ab4f8;
+    color: #202124;
+  }
+  .screener-btn-details:hover {
+    background: #a8c7fa;
   }
   .screener-metric-up { color: #81c995; }
   .screener-metric-down { color: #f28b82; }

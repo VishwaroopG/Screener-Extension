@@ -176,7 +176,7 @@
     const yMin = min - padding;
     const yMax = max + padding;
     
-    // Canvas dimensions (no axes / grid — clean line only)
+    // Canvas dimensions (no axes / grid - clean line only)
     const w = 340, h = 120;
     const marginL = 4, marginR = 4, marginT = 8, marginB = 8;
     const graphW = w - marginL - marginR;
@@ -323,7 +323,7 @@
             resolve({ data: [], timestamps: [] });
           }
         }),
-        // Never leave the modal stuck on "Loading..." — fall back to cache.
+        // Never leave the modal stuck on "Loading..." - fall back to cache.
         new Promise((resolve) => setTimeout(() => resolve({ data: [], timestamps: [] }), 20000))
       ]);
     } catch (e) {
@@ -338,7 +338,7 @@
     return ticker + '.NS';
   }
 
-  // Keep only finite numbers — Yahoo occasionally returns "N/A"/null holes
+  // Keep only finite numbers - Yahoo occasionally returns "N/A"/null holes
   // that would otherwise poison the SVG path (blank chart, no error).
   function cleanSeries(arr) {
     if (!Array.isArray(arr)) return [];
@@ -499,7 +499,7 @@
     }
     renderTape(); // Force an initial render now that all prefs are loaded
   });
-  } catch (e) { /* context died before prefs arrived — tape stays inert */ }
+  } catch (e) { /* context died before prefs arrived - tape stays inert */ }
 
   // Listen for control updates from side panel
   try {
@@ -537,7 +537,7 @@
       }
     }
   });
-  } catch (e) { /* listener registration on a dead context — nothing to do */ }
+  } catch (e) { /* listener registration on a dead context - nothing to do */ }
 
   // --- Interactive Grab-and-Drag (Left / Right) ---
   container.addEventListener('mousedown', (e) => {
@@ -945,7 +945,7 @@
               const color = isUp ? '#81c995' : '#f28b82';
               const sign = isUp ? '\u25B2' : '\u25BC';
 
-              // Only touch the DOM when something actually changed —
+              // Only touch the DOM when something actually changed -
               // rewriting textContent/className every poll restarts the flash
               // animation and shifts scrollWidth, which reads as a glitch.
               let nextClass = 'screener-ticker-price ' + (isUp ? 'screener-price-up' : 'screener-price-down');
@@ -1045,19 +1045,19 @@
         const block = html + gapHtml;
         marquee.innerHTML = block + block;
       }
-      // Rebuilds change scrollWidth — re-wrap into (-halfWidth, 0] so the
+      // Rebuilds change scrollWidth - re-wrap into (-halfWidth, 0] so the
       // seam doesn't jump, then keep the current scroll position.
       try { wrapTapeX(); } catch (e) {}
       marquee.style.transform = `translate3d(${currentX}px, 0, 0)`;
     });
-    } catch (e) { /* context invalidated mid-render — stop quietly */ }
+    } catch (e) { /* context invalidated mid-render - stop quietly */ }
   }
 
   // ── Watchlist import: scrape tickers from the open page ─────────────
   // Handles Zerodha Kite, Screener.in and TradingView with site-specific
   // selectors, plus a conservative generic fallback. Runs in page context
   // so login-walled watchlists (Kite) are readable. Responds via
-  // chrome.tabs.sendMessage from the side panel — no extra permissions.
+  // chrome.tabs.sendMessage from the side panel - no extra permissions.
   function cleanRawToken(s) {
     let v = String(s || '').trim();
     // TradingView "EXCHANGE:SYMBOL" -> keep both parts (exchange helps resolve)
@@ -1202,7 +1202,7 @@
       else renderTape();
     }
   });
-  } catch (e) { /* listener registration on a dead context — nothing to do */ }
+  } catch (e) { /* listener registration on a dead context - nothing to do */ }
 })();
 
 // Keep background worker active and trigger price polling from any webpage.
@@ -1215,7 +1215,7 @@ const screenerPingTimer = setInterval(() => {
     chrome.runtime.sendMessage({ type: 'PING' }, () => {
       try {
         if (chrome.runtime.lastError) { /* ignore */ }
-      } catch (e) { /* context died — next tick cleans up */ }
+      } catch (e) { /* context died - next tick cleans up */ }
     });
   } catch (e) {
     try { clearInterval(screenerPingTimer); } catch (ignored) {}

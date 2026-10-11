@@ -13,7 +13,7 @@
     {
       "id": "markets",
       "title": "Track 3 · Understand markets",
-      "desc": "Indices, ETFs and sentiment gauges — the context that stops you buying greed-tops and selling fear-bottoms."
+      "desc": "Indices, ETFs and sentiment gauges - the context that stops you buying greed-tops and selling fear-bottoms."
     }
   ],
   "lessons": [
@@ -23,16 +23,16 @@
       "level": "Beginner",
       "minutes": 6,
       "title": "How to read a stock quote in 6 minutes",
-      "meta": "Price, day change, volume, 52-week range, P/E and market cap — decode any stock quote line by line with examples.",
+      "meta": "Price, day change, volume, 52-week range, P/E and market cap - decode any stock quote line by line with examples.",
       "body": [
-        "Every stock quote answers six questions. <strong>Price</strong> is the last traded value — history, not a promise. <strong>Day change</strong> (points and percent) tells today's sentiment; check whether it moved with the index or against it.",
+        "Every stock quote answers six questions. <strong>Price</strong> is the last traded value - history, not a promise. <strong>Day change</strong> (points and percent) tells today's sentiment; check whether it moved with the index or against it.",
         "<strong>Volume</strong> validates the move: big price change on thin volume is noise, on heavy volume it is institutional conviction. Compare today's volume with the 20-day average before reacting.",
-        "The <strong>52-week high/low</strong> frames the price — near highs means momentum with overhead supply; near lows means either turnaround or terminal decline. Volume decides which.",
+        "The <strong>52-week high/low</strong> frames the price - near highs means momentum with overhead supply; near lows means either turnaround or terminal decline. Volume decides which.",
         "<strong>P/E and market cap</strong> add valuation and size: a Rs 200 stock can be 'bigger' and pricier than a Rs 2,000 one. Learn both in our <a href=\"../glossary/pe-ratio.html\">P/E</a> and <a href=\"../glossary/market-cap.html\">market-cap</a> guides.",
-        "Do this now: open any holding in your watchlist and read all six fields aloud. If any number confuses you, tap through to its glossary page — that gap is your next lesson."
+        "Do this now: open any holding in your watchlist and read all six fields aloud. If any number confuses you, tap through to its glossary page - that gap is your next lesson."
       ],
       "faqs": [
-        { "q": "Why does the price differ across apps?", "a": "Snapshots refresh at different seconds and some show BSE vs NSE feeds. Live exchange data converges within ticks — use one source per decision." }
+        { "q": "Why does the price differ across apps?", "a": "Snapshots refresh at different seconds and some show BSE vs NSE feeds. Live exchange data converges within ticks - use one source per decision." }
       ],
       "relatedGlossary": ["pe-ratio", "market-cap", "52-week-high-low"],
       "relatedCollections": [],
@@ -44,16 +44,16 @@
       "level": "Beginner",
       "minutes": 8,
       "title": "What actually moves a stock price",
-      "meta": "Earnings, interest rates, fund flows and sentiment — the four forces behind every price move, and which one dominates yours.",
+      "meta": "Earnings, interest rates, fund flows and sentiment - the four forces behind every price move, and which one dominates yours.",
       "body": [
-        "<strong>1. Earnings.</strong> Over years, prices follow profits. Quarterly results reset expectations — guidance (what management promises next) moves stocks more than the reported quarter itself.",
-        "<strong>2. Interest rates.</strong> When the US Fed or RBI raises rates, future profits get discounted harder and growth stocks fall first. This single channel explains most 2022 damage — see <a href=\"../blog/post.html?slug=fed-to-fii-us-rates-indian-equities\">Fed to FII</a>.",
-        "<strong>3. Fund flows.</strong> FII selling and DII SIP buying tug Indian large-caps daily. Flows dominate months; earnings dominate years. Know which game your holding period plays — <a href=\"../glossary/fii-dii.html\">FII & DII explained</a>.",
+        "<strong>1. Earnings.</strong> Over years, prices follow profits. Quarterly results reset expectations - guidance (what management promises next) moves stocks more than the reported quarter itself.",
+        "<strong>2. Interest rates.</strong> When the US Fed or RBI raises rates, future profits get discounted harder and growth stocks fall first. This single channel explains most 2022 damage - see <a href=\"../blog/post.html?slug=fed-to-fii-us-rates-indian-equities\">Fed to FII</a>.",
+        "<strong>3. Fund flows.</strong> FII selling and DII SIP buying tug Indian large-caps daily. Flows dominate months; earnings dominate years. Know which game your holding period plays - <a href=\"../glossary/fii-dii.html\">FII & DII explained</a>.",
         "<strong>4. Sentiment.</strong> Greed zones stretch multiples, fear zones compress them. Gauges like the <a href=\"../glossary/market-mood-index.html\">Market Mood Index</a> tell you which crowd you are trading against.",
         "Do this now: pick your biggest holding and assign its last 10% move to one of the four forces. If you cannot, you are trading a story you haven't verified."
       ],
       "faqs": [
-        { "q": "Good results but stock fell — why?", "a": "Expectations beat reality: the 'whisper number' exceeded guidance, or the market sold the broader sector. Price reacts to surprise, not quality." }
+        { "q": "Good results but stock fell - why?", "a": "Expectations beat reality: the 'whisper number' exceeded guidance, or the market sold the broader sector. Price reacts to surprise, not quality." }
       ],
       "relatedGlossary": ["fii-dii", "market-mood-index", "eps"],
       "relatedCollections": [],
@@ -65,16 +65,16 @@
       "level": "Beginner",
       "minutes": 7,
       "title": "5 beginner mistakes that lose money (and fixes)",
-      "meta": "Tips, averaging down, penny chasing, no stop-losses, all-in bets — the five classic beginner errors with a one-line fix each.",
+      "meta": "Tips, averaging down, penny chasing, no stop-losses, all-in bets - the five classic beginner errors with a one-line fix each.",
       "body": [
-        "<strong>1. Acting on tips.</strong> By the time a tip reaches you, early buyers need your exit. Fix: no position without your own two-line thesis — what it earns, why it grows.",
-        "<strong>2. Averaging down blindly.</strong> Adding to losers doubles exposure to whatever is going wrong. Fix: average only on pre-planned levels with fresh thesis intact — never to 'recover' fast. Our <a href=\"../collections/penny-stocks-under-10.html\">penny-stock screen</a> shows why falling knives usually keep falling.",
+        "<strong>1. Acting on tips.</strong> By the time a tip reaches you, early buyers need your exit. Fix: no position without your own two-line thesis - what it earns, why it grows.",
+        "<strong>2. Averaging down blindly.</strong> Adding to losers doubles exposure to whatever is going wrong. Fix: average only on pre-planned levels with fresh thesis intact - never to 'recover' fast. Our <a href=\"../collections/penny-stocks-under-10.html\">penny-stock screen</a> shows why falling knives usually keep falling.",
         "<strong>3. No position sizing.</strong> A 40% portfolio bet that halves needs a 67% gain elsewhere to recover. Fix: cap any single stock at 5–10% until you have three years of process.",
         "<strong>4. No stop-loss or review date.</strong> Hope is not risk management. Fix: every buy gets an exit price (thesis broken) and a review date (thesis check).",
-        "<strong>5. Confusing bull markets with skill.</strong> Rising tides certify geniuses. Fix: benchmark every return against the <a href=\"../glossary/nifty-50.html\">Nifty 50</a> or <a href=\"../glossary/sp500.html\">S&P 500</a> — outperformance net of risk is the only grade."
+        "<strong>5. Confusing bull markets with skill.</strong> Rising tides certify geniuses. Fix: benchmark every return against the <a href=\"../glossary/nifty-50.html\">Nifty 50</a> or <a href=\"../glossary/sp500.html\">S&P 500</a> - outperformance net of risk is the only grade."
       ],
       "faqs": [
-        { "q": "Is paper trading useful?", "a": "For mechanics yes, for psychology no — real money triggers emotions paper never will. Start tiny with real capital and strict sizes instead." }
+        { "q": "Is paper trading useful?", "a": "For mechanics yes, for psychology no - real money triggers emotions paper never will. Start tiny with real capital and strict sizes instead." }
       ],
       "relatedGlossary": ["nifty-50", "52-week-high-low", "circuit-breaker"],
       "relatedCollections": ["penny-stocks-under-10"],
@@ -89,13 +89,13 @@
       "meta": "The only four ratios beginners need: what each measures, good vs bad values, and the two-minute combo that filters any stock.",
       "body": [
         "<strong>P/E (price ÷ earnings)</strong> prices greed: under ~15 is value land, 15–25 normal, 30+ demands serious growth. Compare within sectors only. Full guide: <a href=\"../glossary/pe-ratio.html\">P/E ratio</a>.",
-        "<strong>ROCE (profit ÷ all capital)</strong> measures quality: sustained 15–20%+ marks a moat; under 10% destroys value after funding costs. Debt cannot flatter it — that is the point.",
-        "<strong>ROE (profit ÷ equity)</strong> measures shareholder compounding — but leverage inflates it, so always read it beside ROCE and debt levels.",
+        "<strong>ROCE (profit ÷ all capital)</strong> measures quality: sustained 15–20%+ marks a moat; under 10% destroys value after funding costs. Debt cannot flatter it - that is the point.",
+        "<strong>ROE (profit ÷ equity)</strong> measures shareholder compounding - but leverage inflates it, so always read it beside ROCE and debt levels.",
         "<strong>P/B (price ÷ book value)</strong> suits banks and asset-heavy firms: below 1 often prices distress, not bargains, unless asset quality is clean.",
-        "The two-minute combo: <strong>P/E under 25 + ROCE above 15%</strong> filters most junk instantly. It is exactly the pairing behind the extension's AI Verdict — cheap plus efficient flags research candidates; expensive plus weak flags avoids."
+        "The two-minute combo: <strong>P/E under 25 + ROCE above 15%</strong> filters most junk instantly. It is exactly the pairing behind the extension's AI Verdict - cheap plus efficient flags research candidates; expensive plus weak flags avoids."
       ],
       "faqs": [
-        { "q": "Which single ratio matters most?", "a": "ROCE for quality, P/E for price. One without the other misleads — great businesses at absurd prices still lose money." }
+        { "q": "Which single ratio matters most?", "a": "ROCE for quality, P/E for price. One without the other misleads - great businesses at absurd prices still lose money." }
       ],
       "relatedGlossary": ["pe-ratio", "roce", "roe", "pb-ratio"],
       "relatedCollections": ["dividend-stocks-india", "bank-stocks-india"],
@@ -107,17 +107,17 @@
       "level": "Intermediate",
       "minutes": 8,
       "title": "How to screen 500 stocks down to 10",
-      "meta": "A five-filter screening workflow — universe, quality, price, momentum, story check — that turns index lists into research watchlists.",
+      "meta": "A five-filter screening workflow - universe, quality, price, momentum, story check - that turns index lists into research watchlists.",
       "body": [
-        "<strong>Step 1 — Universe.</strong> Start from an index or <a href=\"../collections/\">collection</a> (say, Nifty 500 or our <a href=\"../collections/defence-stocks.html\">defence list</a>), not the whole market. Boundaries beat infinity.",
-        "<strong>Step 2 — Quality filter.</strong> Keep ROCE > 15%, positive operating cash flow, debt-to-equity < 1. This typically cuts two-thirds of names — correctly.",
-        "<strong>Step 3 — Price filter.</strong> Of survivors, keep P/E below sector median or PEG below 1.5. Quality you overpay for is just expensive quality.",
-        "<strong>Step 4 — Momentum sanity.</strong> Prefer stocks above their 200-day average with rising volumes; downtrends need turnaround evidence, not hope. Check <a href=\"../glossary/52-week-high-low.html\">52-week position</a>.",
-        "<strong>Step 5 — Story check.</strong> Read the last two concalls of the 10 survivors. One hour here saves lakhs: management evasion, auditor exits or pledged shares disqualify instantly.",
-        "Do this now: run the five steps on any collection page's stock table and save survivors as a tagged watchlist portfolio. Re-screen quarterly — screens rot as prices move."
+        "<strong>Step 1 - Universe.</strong> Start from an index or <a href=\"../collections/\">collection</a> (say, Nifty 500 or our <a href=\"../collections/defence-stocks.html\">defence list</a>), not the whole market. Boundaries beat infinity.",
+        "<strong>Step 2 - Quality filter.</strong> Keep ROCE > 15%, positive operating cash flow, debt-to-equity < 1. This typically cuts two-thirds of names - correctly.",
+        "<strong>Step 3 - Price filter.</strong> Of survivors, keep P/E below sector median or PEG below 1.5. Quality you overpay for is just expensive quality.",
+        "<strong>Step 4 - Momentum sanity.</strong> Prefer stocks above their 200-day average with rising volumes; downtrends need turnaround evidence, not hope. Check <a href=\"../glossary/52-week-high-low.html\">52-week position</a>.",
+        "<strong>Step 5 - Story check.</strong> Read the last two concalls of the 10 survivors. One hour here saves lakhs: management evasion, auditor exits or pledged shares disqualify instantly.",
+        "Do this now: run the five steps on any collection page's stock table and save survivors as a tagged watchlist portfolio. Re-screen quarterly - screens rot as prices move."
       ],
       "faqs": [
-        { "q": "How often should I re-screen?", "a": "Quarterly, after results season. Prices move daily but fundamentals print quarterly — match the cadence to the data." }
+        { "q": "How often should I re-screen?", "a": "Quarterly, after results season. Prices move daily but fundamentals print quarterly - match the cadence to the data." }
       ],
       "relatedGlossary": ["roce", "pe-ratio", "52-week-high-low", "market-cap"],
       "relatedCollections": ["railway-stocks", "it-stocks-india", "pharma-stocks-india"],
@@ -129,15 +129,15 @@
       "level": "Beginner",
       "minutes": 6,
       "title": "ETF vs stock: which should you pick?",
-      "meta": "When index ETFs beat stock-picking (core holdings) and when single stocks win (conviction) — plus the fee math that decides.",
+      "meta": "When index ETFs beat stock-picking (core holdings) and when single stocks win (conviction) - plus the fee math that decides.",
       "body": [
         "An <a href=\"../glossary/etf.html\">ETF</a> buys the whole basket: diversification, sub-0.3% fees and zero research burden. A stock buys one thesis: concentration, upside and the risk of being wrong.",
         "Rule of thumb: <strong>core in ETFs, satellite in stocks.</strong> Index funds for the Nifty 500 / S&P 500 spine of your portfolio; 5–15 hand-picked stocks where you genuinely understand the business.",
-        "The fee math is merciless — a 1.5% yearly edge for active fees needs persistent outperformance few deliver. Check any fund's <a href=\"../glossary/expense-ratio.html\">expense ratio</a> before admiring its past chart.",
+        "The fee math is merciless - a 1.5% yearly edge for active fees needs persistent outperformance few deliver. Check any fund's <a href=\"../glossary/expense-ratio.html\">expense ratio</a> before admiring its past chart.",
         "Where to start: a Nifty 50 ETF plus a <a href=\"../collections/gold-etfs.html\">gold ETF</a> hedge covers most beginners' core; add single stocks only after finishing Track 2's ratio lessons."
       ],
       "faqs": [
-        { "q": "Can ETFs fall like stocks?", "a": "Yes — an index ETF mirrors its market, crashes included. Diversification softens single-stock risk, not market risk." }
+        { "q": "Can ETFs fall like stocks?", "a": "Yes - an index ETF mirrors its market, crashes included. Diversification softens single-stock risk, not market risk." }
       ],
       "relatedGlossary": ["etf", "stock-index", "expense-ratio"],
       "relatedCollections": ["gold-etfs", "sp500-stocks", "nasdaq-100-stocks"],
@@ -149,15 +149,15 @@
       "level": "Beginner",
       "minutes": 7,
       "title": "Read the market in 3 numbers: index, mood, breadth",
-      "meta": "Index level, sentiment gauge and advance-decline breadth — the 60-second market check that prevents buying tops and selling bottoms.",
+      "meta": "Index level, sentiment gauge and advance-decline breadth - the 60-second market check that prevents buying tops and selling bottoms.",
       "body": [
         "<strong>1. Index vs trend.</strong> Is the <a href=\"../glossary/nifty-50.html\">Nifty 50</a> (or <a href=\"../glossary/sp500.html\">S&P 500</a>) above its 200-day average? Above means the tide still rises; below means respect cash. One line, no opinions.",
         "<strong>2. Mood gauge.</strong> Check the <a href=\"../glossary/market-mood-index.html\">Market Mood Index</a> for India or <a href=\"../glossary/fear-greed-index.html\">Fear & Greed</a> for the US. Extreme greed: tighten stops, book partials. Extreme fear: prepare buy lists, stagger entries.",
-        "<strong>3. Breadth.</strong> Read the <a href=\"../glossary/advance-decline-ratio.html\">advance-decline ratio</a>: index up on 1:2 breadth is two giants masking 1,800 fallers — fragile. Index up on 2:1 breadth is participation — durable.",
-        "The 60-second routine: trend, mood, breadth — in that order, every morning. It will not predict anything; it will stop you from buying euphoria and selling panic, which is worth more than prediction."
+        "<strong>3. Breadth.</strong> Read the <a href=\"../glossary/advance-decline-ratio.html\">advance-decline ratio</a>: index up on 1:2 breadth is two giants masking 1,800 fallers - fragile. Index up on 2:1 breadth is participation - durable.",
+        "The 60-second routine: trend, mood, breadth - in that order, every morning. It will not predict anything; it will stop you from buying euphoria and selling panic, which is worth more than prediction."
       ],
       "faqs": [
-        { "q": "Where do I see all three live?", "a": "The extension's Markets tab stacks the Market Mood gauge, whole-market breadth and index heatmap on one screen — the routine takes seconds." }
+        { "q": "Where do I see all three live?", "a": "The extension's Markets tab stacks the Market Mood gauge, whole-market breadth and index heatmap on one screen - the routine takes seconds." }
       ],
       "relatedGlossary": ["market-mood-index", "fear-greed-index", "advance-decline-ratio"],
       "relatedCollections": ["sp500-stocks"],

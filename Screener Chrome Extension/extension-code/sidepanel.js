@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentNewsFilter = 'all';
 
   const DEFAULT_WEEKEND = ['Sat', 'Sun'];
-  // Trading holidays are NOT bundled — they are fetched daily from the
+  // Trading holidays are NOT bundled - they are fetched daily from the
   // published site and cached in chrome.storage.local, so holiday fixes
   // reach all users with no extension re-publish. A missing or stale cache
   // simply falls back to time+weekend logic.
@@ -991,7 +991,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // NOTE: The global show/hide toggle lives only in Settings → Visibility
-  // ("Show ticker tape"). No header button — updateVisibilityUI is kept as a
+  // ("Show ticker tape"). No header button - updateVisibilityUI is kept as a
   // harmless no-op guard for the Settings/reset/storage call sites below.
   void tapeVisibilityBtn;
 
@@ -1158,7 +1158,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (settingsShowIndices) settingsShowIndices.checked = res.tapeShowIndices !== false;
       if (settingsShowChange) settingsShowChange.checked = res.tapeShowChange !== false;
       if (settingsShowAmount) settingsShowAmount.checked = res.tapeShowAmount === true;
-      // % change and amount change are independent — both on shows "+40.29 (0.37%)"
+      // % change and amount change are independent - both on shows "+40.29 (0.37%)"
       if (settingsVisible) settingsVisible.checked = res.tapeVisible !== false;
       if (Array.isArray(res.disabledDomains)) disabledDomains = res.disabledDomains;
       updateDomainUI();
@@ -1192,7 +1192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const enabled = !state || state.enabled !== false;
     const supported = !state || state.supported !== false;
     // canReadIdentity is false on browsers where the profile email can't be
-    // read (e.g. Firefox, Brave) — there we must not claim "Not signed in".
+    // read (e.g. Firefox, Brave) - there we must not claim "Not signed in".
     const identityReadable = !state || state.canReadIdentity !== false;
     const signedOut = !!(state && supported && identityReadable && state.canReadIdentity === true && !state.email && !isBrave());
     if (settingsSyncToggle) settingsSyncToggle.checked = enabled;
@@ -1218,8 +1218,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (settingsSyncTime) {
       if (!supported || signedOut) {
-        // Showing a stored time next to "Not signed in" is contradictory —
-        // and on some browsers the email simply can't be read — so only show
+        // Showing a stored time next to "Not signed in" is contradictory -
+        // and on some browsers the email simply can't be read - so only show
         // the time when it can honestly mean a cross-device sync happened.
         settingsSyncTime.textContent = '';
       } else if (state) {
@@ -1272,7 +1272,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (settingsDirection) settingsDirection.addEventListener('change', () => persistTapeSetting({ tapeDirection: settingsDirection.value }));
   if (settingsPauseHover) settingsPauseHover.addEventListener('change', () => persistTapeSetting({ tapePauseOnHover: settingsPauseHover.checked }));
   if (settingsShowIndices) settingsShowIndices.addEventListener('change', () => persistTapeSetting({ tapeShowIndices: settingsShowIndices.checked }));
-  // % change and amount change are independent toggles — both on shows "+40.29 (0.37%)"
+  // % change and amount change are independent toggles - both on shows "+40.29 (0.37%)"
   if (settingsShowChange) settingsShowChange.addEventListener('change', () => {
     persistTapeSetting({ tapeShowChange: settingsShowChange.checked });
   });
@@ -1446,7 +1446,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!r.ok) throw new Error('send failed');
         inputFeedbackMsg.value = '';
         clearAttachment();
-        if (feedbackStatus) feedbackStatus.textContent = t('feedbackSent') || 'Thanks — we read every message.';
+        if (feedbackStatus) feedbackStatus.textContent = t('feedbackSent') || 'Thanks - we read every message.';
         setTimeout(closeFeedbackModal, 1800);
       } catch (err) {
         const mailto = 'mailto:vishwaroopg8@gmail.com?subject='
@@ -1596,6 +1596,14 @@ document.addEventListener('DOMContentLoaded', () => {
     renderWatchlist();
   });
 
+  // One-tap reset for the tag filter (visible only while a tag is active).
+  const tagFilterClear = document.getElementById('tag-filter-clear');
+  if (tagFilterClear) tagFilterClear.addEventListener('click', () => {
+    activeTagFilter = 'all';
+    if (tagFilterSelect) tagFilterSelect.value = 'all';
+    renderWatchlist();
+  });
+
   const bulkToggle = document.getElementById('btn-bulk-select');
   if (bulkToggle) bulkToggle.addEventListener('click', () => {
     if (bulkMode) exitBulkMode(); else enterBulkMode();
@@ -1610,78 +1618,14 @@ document.addEventListener('DOMContentLoaded', () => {
     bulkDelete();
   });
 
-  // --- Smart Focus UI: filter button + rules popover ---
-  // focusOnly is session state (resets when the panel reloads); rule
-  // on/off + thresholds persist in storage `smartFocus`.
+  // --- Smart Focus UI removed: filter button + gear taken out to restore
+  // the clean Select / Import / CSV row. Blue-dot highlights still render;
+  // focusOnly stays false so no filtering is applied.
   let focusOnly = false;
-  function paintFocusToggle() {
-    const btn = document.getElementById('btn-focus-filter');
-    if (!btn) return;
-    btn.textContent = (t('sfFilter') || 'Focus') + (focusOnly ? ' ✓' : '');
-    // Active state uses an inset ring so the button keeps the theme color.
-    btn.style.boxShadow = focusOnly ? 'inset 0 0 0 2px currentColor' : '';
-  }
-  function closeFocusPopover() {
-    const m = document.getElementById('focus-popover');
-    if (m) m.remove();
-    document.removeEventListener('click', closeFocusPopoverOutside);
-  }
-  function closeFocusPopoverOutside(e) {
-    const m = document.getElementById('focus-popover');
-    if (m && !m.contains(e.target)) closeFocusPopover();
-  }
-  function openFocusPopover(anchor) {
-    closeFocusPopover();
-    chrome.storage.local.get(['smartFocus'], (res) => {
-      const p = Object.assign({ big: true, swing: true, near: true, bigMovePct: 5, swingX: 2.5, nearPct: 2 }, res.smartFocus || {});
-      const numStyle = 'margin-left:auto; width:58px; padding:3px 6px; border-radius:4px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); font-size:12px;';
-      const ruleRow = (key, label, numKey, numVal, suffix) => `<label style="display:flex; align-items:center; gap:8px; padding:7px 4px; cursor:pointer; color:var(--text-color);"><input type="checkbox" data-sf="${key}"${p[key] ? ' checked' : ''} style="accent-color:#1a73e8;">${label}<input type="number" data-sf-num="${numKey}" value="${numVal}" min="0" step="0.5" title="${label}" style="${numStyle}">${suffix}</label>`;
-      const pop = document.createElement('div');
-      pop.id = 'focus-popover';
-      pop.style.cssText = 'position:fixed; z-index:9999; width:238px; padding:10px 12px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-color); box-shadow:0 10px 30px rgba(0,0,0,.3); font-size:12px;';
-      pop.innerHTML = `<div style="font-weight:700; margin-bottom:4px; color:var(--text-color);">${t('sfTitle') || 'Smart Focus'}</div>`
-        + ruleRow('big', t('sfBigMove') || 'Big price move', 'bigMovePct', p.bigMovePct, '%')
-        + ruleRow('swing', t('sfSwing') || 'Unusual swing', 'swingX', p.swingX, '×')
-        + ruleRow('near', t('sfNear') || '52-week high/low', 'nearPct', p.nearPct, '%');
-      document.body.appendChild(pop);
-      try {
-        const r = anchor.getBoundingClientRect();
-        pop.style.left = Math.max(4, Math.min(r.left, window.innerWidth - 250)) + 'px';
-        pop.style.top = Math.min(r.bottom + 4, window.innerHeight - 220) + 'px';
-      } catch (e) {}
-      const save = () => {
-        const np = {
-          big: pop.querySelector('[data-sf="big"]').checked,
-          swing: pop.querySelector('[data-sf="swing"]').checked,
-          near: pop.querySelector('[data-sf="near"]').checked,
-          bigMovePct: parseFloat(pop.querySelector('[data-sf-num="bigMovePct"]').value) || 5,
-          swingX: parseFloat(pop.querySelector('[data-sf-num="swingX"]').value) || 2.5,
-          nearPct: parseFloat(pop.querySelector('[data-sf-num="nearPct"]').value) || 2
-        };
-        chrome.storage.local.set({ smartFocus: np }, () => renderWatchlist());
-      };
-      pop.querySelectorAll('input').forEach((i) => i.addEventListener('change', save));
-      setTimeout(() => document.addEventListener('click', closeFocusPopoverOutside), 0);
-    });
-  }
-  const focusBtn = document.createElement('button');
-  focusBtn.id = 'btn-focus-filter';
-  focusBtn.className = 'screener-btn';
-  focusBtn.textContent = t('sfFilter') || 'Focus';
-  focusBtn.title = t('sfFilterTitle') || 'Show only Smart Focus highlights';
-  focusBtn.style.cssText = 'margin-right:8px; padding:8px 12px; border-radius:16px; font-size:12px; flex-shrink:0; line-height:1;';
-  const focusGear = document.createElement('button');
-  focusGear.id = 'btn-focus-settings';
-  focusGear.className = 'screener-btn';
-  focusGear.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>';
-  focusGear.title = t('sfTitle') || 'Smart Focus settings';
-  focusGear.style.cssText = 'margin-right:8px; width:32px; height:32px; padding:0; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:14px;';
-  if (btnExportCsv && btnExportCsv.parentNode) {
-    btnExportCsv.parentNode.insertBefore(focusBtn, btnExportCsv);
-    btnExportCsv.parentNode.insertBefore(focusGear, btnExportCsv);
-  }
-  focusBtn.addEventListener('click', () => { focusOnly = !focusOnly; paintFocusToggle(); renderWatchlist(); });
-  focusGear.addEventListener('click', (e) => { e.stopPropagation(); openFocusPopover(focusGear); });
+  function paintFocusToggle() { return; }
+  function closeFocusPopover() { return; }
+  function closeFocusPopoverOutside(e) { return; }
+  function openFocusPopover(anchor) { return; }
 
   // Dashboard refresh: full re-sync + fast-price poll, list repaints on WATCHLIST_UPDATED
   const btnWatchlistRefresh = document.getElementById('btn-watchlist-refresh');
@@ -1882,7 +1826,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     renderImportPreview();
     if (importCandidates.length) {
-      setImportStatus((t('importFound') || 'Found {N} tickers') .replace('{N}', String(importCandidates.length)) + (sourceLabel ? ' — ' + sourceLabel : ''));
+      setImportStatus((t('importFound') || 'Found {N} tickers') .replace('{N}', String(importCandidates.length)) + (sourceLabel ? ' - ' + sourceLabel : ''));
     } else {
       setImportStatus(t('importNoneFound') || 'No tickers found. Try pasting or a CSV file.');
     }
@@ -2040,12 +1984,12 @@ document.addEventListener('DOMContentLoaded', () => {
             chrome.tabs.sendMessage(tab.id, { type: 'SCREENER_EXTRACT_WATCHLIST' }, (res) => {
               responded = true;
               if (chrome.runtime.lastError || !res) {
-                setScrapeStatus(t('importTabEmpty') || 'Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry — or paste below.');
+                setScrapeStatus(t('importTabEmpty') || 'Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry - or paste below.');
                 return;
               }
               const items = (res.items || []).map((it) => (typeof it === 'string' ? { raw: it } : it));
               if (!items.length) {
-                setScrapeStatus(t('importTabEmpty') || 'Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry — or paste below.');
+                setScrapeStatus(t('importTabEmpty') || 'Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry - or paste below.');
                 return;
               }
               setImportCandidates(items, res.site || '');
@@ -2056,7 +2000,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
           }
           setTimeout(() => {
-            if (!responded) setScrapeStatus(t('importTabEmpty') || 'Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry — or paste below.');
+            if (!responded) setScrapeStatus(t('importTabEmpty') || 'Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry - or paste below.');
           }, 5000);
         });
       } else {
@@ -2162,9 +2106,9 @@ document.addEventListener('DOMContentLoaded', () => {
     (cons || []).forEach(c => {
       if (/pledge|contingent|debtor|inventory|receivable|interest cover|borrowing|promoter/i.test(c)) flags.push(c);
     });
-    if (Number.isFinite(roe) && roe < 10) flags.push('Low ROE (' + esc(ratios['ROE']) + ') — below 10% hurdle.');
+    if (Number.isFinite(roe) && roe < 10) flags.push('Low ROE (' + esc(ratios['ROE']) + ') - below 10% hurdle.');
     if (Number.isFinite(pe) && Number.isFinite(roce) && pe > 30 && roce < 10) flags.push('High P/E (' + esc(ratios['Stock P/E']) + ') with low ROCE (' + esc(ratios['ROCE']) + ').');
-    if (Number.isFinite(divY) && divY < 0.5) flags.push('Low dividend yield (' + esc(ratios['Dividend Yield']) + ') — weak payout.');
+    if (Number.isFinite(divY) && divY < 0.5) flags.push('Low dividend yield (' + esc(ratios['Dividend Yield']) + ') - weak payout.');
     const uniqFlags = Array.from(new Set(flags)).slice(0, 5);
     // Shareholding snapshot: last quarter values
     const shpCell = (row) => {
@@ -2189,15 +2133,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const threats = [];
     if (Number.isFinite(pe) && pe > 30) threats.push('Valuation de-rating risk at P/E ' + esc(ratios['Stock P/E']) + '.');
     if (weaknesses[0]) threats.push(weaknesses[0]);
-    else threats.push('Earnings / pledge shock — track announcements below.');
+    else threats.push('Earnings / pledge shock - track announcements below.');
+    const fyQuarter = (monthStr) => {
+      const m = /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+(\d{4})/i.exec(String(monthStr || '').trim());
+      if (!m) return monthStr;
+      const months = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+      const mi = months[m[1].toLowerCase()];
+      const yr = parseInt(m[2], 10);
+      const qEndMi = (mi + 11) % 12;
+      const qEndYr = mi === 0 ? yr - 1 : yr;
+      const fyEnd = qEndMi >= 3 ? qEndYr + 1 : qEndYr;
+      const q = qEndMi <= 2 ? 'Q4' : (qEndMi <= 5 ? 'Q1' : (qEndMi <= 8 ? 'Q2' : 'Q3'));
+      return q + ' FY' + String(fyEnd).slice(2);
+    };
     const concallHtml = (concalls || []).length
       ? concalls.map(c => {
           const linkBtns = (c.links || []).map(l => l.href
-            ? `<a href="${esc(l.href)}" target="_blank" style="font-size:10px; font-weight:700; padding:3px 8px; border-radius:20px; border:1px solid var(--border-color); color:#1a73e8; text-decoration:none; margin-right:4px;">${esc(l.text)}</a>`
+            ? `<a href="${esc(l.href)}" target="_blank" style="font-size:10px; font-weight:700; padding:3px 8px; border-radius:20px; border:1px solid var(--border-color); color:var(--text-color); text-decoration:none; margin-right:4px;">${esc(l.text)}</a>`
             : `<span style="font-size:10px; color:var(--label-color); margin-right:4px;">${esc(l.text)}</span>`).join('');
-          return `<div style="padding:8px 0; border-bottom:1px solid var(--border-color);"><div style="font-size:12px; font-weight:700; color:var(--text-color);">${esc(c.month || 'Concall')}</div><div style="margin-top:4px;">${linkBtns}</div></div>`;
+          return `<div style="padding:8px 0; border-bottom:1px solid var(--border-color);"><div style="font-size:12px; font-weight:700; color:var(--text-color);" title="${esc(c.month || '')}">${esc(fyQuarter(c.month) || 'Concall')}</div><div style="margin-top:4px;">${linkBtns}</div></div>`;
         }).join('')
-      : `<div style="font-size:12px; color:var(--label-color);">No concalls parsed — <a href="https://www.screener.in/company/${esc(base)}/consolidated/#documents" target="_blank" style="color:#1a73e8;">open on Screener</a>.</div>`;
+      : `<div style="font-size:12px; color:var(--label-color);">No concalls parsed - <a href="https://www.screener.in/company/${esc(base)}/consolidated/#documents" target="_blank" style="color:var(--text-color);">open on Screener</a>.</div>`;
     const shpHtml = shpTable => `
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px;">
         <div style="border:1px solid var(--border-color); border-radius:8px; padding:8px;"><div style="font-size:10px; color:var(--label-color);">Promoters ${esc(shpQ)}</div><div style="font-size:14px; font-weight:800;">${esc(shpCell(shpRows.promoters))}${trend(shpRows.promoters)}</div></div>
@@ -2205,7 +2161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div style="border:1px solid var(--border-color); border-radius:8px; padding:8px;"><div style="font-size:10px; color:var(--label-color);">DIIs</div><div style="font-size:14px; font-weight:800;">${esc(shpCell(shpRows.diis))}${trend(shpRows.diis)}</div></div>
         <div style="border:1px solid var(--border-color); border-radius:8px; padding:8px;"><div style="font-size:10px; color:var(--label-color);">Public</div><div style="font-size:14px; font-weight:800;">${esc(shpCell(shpRows.public))}${trend(shpRows.public)}</div></div>
       </div>
-      <div style="font-size:11px; color:var(--label-color); margin-top:6px;">Pledged % needs Screener login — <a href="https://www.screener.in/company/${esc(base)}/consolidated/#shareholding" target="_blank" style="color:#1a73e8;">verify pledge + insider trades</a>.</div>`;
+      <div style="font-size:11px; color:var(--label-color); margin-top:6px;">Pledged % needs Screener login - <a href="https://www.screener.in/company/${esc(base)}/consolidated/#shareholding" target="_blank" style="color:var(--text-color);">verify pledge + insider trades</a>.</div>`;
     return `
     <div style="margin-top:16px; border:1px solid var(--border-color); border-radius:10px; overflow:hidden;">
       <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 12px; background:var(--verdict-bg); border-bottom:1px solid var(--border-color);">
@@ -2218,10 +2174,10 @@ document.addEventListener('DOMContentLoaded', () => {
           <span style="font-size:11px; color:var(--label-color);">${pros.length} pros · ${cons.length} cons</span>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px;">
-          <div style="border:1px solid var(--border-color); border-radius:8px; padding:8px;"><div style="font-size:11px; font-weight:800; color:#188038;">▲ Strengths</div>${strengths.length ? strengths.map(s => `<div style="font-size:11px; margin-top:4px;">✓ ${esc(s)}</div>`).join('') : '<div style="font-size:11px; color:var(--label-color);">—</div>'}</div>
-          <div style="border:1px solid var(--border-color); border-radius:8px; padding:8px;"><div style="font-size:11px; font-weight:800; color:#d93025;">▼ Weaknesses</div>${weaknesses.length ? weaknesses.map(s => `<div style="font-size:11px; margin-top:4px;">• ${esc(s)}</div>`).join('') : '<div style="font-size:11px; color:var(--label-color);">—</div>'}</div>
-          <div style="border:1px solid var(--border-color); border-radius:8px; padding:8px;"><div style="font-size:11px; font-weight:800;">◇ Opportunities</div>${opps.map(s => `<div style="font-size:11px; margin-top:4px;">• ${esc(s)}</div>`).join('')}</div>
-          <div style="border:1px solid var(--border-color); border-radius:8px; padding:8px;"><div style="font-size:11px; font-weight:800;">◆ Threats</div>${threats.map(s => `<div style="font-size:11px; margin-top:4px;">• ${esc(s)}</div>`).join('')}</div>
+          <div style="border:1px solid var(--border-color); border-radius:8px; padding:8px;"><div style="font-size:11px; font-weight:800; color:#188038;">▲ Strengths</div>${strengths.length ? strengths.map(s => `<div style="font-size:11px; margin-top:4px;">✓ ${esc(s)}</div>`).join('') : '<div style="font-size:11px; color:var(--label-color);">-</div>'}</div>
+          <div style="border:1px solid var(--border-color); border-radius:8px; padding:8px;"><div style="font-size:11px; font-weight:800; color:#d93025;">▼ Weaknesses</div>${weaknesses.length ? weaknesses.map(s => `<div style="font-size:11px; margin-top:4px;">• ${esc(s)}</div>`).join('') : '<div style="font-size:11px; color:var(--label-color);">-</div>'}</div>
+          <div style="border:1px solid var(--border-color); border-radius:8px; padding:8px;"><div style="font-size:11px; font-weight:800; color:var(--text-color);">◇ Opportunities</div>${opps.map(s => `<div style="font-size:11px; margin-top:4px;">• ${esc(s)}</div>`).join('')}</div>
+          <div style="border:1px solid var(--border-color); border-radius:8px; padding:8px;"><div style="font-size:11px; font-weight:800; color:#e8710a;">◆ Threats</div>${threats.map(s => `<div style="font-size:11px; margin-top:4px;">• ${esc(s)}</div>`).join('')}</div>
         </div>
         <div style="margin-top:10px; border:1px solid var(--border-color); border-radius:8px; padding:8px; ${uniqFlags.length ? '' : 'opacity:0.8;'}">
           <div style="font-size:11px; font-weight:800;">🚩 Forensic red-flags ${uniqFlags.length ? '(' + uniqFlags.length + ')' : ''}</div>
@@ -2230,15 +2186,72 @@ document.addEventListener('DOMContentLoaded', () => {
         <div style="margin-top:10px;"><div style="font-size:11px; font-weight:800;">👥 Shareholding ${esc(shpQ ? '· ' + shpQ : '')}</div>${shpHtml()}</div>
         <div style="margin-top:10px;"><div style="font-size:11px; font-weight:800;">🎙 Concall transcripts</div>${concallHtml}</div>
         <div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:6px;">
-          <a href="https://www.screener.in/company/${esc(base)}/consolidated/" target="_blank" style="font-size:11px; font-weight:700; padding:6px 10px; border-radius:16px; background:#1a73e8; color:#fff; text-decoration:none;">Screener report</a>
+          <a href="https://www.screener.in/company/${esc(base)}/consolidated/" target="_blank" style="font-size:11px; font-weight:700; padding:6px 10px; border-radius:16px; border:1px solid var(--border-color); color:var(--text-color); text-decoration:none;">Screener report</a>
           <a href="https://www.screener.in/company/${esc(base)}/consolidated/#documents" target="_blank" style="font-size:11px; font-weight:700; padding:6px 10px; border-radius:16px; border:1px solid var(--border-color); color:var(--text-color); text-decoration:none;">Annual reports</a>
-          <a href="https://www.tickertape.in/stocks/${esc(base)}" target="_blank" style="font-size:11px; font-weight:700; padding:6px 10px; border-radius:16px; border:1px solid var(--border-color); color:var(--text-color); text-decoration:none;">Tickertape</a>
-          <a href="https://trendlyne.com/equity/${esc(base)}/" target="_blank" style="font-size:11px; font-weight:700; padding:6px 10px; border-radius:16px; border:1px solid var(--border-color); color:var(--text-color); text-decoration:none;">Trendlyne + Superstars</a>
-          <button id="btn-fund-pdf" style="font-size:11px; font-weight:700; padding:6px 10px; border-radius:16px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); cursor:pointer;">⬇ PDF</button>
+          <button data-ext-link="tickertape" data-symbol="${esc(base)}" title="Open on Tickertape (resolves automatically - Tickertape uses its own slug, not the NSE symbol)" style="font-size:11px; font-weight:700; padding:6px 10px; border-radius:16px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); cursor:pointer;">Tickertape</button>
+          <button data-ext-link="trendlyne" data-symbol="${esc(base)}" title="Open on Trendlyne (resolves automatically - Trendlyne URLs need a numeric ID)" style="font-size:11px; font-weight:700; padding:6px 10px; border-radius:16px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); cursor:pointer;">Trendlyne + Superstars</button>
         </div>
       </div>
     </div>`;
   }
+
+  // --- External stock-page resolver (Tickertape / Trendlyne) ---
+  // Neither site uses the NSE symbol as its URL key (Tickertape uses its own
+  // slug like bharti-infratel-BHRI, Trendlyne needs a numeric ID like
+  // /equity/629/INDUSTOWER/...), so deep-linking via the symbol 404s.
+  // Resolve on click via DuckDuckGo HTML (no interstitial, unlike Google btnI)
+  // and open the stock page directly. Known mismatches open instantly.
+  const EXT_KNOWN_URLS = {
+    'INDUSTOWER|tickertape': 'https://www.tickertape.in/stocks/bharti-infratel-BHRI',
+    'INDUSTOWER|trendlyne': 'https://trendlyne.com/equity/629/INDUSTOWER/indus-towers-ltd/',
+  };
+  const extUrlCache = new Map();
+  function openExternalUrl(url) {
+    try {
+      if (chrome && chrome.tabs && chrome.tabs.create) chrome.tabs.create({ url });
+      else window.open(url, '_blank', 'noopener');
+    } catch (e) { window.open(url, '_blank', 'noopener'); }
+  }
+  async function resolveExternalUrl(site, symbol) {
+    const sym = String(symbol || '').toUpperCase().trim();
+    const key = sym + '|' + site;
+    if (EXT_KNOWN_URLS[key]) return EXT_KNOWN_URLS[key];
+    if (extUrlCache.has(key)) return extUrlCache.get(key);
+    const ddg = site === 'tickertape'
+      ? 'https://html.duckduckgo.com/html/?q=' + encodeURIComponent('site:tickertape.in/stocks ' + sym)
+      : 'https://html.duckduckgo.com/html/?q=' + encodeURIComponent('site:trendlyne.com/equity ' + sym);
+    try {
+      const res = await fetch(ddg, { headers: { 'Accept': 'text/html' } });
+      const html = await res.text();
+      // DDG wraps outlinks as /l/?uddg=<encoded target>
+      const re = /uddg=([^"&]+)/g;
+      let m;
+      while ((m = re.exec(html)) !== null) {
+        try {
+          const target = decodeURIComponent(m[1]);
+          if (site === 'tickertape' && /tickertape\.in\/stocks\//i.test(target)) { extUrlCache.set(key, target); return target; }
+          if (site === 'trendlyne' && /trendlyne\.com\/equity\//i.test(target)) { extUrlCache.set(key, target); return target; }
+        } catch (e) {}
+      }
+    } catch (e) {}
+    return ddg; // fallback: results page (first result is almost always the stock)
+  }
+  document.addEventListener('click', (e) => {
+    const btn = e.target && e.target.closest ? e.target.closest('[data-ext-link]') : null;
+    if (!btn) return;
+    e.preventDefault();
+    const site = btn.getAttribute('data-ext-link');
+    const symbol = btn.getAttribute('data-symbol');
+    if (btn.disabled) return;
+    const orig = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Opening…';
+    resolveExternalUrl(site, symbol).then((url) => {
+      openExternalUrl(url);
+      btn.disabled = false;
+      btn.textContent = orig;
+    });
+  });
 
   // --- Smart Verdict Engine ---
   function generateVerdict(ratios) {
@@ -2276,11 +2289,32 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>`;
   }
 
+  // --- Watchlist visibility: hide watchlist rows while a stock result is shown ---
+  // Desired stock view (per spec): keep "Your Watchlist / Sample / Live"
+  // header + Select / Import watchlist / Focus / gear / CSV buttons visible,
+  // hide only the table rows.
+  function isStockView() {
+    return !!(resultsSearch && (resultsSearch.querySelector('#btn-search-add-wl') || resultsSearch.querySelector('#btn-back-dashboard')));
+  }
+  function setWatchlistVisible(visible) {
+    var title = document.querySelector('#view-search .dashboard-section-title');
+    var bulkBtn = document.getElementById('btn-bulk-select');
+    var btnRow = bulkBtn && bulkBtn.parentNode ? bulkBtn.parentNode : null;
+    var tagRow = document.getElementById('tag-filter-row');
+    var list = document.getElementById('wl-items-container');
+    var footer = document.querySelector('#view-search .screener-footer');
+    // Header / buttons / footer always stay visible (matches target screenshot).
+    [title, btnRow, footer].forEach(function (el) { if (el) el.style.display = ''; });
+    // Only the rows (and tag filter) are hidden in stock view.
+    if (list) list.style.display = visible ? '' : 'none';
+    if (tagRow) tagRow.style.display = visible ? '' : 'none';
+  }
+
   // --- Search Logic ---
   btnSearch.addEventListener('click', async () => {
     const ticker = inputSearch.value.trim().toUpperCase();
     if (!ticker) return;
-    
+    setWatchlistVisible(false);
     resultsSearch.innerHTML = '<div class="screener-loading">' + t('scrapingData') + '</div>';
     
     try {
@@ -2320,16 +2354,16 @@ document.addEventListener('DOMContentLoaded', () => {
            for (const [k, v] of Object.entries(data.ratios)) {
              html += `<tr style="background:var(--verdict-bg);">
                <td style="padding:12px 16px; color:var(--label-color); font-weight:500; border-bottom:1px solid var(--border-light); white-space:nowrap;">${ratioLabel(k)}</td>
-               <td style="padding:12px 16px; color:var(--text-color); font-weight:600; text-align:right; border-bottom:1px solid var(--border-light);">${v}</td>
+                <td style="padding:12px 16px; color:var(--text-color); font-weight:400; text-align:right; border-bottom:1px solid var(--border-light);">${v}</td>
              </tr>`;
              i++;
            }
             html += `</table></div>`;
-            // Screener.in links & peers only make sense for equities —
+            // Screener.in links & peers only make sense for equities -
             // skip them for crypto/forex/commodities
             if (!isNonEquity) {
               html += `<div style="text-align:right; margin-top:8px;">
-                <a href="https://www.screener.in/company/${ticker}/" target="_blank" style="color:#1a73e8; font-size:12px; text-decoration:none; font-weight:500;">&#9881; ${t('customizeScreener')}</a>
+                <a href="https://www.screener.in/company/${ticker}/" target="_blank" style="color:var(--text-color); font-size:12px; text-decoration:none; font-weight:500;">${t('customizeScreener')}</a>
               </div>`;
             }
            if (data.aboutText) html += `<div class="screener-about" style="margin-top:16px;">${data.aboutText}</div>`;
@@ -2338,11 +2372,12 @@ document.addEventListener('DOMContentLoaded', () => {
              html += `<div id="search-peers-container"></div>`;
              html += `<div id="search-announcements-container"></div>`;
 
-               resultsSearch.innerHTML = html;
+                resultsSearch.innerHTML = html;
+                setWatchlistVisible(false);
 
-               // Async fetch for Fundamentals Depth + Peers & Announcements (equities only)
+                // Async fetch for Fundamentals Depth + Peers & Announcements (equities only)
               if (!isNonEquity) {
-              const linkColor = '#1a73e8';
+              const linkColor = 'var(--text-color)';
               fetch(`https://www.screener.in/company/${ticker}/consolidated/`)
                .then(r => {
                  if (!r.ok) return fetch(`https://www.screener.in/company/${ticker}/`);
@@ -2383,12 +2418,10 @@ document.addEventListener('DOMContentLoaded', () => {
                    });
                    const ratiosNow = (data && data.ratios) || {};
                    const fundHtml = buildFundamentalsHtml(ticker, pros, cons, shpRows, concallItems, ratiosNow);
-                   const fundEl = document.getElementById('search-fundamentals-container');
-                   if (fundEl) {
-                     fundEl.innerHTML = fundHtml;
-                     const pdfBtn = fundEl.querySelector('#btn-fund-pdf');
-                     if (pdfBtn) pdfBtn.addEventListener('click', () => { try { window.print(); } catch (e) {} });
-                   }
+                    const fundEl = document.getElementById('search-fundamentals-container');
+                     if (fundEl) {
+                       fundEl.innerHTML = fundHtml;
+                     }
                  } catch (e) {}
 
                  // Parse Peers
@@ -2477,10 +2510,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else {
            resultsSearch.innerHTML = '<div class="screener-error">' + t('fetchFailed') + '</div>';
+           setWatchlistVisible(true);
         }
       });
     } catch (e) {
       resultsSearch.innerHTML = '<div class="screener-error">' + t('fetchError') + '</div>';
+      setWatchlistVisible(true);
     }
   });
   
@@ -3000,7 +3035,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (ratioColumnKey === 'Market Cap') return formatMcapCell(ratios['Market Cap'], data);
     let raw = ratios[ratioColumnKey];
     // Fallback for cached entries saved before P/B derivation:
-    // Screener.in gives "Book Value" — compute Current Price / Book Value.
+    // Screener.in gives "Book Value" - compute Current Price / Book Value.
     if ((raw == null || raw === '') && ratioColumnKey === 'Price to book value' && ratios['Current Price'] && ratios['Book Value']) {
       try {
         const p = parseFloat(String(ratios['Current Price']).replace(/[^\d.-]/g, ''));
@@ -3127,7 +3162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         html += `<div data-tag="${key}" style="display:flex; align-items:center; gap:8px; padding:7px 9px; border-radius:7px; cursor:pointer; color:var(--text-color);"><span style="width:10px; height:10px; border-radius:50%; background:${COLOR_TAGS[key].color}; flex-shrink:0;"></span>${tagLabel(key)}${sel}</div>`;
       }
       html += `<div data-tag="" style="display:flex; align-items:center; gap:8px; padding:7px 9px; border-radius:7px; cursor:pointer; color:var(--label-color);"><span style="width:10px; height:10px; border-radius:50%; border:1px solid var(--label-color); flex-shrink:0;"></span>${t('tagClear') || 'Clear tag'}</div>`;
-      // Blue-dot explainer: the dot turns blue when Smart Focus fires —
+      // Blue-dot explainer: the dot turns blue when Smart Focus fires -
       // show this stock's live reasons, or the generic conditions. A muted
       // stock shows no blue dot until restored.
       let sfText = '';
@@ -3139,10 +3174,10 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (e) { sfText = t('tagBlueEmpty') || 'Big move, unusual swing, or near 52-week high/low'; }
       html += `<div style="border-top:1px solid var(--border-color); margin:5px 4px 2px;"></div>`;
       if (isMuted) {
-        html += `<div style="display:flex; align-items:flex-start; gap:8px; padding:7px 9px; color:var(--label-color); font-size:11px; line-height:1.45;"><span style="width:10px; height:10px; border-radius:50%; background:#c9c9c9; flex-shrink:0; margin-top:2px;"></span><span><b>${escHtml(t('tagBlueHint') || 'Smart Focus')}</b> — ${escHtml(t('sfMuted') || 'Highlight off for this stock')}</span></div>`
-          + `<div data-sf-restore="1" style="display:flex; align-items:center; gap:8px; padding:7px 9px; border-radius:7px; cursor:pointer; color:#1a73e8;">${escHtml(t('sfRestore') || 'Show Smart Focus highlight again')}</div>`;
+        html += `<div style="display:flex; align-items:flex-start; gap:8px; padding:7px 9px; color:var(--label-color); font-size:11px; line-height:1.45;"><span style="width:10px; height:10px; border-radius:50%; background:#c9c9c9; flex-shrink:0; margin-top:2px;"></span><span><b>${escHtml(t('tagBlueHint') || 'Smart Focus')}</b> - ${escHtml(t('sfMuted') || 'Highlight off for this stock')}</span></div>`
+          + `<div data-sf-restore="1" style="display:flex; align-items:center; gap:8px; padding:7px 9px; border-radius:7px; cursor:pointer; color:var(--link-color,#1a73e8);">${escHtml(t('sfRestore') || 'Show Smart Focus highlight again')}</div>`;
       } else {
-        html += `<div style="display:flex; align-items:flex-start; gap:8px; padding:7px 9px; color:var(--label-color); font-size:11px; line-height:1.45;"><span style="width:10px; height:10px; border-radius:50%; background:#1a73e8; flex-shrink:0; margin-top:2px;"></span><span><b>${escHtml(t('tagBlueHint') || 'Smart Focus')}</b> — ${escHtml(sfText)}</span></div>`;
+        html += `<div style="display:flex; align-items:flex-start; gap:8px; padding:7px 9px; color:var(--label-color); font-size:11px; line-height:1.45;"><span style="width:10px; height:10px; border-radius:50%; background:var(--link-color,#1a73e8); flex-shrink:0; margin-top:2px;"></span><span><b>${escHtml(t('tagBlueHint') || 'Smart Focus')}</b> - ${escHtml(sfText)}</span></div>`;
       }
       menu.innerHTML = html;
       document.body.appendChild(menu);
@@ -3172,7 +3207,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => document.addEventListener('click', closeTagMenuOutside), 0);
     });
   }
-  // Smart Focus: blue-dot highlight for stocks meeting active conditions —
+  // Smart Focus: blue-dot highlight for stocks meeting active conditions -
   // big price move, unusual daily swing vs its own history, or trading near
   // the 52-week high/low. Derived fresh on every render, so the dot clears
   // itself once the condition stops. Thresholds overridable via the
@@ -3288,9 +3323,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const sfActive = (tk) => !sfMuted[tk] && smartFocusReasons(cached[tk], sfPrefs).length > 0;
 
       // Tag filter row is only useful once at least one tag exists.
+      // Keep it hidden while a stock result is shown.
       const tagRow = document.getElementById('tag-filter-row');
-      if (tagRow) tagRow.style.display = Object.keys(colorTags).length ? 'block' : 'none';
+      if (tagRow) tagRow.style.display = (!isStockView() && Object.keys(colorTags).length) ? 'block' : 'none';
       if (tagFilterSelect && tagFilterSelect.value !== activeTagFilter) tagFilterSelect.value = activeTagFilter;
+      const tagClearBtn = tagFilterClear || document.getElementById('tag-filter-clear');
+      if (tagClearBtn) tagClearBtn.style.display = (activeTagFilter !== 'all') ? '' : 'none';
       if (activeTagFilter !== 'all') list = list.filter((tk) => colorTags[tk] === activeTagFilter);
       if (focusOnly) list = list.filter((tk) => sfActive(tk));
 
@@ -3349,7 +3387,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:right; color:var(--text-color); white-space:nowrap;">
           <thead>
             <tr style="background:var(--header-bg); border-bottom:1px solid var(--border-color); font-weight:400; text-align:center;">
-              <td style="padding:10px; text-align:center;">${bulkMode ? `<input type="checkbox" id="bulk-check-all" title="${t('bulkSelectAll') || 'Select / deselect all'}" style="margin-right:6px; vertical-align:middle; accent-color:#1a73e8;">` : ''}${t('colSymbol')}</td>
+              <td style="padding:10px; text-align:center;">${bulkMode ? `<input type="checkbox" id="bulk-check-all" title="${t('bulkSelectAll') || 'Select / deselect all'}" style="margin-right:6px; vertical-align:middle; accent-color:var(--link-color,#1a73e8);">` : ''}${t('colSymbol')}</td>
               <td style="padding:6px 10px;"><div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;"><div id="trend-title-label" style="font-weight:400; font-size:12px; text-align:center;">${trendTitle()}</div><select id="trend-range-select" title="${t('colTrend') || 'Change timeline'}" style="font-size:12px; font-weight:400; border:none; background:transparent; color:var(--text-color); cursor:pointer; text-align:center; padding:0;">${TREND_OPTIONS.map((o) => `<option value="${o.label}"${o.label === trendRangeLabel ? ' selected' : ''}>${o.label}</option>`).join('')}</select></div></td>
               <td style="padding:10px; cursor:pointer; text-align:center;" id="sort-price" title="${t('sortByPrice')}">${t('colPrice')}${getSortIndicator('price')}</td>
               <td style="padding:6px 10px; text-align:center;"><select id="ratio-col-select" title="${t('colRatioTitle') || 'Choose ratio column'}" style="font-size:12px; font-weight:400; border:none; background:transparent; color:var(--text-color); cursor:pointer; text-align:center; padding:0;">${RATIO_COLUMN_OPTIONS.map((o) => `<option value="${escHtml(o.key)}"${o.key === ratioColumnKey ? ' selected' : ''}>${o.short}</option>`).join('')}</select></td>
@@ -3383,7 +3421,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const tag = colorTags[ticker];
             const tagColor = tag && COLOR_TAGS[tag] ? COLOR_TAGS[tag].color : '#c9c9c9';
             const sfReasons = sfMuted[ticker] ? [] : smartFocusReasons(data, sfPrefs);
-            const dotColor = tag && COLOR_TAGS[tag] ? COLOR_TAGS[tag].color : (sfReasons.length ? '#1a73e8' : '#c9c9c9');
+            const dotColor = tag && COLOR_TAGS[tag] ? COLOR_TAGS[tag].color : (sfReasons.length ? 'var(--link-color, #1a73e8)' : '#c9c9c9');
             const dotTitle = [tag ? tagLabel(tag) : null].concat(sfReasons).filter(Boolean).join(' · ') || (sfMuted[ticker] ? (t('sfMuted') || 'Smart Focus highlight off') : (t('tagSetTitle') || 'Set color tag'));
 
             const spark = createSparkline(resolveTrendData(ticker, data));
@@ -3392,8 +3430,8 @@ document.addEventListener('DOMContentLoaded', () => {
               <tr class="watchlist-row" draggable="true" data-ticker="${ticker}" style="background:${idx % 2 === 0 ? 'var(--row-even)' : 'var(--row-odd)'}; border-bottom:1px solid var(--border-color); cursor:grab;">
                 <td style="text-align:left; padding:10px; font-weight:500;">
                   <span style="color:#aaa; margin-right:4px; font-size:10px;" title="${t('dragHint')}">⣿</span>
-                  ${bulkMode ? `<input type="checkbox" class="screener-bulk-check" data-ticker="${ticker}"${bulkSelected.has(ticker) ? ' checked' : ''} style="margin-right:6px; vertical-align:middle; accent-color:#1a73e8;">` : ''}
-                  <button class="screener-tag-btn" data-ticker="${ticker}" title="${dotTitle}" style="background:none; border:none; cursor:pointer; padding:2px; vertical-align:middle; line-height:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="${dotColor}"><circle cx="12" cy="12" r="8"/></svg></button>
+                  ${bulkMode ? `<input type="checkbox" class="screener-bulk-check" data-ticker="${ticker}"${bulkSelected.has(ticker) ? ' checked' : ''} style="margin-right:6px; vertical-align:middle; accent-color:var(--link-color,#1a73e8);">` : ''}
+                  <button class="screener-tag-btn" data-ticker="${ticker}" title="${dotTitle}" style="background:none; border:none; cursor:pointer; padding:2px; vertical-align:middle; line-height:0;"><svg width="14" height="14" viewBox="0 0 24 24" style="fill:${dotColor}"><circle cx="12" cy="12" r="8"/></svg></button>
                   <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + ticker + '/'}" target="_blank" title="${data.companyName || ticker}" style="color:var(--link-green); text-decoration:none;" class="screener-ticker-link" data-source="${data.source || ''}">${ticker}</a>
                 </td>
                 <td class="trend-cell" data-ticker="${ticker}" style="padding:10px;">${spark}</td>
@@ -3614,11 +3652,12 @@ document.addEventListener('DOMContentLoaded', () => {
       html += `</div>`;
       
       resultsSearch.innerHTML = html;
+      setWatchlistVisible(true);
 
       // Wire up card hover and edit modal triggers
       resultsSearch.querySelectorAll('.pinned-card').forEach(card => {
         card.addEventListener('mouseenter', () => {
-          card.style.borderColor = 'var(--accent-color, #1a73e8)';
+          card.style.borderColor = 'var(--link-color, #1a73e8)';
         });
         card.addEventListener('mouseleave', () => {
           card.style.borderColor = 'var(--border-color)';
@@ -4140,7 +4179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return `
           <div class="overview-heat-tile overview-macro-tile" data-slot="${slot}" title="${t('macroEditTitle', [label, s ? ` (${s.year})` : ''])}">
             <div class="overview-heat-name">${label}</div>
-            <div class="overview-heat-price">${s ? s.value : '—'}</div>
+            <div class="overview-heat-price">${s ? s.value : '-'}</div>
             <div style="font-size:10px; color:var(--label-color);">${s ? t('latestLabel') : t('loadingWord')}</div>
           </div>`;
       }).join('');
@@ -4218,7 +4257,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Whole-market breadth (Advance / Decline) ---
-  // True exchange/index totals only — no tracked-stock fallback. Currently
+  // True exchange/index totals only - no tracked-stock fallback. Currently
   // served for India (Moneycontrol NIFTY 500) and USA (WSJ NYSE + NASDAQ).
   // Other economies render nothing until a per-exchange source is wired,
   // rather than showing misleading partial counts.
@@ -4259,7 +4298,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const title = (t('advanceDeclineTitle') || 'Advance / Decline') + ' (' + (b.scope || activeEconomy) + ')' + (stale ? ' *' : '');
     let hint = 'Whole-market breadth via ' + (b.source || 'exchange data');
     if (b.detail && b.detail.nyse && b.detail.nasdaq) {
-      hint += ' — NYSE ' + b.detail.nyse.a + '/' + b.detail.nyse.d + ', NASDAQ ' + b.detail.nasdaq.a + '/' + b.detail.nasdaq.d;
+      hint += ' - NYSE ' + b.detail.nyse.a + '/' + b.detail.nyse.d + ', NASDAQ ' + b.detail.nasdaq.a + '/' + b.detail.nasdaq.d;
     }
     if (b.asOn) hint += ' · ' + b.asOn;
     if (stale) hint += ' · cached (offline)';
@@ -4289,6 +4328,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Never blocks the rest of the tab on failure.
   const MOOD_NATIVE_BREADTH = ['India', 'USA'];
   const moodCache = {};
+  const moodHistoryCache = {};
+  const moodHistoryTab = {};
   let moodReqSeq = 0;
 
   function moodBandMeta(band) {
@@ -4314,7 +4355,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Semicircle gauge: value 0 (far left) to 100 (far right). The active
-  // band arc is thick, the others thin — like the Tickertape MMI.
+  // band arc is thick, the others thin - like the Tickertape MMI.
   // Tickertape/proxy use 4 zones (<30/50/70>); CNN Fear & Greed uses its
   // native 5 zones with a Neutral middle.
   const MOOD_ZONES_4 = [
@@ -4382,13 +4423,203 @@ document.addEventListener('DOMContentLoaded', () => {
       + `</svg>`;
   }
 
+  // --- MMI / Fear&Greed history line chart (0-100 fixed scale) ---
+  // points: [{ date: ISO string, value: number }]. Pure SVG, no libraries.
+  function moodHistorySVG(points, band) {
+    const W = 260, H = 96, PL = 24, PR = 8, PT = 8, PB = 18;
+    const iw = W - PL - PR, ih = H - PT - PB;
+    const yOf = (v) => PT + ih * (1 - Math.min(100, Math.max(0, v)) / 100);
+    const n = points.length;
+    const xOf = (i) => n < 2 ? PL + iw / 2 : PL + (iw * i) / (n - 1);
+    const bands = [
+      { v0: 0, v1: 30, color: '#16a34a' },
+      { v0: 30, v1: 50, color: '#ca8a04' },
+      { v0: 50, v1: 70, color: '#ea8600' },
+      { v0: 70, v1: 100, color: '#d93025' }
+    ];
+    const bg = bands.map((b) => {
+      const y1 = yOf(b.v1), y2 = yOf(b.v0);
+      return '<rect x="' + PL + '" y="' + y1.toFixed(1) + '" width="' + iw + '" height="' + (y2 - y1).toFixed(1) + '" fill="' + b.color + '" opacity="0.08"/>';
+    }).join('');
+    const grid = [0, 30, 50, 70, 100].map((g) => {
+      const y = yOf(g);
+      return '<line x1="' + PL + '" y1="' + y.toFixed(1) + '" x2="' + (W - PR) + '" y2="' + y.toFixed(1) + '" stroke="var(--border-color)" stroke-width="0.5" opacity="0.7"/>'
+        + '<text x="' + (PL - 3) + '" y="' + (y + 2.5).toFixed(1) + '" font-size="6.5" text-anchor="end" style="fill:var(--label-color)">'
+        + g + '</text>';
+    }).join('');
+    const line = points.map((p, i) => (i ? 'L' : 'M') + ' ' + xOf(i).toFixed(1) + ' ' + yOf(p.value).toFixed(1)).join(' ');
+    let dots = '';
+    try {
+      const last = points[n - 1];
+      dots = '<circle cx="' + xOf(n - 1).toFixed(1) + '" cy="' + yOf(last.value).toFixed(1) + '" r="3" fill="var(--text-color)"/>';
+    } catch (e) {}
+    const fmtD = (d) => {
+      try {
+        const dt = new Date(d);
+        return dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+      } catch (e) { return ''; }
+    };
+    const xLabels = n
+      ? '<text x="' + PL + '" y="' + (H - 5) + '" font-size="6.5" style="fill:var(--label-color)">' + escHtml(fmtD(points[0].date)) + '</text>'
+        + '<text x="' + (W - PR) + '" y="' + (H - 5) + '" font-size="6.5" text-anchor="end" style="fill:var(--label-color)">' + escHtml(fmtD(points[n - 1].date)) + '</text>'
+      : '';
+    return '<div class="mood-hist-chart" style="position:relative;">'
+      + '<svg class="mood-hist-svg" viewBox="0 0 ' + W + ' ' + H + '" style="width:100%; display:block;" role="img" aria-label="MMI history">'
+      + bg + grid
+      + '<path d="' + line + '" fill="none" stroke="var(--text-color)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" pointer-events="none"/>'
+      + dots + xLabels
+      + '<line class="mood-hist-cross" y1="' + PT + '" y2="' + (H - PB) + '" stroke="var(--label-color)" stroke-width="0.8" stroke-dasharray="2,2" opacity="0.8" visibility="hidden" pointer-events="none"/>'
+      + '<circle class="mood-hist-halo" r="4" fill="var(--bg-color)" stroke="var(--text-color)" stroke-width="2" visibility="hidden" pointer-events="none"/>'
+      + '<rect class="mood-hist-hit" x="' + PL + '" y="' + PT + '" width="' + iw + '" height="' + ih + '" fill="rgba(0,0,0,0)" style="cursor:crosshair"/>'
+      + '</svg>'
+      + '<div class="mood-hist-tip" style="display:none; position:absolute; z-index:5; pointer-events:none; transform:translate(-50%,-110%); background:var(--text-color); color:var(--bg-color); font-size:10px; line-height:1.35; padding:4px 8px; border-radius:6px; white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,.3);"></div>'
+      + '</div>';
+  }
+
+  function renderMoodHistory(box, points, rangeKey) {
+    if (!box) return;
+    if (!points || !points.length) {
+      box.innerHTML = '<div style="font-size:11px; color:var(--label-color); padding:8px 0;">'
+        + escHtml(t('moodHistEmpty') || 'History unavailable right now.') + '</div>';
+      return;
+    }
+    const vals = points.map((p) => p.value);
+    const hi = Math.max.apply(null, vals), lo = Math.min.apply(null, vals);
+    box.innerHTML = moodHistorySVG(points, null)
+      + '<div style="display:flex; justify-content:space-between; font-size:10px; color:var(--label-color); margin-top:2px;">'
+      + '<span>' + escHtml((t('moodHistLow') || 'Low $X$').replace('$X$', String(lo))) + '</span>'
+      + '<span>' + escHtml(points.length + ' pts') + '</span>'
+      + '<span>' + escHtml((t('moodHistHigh') || 'High $X$').replace('$X$', String(hi))) + '</span>'
+      + '</div>';
+    // Hover: moving the mouse over the line shows that point's date + value.
+    try {
+      const W = 260, H = 96, PL = 24, PR = 8, PT = 8, PB = 18;
+      const iw = W - PL - PR, ih = H - PT - PB;
+      const n = points.length;
+      const yOf = (v) => PT + ih * (1 - Math.min(100, Math.max(0, v)) / 100);
+      const xOf = (i) => n < 2 ? PL + iw / 2 : PL + (iw * i) / (n - 1);
+      const fmtTip = (d) => {
+        try {
+          const dt = new Date(d);
+          return dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+        } catch (e) { return String(d || ''); }
+      };
+      const svg = box.querySelector('.mood-hist-svg');
+      const tip = box.querySelector('.mood-hist-tip');
+      const cross = box.querySelector('.mood-hist-cross');
+      const halo = box.querySelector('.mood-hist-halo');
+      const hit = box.querySelector('.mood-hist-hit');
+      if (svg && tip && cross && halo && hit) {
+        hit.addEventListener('mousemove', (e) => {
+          const r = svg.getBoundingClientRect();
+          if (!r.width) return;
+          const xSvg = ((e.clientX - r.left) / r.width) * W; // viewBox x
+          let idx = Math.round(((xSvg - PL) / iw) * (n - 1));
+          if (idx < 0) idx = 0;
+          if (idx > n - 1) idx = n - 1;
+          const p = points[idx];
+          const px = xOf(idx), py = yOf(p.value);
+          cross.setAttribute('x1', px.toFixed(1));
+          cross.setAttribute('x2', px.toFixed(1));
+          cross.setAttribute('visibility', 'visible');
+          halo.setAttribute('cx', px.toFixed(1));
+          halo.setAttribute('cy', py.toFixed(1));
+          halo.setAttribute('visibility', 'visible');
+          tip.innerHTML = '<div>' + escHtml(fmtTip(p.date)) + '</div>'
+            + '<div style="font-weight:700; font-size:12px;">' + escHtml(String(p.value)) + '</div>';
+          tip.style.display = 'block';
+          let leftPct = (px / W) * 100;
+          if (leftPct < 18) leftPct = 18;
+          if (leftPct > 82) leftPct = 82;
+          tip.style.left = leftPct.toFixed(1) + '%';
+          tip.style.top = ((py / H) * 100).toFixed(1) + '%';
+        });
+        hit.addEventListener('mouseleave', () => {
+          tip.style.display = 'none';
+          cross.setAttribute('visibility', 'hidden');
+          halo.setAttribute('visibility', 'hidden');
+        });
+      }
+    } catch (e) {}
+  }
+
+  function wireMoodHistory(economy, source) {
+    const toggle = document.getElementById('mood-history-toggle');
+    const boxWrap = document.getElementById('mood-history-wrap');
+    const box = document.getElementById('mood-history');
+    if (!toggle || !boxWrap || !box) return;
+    toggle.addEventListener('click', () => {
+      const open = boxWrap.style.display === 'none';
+      boxWrap.style.display = open ? '' : 'none';
+      toggle.textContent = (t('moodHistBtn') || 'History') + (open ? ' ▴' : ' ▾');
+      if (!open) return;
+      const cached = moodHistoryCache[economy];
+      const tab = moodHistoryTab[economy] || 'days';
+      if (cached) {
+        paintMoodTabs(economy, cached);
+        renderMoodHistory(box, tab === 'months' ? cached.months : cached.days);
+        return;
+      }
+      box.innerHTML = '<div class="screener-loading" style="padding:8px;">'
+        + escHtml(t('moodLoading') || 'Loading street mood…') + '</div>';
+      try {
+        chrome.runtime.sendMessage({ type: 'FETCH_MOOD_HISTORY', economy }, (res) => {
+          if (chrome.runtime.lastError) {
+            renderMoodHistory(box, null);
+            return;
+          }
+          const h = res && res.history;
+          if (!h || ((!h.days || !h.days.length) && (!h.months || !h.months.length))) {
+            renderMoodHistory(box, null);
+            return;
+          }
+          const norm = {
+            days: Array.isArray(h.days) ? h.days : [],
+            months: Array.isArray(h.months) ? h.months : []
+          };
+          moodHistoryCache[economy] = norm;
+          paintMoodTabs(economy, norm);
+          renderMoodHistory(box, (moodHistoryTab[economy] || 'days') === 'months' ? norm.months : norm.days);
+        });
+      } catch (e) {
+        renderMoodHistory(box, null);
+      }
+    });
+    const tabs = document.getElementById('mood-history-tabs');
+    if (tabs) {
+      tabs.querySelectorAll('[data-mrange]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          moodHistoryTab[economy] = btn.getAttribute('data-mrange');
+          const cached = moodHistoryCache[economy];
+          if (cached) {
+            paintMoodTabs(economy, cached);
+            renderMoodHistory(box, moodHistoryTab[economy] === 'months' ? cached.months : cached.days);
+          }
+        });
+      });
+    }
+  }
+
+  function paintMoodTabs(economy, norm) {
+    const tabs = document.getElementById('mood-history-tabs');
+    if (!tabs) return;
+    const hasMonths = !!(norm && norm.months && norm.months.length);
+    tabs.style.display = hasMonths ? '' : 'none';
+    const cur = moodHistoryTab[economy] || 'days';
+    tabs.querySelectorAll('[data-mrange]').forEach((btn) => {
+      const active = btn.getAttribute('data-mrange') === cur;
+      btn.style.boxShadow = active ? 'inset 0 0 0 2px currentColor' : '';
+    });
+  }
+
   function fetchMood(economy, force) {
     const wrap = document.getElementById('mood-wrap');
     if (!wrap) return;
     if (!economy || !MARKET_ECONOMIES[economy]) { wrap.innerHTML = ''; return; }
     const seq = ++moodReqSeq;
     const cached = moodCache[economy];
-    // Non-native economies need overview gainers/losers as breadth fallback —
+    // Non-native economies need overview gainers/losers as breadth fallback -
     // wait for the overview before requesting so the first paint isn't empty.
     let fallback = null;
     if (MOOD_NATIVE_BREADTH.indexOf(economy) === -1) {
@@ -4443,8 +4674,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof m.prev.month === 'number') prevBits.push((t('moodPrevMonth') || 'Mo') + ' ' + m.prev.month.toFixed(2));
       }
       if (prevBits.length) subLine += `<div style="font-size:10px; color:var(--label-color); margin-top:4px;">${escHtml(prevBits.join(' · '))}</div>`;
-      if (m.band === 'extremeFear') subLine += `<div style="font-size:11px; color:#16a34a; margin-top:4px;">${escHtml(t('moodHintFear') || 'Extreme fear (<30): markets may be oversold — historically a good time to open fresh positions')}</div>`;
-      else if (m.band === 'extremeGreed') subLine += `<div style="font-size:11px; color:#d93025; margin-top:4px;">${escHtml(t('moodHintGreed') || 'Extreme greed (>70): markets may be overbought — be cautious opening fresh positions')}</div>`;
+      if (m.band === 'extremeFear') subLine += `<div style="font-size:11px; color:#16a34a; margin-top:4px;">${escHtml(t('moodHintFear') || 'Extreme fear (<30): markets may be oversold - historically a good time to open fresh positions')}</div>`;
+      else if (m.band === 'extremeGreed') subLine += `<div style="font-size:11px; color:#d93025; margin-top:4px;">${escHtml(t('moodHintGreed') || 'Extreme greed (>70): markets may be overbought - be cautious opening fresh positions')}</div>`;
     } else if (m.source === 'cnn') {
       title = (t('moodFGTitle') || 'Fear & Greed Index') + ' (USA)' + (stale ? ' *' : '');
       scoreText = String(Math.round(m.score * 10) / 10);
@@ -4469,6 +4700,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (compBits.length) subLine += `<div style="font-size:10px; color:var(--label-color); margin-top:4px;">${escHtml(compBits.join(' · '))}</div>`;
     }
     if (stale && m.source !== 'proxy') hint += ' · ' + (t('moodStale') || 'cached (offline)');
+    const histable = m.source === 'tickertape' || m.source === 'cnn';
+    const histLine = histable
+      ? `<div style="margin-top:8px; border-top:1px solid var(--border-color); padding-top:6px;">`
+        + `<button id="mood-history-toggle" class="screener-btn screener-btn-secondary" style="padding:4px 12px; font-size:11px; border-radius:14px;">${escHtml(t('moodHistBtn') || 'History')} ▾</button>`
+        + `<span id="mood-history-tabs" style="display:none; margin-left:6px;">`
+        + `<button data-mrange="days" class="screener-btn screener-btn-secondary" style="padding:4px 10px; font-size:11px; border-radius:14px;">${escHtml(t('moodHistDays') || '10D')}</button>`
+        + `<button data-mrange="months" class="screener-btn screener-btn-secondary" style="padding:4px 10px; font-size:11px; border-radius:14px; margin-left:4px;">${escHtml(t('moodHistMonths') || '10M')}</button>`
+        + `</span>`
+        + `<div id="mood-history-wrap" style="display:none; margin-top:6px;"><div id="mood-history"></div></div>`
+        + `</div>`
+      : '';
     wrap.innerHTML = `
       <div class="mood-card" style="position:relative; border:1px solid var(--border-color); border-radius:8px; padding:10px 12px 8px; margin-bottom:10px; background:var(--bg-color); text-align:center;">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
@@ -4483,6 +4725,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ${updatedLine}
         ${subLine}
         ${sourceLink}
+        ${histLine}
         <div class="mood-tip"></div>
       </div>`;
     // Custom hover label for gauge zones (native SVG <title> tooltips are
@@ -4516,6 +4759,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     } catch (e) {}
+    if (histable) { try { wireMoodHistory(economy, m.source); } catch (e) {} }
   }
 
   function fetchOverview(economy, force) {
@@ -4545,7 +4789,7 @@ document.addEventListener('DOMContentLoaded', () => {
       overviewUpdatedAt[economy] = Date.now();
       if (economy === activeEconomy) renderOverviewBody(data);
       // Non-native economies use these gainers/losers as mood breadth
-      // fallback — refresh the gauge now that they landed.
+      // fallback - refresh the gauge now that they landed.
       if (typeof fetchMood === 'function') fetchMood(economy);
     });
   }
@@ -4649,7 +4893,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return `<div style="position:relative; flex:0 0 36px; width:36px; height:36px; border-radius:8px; background:var(--border-color, #e8eaed); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; color:var(--label-color); overflow:hidden;"><span>${initial}</span>${img}</div>`;
   }
   // Broken favicons are removed (capture phase: img errors don't bubble).
-  // Inline onerror is avoided — MV3 extension pages block inline handlers.
+  // Inline onerror is avoided - MV3 extension pages block inline handlers.
   newsContainer.addEventListener('error', (e) => {
     if (e.target && e.target.classList && e.target.classList.contains('news-thumb')) {
       e.target.remove();

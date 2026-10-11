@@ -374,7 +374,7 @@
     "message": "Indicadores indisponíveis."
   },
   "clickAnalyze": {
-    "message": "$NAME$ — clique para analisar",
+    "message": "$NAME$ - clique para analisar",
     "placeholders": {
       "name": {
         "content": "$1"
@@ -382,7 +382,7 @@
     }
   },
   "macroEditTitle": {
-    "message": "$LABEL$$YEAR$ — clique para editar",
+    "message": "$LABEL$$YEAR$ - clique para editar",
     "placeholders": {
       "label": {
         "content": "$1"

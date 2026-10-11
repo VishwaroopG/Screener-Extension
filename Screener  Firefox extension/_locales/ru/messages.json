@@ -374,7 +374,7 @@
     "message": "Индикаторы недоступны."
   },
   "clickAnalyze": {
-    "message": "$NAME$ — нажмите для анализа",
+    "message": "$NAME$ - нажмите для анализа",
     "placeholders": {
       "name": {
         "content": "$1"
@@ -382,7 +382,7 @@
     }
   },
   "macroEditTitle": {
-    "message": "$LABEL$$YEAR$ — нажмите для изменения",
+    "message": "$LABEL$$YEAR$ - нажмите для изменения",
     "placeholders": {
       "label": {
         "content": "$1"

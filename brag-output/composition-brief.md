@@ -1,12 +1,12 @@
 # Hyperframes Composition Brief: Ticker Screener
 
 ## Objective
-Create a short launch-style brag video for Ticker Screener — free browser extension for live market watching.
+Create a short launch-style brag video for Ticker Screener - free browser extension for live market watching.
 
 ## Output
 - Composition directory: `brag-output/composition/`
 - Rendered video: `brag-output/brag.mp4`
-- Format: landscape — 1920x1080
+- Format: landscape - 1920x1080
 - Duration: 20 seconds
 
 ## Source Material
@@ -17,9 +17,9 @@ Create a short launch-style brag video for Ticker Screener — free browser exte
 - Key UI or visual moment to recreate: scrolling ticker tape (S&P 500 / Nasdaq / Dow + watchlist, +$5.20 (+0.37%) style) + side-panel watchlist + Markets tab heatmap with native currencies
 - Copy that must appear verbatim:
   - Your market, always in sight.
-  - USA + 9 more — no silent conversion, ever.
+  - USA + 9 more - no silent conversion, ever.
   - Live ticker tape · 0.5x–3.0x · % / $ / both
-  - Ticker Screener — Built for focused market watching.
+  - Ticker Screener - Built for focused market watching.
 
 Visual references (copy into composition or recreate in HTML/CSS):
 - `store-assets/screenshot_v2_3_1_dashboard_1280x800.png`
@@ -33,9 +33,9 @@ Visual references (copy into composition or recreate in HTML/CSS):
 - Tone preset: polished
 - Creative direction: quiet premium market command center film
 - Interpretation: Slow reveals, long holds, soft crossfades 0.6-0.8s. Light-to-medium type, generous letter-spacing. Confidence through restraint.
-- Angle: Wall Street follows you around — not a dashboard you visit, but a market layer on top of the web. Relief from scattered tabs.
+- Angle: Wall Street follows you around - not a dashboard you visit, but a market layer on top of the web. Relief from scattered tabs.
 - Hook: Full navy + mint glow, “Your market, always in sight.” + ● LIVE WATCHLIST chip, first 3s
-- Outro / punchline: Logo + Built for focused market watching + Get the extension — Chrome & Firefox, bell ring, hold
+- Outro / punchline: Logo + Built for focused market watching + Get the extension - Chrome & Firefox, bell ring, hold
 - Avoid:
   - Generic SaaS language
   - Abstract filler visuals
@@ -54,10 +54,10 @@ Visual references (copy into composition or recreate in HTML/CSS):
 Use the storyboard in `brag-output/brag-plan.md` as the creative contract.
 
 Scene summary:
-1. Hook — 3s — navy + aurora, eyebrow V2.5.1, headline Your market always in sight, LIVE WATCHLIST chip
-2. Reveal — 5s — scrolling tape + Ctrl+Shift+S side panel with 3 watchlist rows arriving one by one
-3. Highlights — 6s — Markets tab heatmap + gainers/losers + macro tiles + $ ₹ ¥ £ € tags
-4. Outro — 6s — icon + Ticker Screener + Built for focused market watching + Get extension CTA
+1. Hook - 3s - navy + aurora, eyebrow V2.5.1, headline Your market always in sight, LIVE WATCHLIST chip
+2. Reveal - 5s - scrolling tape + Ctrl+Shift+S side panel with 3 watchlist rows arriving one by one
+3. Highlights - 6s - Markets tab heatmap + gainers/losers + macro tiles + $ ₹ ¥ £ € tags
+4. Outro - 6s - icon + Ticker Screener + Built for focused market watching + Get extension CTA
 
 Total 20s. Every readable line holds: short label 0.8s settled, sentence 0.3s/word min 1.2s.
 
@@ -69,9 +69,9 @@ Total 20s. Every readable line holds: short label 0.8s settled, sentence 0.3s/wo
 - Music cue guidance: bundled preset `assets/music/cues/happy-beats-business-moves-vol-12.music-cues.md/json` if available, else detect at composition via `analyze_music_cues.py` or `npx hyperframes beats`; 2 strong-cue locks max (hero ~3s, logo ~17.5s ±0.15s); sequential tags snap to beats ±0.10s with readability hold
 - Audio-reactive treatment: subtle; RMS/bass breathe hero glow and card presence, no waveform/equalizer visuals
 - Audio-coupled moments:
-  - Scene 1 hook fade-up — soft drop
-  - Scene 2 rows arriving — gentle ticks + keypress for Ctrl+Shift+S
-  - Scene 4 logo — impactBell_heavy_000, ring over fade
+  - Scene 1 hook fade-up - soft drop
+  - Scene 2 rows arriving - gentle ticks + keypress for Ctrl+Shift+S
+  - Scene 4 logo - impactBell_heavy_000, ring over fade
 - SFX selection guidance: sparse, motion-matched; card sounds for rows, announcement cue for heatmap payoff, click for simulated keys, restraint when busy
 - SFX analysis guidance: `skills/brag/assets/sfx/sfx-analysis.md/json` if present; prefer low HF-risk for polished/repeated moments
 - Exact SFX choice: Hyperframes should choose filenames, timestamps, density, volume based on implemented animation
@@ -79,7 +79,7 @@ Total 20s. Every readable line holds: short label 0.8s settled, sentence 0.3s/wo
 - Voiceover: `composition/assets/voiceover.wav` via `npx hyperframes tts` with Kokoro af_heart, track-index 3, volume 1.0, music ducks 0.12-0.15 during VO. Flex scene durations to WAV length. Script in brag-plan.md ## Voiceover script.
 
 ## Hyperframes Instructions
-Load the composition-building Hyperframes domain skills — `hyperframes-core` (composition contract + `data-*` timing), `hyperframes-animation` (motion), `hyperframes-creative` (design spec, beats, audio-reactive), `hyperframes-keyframes` (seek-safe keyframes), and `hyperframes-cli` (lint/check/render). /brag is its own workflow: do not enter the `hyperframes` entry-point intent interview and do not route into its generic promo / launch-video workflow. Prefer native Hyperframes conventions over anything in `/brag`.
+Load the composition-building Hyperframes domain skills - `hyperframes-core` (composition contract + `data-*` timing), `hyperframes-animation` (motion), `hyperframes-creative` (design spec, beats, audio-reactive), `hyperframes-keyframes` (seek-safe keyframes), and `hyperframes-cli` (lint/check/render). /brag is its own workflow: do not enter the `hyperframes` entry-point intent interview and do not route into its generic promo / launch-video workflow. Prefer native Hyperframes conventions over anything in `/brag`.
 
 Requirements:
 - Show at least one real UI, copy, or visual element from the source project.
@@ -93,4 +93,4 @@ Requirements:
 - Honor planned music treatment such as fade-outs, ducking, beat-aligned reveals, or letting final SFX ring over music.
 - When music is present consider audio-reactive: extract audio data and use RMS/frequency for subtle glow/presence. Avoid waveform/equalizer, notes, particles, strobing.
 - Use local assets for audio and runtime/media deps when possible.
-- Run `hyperframes check` before render — it is brag's single gate.
+- Run `hyperframes check` before render - it is brag's single gate.

@@ -260,7 +260,7 @@ body.dark-mode .wl-circle-btn:hover {
   display: flex;
 }
 
-/* Footer: Rate & Feedback — plain in-flow links below the watchlist, scrolls with the page */
+/* Footer: Rate & Feedback - plain in-flow links below the watchlist, scrolls with the page */
 .screener-footer {
   display: flex;
   justify-content: center;
@@ -1055,7 +1055,7 @@ body.dark-mode {
 }
 
 /* Native dropdowns (trend 1M/3M/6M/1Y/3Y/5Y/MAX, ratio, portfolios):
-   options use OS popup rendering — force readable colors per theme
+   options use OS popup rendering - force readable colors per theme
    so the open list never shows light-on-light / dark-on-dark. */
 select {
   color-scheme: light;
@@ -1090,7 +1090,7 @@ body.dark-mode select option {
   animation: pulseLive 1.5s infinite;
 }
 
-/* Speed Popover — position:fixed so .screener-header-actions overflow-x:auto never clips it */
+/* Speed Popover - position:fixed so .screener-header-actions overflow-x:auto never clips it */
 #speed-popover {
   background-color: #ffffff;
   border: 1px solid #dadce0;

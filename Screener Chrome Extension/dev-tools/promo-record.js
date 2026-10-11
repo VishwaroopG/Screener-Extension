@@ -94,7 +94,7 @@ h1 span{color:#4caf50}p{font-size:23px;color:#b9c2d0;font-weight:400}</style></h
     try {
       background = await context.waitForEvent('serviceworker', { timeout: 15000 });
     } catch (e) {
-      console.log('No service worker seen yet — continuing anyway.');
+      console.log('No service worker seen yet - continuing anyway.');
     }
   }
   const extensionId = background ? background.url().split('/')[2] : null;
@@ -102,18 +102,18 @@ h1 span{color:#4caf50}p{font-size:23px;color:#b9c2d0;font-weight:400}</style></h
   const page = await context.newPage();
   await page.setViewportSize({ width: 1280, height: 720 });
   // Persistent contexts open with a default blank tab that would also be
-  // recorded — close it so only our walkthrough page ends up on video.
+  // recorded - close it so only our walkthrough page ends up on video.
   for (const p of context.pages()) {
     if (p !== page) await p.close().catch(() => {});
   }
 
-  // Scene 1 — title card (0-6s)
+  // Scene 1 - title card (0-6s)
   await page.setContent(CARD('Ticker <span>Screener</span>', 'Live watchlist & ticker tape for investors', 'SCREENCAST'));
-  await caption(page, 'Meet Ticker Screener — markets, right in your browser', 4500);
+  await caption(page, 'Meet Ticker Screener - markets, right in your browser', 4500);
 
   if (!extensionId) throw new Error('Extension did not load; aborting.');
 
-  // Scene 2 — dashboard (6-17s)
+  // Scene 2 - dashboard (6-17s)
   await page.goto(`chrome-extension://${extensionId}/sidepanel.html`, { waitUntil: 'domcontentloaded' });
   await showcaseFrame(page);
   // Seed holiday data + force a full watchlist sync so the recording shows
@@ -152,14 +152,14 @@ h1 span{color:#4caf50}p{font-size:23px;color:#b9c2d0;font-weight:400}</style></h
     );
     console.log('Watchlist synced.');
   } catch (e) {
-    console.log('Watchlist still syncing — continuing anyway.');
+    console.log('Watchlist still syncing - continuing anyway.');
   }
   await caption(page, 'Your live watchlist, right in the side panel', 4200);
   await page.mouse.move(640, 400);
   await page.mouse.wheel(0, 500);
   await sleep(1800);
 
-  // Scene 3 — search + verdict (17-29s)
+  // Scene 3 - search + verdict (17-29s)
   await page.locator('#input-search').fill('RELIANCE');
   await sleep(800);
   await page.locator('#btn-search').click();
@@ -172,26 +172,26 @@ h1 span{color:#4caf50}p{font-size:23px;color:#b9c2d0;font-weight:400}</style></h
       { timeout: 15000 }
     );
   } catch (e) {
-    console.log('Search results slow — continuing with what is on screen.');
+    console.log('Search results slow - continuing with what is on screen.');
   }
   await caption(page, 'One search: price, ratios and an instant verdict', 5000);
 
-  // Scene 4 — markets (29-38s)
+  // Scene 4 - markets (29-38s)
   await page.locator('#tab-markets').click();
   await page.waitForTimeout(3000);
   await caption(page, 'World markets and the economy at a glance', 4500);
 
-  // Scene 5 — news (38-46s)
+  // Scene 5 - news (38-46s)
   await page.locator('#tab-news').click();
   await page.waitForTimeout(2500);
   await caption(page, 'Stock news without ever switching tabs', 4000);
 
-  // Scene 6 — ticker tape on a real site (46-57s)
+  // Scene 6 - ticker tape on a real site (46-57s)
   await page.goto('https://www.screener.in', { waitUntil: 'domcontentloaded', timeout: 30000 }).catch(() => {});
   try {
     await page.waitForSelector('#screener-ticker-tape', { timeout: 20000 });
   } catch (e) {
-    console.log('Ticker tape element not detected — continuing.');
+    console.log('Ticker tape element not detected - continuing.');
   }
   await page.waitForTimeout(1500);
   await caption(page, 'A live ticker tape on every website you visit', 4200);
@@ -201,9 +201,9 @@ h1 span{color:#4caf50}p{font-size:23px;color:#b9c2d0;font-weight:400}</style></h
     await sleep(900);
   }
 
-  // Scene 7 — end card (57-63s)
+  // Scene 7 - end card (57-63s)
   await page.setContent(
-    CARD('Ticker <span>Screener</span>', 'Free for Chrome & Firefox — install in one click', 'TRY IT TODAY')
+    CARD('Ticker <span>Screener</span>', 'Free for Chrome & Firefox - install in one click', 'TRY IT TODAY')
   );
   await caption(page, 'Free for Chrome and Firefox', 4500);
 

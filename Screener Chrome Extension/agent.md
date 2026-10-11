@@ -37,7 +37,7 @@ if (!Array.isArray(dataPoints) || dataPoints.length < 2) { return; }
 If removing an element or tab from `sidepanel.html`, you **must** remove the corresponding `document.getElementById` and `addEventListener` references in `sidepanel.js`. A single `null` reference during `DOMContentLoaded` will halt the entire side panel initialization.
 
 ### 5. Custom Market Indices
-The "Edit Market Card" modal uses an HTML `<datalist>` for suggestions. This acts as a soft autocomplete—users can type any arbitrary name or Yahoo symbol (e.g., `^VIX`) and it will successfully save and fetch. Do not restrict this to a hardcoded `<select>`.
+The "Edit Market Card" modal uses an HTML `<datalist>` for suggestions. This acts as a soft autocomplete-users can type any arbitrary name or Yahoo symbol (e.g., `^VIX`) and it will successfully save and fetch. Do not restrict this to a hardcoded `<select>`.
 
 ## Packaging
 To deploy a new version:

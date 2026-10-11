@@ -30,6 +30,7 @@
     "https://www.moneycontrol.com/*",
     "https://www.wsj.com/*",
     "https://api.tickertape.in/*",
+    "https://html.duckduckgo.com/*",
     "https://production.dataviz.cnn.io/*"
   ],
   "action": {

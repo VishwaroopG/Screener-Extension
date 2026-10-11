@@ -261,7 +261,7 @@
     "message": "Import watchlist"
   },
   "importSubtitle": {
-    "message": "From Zerodha Kite, Screener.in or TradingView — merged into this portfolio."
+    "message": "From Zerodha Kite, Screener.in or TradingView - merged into this portfolio."
   },
   "importScrapeBtn": {
     "message": "Detect from open tab"
@@ -309,7 +309,7 @@
     "message": "Cannot read this tab. Paste tickers or upload a CSV instead."
   },
   "importTabEmpty": {
-    "message": "Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry — or paste below."
+    "message": "Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry - or paste below."
   },
   "importDetected": {
     "message": "Detected {N} from {S}"
@@ -554,7 +554,7 @@
     "message": "Indicators unavailable."
   },
   "clickAnalyze": {
-    "message": "$NAME$ — click to analyze",
+    "message": "$NAME$ - click to analyze",
     "placeholders": {
       "name": {
         "content": "$1"
@@ -562,7 +562,7 @@
     }
   },
   "macroEditTitle": {
-    "message": "$LABEL$$YEAR$ — click to edit",
+    "message": "$LABEL$$YEAR$ - click to edit",
     "placeholders": {
       "label": {
         "content": "$1"
@@ -1014,7 +1014,7 @@
     "message": "Sending…"
   },
   "feedbackSent": {
-    "message": "Thanks — we read every message."
+    "message": "Thanks - we read every message."
   },
   "feedbackFailed": {
     "message": "Automatic send failed."
@@ -1032,13 +1032,13 @@
     "message": "Commodity"
   },
   "verdictCrypto": {
-    "message": "[Crypto] Digital asset — price driven by market sentiment."
+    "message": "[Crypto] Digital asset - price driven by market sentiment."
   },
   "verdictForex": {
-    "message": "[Forex] Currency pair — tracks relative currency strength."
+    "message": "[Forex] Currency pair - tracks relative currency strength."
   },
   "verdictCommodity": {
-    "message": "[Commodity] Futures contract — sensitive to supply and geopolitics."
+    "message": "[Commodity] Futures contract - sensitive to supply and geopolitics."
   },
   "alertAboveDyn": {
     "message": "Alert if price goes ABOVE ({CUR}):"
@@ -1222,9 +1222,9 @@
     "message": "CNN Fear & Greed (USA): momentum · strength · breadth · put/call options · junk bond demand · volatility · safe-haven demand"
   },
   "moodHintFear": {
-    "message": "Extreme fear (<30): markets may be oversold — historically a good time to open fresh positions"
+    "message": "Extreme fear (<30): markets may be oversold - historically a good time to open fresh positions"
   },
   "moodHintGreed": {
-    "message": "Extreme greed (>70): markets may be overbought — be cautious opening fresh positions"
+    "message": "Extreme greed (>70): markets may be overbought - be cautious opening fresh positions"
   }
 }

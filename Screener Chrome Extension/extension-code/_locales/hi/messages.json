@@ -374,7 +374,7 @@
     "message": "संकेतक उपलब्ध नहीं हैं।"
   },
   "clickAnalyze": {
-    "message": "$NAME$ — विश्लेषण के लिए क्लिक करें",
+    "message": "$NAME$ - विश्लेषण के लिए क्लिक करें",
     "placeholders": {
       "name": {
         "content": "$1"
@@ -382,7 +382,7 @@
     }
   },
   "macroEditTitle": {
-    "message": "$LABEL$$YEAR$ — संपादित करने के लिए क्लिक करें",
+    "message": "$LABEL$$YEAR$ - संपादित करने के लिए क्लिक करें",
     "placeholders": {
       "label": {
         "content": "$1"

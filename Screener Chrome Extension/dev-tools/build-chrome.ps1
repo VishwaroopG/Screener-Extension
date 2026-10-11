@@ -25,7 +25,7 @@ foreach ($k in @('manifest_version','name','version','side_panel','background'))
 
 $dest = Join-Path $root "Screener-Extension-v$version.zip"
 if (Test-Path $dest) { Remove-Item $dest -Force }
-# NOTE: Do NOT use Compress-Archive — it stores Windows backslash paths
+# NOTE: Do NOT use Compress-Archive - it stores Windows backslash paths
 # which violates the ZIP spec. Use .NET with forward-slash entry names.
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $zip = [System.IO.Compression.ZipFile]::Open($dest, 'Create')

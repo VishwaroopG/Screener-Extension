@@ -179,7 +179,7 @@ async function pullPrefsFromSync() {
     }
     if (Object.keys(apply).length > 0) {
       await chrome.storage.local.set(apply);
-      // Stamp the time only when preferences actually moved — a no-op pull
+      // Stamp the time only when preferences actually moved - a no-op pull
       // must not pretend a sync happened.
       await chrome.storage.local.set({ [SYNC_TIME_KEY]: Date.now() });
     }
@@ -230,7 +230,7 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   } catch (e) {}
 });
 
-// Open side panel on action icon click (Chrome only — Firefox uses sidebar_action)
+// Open side panel on action icon click (Chrome only - Firefox uses sidebar_action)
 if (chrome.sidePanel && chrome.sidePanel.setPanelBehavior) {
   chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch((error) => console.error(error));
 }
@@ -250,7 +250,7 @@ function roundStringValue(str, decimals = 2) {
 }
 
 // Pure ratios (P/E, ROCE, ROE, yields, P/B) must not carry forced trailing
-// zeros — Screener shows 51.5, not 51.50. Max 2 decimals, min 0.
+// zeros - Screener shows 51.5, not 51.50. Max 2 decimals, min 0.
 function formatPureRatio(str) {
   return String(str).replace(/[\d,]+\.\d+|[\d,]+/g, (match) => {
     if (/^[.,]+$/.test(match)) return match;
@@ -325,7 +325,7 @@ async function fetchYahooData(symbol) {
   try {
     let sym = symbol;
     let chartRes = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=1d`);
-    // `.NS` retry is only for plain Indian tickers — never for indices, dotted
+    // `.NS` retry is only for plain Indian tickers - never for indices, dotted
     // symbols, or crypto/forex/futures (BTC-USD, EURUSD=X, GC=F, BRK-B, …)
     if (!chartRes.ok && !sym.startsWith('^') && !sym.includes('.') && !sym.includes('=') && !sym.includes('-')) {
       sym = `${symbol}.NS`;
@@ -388,7 +388,7 @@ async function fetchYahooData(symbol) {
       }
     } catch(e) {}
 
-    // Fetch fundamental data from Finviz for US stocks only —
+    // Fetch fundamental data from Finviz for US stocks only -
     // crypto/forex/futures have no P/E or balance sheet, so skip the request
     if (!isIndex && assetKind === 'stock') {
       try {
@@ -490,7 +490,7 @@ async function fetchYahooData(symbol) {
 }
 
 async function fetchScreenerData(ticker) {
-  // Indices, crypto, forex and futures live on Yahoo Finance, not Screener —
+  // Indices, crypto, forex and futures live on Yahoo Finance, not Screener -
   // route them directly instead of wasting two Screener fetches first
   if (ticker.startsWith('^') || classifyAsset(ticker) !== 'stock') {
     return fetchYahooData(ticker);
@@ -519,12 +519,12 @@ async function fetchScreenerData(ticker) {
           let afterName = liHtml.substring(nameMatch.index + nameMatch[0].length);
           let valueStr = afterName.replace(/<[^>]+>/g, '').trim().replace(/\s+/g, ' ');
           // Banks / insurers (e.g. KARURVYSYA, ICICIGI) have no consolidated
-          // statements — that page returns 200 OK with empty numbers
+          // statements - that page returns 200 OK with empty numbers
           // ("₹ Cr."). Skip digitless values so they can be backfilled.
           if (!/\d/.test(valueStr)) continue;
           if (name === 'Market Cap') {
             const formattedMcap = formatMarketCap(valueStr);
-            // Screener.in values are in INR — ensure the ₹ prefix is stored
+            // Screener.in values are in INR - ensure the ₹ prefix is stored
             out[name] = /^[^\d\-+.,\s]+/.test(formattedMcap) ? formattedMcap : '₹' + formattedMcap;
           } else if (PURE_RATIO_KEYS.has(name)) {
             out[name] = formatPureRatio(valueStr);
@@ -539,7 +539,7 @@ async function fetchScreenerData(ticker) {
 
     let ratios = parseTopRatios(htmlText);
     // Standalone-only companies return an empty consolidated shell with HTTP
-    // 200 — fall back to the base page and backfill any missing ratios.
+    // 200 - fall back to the base page and backfill any missing ratios.
     if (!hasNumbers(ratios)) {
       try {
         const stdRes = await fetch(`https://www.screener.in/company/${ticker}/`);
@@ -587,7 +587,7 @@ async function fetchScreenerData(ticker) {
     } catch (e) {}
 
     // Screener.in top-ratios gives "Book Value" (e.g. ₹668), not a P/B
-    // ratio — derive P/B as Current Price / Book Value so the P/B
+    // ratio - derive P/B as Current Price / Book Value so the P/B
     // column never shows "-" for Indian stocks.
     if (!ratios['Price to book value'] && ratios['Current Price'] && ratios['Book Value']) {
       try {
@@ -984,10 +984,10 @@ syncWatchlistData();
 // --- Whole-market breadth (Advance / Decline) ---
 // India: Moneycontrol's advance/decline page server-renders __NEXT_DATA__
 // JSON with per-index advance/decline (NIFTY 500, NIFTY 50, ...). No key,
-// no session cookies needed — plain fetch + text parse (no DOM in SW).
+// no session cookies needed - plain fetch + text parse (no DOM in SW).
 // USA: WSJ markets-diary JSON gives NYSE + NASDAQ advancing / declining /
 // unchanged. Both responses are cached 10 min in local-only storage
-// (same pattern as macroStats — never synced across devices).
+// (same pattern as macroStats - never synced across devices).
 const BREADTH_TTL_MS = 10 * 60 * 1000;
 
 function parseBreadthNum(v) {
@@ -1088,7 +1088,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
               results[idx] = { raw: item.raw, symbol: String(stock.symbol).toUpperCase(), ok: true };
             } else {
               // Unresolvable but plausible: keep the raw token so the user
-              // doesn't lose it — the fetch engine retries with .NS etc.
+              // doesn't lose it - the fetch engine retries with .NS etc.
               results[idx] = { raw: item.raw, symbol: item.raw, ok: false };
             }
           } catch (e) {
@@ -1222,7 +1222,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             }
           } catch (e) {}
         }));
-        // Only cache complete sets — a partial fetch (one indicator failed)
+        // Only cache complete sets - a partial fetch (one indicator failed)
         // must not hide the missing tile for 24h; it retries next open.
         if (Object.keys(data).length >= 4) {
           store._v = MACRO_CACHE_VERSION;
@@ -1272,7 +1272,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   // ---- Street Mood proxy (Fear / Greed 0-100) ---
-// Own computation from Yahoo Finance + existing breadth sources — no
+// Own computation from Yahoo Finance + existing breadth sources - no
 // Tickertape scraping. Breadth 35% + Trend vs 50-day 35% +
 // Volatility (inverted VIX) 20% + Day move 10%. Missing components are
 // dropped and the remaining weights renormalized (min 2 components).
@@ -1408,6 +1408,7 @@ async function computeMood(economy, fallbackBreadth) {
 // Genuine vendor values, not our proxy. All other economies use computeMood().
 const MOOD_NATIVE_TTL_MS = 30 * 60 * 1000;
 const TICKERTAPE_MMI_URL = 'https://api.tickertape.in/mmi/now';
+const TICKERTAPE_MMI_HIST_URL = 'https://analyze.api.tickertape.in/homepage/mmi?period=10';
 const TICKERTAPE_MMI_PAGE = 'https://www.tickertape.in/market-mood-index';
 const CNN_FG_URL = 'https://production.dataviz.cnn.io/index/fearandgreed/graphdata';
 const CNN_FG_PAGE = 'https://www.cnn.com/markets/fear-and-greed';
@@ -1437,8 +1438,23 @@ async function fetchTickertapeMMI() {
   };
 }
 
+async function fetchTickertapeMMIHistory() {
+  const r = await fetch(TICKERTAPE_MMI_HIST_URL, { headers: { 'Accept': 'application/json' } });
+  if (!r.ok) throw new Error('Tickertape history HTTP ' + r.status);
+  const j = await r.json();
+  const d = j && j.data;
+  if (!d) throw new Error('Tickertape history shape');
+  const mapPts = (arr) => (Array.isArray(arr) ? arr : [])
+    .filter((p) => p && typeof p.indicator === 'number' && isFinite(p.indicator) && p.date)
+    .map((p) => ({ date: p.date, value: Math.round(p.indicator * 100) / 100 }));
+  const days = mapPts(d.daysHistorical);
+  const months = mapPts(d.monthsHistorical);
+  if (!days.length && !months.length) throw new Error('Tickertape history empty');
+  return { days, months };
+}
+
 async function fetchCNNFearGreed() {
-  // CNN's bot filter (HTTP 418 "You're a bot") rejects bare requests —
+  // CNN's bot filter (HTTP 418 "You're a bot") rejects bare requests -
   // browser-like headers unblock it. Accept-Language is used (not Referer/
   // Origin: those are forbidden headers that fetch() cannot set).
   const r = await fetch(CNN_FG_URL, { headers: { 'Accept': 'application/json, text/plain, */*', 'Accept-Language': 'en-US,en;q=0.9' } });
@@ -1446,13 +1462,24 @@ async function fetchCNNFearGreed() {
   const j = await r.json();
   const fg = j && j.fear_and_greed;
   if (!fg || typeof fg.score !== 'number' || !isFinite(fg.score)) throw new Error('CNN shape');
+  let history = [];
+  try {
+    const raw = j && j.fear_and_greed_historical && j.fear_and_greed_historical.data;
+    if (Array.isArray(raw)) {
+      history = raw
+        .filter((p) => p && typeof p.y === 'number' && isFinite(p.y) && typeof p.x === 'number')
+        .slice(-120)
+        .map((p) => ({ date: new Date(p.x).toISOString(), value: Math.round(p.y * 10) / 10 }));
+    }
+  } catch (e) { history = []; }
   return {
     source: 'cnn',
     score: Math.round(fg.score * 10) / 10,
     band: moodBandForCNN(fg.score),
     asOn: fg.timestamp || null,
     link: CNN_FG_PAGE,
-    prev: { close: (typeof fg.previous_close === 'number' && isFinite(fg.previous_close)) ? Math.round(fg.previous_close * 10) / 10 : null }
+    prev: { close: (typeof fg.previous_close === 'number' && isFinite(fg.previous_close)) ? Math.round(fg.previous_close * 10) / 10 : null },
+    history
   };
 }
 
@@ -1468,7 +1495,7 @@ if (message.type === 'FETCH_MOOD_METER') {
         const cached = await chrome.storage.local.get(['marketMood']);
         const store = cached.marketMood || {};
         // Drop cache entries saved by older builds whose source doesn't match
-        // what this economy must show — e.g. a proxy snapshot for India would
+        // what this economy must show - e.g. a proxy snapshot for India would
         // otherwise keep rendering as "Street Mood" instead of live MMI.
         if (economy === 'India' && store[economy] && store[economy].data && store[economy].data.source !== 'tickertape') {
           delete store[economy];
@@ -1515,6 +1542,25 @@ if (message.type === 'FETCH_MOOD_METER') {
         }
       } catch (e) {
         sendResponse({ mood: null });
+      }
+    })();
+    return true;
+  }
+
+  if (message.type === 'FETCH_MOOD_HISTORY') {
+    (async () => {
+      try {
+        if (message.economy === 'India') {
+          const h = await fetchTickertapeMMIHistory();
+          sendResponse({ history: h });
+        } else if (message.economy === 'USA') {
+          const fg = await fetchCNNFearGreed();
+          sendResponse({ history: { days: fg.history || [] } });
+        } else {
+          sendResponse({ history: null });
+        }
+      } catch (e) {
+        sendResponse({ history: null, error: String((e && e.message) || e) });
       }
     })();
     return true;
@@ -1696,7 +1742,7 @@ function setupContextMenu() {
         } else {
           chrome.contextMenus.create({ id: item.id, title: item.title, contexts: ["selection"] }, () => {
             // create() is async: overlapping setup calls (install + SW wake-up)
-            // surface duplicate-id here, never as a sync throw — swallow it.
+            // surface duplicate-id here, never as a sync throw - swallow it.
             if (chrome.runtime.lastError) {}
           });
         }
@@ -1730,7 +1776,7 @@ chrome.runtime.onInstalled.addListener((details) => {
 try {
   if (chrome.runtime.onStartup) chrome.runtime.onStartup.addListener(setupContextMenu);
 } catch (e) {}
-// Service workers restart — ensure the menu exists on every wake-up.
+// Service workers restart - ensure the menu exists on every wake-up.
 try { setupContextMenu(); } catch (e) {}
 
 // Guess a clean stock name from a raw text selection for the menu label.
@@ -1742,7 +1788,7 @@ function guessStockName(sel) {
     let s = String(sel || '').split('\n')[0].trim().replace(/^["'“”‘’]+|["'“”‘’]+$/g, '').trim();
     if (!s) return '';
     const m = s.match(/\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+\.\d+/);
-    if (m && m.index > 0) s = s.slice(0, m.index).trim().replace(/[-–—|:,;(.]+$/, '').trim();
+    if (m && m.index > 0) s = s.slice(0, m.index).trim().replace(/[-–|:,;(.]+$/, '').trim();
     if (!s) return '';
     if (s.length > 42) s = s.slice(0, 42).trim() + '…';
     return s;
@@ -1774,7 +1820,7 @@ try {
 
 // Resolve selected text to a stock: Screener.in first (Indian
 // stocks), Yahoo Finance search as fallback (global stocks/ETFs/indices).
-// Returns { symbol, base, source, tvExchange, isIndian } — the exchange info
+// Returns { symbol, base, source, tvExchange, isIndian } - the exchange info
 // is needed to build TradingView / Kite links. `symbol` keeps the Yahoo
 // suffix (RELIANCE.NS) for watchlist storage; `base` is the bare symbol
 // (RELIANCE) used in Screener.in and Kite URLs.
@@ -1807,7 +1853,7 @@ async function resolveCtxStock(query) {
     if (res.ok) {
       const results = await res.json();
       if (results && results.length > 0 && results[0].url) {
-        // Company URLs look like /company/RELIANCE/consolidated/ — the ticker
+        // Company URLs look like /company/RELIANCE/consolidated/ - the ticker
         // is the segment right after "company", NOT the last segment.
         const segs = String(results[0].url).split('/').filter(Boolean);
         const ci = segs.indexOf('company');
@@ -1852,7 +1898,7 @@ function stockAnalysisUrl(stock, rawQuery) {
   const sym = (stock && stock.base) ? stock.base : String(rawQuery || '').toUpperCase();
   return `https://stockanalysis.com/stocks/${encodeURIComponent(sym.toLowerCase())}/`;
 }
-// Kite only lists Indian (NSE/BSE) equities — null when unsupported.
+// Kite only lists Indian (NSE/BSE) equities - null when unsupported.
 function kiteUrl(stock) {
   if (!stock || !stock.isIndian || !stock.base) return null;
   const ex = stock.tvExchange === 'BSE' ? 'BSE' : 'NSE';
