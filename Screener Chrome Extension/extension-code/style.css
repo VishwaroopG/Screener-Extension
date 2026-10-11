@@ -1919,4 +1919,22 @@ body.dark-mode #overview-economy-select option {
   color: #f0f2f5;
 }
 
+/* Color-tag dot button: the per-row tag picker. Dashed ring when untagged
+   so it reads as clickable; hover ring + focus ring for discoverability. */
+.screener-tag-btn {
+  transition: background 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+.screener-tag-btn:hover {
+  background: rgba(128, 128, 128, 0.18) !important;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.35);
+  transform: scale(1.12);
+}
+.screener-tag-btn:focus-visible {
+  outline: 2px solid var(--link-color, #1a73e8);
+  outline-offset: 1px;
+}
+.screener-tag-btn.has-tag {
+  border-style: solid !important;
+}
+
 

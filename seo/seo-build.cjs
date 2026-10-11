@@ -10,7 +10,7 @@ const ROOT = path.resolve(__dirname, '..');
 const DATA = path.join(__dirname, 'data');
 const SITE = 'https://vishwaroopg.github.io/Screener-Extension';
 const TODAY = '2026-10-11';
-const CSS_V = '36';
+const CSS_V = '37';
 const EXT_URL = 'https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en';
 
 const collections = JSON.parse(fs.readFileSync(path.join(DATA, 'collections.json'), 'utf8'));

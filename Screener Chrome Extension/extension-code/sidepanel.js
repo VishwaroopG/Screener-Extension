@@ -1816,20 +1816,51 @@ document.addEventListener('DOMContentLoaded', () => {
     return v ? { raw: v, tvExchange } : '';
   }
   function setImportCandidates(list, sourceLabel) {
+    // Normalize + dedupe, then drop symbols already in the active portfolio
+    // (exact and .NS/.BO base-form match) so the preview only offers genuinely
+    // new tickers. Resolves to { added, skipped } for status lines.
+    const prep = [];
     const seen = {};
-    importCandidates = [];
     (list || []).forEach((entry) => {
       const norm = normalizeImportToken(entry && entry.raw !== undefined ? entry.raw : entry);
       if (!norm || seen[norm.raw]) return;
       seen[norm.raw] = true;
-      importCandidates.push({ raw: norm.raw, tvExchange: (entry && entry.tvExchange) || norm.tvExchange || '', checked: true });
+      prep.push({ raw: norm.raw, tvExchange: (entry && entry.tvExchange) || norm.tvExchange || '', checked: true });
     });
-    renderImportPreview();
-    if (importCandidates.length) {
-      setImportStatus((t('importFound') || 'Found {N} tickers') .replace('{N}', String(importCandidates.length)) + (sourceLabel ? ' - ' + sourceLabel : ''));
-    } else {
-      setImportStatus(t('importNoneFound') || 'No tickers found. Try pasting or a CSV file.');
-    }
+    return new Promise((resolve) => {
+      chrome.storage.local.get(['portfolios'], (res) => {
+        let skipped = 0;
+        try {
+          const ports = (res && res.portfolios) || {};
+          const existing = {};
+          ((ports[activePortfolio]) || []).forEach((s) => {
+            const up = String(s || '').toUpperCase();
+            if (!up) return;
+            existing[up] = true;
+            existing[up.replace(/\.(NS|BO)$/, '')] = true;
+          });
+          importCandidates = [];
+          prep.forEach((c) => {
+            if (existing[c.raw] || existing[c.raw.replace(/\.(NS|BO)$/, '')]) { skipped++; return; }
+            importCandidates.push(c);
+          });
+        } catch (e) {
+          importCandidates = prep;
+        }
+        renderImportPreview();
+        const added = importCandidates.length;
+        if (added) {
+          let msg = (t('importFound') || 'Found {N} tickers').replace('{N}', String(added)) + (sourceLabel ? ' - ' + sourceLabel : '');
+          if (skipped) msg += ' · ' + (t('importSkipped') || '{N} already in watchlist').replace('{N}', String(skipped));
+          setImportStatus(msg);
+        } else if (skipped) {
+          setImportStatus(t('importAllSkipped') || 'All detected tickers are already in your watchlist.');
+        } else {
+          setImportStatus(t('importNoneFound') || 'No tickers found. Try pasting or a CSV file.');
+        }
+        resolve({ added, skipped });
+      });
+    });
   }
   function paintImportSelection() {
     const total = importCandidates.length;
@@ -1984,23 +2015,33 @@ document.addEventListener('DOMContentLoaded', () => {
             chrome.tabs.sendMessage(tab.id, { type: 'SCREENER_EXTRACT_WATCHLIST' }, (res) => {
               responded = true;
               if (chrome.runtime.lastError || !res) {
-                setScrapeStatus(t('importTabEmpty') || 'Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry - or paste below.');
+                setScrapeStatus(t('importTabEmpty') || 'Nothing detected on this tab. Open a watchlist, holdings or screener page, then retry - or paste below.');
                 return;
               }
               const items = (res.items || []).map((it) => (typeof it === 'string' ? { raw: it } : it));
               if (!items.length) {
-                setScrapeStatus(t('importTabEmpty') || 'Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry - or paste below.');
+                setScrapeStatus(t('importTabEmpty') || 'Nothing detected on this tab. Open a watchlist, holdings or screener page, then retry - or paste below.');
                 return;
               }
-              setImportCandidates(items, res.site || '');
-              setScrapeStatus((t('importDetected') || 'Detected {N} from {S}').replace('{N}', String(items.length)).replace('{S}', res.site || url));
+              const siteName = res.site || url;
+              setImportCandidates(items, res.site || '').then(({ added, skipped }) => {
+                if (added) {
+                  let msg = (t('importDetected') || 'Detected {N} from {S}').replace('{N}', String(added)).replace('{S}', siteName);
+                  if (skipped) msg += ' · ' + (t('importSkipped') || '{N} already in watchlist').replace('{N}', String(skipped));
+                  setScrapeStatus(msg);
+                } else if (skipped) {
+                  setScrapeStatus(t('importAllSkipped') || 'All detected tickers are already in your watchlist.');
+                } else {
+                  setScrapeStatus(t('importTabEmpty') || 'Nothing detected on this tab. Open a watchlist, holdings or screener page, then retry - or paste below.');
+                }
+              });
             });
           } catch (e) {
             setScrapeStatus(t('importTabBlocked') || 'Cannot read this tab. Paste tickers or upload a CSV instead.');
             return;
           }
           setTimeout(() => {
-            if (!responded) setScrapeStatus(t('importTabEmpty') || 'Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry - or paste below.');
+            if (!responded) setScrapeStatus(t('importTabEmpty') || 'Nothing detected on this tab. Open a watchlist, holdings or screener page, then retry - or paste below.');
           }, 5000);
         });
       } else {
@@ -3322,10 +3363,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const sfMuted = res.smartFocusMuted || {};
       const sfActive = (tk) => !sfMuted[tk] && smartFocusReasons(cached[tk], sfPrefs).length > 0;
 
-      // Tag filter row is only useful once at least one tag exists.
+      // Tag filter row doubles as the discoverable entry point for tags,
+      // so show it whenever the watchlist has stocks (not only after a
+      // tag exists). The per-row dot button sets the tag.
       // Keep it hidden while a stock result is shown.
       const tagRow = document.getElementById('tag-filter-row');
-      if (tagRow) tagRow.style.display = (!isStockView() && Object.keys(colorTags).length) ? 'block' : 'none';
+      if (tagRow) tagRow.style.display = (!isStockView() && list.length) ? 'block' : 'none';
       if (tagFilterSelect && tagFilterSelect.value !== activeTagFilter) tagFilterSelect.value = activeTagFilter;
       const tagClearBtn = tagFilterClear || document.getElementById('tag-filter-clear');
       if (tagClearBtn) tagClearBtn.style.display = (activeTagFilter !== 'all') ? '' : 'none';
@@ -3375,7 +3418,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tagDots = Object.keys(COLOR_TAGS).map((key) => `<button data-bulk-tag="${key}" title="${tagLabel(key)}" style="background:none; border:none; cursor:pointer; padding:0 2px; line-height:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="${COLOR_TAGS[key].color}"><circle cx="12" cy="12" r="8"/></svg></button>`).join('');
         bulkBar = `<div id="bulk-bar" style="display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:10px; padding:8px 10px; border:1px solid var(--border-color); border-radius:8px; background:var(--header-bg); font-size:12px; color:var(--text-color);">
           <b id="bulk-count">${bulkSelected.size} ${t('bulkSelected') || 'selected'}</b>
-          <span style="display:inline-flex; align-items:center;" title="${t('bulkTagTitle') || 'Apply color tag to selected'}">${tagDots}</span>
+          <span style="display:inline-flex; align-items:center; gap:2px;" title="${t('bulkTagTitle') || 'Apply color tag to selected'}"><span style="font-size:11px; color:var(--label-color); margin-right:2px;">${t('bulkTagLabel') || 'Tag:'}</span>${tagDots}</span>
           <select id="bulk-portfolio" title="${t('bulkTarget') || 'Target portfolio'}" style="max-width:110px; padding:4px 6px; border-radius:4px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); font-size:12px;">${portOpts}</select>
           <button id="bulk-move" style="${bb}">${t('bulkMove') || 'Move'}</button>
           <button id="bulk-copy" style="${bb}">${t('bulkCopy') || 'Copy'}</button>
@@ -3431,7 +3474,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td style="text-align:left; padding:10px; font-weight:500;">
                   <span style="color:#aaa; margin-right:4px; font-size:10px;" title="${t('dragHint')}">⣿</span>
                   ${bulkMode ? `<input type="checkbox" class="screener-bulk-check" data-ticker="${ticker}"${bulkSelected.has(ticker) ? ' checked' : ''} style="margin-right:6px; vertical-align:middle; accent-color:var(--link-color,#1a73e8);">` : ''}
-                  <button class="screener-tag-btn" data-ticker="${ticker}" title="${dotTitle}" style="background:none; border:none; cursor:pointer; padding:2px; vertical-align:middle; line-height:0;"><svg width="14" height="14" viewBox="0 0 24 24" style="fill:${dotColor}"><circle cx="12" cy="12" r="8"/></svg></button>
+                  <button class="screener-tag-btn${tag && COLOR_TAGS[tag] ? ' has-tag' : ''}" data-ticker="${ticker}" title="${dotTitle}" aria-label="${dotTitle}" style="background:none; border:1px dashed var(--border-color); border-radius:50%; cursor:pointer; padding:4px; vertical-align:middle; line-height:0;"><svg width="14" height="14" viewBox="0 0 24 24" style="fill:${dotColor}; display:block;"><circle cx="12" cy="12" r="8"/></svg></button>
                   <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + ticker + '/'}" target="_blank" title="${data.companyName || ticker}" style="color:var(--link-green); text-decoration:none;" class="screener-ticker-link" data-source="${data.source || ''}">${ticker}</a>
                 </td>
                 <td class="trend-cell" data-ticker="${ticker}" style="padding:10px;">${spark}</td>

@@ -1180,6 +1180,12 @@ h1 .accent { color: var(--accent-warm); }
 .fact-table td { color: var(--text-secondary); }
 .fact-table td strong { color: var(--text); white-space: nowrap; }
 .disclaimer { margin-top: 28px; color: var(--text-muted); font-size: 0.82rem; line-height: 1.7; border-top: 1px solid var(--border); padding-top: 16px; }
+/* Justified body copy site-wide */
+.hero-copy, .section-copy, .tile p, .signal-panel p, .post-card p, .post-row p, .hub-card p, .article-body p, .article-body li, .extension-cta p, .telegram-cta p, .feedback-card p, .disclaimer, .stat span, .tile figcaption, .shot figcaption, .policy-card p, .policy-card li {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
 @media (max-width: 800px) {
   .hub-grid { grid-template-columns: 1fr; }
 }

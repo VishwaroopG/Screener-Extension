@@ -3314,10 +3314,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const sfMuted = res.smartFocusMuted || {};
       const sfActive = (tk) => !sfMuted[tk] && smartFocusReasons(cached[tk], sfPrefs).length > 0;
 
-      // Tag filter row is only useful once at least one tag exists.
+      // Tag filter row doubles as the discoverable entry point for tags,
+      // so show it whenever the watchlist has stocks (not only after a
+      // tag exists). The per-row dot button sets the tag.
       // Keep it hidden while a stock result is shown.
       const tagRow = document.getElementById('tag-filter-row');
-      if (tagRow) tagRow.style.display = (!isStockView() && Object.keys(colorTags).length) ? 'block' : 'none';
+      if (tagRow) tagRow.style.display = (!isStockView() && list.length) ? 'block' : 'none';
       if (tagFilterSelect && tagFilterSelect.value !== activeTagFilter) tagFilterSelect.value = activeTagFilter;
       if (activeTagFilter !== 'all') list = list.filter((tk) => colorTags[tk] === activeTagFilter);
       if (focusOnly) list = list.filter((tk) => sfActive(tk));
@@ -3365,7 +3367,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tagDots = Object.keys(COLOR_TAGS).map((key) => `<button data-bulk-tag="${key}" title="${tagLabel(key)}" style="background:none; border:none; cursor:pointer; padding:0 2px; line-height:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="${COLOR_TAGS[key].color}"><circle cx="12" cy="12" r="8"/></svg></button>`).join('');
         bulkBar = `<div id="bulk-bar" style="display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:10px; padding:8px 10px; border:1px solid var(--border-color); border-radius:8px; background:var(--header-bg); font-size:12px; color:var(--text-color);">
           <b id="bulk-count">${bulkSelected.size} ${t('bulkSelected') || 'selected'}</b>
-          <span style="display:inline-flex; align-items:center;" title="${t('bulkTagTitle') || 'Apply color tag to selected'}">${tagDots}</span>
+          <span style="display:inline-flex; align-items:center; gap:2px;" title="${t('bulkTagTitle') || 'Apply color tag to selected'}"><span style="font-size:11px; color:var(--label-color); margin-right:2px;">${t('bulkTagLabel') || 'Tag:'}</span>${tagDots}</span>
           <select id="bulk-portfolio" title="${t('bulkTarget') || 'Target portfolio'}" style="max-width:110px; padding:4px 6px; border-radius:4px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color); font-size:12px;">${portOpts}</select>
           <button id="bulk-move" style="${bb}">${t('bulkMove') || 'Move'}</button>
           <button id="bulk-copy" style="${bb}">${t('bulkCopy') || 'Copy'}</button>
@@ -3421,7 +3423,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td style="text-align:left; padding:10px; font-weight:500;">
                   <span style="color:#aaa; margin-right:4px; font-size:10px;" title="${t('dragHint')}">⣿</span>
                   ${bulkMode ? `<input type="checkbox" class="screener-bulk-check" data-ticker="${ticker}"${bulkSelected.has(ticker) ? ' checked' : ''} style="margin-right:6px; vertical-align:middle; accent-color:var(--link-color,#1a73e8);">` : ''}
-                  <button class="screener-tag-btn" data-ticker="${ticker}" title="${dotTitle}" style="background:none; border:none; cursor:pointer; padding:2px; vertical-align:middle; line-height:0;"><svg width="14" height="14" viewBox="0 0 24 24" style="fill:${dotColor}"><circle cx="12" cy="12" r="8"/></svg></button>
+                  <button class="screener-tag-btn${tag && COLOR_TAGS[tag] ? ' has-tag' : ''}" data-ticker="${ticker}" title="${dotTitle}" aria-label="${dotTitle}" style="background:none; border:1px dashed var(--border-color); border-radius:50%; cursor:pointer; padding:4px; vertical-align:middle; line-height:0;"><svg width="14" height="14" viewBox="0 0 24 24" style="fill:${dotColor}; display:block;"><circle cx="12" cy="12" r="8"/></svg></button>
                   <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + ticker + '/'}" target="_blank" title="${data.companyName || ticker}" style="color:var(--link-green); text-decoration:none;" class="screener-ticker-link" data-source="${data.source || ''}">${ticker}</a>
                 </td>
                 <td class="trend-cell" data-ticker="${ticker}" style="padding:10px;">${spark}</td>
