@@ -1,23 +1,93 @@
 [
   {
-    "slug": "fundamentals-depth-v270-checklist-swot-redflags",
-    "title": "New in v2.7.0: Fundamentals Depth — Checklist, SWOT & Red-Flags on Every Search",
+    "slug": "ticker-tape-heatmap-breadth-read-market-30-seconds",
+    "title": "Tape, Heatmap, Breadth: Read the Whole US Market in 30 Seconds",
     "date": "2026-10-11",
-    "excerpt": "Search any stock and get a free checklist score, SWOT from Screener pros/cons, forensic red-flags, promoter/FII/DII trends, concall transcripts and one-click PDF — Tickertape depth without the paywall.",
+    "excerpt": "Tape for direction, heatmap for composition, NYSE + Nasdaq breadth plus CNN Fear & Greed for conviction - the 30-second routine inside Ticker Screener.",
+    "tags": ["Product", "US Stocks", "S&P 500", "Nasdaq", "Markets"]
+  },
+  {
+    "slug": "price-alerts-nyse-nasdaq-background-notifications",
+    "title": "Price Alerts That Actually Work: Background Notifications for NYSE & Nasdaq",
+    "date": "2026-10-11",
+    "excerpt": "Background alarms fire desktop notifications even with the panel closed - three alert setups for earnings, breakouts and dividend targets.",
+    "tags": ["Product", "US Stocks", "Alerts", "NYSE", "Nasdaq"]
+  },
+  {
+    "slug": "build-us-watchlist-5-minutes-tradingview-import",
+    "title": "Build a Live US Watchlist in 5 Minutes (TradingView Import, Tags, Smart Focus)",
+    "date": "2026-10-11",
+    "excerpt": "Detect tickers from TradingView, paste a list or upload a CSV - deduped merge, dollar prices, tags and Smart Focus sorting in minutes.",
+    "tags": ["Product", "Guides", "US Stocks", "Watchlist", "TradingView"]
+  },
+  {
+    "slug": "gold-etfs-vs-gold-miners-us-risk-off-2026",
+    "title": "Gold ETFs vs Gold Miners in 2026: Insurance or Trade?",
+    "date": "2026-10-11",
+    "excerpt": "GLD and IAU track the metal; Newmont, Barrick and GDX add leverage, costs and politics. AISC, expense ratios and sizing for a 5%+ real-yield world.",
+    "tags": ["Gold", "ETFs", "US Stocks", "Investing", "Risk-Off"]
+  },
+  {
+    "slug": "us-10y-above-5-fed-4-percent-nasdaq-growth-stocks",
+    "title": "10Y Above 5%, Fed Near 4%: What It Means for Nasdaq Growth Stocks",
+    "date": "2026-10-11",
+    "excerpt": "Future earnings discounted at 5%+ are worth less today. Why long-duration growth re-rates first - and a 4-point screen for quality compounders.",
+    "tags": ["US Fed", "Nasdaq", "Valuation", "Growth Stocks", "Rates"]
+  },
+  {
+    "slug": "q3-2026-us-earnings-magnificent-7-banks",
+    "title": "Q3 2026 US Earnings: Magnificent 7, Big Banks and What Moves the S&P 500",
+    "date": "2026-10-11",
+    "excerpt": "Mid-October prints decide whether multiples survive a 5.10% 10-year. Cloud payoffs, bank NIMs at 3.75-4.00% Fed funds, and guidance that matters more than beats.",
+    "tags": ["Earnings", "US Stocks", "S&P 500", "Magnificent 7", "Banks"]
+  },
+  {
+    "slug": "52-week-high-low-us-stocks-breakout-alerts",
+    "title": "52-Week Highs & Lows: The Breakout and Reversal Playbook for US Stocks",
+    "date": "2026-10-11",
+    "excerpt": "Momentum buys highs, value stalks lows - both break fast. Confirmation filters, false-breakout dodges and Smart Focus plus background alerts that catch them.",
+    "tags": ["US Stocks", "Strategy", "Breakouts", "Alerts", "Investing"]
+  },
+  {
+    "slug": "market-cap-us-large-mid-small-cap-etfs",
+    "title": "Market Cap Explained: Large vs Mid vs Small-Cap US Stocks (and When to ETF It)",
+    "date": "2026-10-11",
+    "excerpt": "Above $10B, $2-10B, below $2B - why size changes your screen, where stock-picking pays, and a practical index-core plus satellite split.",
+    "tags": ["Investing", "Guides", "Market Cap", "ETFs", "US Stocks"]
+  },
+  {
+    "slug": "dividend-yield-us-stocks-income-trap",
+    "title": "Dividend Yield for US Stocks: Income vs Trap at 5% Rates",
+    "date": "2026-10-11",
+    "excerpt": "1.5% is the S&P norm, 4%+ needs inspection. Payout ratios, Aristocrat track records and why dividend growth beats headline yield when cash yields 5%.",
+    "tags": ["Investing", "Guides", "Dividends", "US Stocks", "Yield"]
+  },
+  {
+    "slug": "roce-vs-roe-us-stocks-quality-check",
+    "title": "ROCE vs ROE: The Quality Check Every US Stock Screen Needs",
+    "date": "2026-10-11",
+    "excerpt": "ROE can be juiced by buybacks and debt; ROCE cannot. What good looks like by sector, three traps ROE hides, and how the extension pairs it with P/E.",
+    "tags": ["Investing", "Guides", "ROCE", "ROE", "US Stocks"]
+  },
+  {
+    "slug": "fundamentals-depth-v270-checklist-swot-redflags",
+    "title": "New in v2.7.0: Fundamentals Depth - Checklist, SWOT & Red-Flags on Every Search",
+    "date": "2026-10-11",
+    "excerpt": "Search any stock and get a free checklist score, SWOT from Screener pros/cons, forensic red-flags, promoter/FII/DII trends, concall transcripts and one-click PDF - Tickertape depth without the paywall.",
     "tags": ["Product", "India", "Fundamentals", "Checklist", "SWOT"]
   },
   {
     "slug": "fed-to-fii-us-rates-indian-equities",
     "title": "Fed to FII: How US Rates Drive Indian Small & Mid-Caps",
     "date": "2026-09-27",
-    "excerpt": "Fed at 3.75-4.00%, US 10Y above 5.10%, Rs 2.45 lakh crore of FPI outflows. The three transmission channels — yields, currency, crude — and the screening overlay for small-caps in risk-off regimes.",
+    "excerpt": "Fed at 3.75-4.00%, US 10Y above 5.10%, Rs 2.45 lakh crore of FPI outflows. The three transmission channels - yields, currency, crude - and the screening overlay for small-caps in risk-off regimes.",
     "tags": ["US Fed", "FII", "India", "Valuation", "Small-Caps"]
   },
   {
     "slug": "us-tariffs-china-plus-one-india",
     "title": "US Tariffs & the China+1 Play: Winners and Losers for Indian Equities",
     "date": "2026-09-27",
-    "excerpt": "US-India tariff cut to 18%, 60% of US smartphones now India-sourced. A 4-box filter — tariff gap, certified capacity, value-add, stickiness — to separate real beneficiaries from story stocks.",
+    "excerpt": "US-India tariff cut to 18%, 60% of US smartphones now India-sourced. A 4-box filter - tariff gap, certified capacity, value-add, stickiness - to separate real beneficiaries from story stocks.",
     "tags": ["US Tariffs", "China+1", "India", "EMS", "Investing"]
   },
   {
@@ -31,7 +101,7 @@
     "slug": "us-slowdown-indian-portfolio-playbook",
     "title": "US Slowdown Playbook: Rebalancing Indian Portfolios",
     "date": "2026-09-27",
-    "excerpt": "US 1.5% real vs 8% nominal growth, Fed heading to 4.25%, recession odds debated. Five rebalancing levers — quality screens, duration barbell, export hedge, IPO selectivity, cash calendar.",
+    "excerpt": "US 1.5% real vs 8% nominal growth, Fed heading to 4.25%, recession odds debated. Five rebalancing levers - quality screens, duration barbell, export hedge, IPO selectivity, cash calendar.",
     "tags": ["US Economy", "Portfolio", "India", "Recession", "Investing"]
   },
   {
