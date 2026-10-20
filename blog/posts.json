@@ -1,5 +1,134 @@
 [
   {
+    "slug": "fed-rate-cuts-rbi-monetary-policy-divergence-equities",
+    "title": "Fed Rate Cuts vs RBI Stance: How Central Bank Divergence Impacts Equities",
+    "date": "2026-10-20",
+    "excerpt": "When the US Federal Reserve loosens policy while the Reserve Bank of India holds rates, currency carry trades, FII flows, and banking margins experience sharp structural shifts.",
+    "tags": [
+      "Macro",
+      "Federal Reserve",
+      "RBI",
+      "Indian Equities",
+      "US Markets"
+    ]
+  },
+  {
+    "slug": "crude-oil-volatility-us-inflation-indian-rupee",
+    "title": "Crude Oil Volatility: The Transmission Mechanism from US Inflation to the Indian Rupee",
+    "date": "2026-10-20",
+    "excerpt": "How Brent crude swings propagate through US headline CPI, alter bond yields, and pressure India's current account deficit and import-dependent corporate margins.",
+    "tags": [
+      "Commodities",
+      "Crude Oil",
+      "Inflation",
+      "Currency",
+      "Global Markets"
+    ]
+  },
+  {
+    "slug": "us-dollar-index-dxy-emerging-market-capital-flows",
+    "title": "The US Dollar Index (DXY) as the Ultimate Global Liquidity Barometer",
+    "date": "2026-10-20",
+    "excerpt": "A rising dollar drains liquidity from emerging markets, while DXY pullbacks ignite institutional buying surges across Asian indices. Here is how to track the correlation.",
+    "tags": [
+      "Currency",
+      "DXY",
+      "Emerging Markets",
+      "FII Flows",
+      "Global Macro"
+    ]
+  },
+  {
+    "slug": "nasdaq-ai-capex-surge-indian-it-services-demand",
+    "title": "Big Tech AI Capex Boom: What Record US Cloud Spending Means for Indian IT",
+    "date": "2026-10-20",
+    "excerpt": "Microsoft, Alphabet, Amazon, and Meta are spending hundreds of billions on generative AI infrastructure. How does this capex translate into deal wins for Indian IT services?",
+    "tags": [
+      "Tech",
+      "Nasdaq",
+      "Indian IT",
+      "AI Capex",
+      "US Stocks"
+    ]
+  },
+  {
+    "slug": "china-stimulus-measures-global-metals-indian-manufacturers",
+    "title": "China's Massive Stimulus: Ripple Effects on Global Metals and Indian Manufacturing",
+    "date": "2026-10-20",
+    "excerpt": "Beijing's monetary stimulus and property measures send shockwaves through iron ore, copper, and aluminium markets, altering profit margins for domestic Indian producers.",
+    "tags": [
+      "Global Macro",
+      "China",
+      "Metals",
+      "Manufacturing",
+      "Indian Stocks"
+    ]
+  },
+  {
+    "slug": "fii-vs-dii-structural-shift-indian-equities",
+    "title": "FII Outflows vs DII Domestic SIP Power: The Rewriting of Indian Market Dynamics",
+    "date": "2026-10-20",
+    "excerpt": "Foreign institutional investors used to dictate Indian market direction. Today, monthly domestic mutual fund inflows above Rs 25,000 Cr provide unprecedented counter-cyclical stability.",
+    "tags": [
+      "Indian Stocks",
+      "FII",
+      "DII",
+      "Mutual Funds",
+      "Market Structure"
+    ]
+  },
+  {
+    "slug": "us-treasury-yield-curve-inversion-recession-signal",
+    "title": "The US Treasury 10Y-2Y Yield Curve: Un-Inversion and What It Signals for Global Equities",
+    "date": "2026-10-20",
+    "excerpt": "Historical data shows that equity volatility does not peak during yield curve inversion, but rather during the rapid un-inversion that follows central bank easing.",
+    "tags": [
+      "Bonds",
+      "US Treasuries",
+      "Yield Curve",
+      "Recession",
+      "Global Markets"
+    ]
+  },
+  {
+    "slug": "semiconductor-supply-chains-taiwan-us-chips-act-india",
+    "title": "The Global Semiconductor Realignment: US CHIPS Act, Taiwan & India's Fab Ambitions",
+    "date": "2026-10-20",
+    "excerpt": "How geopolitical de-risking is reshaping the $600B global chip supply chain, driving multi-billion dollar capex in the US and pioneering semiconductor packaging in India.",
+    "tags": [
+      "Semiconductors",
+      "Global Supply Chains",
+      "US Stocks",
+      "India Capex"
+    ]
+  },
+  {
+    "slug": "gold-all-time-highs-central-bank-buying-de-dollarisation",
+    "title": "Gold Printing Record Highs: Sovereign De-Dollarisation and Portfolio Allocation",
+    "date": "2026-10-20",
+    "excerpt": "Global central banks are accumulating bullion at historic paces. Why sovereign reserve diversification matters for both Wall Street and Dalal Street investors.",
+    "tags": [
+      "Gold",
+      "Commodities",
+      "Central Banks",
+      "De-Dollarisation",
+      "Hedging"
+    ]
+  },
+  {
+    "slug": "defense-spending-supercycle-us-nato-indian-indigenisation",
+    "title": "The Global Defense Capex Supercycle: US Defense Contractors vs Indian Indigenisation",
+    "date": "2026-10-20",
+    "excerpt": "Rising geopolitical tensions are accelerating NATO re-armament and driving India's Make-in-India defense budget to historic highs. Here is where institutional capital is moving.",
+    "tags": [
+      "Defense",
+      "Global Trends",
+      "US Stocks",
+      "Indian Stocks",
+      "Capex"
+    ]
+  },
+  {
     "slug": "two-way-column-sorting-watchlist-mcap-pe-price",
     "title": "Two-Way Column Sorting: Rank Stocks by Market Cap, P/E, Price & Symbol",
     "date": "2026-10-20",
