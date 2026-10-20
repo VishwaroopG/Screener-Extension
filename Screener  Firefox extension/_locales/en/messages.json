@@ -104,6 +104,9 @@
   "watchlistTitle": {
     "message": "Your Watchlist"
   },
+  "switchPortfolioTitle": {
+    "message": "Switch portfolio"
+  },
   "liveBadge": {
     "message": "Live"
   },
@@ -260,8 +263,11 @@
   "importTitle": {
     "message": "Import watchlist"
   },
+  "importShort": {
+    "message": "Import"
+  },
   "importSubtitle": {
-    "message": "From Zerodha Kite, Screener.in or TradingView - merged into this portfolio."
+    "message": "From Zerodha Kite, Screener.in, TradingView or any open tab - new symbols merge into this portfolio."
   },
   "importScrapeBtn": {
     "message": "Detect from open tab"
@@ -309,7 +315,7 @@
     "message": "Cannot read this tab. Paste tickers or upload a CSV instead."
   },
   "importTabEmpty": {
-    "message": "Nothing detected. Open your Kite / Screener / TradingView watchlist, then retry - or paste below."
+    "message": "Nothing detected on this tab. Open a watchlist, holdings or screener page, then retry - or paste below."
   },
   "importDetected": {
     "message": "Detected {N} from {S}"
@@ -325,6 +331,9 @@
   },
   "importSkipped": {
     "message": "{N} already in watchlist"
+  },
+  "importAllSkipped": {
+    "message": "All detected tickers are already in your watchlist."
   },
   "importDone": {
     "message": "Done."
@@ -1226,5 +1235,11 @@
   },
   "moodHintGreed": {
     "message": "Extreme greed (>70): markets may be overbought - be cautious opening fresh positions"
+  },
+  "sortBySymbol": {
+    "message": "Sort alphabetically by Symbol"
+  },
+  "sortByRatio": {
+    "message": "Sort by selected ratio (P/E, etc.)"
   }
 }

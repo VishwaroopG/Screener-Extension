@@ -36,7 +36,7 @@ function nav(active) {
     + link('../learn/', 'Learn', 'learn')
     + link('../blog/', 'Blog', 'blog')
     + '</nav>'
-    + '<span class="nav-meta">v2.6.6</span>'
+    + '<span class="nav-meta">v2.6.7</span>'
     + '<a class="button button-secondary" href="' + EXT_URL + '">Get the extension</a>'
     + '<button class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer"><span></span><span></span><span></span></button>'
     + '</header>'
@@ -308,7 +308,7 @@ function urlEntry(loc, lastmod, freq, pri) {
 const sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'];
 sm.push(urlEntry(SITE + '/', '2026-10-11', 'weekly', '1.0'));
 sm.push(urlEntry(SITE + '/privacy.html', '2026-10-06', 'monthly', '0.5'));
-sm.push(urlEntry(SITE + '/blog/', '2026-09-27', 'weekly', '0.9'));
+sm.push(urlEntry(SITE + '/blog/', '2026-10-11', 'weekly', '0.9'));
 posts.forEach(p => sm.push(urlEntry(SITE + '/blog/post.html?slug=' + p.slug, p.date, 'monthly', '0.8')));
 sm.push(urlEntry(SITE + '/collections/', TODAY, 'weekly', '0.9'));
 collections.forEach(c => sm.push(urlEntry(SITE + '/collections/' + c.slug + '.html', c.updated, 'monthly', '0.8')));

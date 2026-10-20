@@ -1938,3 +1938,93 @@ body.dark-mode #overview-economy-select option {
 }
 
 
+
+/* Watchlist header flex row */
+.watchlist-header-bar {
+  margin: 12px 0 12px 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  flex-wrap: nowrap;
+  min-height: 32px;
+  box-sizing: border-box;
+}
+
+.watchlist-header-left {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.watchlist-header-right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+/* Watchlist heading merged portfolio switcher */
+.portfolio-title-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%235f6368' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E") no-repeat right 4px center;
+  border: none;
+  border-radius: 6px;
+  color: var(--text-color, #202124);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  padding: 4px 18px 4px 4px;
+  max-width: 120px;
+  min-width: 0;
+  outline: none;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 1;
+}
+.portfolio-title-select:hover {
+  background-color: rgba(60, 64, 67, 0.08);
+}
+.portfolio-title-select:focus-visible {
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.35);
+}
+.portfolio-title-select option {
+  background: var(--bg-color, #ffffff);
+  color: var(--text-color, #202124);
+}
+body.dark-mode .portfolio-title-select {
+  color: var(--text-color, #f0f2f5);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%239aa0a6' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+}
+body.dark-mode .portfolio-title-select:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+body.dark-mode .portfolio-title-select option {
+  background: #2d3139;
+  color: #f0f2f5;
+}
+
+/* Watchlist compact action pills on single header line */
+.wl-action-pill {
+  padding: 3px 8px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  border-radius: 12px !important;
+  flex-shrink: 0 !important;
+  box-shadow: none !important;
+  white-space: nowrap !important;
+  cursor: pointer;
+}
+.wl-action-pill:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}

@@ -104,6 +104,9 @@
   "watchlistTitle": {
     "message": "Your Watchlist"
   },
+  "switchPortfolioTitle": {
+    "message": "Switch portfolio"
+  },
   "liveBadge": {
     "message": "Live"
   },
@@ -259,6 +262,9 @@
   },
   "importTitle": {
     "message": "Import watchlist"
+  },
+  "importShort": {
+    "message": "Import"
   },
   "importSubtitle": {
     "message": "From Zerodha Kite, Screener.in, TradingView or any open tab - new symbols merge into this portfolio."
@@ -1229,5 +1235,11 @@
   },
   "moodHintGreed": {
     "message": "Extreme greed (>70): markets may be overbought - be cautious opening fresh positions"
+  },
+  "sortBySymbol": {
+    "message": "Sort alphabetically by Symbol"
+  },
+  "sortByRatio": {
+    "message": "Sort by selected ratio (P/E, etc.)"
   }
 }

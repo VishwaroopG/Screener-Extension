@@ -1010,7 +1010,7 @@ async function fetchIndiaBreadth() {
   if (!Array.isArray(list) || !list.length) throw new Error('Moneycontrol breadth list empty');
   const pick = (name) => list.find((x) => x && x.indexName === name);
   // Broadest honest whole-market proxy first, headline index as fallback.
-  const broad = pick('NIFTY 500') || pick('NIFTY 50');
+  const broad = pick('NIFTY 50') || pick('NIFTY 500');
   if (!broad) throw new Error('Moneycontrol breadth index missing');
   const adv = parseBreadthNum(broad.advance);
   const dec = parseBreadthNum(broad.decline);
@@ -1019,7 +1019,7 @@ async function fetchIndiaBreadth() {
   let asOn = null;
   try { asOn = (j.props.pageProps.adRatioData.asOnDate || '').trim() || null; } catch (e) {}
   return {
-    scope: broad.indexName || 'NIFTY 500',
+    scope: broad.indexName || 'NIFTY 50',
     advances: adv,
     declines: dec,
     unchanged: Math.max(0, size - adv - dec),
@@ -1245,7 +1245,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const now = Date.now();
         const cached = await chrome.storage.local.get(['marketBreadth']);
         const store = cached.marketBreadth || {};
-        if (store[economy] && (now - (store[economy].fetchedAt || 0)) < BREADTH_TTL_MS) {
+        const isMismatch = economy === 'India' && store[economy] && store[economy].data && store[economy].data.scope !== 'NIFTY 50';
+        if (!message.force && !isMismatch && store[economy] && (now - (store[economy].fetchedAt || 0)) < BREADTH_TTL_MS) {
           sendResponse({ breadth: store[economy].data });
           return;
         }
@@ -1729,8 +1730,7 @@ function setupContextMenu() {
     { id: "ctxSep", type: "separator" },
     { id: "openTradingView", title: t('ctxTradingView') || 'Open in TradingView' },
     { id: "openScreener", title: t('ctxScreener') || 'Open in Screener' },
-    { id: "openStockAnalysis", title: t('ctxStockAnalysis') || 'Open in Stock Analysis' },
-    { id: "openKite", title: t('ctxKite') || 'Open in Zerodha Kite' }
+    { id: "openStockAnalysis", title: t('ctxStockAnalysis') || 'Open in Stock Analysis' }
   ];
   const create = () => {
     try {
@@ -1788,7 +1788,7 @@ function guessStockName(sel) {
     let s = String(sel || '').split('\n')[0].trim().replace(/^["'“”‘’]+|["'“”‘’]+$/g, '').trim();
     if (!s) return '';
     const m = s.match(/\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+\.\d+/);
-    if (m && m.index > 0) s = s.slice(0, m.index).trim().replace(/[-–|:,;(.]+$/, '').trim();
+    if (m && m.index > 0) s = s.slice(0, m.index).trim().replace(/[|:,;.()\-–—―…]+$/, '').trim();
     if (!s) return '';
     if (s.length > 42) s = s.slice(0, 42).trim() + '…';
     return s;
@@ -1940,17 +1940,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       if (info.menuItemId === "openTradingView") openUrl(tradingViewUrl(stock, query));
       else if (info.menuItemId === "openScreener") openUrl(screenerInUrl(stock, query));
       else if (info.menuItemId === "openStockAnalysis") openUrl(stockAnalysisUrl(stock, query));
-      else {
-        const url = kiteUrl(stock);
-        if (!url) {
-          notify(
-            t('ctxAddedTitle') || 'Ticker Screener Watchlist',
-            t('ctxKiteUnsupported') || 'Zerodha Kite supports Indian (NSE/BSE) stocks only.'
-          );
-          return;
-        }
-        openUrl(url);
-      }
       return;
     }
     if (info.menuItemId !== "addToScreener") return;

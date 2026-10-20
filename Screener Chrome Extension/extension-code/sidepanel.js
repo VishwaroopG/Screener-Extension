@@ -571,6 +571,21 @@ document.addEventListener('DOMContentLoaded', () => {
     return prefix ? prefix + formatted : formatted;
   }
   // Tab Switching Logic
+  let marketsRefreshTimer = null;
+  function startMarketsAutoRefresh() {
+    stopMarketsAutoRefresh();
+    marketsRefreshTimer = setInterval(() => {
+      if (tabMarkets && tabMarkets.classList.contains('active')) {
+        if (typeof fetchBreadth === 'function') fetchBreadth(activeEconomy);
+        if (typeof fetchMood === 'function') fetchMood(activeEconomy);
+        if (typeof fetchOverview === 'function') fetchOverview(activeEconomy);
+      }
+    }, 10 * 60 * 1000);
+  }
+  function stopMarketsAutoRefresh() {
+    if (marketsRefreshTimer) { clearInterval(marketsRefreshTimer); marketsRefreshTimer = null; }
+  }
+  startMarketsAutoRefresh();
   function switchTab(activeTab, activeView) {
     const wasActive = activeTab.classList.contains('active');
     [tabSearch, tabMarkets, tabNews].forEach(t => t && t.classList.remove('active'));
@@ -588,6 +603,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (typeof fetchOverview === 'function') fetchOverview(activeEconomy);
       if (typeof fetchBreadth === 'function') fetchBreadth(activeEconomy);
       if (typeof fetchMood === 'function') fetchMood(activeEconomy);
+      startMarketsAutoRefresh();
+    } else {
+      stopMarketsAutoRefresh();
     }
     if (activeTab === tabNews) renderNews(wasActive);
   }
@@ -2426,8 +2444,20 @@ document.addEventListener('DOMContentLoaded', () => {
                })
                .then(r => r.text())
                .then(htmlStr => {
+                 // Strip executable / subresource markup BEFORE parsing.
+                 // The fetched screener.in page contains inline <script> tags;
+                 // parsing the raw HTML in an extension page (URL about:blank,
+                 // CSP script-src 'self') triggers "Executing inline script
+                 // violates CSP" errors even though the scripts never run.
+                 const cleanHtml = String(htmlStr || '')
+                   .replace(/<script[\s\S]*?<\/script\s*>/gi, '')
+                   .replace(/<style[\s\S]*?<\/style\s*>/gi, '')
+                   .replace(/<iframe[\s\S]*?<\/iframe\s*>/gi, '')
+                   .replace(/<link[^>]*>/gi, '')
+                   .replace(/<object[\s\S]*?<\/object\s*>/gi, '')
+                   .replace(/<embed[^>]*>/gi, '');
                  const parser = new DOMParser();
-                 const doc = parser.parseFromString(htmlStr, 'text/html');
+                 const doc = parser.parseFromString(cleanHtml, 'text/html');
 
                  // ---- Fundamentals Depth: Pros/Cons (checklist), Shareholding, Concalls ----
                  try {
@@ -2465,9 +2495,13 @@ document.addEventListener('DOMContentLoaded', () => {
                      }
                  } catch (e) {}
 
-                 // Parse Peers
+                  // Parse Peers
                  const peersTable = doc.querySelector('#peers table');
                  if (peersTable) {
+                   const stripEventAttrs = (h) => String(h || '')
+                     .replace(/<script[\s\S]*?<\/script\s*>/gi, '')
+                     .replace(/\son\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+                     .replace(/href\s*=\s*["']\s*javascript:[^"']*["']/gi, 'href="#"');
                    const trs = Array.from(peersTable.querySelectorAll('tr'));
                    trs.forEach(tr => {
                       Array.from(tr.querySelectorAll('a')).forEach(a => a.style.color = linkColor);
@@ -2475,7 +2509,7 @@ document.addEventListener('DOMContentLoaded', () => {
                    });
                    const tableHtml = `<table style="width:100%; border-collapse:collapse; font-size:12px; text-align:right; color:var(--text-color); white-space:nowrap;">${trs.slice(0,4).map(tr => {
                      const isHeader = tr.querySelector('th');
-                     return `<tr style="border-bottom:1px solid var(--border-color); ${isHeader ? 'font-weight:bold; background:var(--row-even)' : ''}">${tr.innerHTML}</tr>`;
+                     return `<tr style="border-bottom:1px solid var(--border-color); ${isHeader ? 'font-weight:bold; background:var(--row-even)' : ''}">${stripEventAttrs(tr.innerHTML)}</tr>`;
                    }).join('')}</table>`;
                     document.getElementById('search-peers-container').innerHTML = `<h4 style="margin:16px 0 8px 0; color:var(--text-color);">${t('peerTitle')}</h4><div style="border:1px solid var(--border-color); border-radius:8px; overflow-x:auto;">${tableHtml}</div>`;
                  }
@@ -2492,11 +2526,17 @@ document.addEventListener('DOMContentLoaded', () => {
                        if (link) {
                          link.style.color = linkColor;
                          link.style.textDecoration = 'none';
-                         if (link.href.startsWith('chrome-extension')) {
-                           link.href = 'https://www.screener.in' + link.getAttribute('href');
-                         }
+                         try {
+                           const rawHref = link.getAttribute('href') || '';
+                           if (!/^https?:\/\//i.test(rawHref)) {
+                             link.setAttribute('href', 'https://www.screener.in' + rawHref);
+                           }
+                         } catch (e) {}
                        }
-                       return `<div style="padding:8px 0; border-bottom:1px solid var(--border-color); font-size:12px; color:var(--text-color);">${li.innerHTML}</div>`;
+                       const safeInner = String(li.innerHTML || '')
+                         .replace(/<script[\s\S]*?<\/script\s*>/gi, '')
+                         .replace(/\son\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '');
+                       return `<div style="padding:8px 0; border-bottom:1px solid var(--border-color); font-size:12px; color:var(--text-color);">${safeInner}</div>`;
                      }).join('');
                       document.getElementById('search-announcements-container').innerHTML = `<h4 style="margin:16px 0 8px 0; color:var(--text-color);">${t('annTitle')}</h4>${annHtml}`;
                     }
@@ -3310,9 +3350,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       links.push({ label: 'Yahoo Finance', url: 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) });
     }
-    if (isInd) {
-      links.push({ label: 'Zerodha Kite', url: 'https://kite.zerodha.com/chart/ext/ciq/' + (ex === 'BSE' ? 'BSE' : 'NSE') + '/' + encodeURIComponent(base) });
-    }
+
     return links;
   }
   function closePlatformMenu() {
@@ -3384,9 +3422,16 @@ document.addEventListener('DOMContentLoaded', () => {
       // Handle Sorting
       if (currentSortBy) {
         list = [...list].sort((a, b) => {
+          if (currentSortBy === 'symbol') {
+            const cmp = a.localeCompare(b);
+            return currentSortDesc ? -cmp : cmp;
+          }
+
           const dA = cached[a];
           const dB = cached[b];
-          if (!dA || !dB) return 0;
+          if (!dA && !dB) return 0;
+          if (!dA) return 1;
+          if (!dB) return -1;
           
           let valA = 0;
           let valB = 0;
@@ -3405,6 +3450,22 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             valA = parseMcap((dA.ratios || {})['Market Cap'] || '');
             valB = parseMcap((dB.ratios || {})['Market Cap'] || '');
+          } else if (currentSortBy === 'ratio') {
+            const getRatioVal = (d) => {
+              const r = (d && d.ratios) || {};
+              let raw = r[ratioColumnKey];
+              if ((raw == null || raw === '') && ratioColumnKey === 'Price to book value' && r['Current Price'] && r['Book Value']) {
+                try {
+                  const p = parseFloat(String(r['Current Price']).replace(/[^\d.-]/g, ''));
+                  const bVal = parseFloat(String(r['Book Value']).replace(/[^\d.-]/g, ''));
+                  if (isFinite(p) && isFinite(bVal) && bVal !== 0) raw = (p / bVal).toFixed(2);
+                } catch (e) {}
+              }
+              const num = parseFloat(String(raw || '0').replace(/[^\d.-]/g, ''));
+              return Number.isFinite(num) ? num : -Infinity;
+            };
+            valA = getRatioVal(dA);
+            valB = getRatioVal(dB);
           }
           
           return currentSortDesc ? valB - valA : valA - valB;
@@ -3430,10 +3491,10 @@ document.addEventListener('DOMContentLoaded', () => {
         <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:right; color:var(--text-color); white-space:nowrap;">
           <thead>
             <tr style="background:var(--header-bg); border-bottom:1px solid var(--border-color); font-weight:400; text-align:center;">
-              <td style="padding:10px; text-align:center;">${bulkMode ? `<input type="checkbox" id="bulk-check-all" title="${t('bulkSelectAll') || 'Select / deselect all'}" style="margin-right:6px; vertical-align:middle; accent-color:var(--link-color,#1a73e8);">` : ''}${t('colSymbol')}</td>
+<td style="padding:10px; cursor:pointer; text-align:center;" id="sort-symbol" title="${t('sortBySymbol') || 'Sort alphabetically by Symbol'}">${bulkMode ? `<input type="checkbox" id="bulk-check-all" title="${t('bulkSelectAll') || 'Select / deselect all'}" style="margin-right:6px; vertical-align:middle; accent-color:var(--link-color,#1a73e8);">` : ''}${t('colSymbol')}${getSortIndicator('symbol')}</td>
               <td style="padding:6px 10px;"><div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;"><div id="trend-title-label" style="font-weight:400; font-size:12px; text-align:center;">${trendTitle()}</div><select id="trend-range-select" title="${t('colTrend') || 'Change timeline'}" style="font-size:12px; font-weight:400; border:none; background:transparent; color:var(--text-color); cursor:pointer; text-align:center; padding:0;">${TREND_OPTIONS.map((o) => `<option value="${o.label}"${o.label === trendRangeLabel ? ' selected' : ''}>${o.label}</option>`).join('')}</select></div></td>
               <td style="padding:10px; cursor:pointer; text-align:center;" id="sort-price" title="${t('sortByPrice')}">${t('colPrice')}${getSortIndicator('price')}</td>
-              <td style="padding:6px 10px; text-align:center;"><select id="ratio-col-select" title="${t('colRatioTitle') || 'Choose ratio column'}" style="font-size:12px; font-weight:400; border:none; background:transparent; color:var(--text-color); cursor:pointer; text-align:center; padding:0;">${RATIO_COLUMN_OPTIONS.map((o) => `<option value="${escHtml(o.key)}"${o.key === ratioColumnKey ? ' selected' : ''}>${o.short}</option>`).join('')}</select></td>
+              <td style="padding:6px 10px; cursor:pointer; text-align:center;" id="sort-ratio" title="${t('sortByRatio') || 'Sort by ratio'}"><div style="display:inline-flex; align-items:center; justify-content:center; gap:2px;"><select id="ratio-col-select" title="${t('colRatioTitle') || 'Choose ratio column'}" style="font-size:12px; font-weight:400; border:none; background:transparent; color:var(--text-color); cursor:pointer; text-align:center; padding:0;">${RATIO_COLUMN_OPTIONS.map((o) => `<option value="${escHtml(o.key)}"${o.key === ratioColumnKey ? ' selected' : ''}>${o.short}</option>`).join('')}</select><span>${getSortIndicator('ratio')}</span></div></td>
               <td style="padding:10px; cursor:pointer; text-align:center;" id="sort-mcap" title="${t('sortByMCap')}">${t('colMCap')}${getSortIndicator('mcap')}</td>
               <td style="padding:10px; text-align:center;">${t('colActions')}</td>
             </tr>
@@ -3506,9 +3567,19 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) {}
 
         // Wire up sorting
+        const sortSymbol = document.getElementById('sort-symbol');
         const sortPrice = document.getElementById('sort-price');
+        const sortRatio = document.getElementById('sort-ratio');
         const sortMcap = document.getElementById('sort-mcap');
+        if (sortSymbol) sortSymbol.onclick = (e) => {
+          if (e.target.id === 'bulk-check-all') return;
+          handleSort('symbol');
+        };
         if (sortPrice) sortPrice.onclick = () => handleSort('price');
+        if (sortRatio) sortRatio.onclick = (e) => {
+          if (e.target.id === 'ratio-col-select') return;
+          handleSort('ratio');
+        };
         if (sortMcap) sortMcap.onclick = () => handleSort('mcap');
 
         // Wire up trend timeline selector (persists choice, lazy-loads data)
@@ -4301,7 +4372,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Whole-market breadth (Advance / Decline) ---
   // True exchange/index totals only - no tracked-stock fallback. Currently
-  // served for India (Moneycontrol NIFTY 500) and USA (WSJ NYSE + NASDAQ).
+  // served for India (Moneycontrol NIFTY 50) and USA (WSJ NYSE + NASDAQ).
   // Other economies render nothing until a per-exchange source is wired,
   // rather than showing misleading partial counts.
   const BREADTH_ECONOMIES = ['India', 'USA'];
@@ -4317,7 +4388,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const seq = ++breadthReqSeq;
     if (force) wrap.innerHTML = '<div class="screener-loading" style="padding:10px;">' + (t('loadingBreadth') || 'Loading market breadth…') + '</div>';
     try {
-      chrome.runtime.sendMessage({ type: 'FETCH_MARKET_BREADTH', economy }, (res) => {
+      chrome.runtime.sendMessage({ type: 'FETCH_MARKET_BREADTH', economy, force: !!force }, (res) => {
         if (seq !== breadthReqSeq) return; // stale: user switched economy meanwhile
         if (chrome.runtime.lastError) return;
         if (economy !== activeEconomy) return;

@@ -1,156 +1,416 @@
 [
   {
+    "slug": "two-way-column-sorting-watchlist-mcap-pe-price",
+    "title": "Two-Way Column Sorting: Rank Stocks by Market Cap, P/E, Price & Symbol",
+    "date": "2026-10-20",
+    "excerpt": "Instantly sort watchlist constituents alphabetically, by live price, custom financial ratios, or scale-aware market cap in ascending and descending directions.",
+    "tags": [
+      "Product",
+      "Features",
+      "Watchlist",
+      "US Stocks",
+      "Indian Stocks"
+    ]
+  },
+  {
+    "slug": "nifty-50-market-breadth-advances-declines-sync",
+    "title": "NIFTY 50 Advance-Decline Sync: Real-Time Indian Market Breadth",
+    "date": "2026-10-20",
+    "excerpt": "Why tracking the exact 50 headline index constituents provides cleaner market internals than delayed aggregate tickers, and how Ticker Screener synchronises them live.",
+    "tags": [
+      "Markets",
+      "Indian Stocks",
+      "Nifty 50",
+      "Breadth",
+      "Technical Analysis"
+    ]
+  },
+  {
+    "slug": "how-to-screen-undervalued-stocks-with-pe-and-roce",
+    "title": "How to Screen Undervalued Stocks: Using P/E and ROCE Together",
+    "date": "2026-10-20",
+    "excerpt": "A low price-to-earnings ratio is often a value trap without solid capital efficiency. Here is how to filter for compounders using ROCE and ROE metrics side-by-side.",
+    "tags": [
+      "Investing",
+      "Valuation",
+      "P/E",
+      "ROCE",
+      "Fundamentals"
+    ]
+  },
+  {
+    "slug": "portfolio-management-multiple-watchlists-color-tags",
+    "title": "Organise Your Portfolios: Multiple Watchlists, Renaming & Color Tags",
+    "date": "2026-10-20",
+    "excerpt": "Keep core holdings, earnings swing ideas, and momentum breakouts cleanly segregated with inline switcher dropdowns, bulk tagging, and custom list views.",
+    "tags": [
+      "Product",
+      "Portfolio Management",
+      "Watchlist",
+      "Productivity"
+    ]
+  },
+  {
+    "slug": "seamless-watchlist-migration-zerodha-tradingview-screener",
+    "title": "Seamless Watchlist Migration: Import from Zerodha, TradingView & Screener.in",
+    "date": "2026-10-20",
+    "excerpt": "Migrate your watchlists in seconds without copy-pasting dozens of tickers. Use tab detection, CSV upload, or quick paste with instant duplicate filtering.",
+    "tags": [
+      "Product",
+      "Import",
+      "TradingView",
+      "Zerodha",
+      "Tools"
+    ]
+  },
+  {
+    "slug": "52-week-breakout-strategy-volume-price-alerts",
+    "title": "The 52-Week High Breakout Strategy: Catching Momentum with Alerts",
+    "date": "2026-10-20",
+    "excerpt": "Why stocks hitting fresh 52-week highs tend to continue running, and how to configure background desktop alerts before the market moves away.",
+    "tags": [
+      "Strategy",
+      "Breakouts",
+      "Alerts",
+      "US Stocks",
+      "Trading"
+    ]
+  },
+  {
+    "slug": "understanding-market-capitalization-mega-vs-small-cap",
+    "title": "Understanding Market Capitalisation: Micro, Small, Mid and Mega Caps",
+    "date": "2026-10-20",
+    "excerpt": "From trillion-dollar tech titans to volatile high-growth small caps: how market cap dictates liquidity, volatility, and capital allocation across economic cycles.",
+    "tags": [
+      "Education",
+      "Market Cap",
+      "S&P 500",
+      "Risk Management"
+    ]
+  },
+  {
+    "slug": "smart-focus-engine-finding-daily-market-outliers",
+    "title": "Smart Focus Engine: Spotting Unusual Daily Market Outliers Automatically",
+    "date": "2026-10-20",
+    "excerpt": "Eliminate notification fatigue. How Ticker Screener automatically flags sharp intraday swings, breakout signals, and extreme volume surges with Smart Focus.",
+    "tags": [
+      "Product",
+      "Smart Focus",
+      "Algorithms",
+      "Watchlist"
+    ]
+  },
+  {
+    "slug": "reading-balance-sheets-red-flags-every-retail-investor-must-check",
+    "title": "Reading Balance Sheets: 5 Critical Red Flags Every Retail Investor Must Check",
+    "date": "2026-10-20",
+    "excerpt": "High debt-to-equity, declining cash flow, promoter pledge spikes, and inventory pile-ups: how to spot financial risks before they destroy your capital.",
+    "tags": [
+      "Fundamentals",
+      "Risk Management",
+      "Investing",
+      "Balance Sheet"
+    ]
+  },
+  {
+    "slug": "why-browser-sidepanels-beat-traditional-market-dashboards",
+    "title": "Why Browser Sidepanels Beat Clunky Multi-Monitor Market Dashboards",
+    "date": "2026-10-20",
+    "excerpt": "How persistent browser sidebars allow active traders to research news, read financials, and execute trades without toggling through 15 different browser tabs.",
+    "tags": [
+      "Productivity",
+      "Browser Extension",
+      "Chrome",
+      "Firefox",
+      "Trading Workflow"
+    ]
+  },
+  {
     "slug": "ticker-tape-heatmap-breadth-read-market-30-seconds",
     "title": "Tape, Heatmap, Breadth: Read the Whole US Market in 30 Seconds",
     "date": "2026-10-11",
     "excerpt": "Tape for direction, heatmap for composition, NYSE + Nasdaq breadth plus CNN Fear & Greed for conviction - the 30-second routine inside Ticker Screener.",
-    "tags": ["Product", "US Stocks", "S&P 500", "Nasdaq", "Markets"]
+    "tags": [
+      "Product",
+      "US Stocks",
+      "S&P 500",
+      "Nasdaq",
+      "Markets"
+    ]
   },
   {
     "slug": "price-alerts-nyse-nasdaq-background-notifications",
     "title": "Price Alerts That Actually Work: Background Notifications for NYSE & Nasdaq",
     "date": "2026-10-11",
     "excerpt": "Background alarms fire desktop notifications even with the panel closed - three alert setups for earnings, breakouts and dividend targets.",
-    "tags": ["Product", "US Stocks", "Alerts", "NYSE", "Nasdaq"]
+    "tags": [
+      "Product",
+      "US Stocks",
+      "Alerts",
+      "NYSE",
+      "Nasdaq"
+    ]
   },
   {
     "slug": "build-us-watchlist-5-minutes-tradingview-import",
     "title": "Build a Live US Watchlist in 5 Minutes (TradingView Import, Tags, Smart Focus)",
     "date": "2026-10-11",
     "excerpt": "Detect tickers from TradingView, paste a list or upload a CSV - deduped merge, dollar prices, tags and Smart Focus sorting in minutes.",
-    "tags": ["Product", "Guides", "US Stocks", "Watchlist", "TradingView"]
+    "tags": [
+      "Product",
+      "Guides",
+      "US Stocks",
+      "Watchlist",
+      "TradingView"
+    ]
   },
   {
     "slug": "gold-etfs-vs-gold-miners-us-risk-off-2026",
     "title": "Gold ETFs vs Gold Miners in 2026: Insurance or Trade?",
     "date": "2026-10-11",
     "excerpt": "GLD and IAU track the metal; Newmont, Barrick and GDX add leverage, costs and politics. AISC, expense ratios and sizing for a 5%+ real-yield world.",
-    "tags": ["Gold", "ETFs", "US Stocks", "Investing", "Risk-Off"]
+    "tags": [
+      "Gold",
+      "ETFs",
+      "US Stocks",
+      "Investing",
+      "Risk-Off"
+    ]
   },
   {
     "slug": "us-10y-above-5-fed-4-percent-nasdaq-growth-stocks",
     "title": "10Y Above 5%, Fed Near 4%: What It Means for Nasdaq Growth Stocks",
     "date": "2026-10-11",
     "excerpt": "Future earnings discounted at 5%+ are worth less today. Why long-duration growth re-rates first - and a 4-point screen for quality compounders.",
-    "tags": ["US Fed", "Nasdaq", "Valuation", "Growth Stocks", "Rates"]
+    "tags": [
+      "US Fed",
+      "Nasdaq",
+      "Valuation",
+      "Growth Stocks",
+      "Rates"
+    ]
   },
   {
     "slug": "q3-2026-us-earnings-magnificent-7-banks",
     "title": "Q3 2026 US Earnings: Magnificent 7, Big Banks and What Moves the S&P 500",
     "date": "2026-10-11",
     "excerpt": "Mid-October prints decide whether multiples survive a 5.10% 10-year. Cloud payoffs, bank NIMs at 3.75-4.00% Fed funds, and guidance that matters more than beats.",
-    "tags": ["Earnings", "US Stocks", "S&P 500", "Magnificent 7", "Banks"]
+    "tags": [
+      "Earnings",
+      "US Stocks",
+      "S&P 500",
+      "Magnificent 7",
+      "Banks"
+    ]
   },
   {
     "slug": "52-week-high-low-us-stocks-breakout-alerts",
     "title": "52-Week Highs & Lows: The Breakout and Reversal Playbook for US Stocks",
     "date": "2026-10-11",
     "excerpt": "Momentum buys highs, value stalks lows - both break fast. Confirmation filters, false-breakout dodges and Smart Focus plus background alerts that catch them.",
-    "tags": ["US Stocks", "Strategy", "Breakouts", "Alerts", "Investing"]
+    "tags": [
+      "US Stocks",
+      "Strategy",
+      "Breakouts",
+      "Alerts",
+      "Investing"
+    ]
   },
   {
     "slug": "market-cap-us-large-mid-small-cap-etfs",
     "title": "Market Cap Explained: Large vs Mid vs Small-Cap US Stocks (and When to ETF It)",
     "date": "2026-10-11",
     "excerpt": "Above $10B, $2-10B, below $2B - why size changes your screen, where stock-picking pays, and a practical index-core plus satellite split.",
-    "tags": ["Investing", "Guides", "Market Cap", "ETFs", "US Stocks"]
+    "tags": [
+      "Investing",
+      "Guides",
+      "Market Cap",
+      "ETFs",
+      "US Stocks"
+    ]
   },
   {
     "slug": "dividend-yield-us-stocks-income-trap",
     "title": "Dividend Yield for US Stocks: Income vs Trap at 5% Rates",
     "date": "2026-10-11",
     "excerpt": "1.5% is the S&P norm, 4%+ needs inspection. Payout ratios, Aristocrat track records and why dividend growth beats headline yield when cash yields 5%.",
-    "tags": ["Investing", "Guides", "Dividends", "US Stocks", "Yield"]
+    "tags": [
+      "Investing",
+      "Guides",
+      "Dividends",
+      "US Stocks",
+      "Yield"
+    ]
   },
   {
     "slug": "roce-vs-roe-us-stocks-quality-check",
     "title": "ROCE vs ROE: The Quality Check Every US Stock Screen Needs",
     "date": "2026-10-11",
     "excerpt": "ROE can be juiced by buybacks and debt; ROCE cannot. What good looks like by sector, three traps ROE hides, and how the extension pairs it with P/E.",
-    "tags": ["Investing", "Guides", "ROCE", "ROE", "US Stocks"]
+    "tags": [
+      "Investing",
+      "Guides",
+      "ROCE",
+      "ROE",
+      "US Stocks"
+    ]
   },
   {
     "slug": "fundamentals-depth-v270-checklist-swot-redflags",
     "title": "New in v2.7.0: Fundamentals Depth - Checklist, SWOT & Red-Flags on Every Search",
     "date": "2026-10-11",
     "excerpt": "Search any stock and get a free checklist score, SWOT from Screener pros/cons, forensic red-flags, promoter/FII/DII trends, concall transcripts and one-click PDF - Tickertape depth without the paywall.",
-    "tags": ["Product", "India", "Fundamentals", "Checklist", "SWOT"]
+    "tags": [
+      "Product",
+      "India",
+      "Fundamentals",
+      "Checklist",
+      "SWOT"
+    ]
   },
   {
     "slug": "fed-to-fii-us-rates-indian-equities",
     "title": "Fed to FII: How US Rates Drive Indian Small & Mid-Caps",
     "date": "2026-09-27",
     "excerpt": "Fed at 3.75-4.00%, US 10Y above 5.10%, Rs 2.45 lakh crore of FPI outflows. The three transmission channels - yields, currency, crude - and the screening overlay for small-caps in risk-off regimes.",
-    "tags": ["US Fed", "FII", "India", "Valuation", "Small-Caps"]
+    "tags": [
+      "US Fed",
+      "FII",
+      "India",
+      "Valuation",
+      "Small-Caps"
+    ]
   },
   {
     "slug": "us-tariffs-china-plus-one-india",
     "title": "US Tariffs & the China+1 Play: Winners and Losers for Indian Equities",
     "date": "2026-09-27",
     "excerpt": "US-India tariff cut to 18%, 60% of US smartphones now India-sourced. A 4-box filter - tariff gap, certified capacity, value-add, stickiness - to separate real beneficiaries from story stocks.",
-    "tags": ["US Tariffs", "China+1", "India", "EMS", "Investing"]
+    "tags": [
+      "US Tariffs",
+      "China+1",
+      "India",
+      "EMS",
+      "Investing"
+    ]
   },
   {
     "slug": "global-commodities-building-material-margins",
     "title": "From Crude to Phenol: How Global Commodity Cycles Hit Indian Margins",
     "date": "2026-09-27",
     "excerpt": "Phenol Rs 85 to Rs 160, melamine Rs 88 to Rs 135, then relief after shipping lanes reopened. The Brent-to-laminate chain and the spread tracker for Building Materials EBITDA.",
-    "tags": ["Commodities", "Building Materials", "Margins", "Oil", "Investing"]
+    "tags": [
+      "Commodities",
+      "Building Materials",
+      "Margins",
+      "Oil",
+      "Investing"
+    ]
   },
   {
     "slug": "us-slowdown-indian-portfolio-playbook",
     "title": "US Slowdown Playbook: Rebalancing Indian Portfolios",
     "date": "2026-09-27",
     "excerpt": "US 1.5% real vs 8% nominal growth, Fed heading to 4.25%, recession odds debated. Five rebalancing levers - quality screens, duration barbell, export hedge, IPO selectivity, cash calendar.",
-    "tags": ["US Economy", "Portfolio", "India", "Recession", "Investing"]
+    "tags": [
+      "US Economy",
+      "Portfolio",
+      "India",
+      "Recession",
+      "Investing"
+    ]
   },
   {
     "slug": "greenland-independence-trump-denmark-deal",
     "title": "Greenland, Trump and the Denmark Deal: What Investors Need to Know",
     "date": "2026-09-19",
     "excerpt": "Trump's pursuit of Greenland has rattled NATO, strengthened the independence movement, and prompted a US-Denmark deal on military presence. Here's what it means for Arctic, defence and rare-earth stocks.",
-    "tags": ["Geopolitics", "Markets", "Investing", "Greenland", "Trump"]
+    "tags": [
+      "Geopolitics",
+      "Markets",
+      "Investing",
+      "Greenland",
+      "Trump"
+    ]
   },
   {
     "slug": "uk-countries-leave-independence-2026",
     "title": "Scotland, Wales & Northern Ireland Demand Independence Referendums",
     "date": "2026-09-19",
     "excerpt": "Scotland, Wales and Northern Ireland leaders signed a joint declaration demanding the right to hold independence referendums. The move puts unprecedented pressure on PM Andy Burnham. Here's what it means for UK and European stocks.",
-    "tags": ["Geopolitics", "Markets", "Investing", "UK", "Scotland", "Wales", "Northern Ireland"]
+    "tags": [
+      "Geopolitics",
+      "Markets",
+      "Investing",
+      "UK",
+      "Scotland",
+      "Wales",
+      "Northern Ireland"
+    ]
   },
   {
     "slug": "trump-statements-iran-oil-911-2026",
     "title": "Trump's September Statements: Iran War, Oil Deals, 9/11 Records and What They Mean for Markets",
     "date": "2026-09-19",
     "excerpt": "From the Iran war to the 'biggest oil deal in history' to 9/11 records, Trump's statements are moving markets. Here's how to track oil, defence and geopolitical stocks live.",
-    "tags": ["Geopolitics", "Markets", "Investing", "Trump", "Oil", "Iran"]
+    "tags": [
+      "Geopolitics",
+      "Markets",
+      "Investing",
+      "Trump",
+      "Oil",
+      "Iran"
+    ]
   },
   {
     "slug": "pe-ratio-us-stocks-cheap-expensive",
     "title": "P/E Ratio Explained: How to Tell If a US Stock Is Cheap or Expensive",
     "date": "2026-09-17",
     "excerpt": "Price-to-earnings in plain English: what it means, where it lies, sector norms, and how the extension's AI verdict uses it.",
-    "tags": ["Investing", "Guides", "P/E", "US Stocks"]
+    "tags": [
+      "Investing",
+      "Guides",
+      "P/E",
+      "US Stocks"
+    ]
   },
   {
     "slug": "us-indexes-sp500-nasdaq-dow-explained",
     "title": "S&P 500 vs Nasdaq vs Dow: Which US Index Should You Actually Watch?",
     "date": "2026-09-17",
     "excerpt": "What each American benchmark measures, when they disagree, and how to keep all three in view while you browse.",
-    "tags": ["Markets", "Guides", "S&P 500", "US Stocks"]
+    "tags": [
+      "Markets",
+      "Guides",
+      "S&P 500",
+      "US Stocks"
+    ]
   },
   {
     "slug": "india-critical-mineral-parks-rees-lithium-nickel",
     "title": "India's 4 Critical Mineral Parks (Rare Earths, Lithium, Nickel): What Investors Should Watch",
     "date": "2026-09-12",
     "excerpt": "AP (rare earths), Gujarat (magnets), Maharashtra (lithium), Odisha (nickel)  why processing beats mining, plus how to track the theme live.",
-    "tags": ["Economy", "Markets", "India", "Investing"]
+    "tags": [
+      "Economy",
+      "Markets",
+      "India",
+      "Investing"
+    ]
   },
   {
     "slug": "welcome-to-screener-pro-blog",
     "title": "Ticker Screener Explained: Live NYSE & Nasdaq Watchlist, Ticker Tape & Stock Alerts in Your Browser",
     "date": "2026-09-12",
     "excerpt": "Free Chrome & Firefox extension: live watchlist, ticker tape, 10-economy markets, P/E + ROCE verdicts and price alerts  full guide.",
-    "tags": ["Guides", "Product", "Browser Extension", "NYSE", "Nasdaq", "NSE", "BSE"]
+    "tags": [
+      "Guides",
+      "Product",
+      "Browser Extension",
+      "NYSE",
+      "Nasdaq",
+      "NSE",
+      "BSE"
+    ]
   }
 ]

@@ -1143,6 +1143,12 @@
       }
       // Generic fallback (any broker/screener page): company links + data-symbol
       // attributes + dense uppercase token scan of table first columns.
+      // Our own tape/popup subtree is excluded so Detect never offers back
+      // symbols it rendered itself.
+      const inOwnUi = (el) => {
+        try { return !!(el && el.closest && el.closest('#screener-ticker-tape, .screener-modal-backdrop')); }
+        catch (e) { return false; }
+      };
       if (!out.length) {
         site = host.replace(/^www\./, '') || 'generic';
         const vals = [];
@@ -1150,11 +1156,26 @@
           const m = String(a.getAttribute('href') || '').match(/\/company\/([A-Za-z0-9.\-&]+)\/?/);
           if (m) vals.push(m[1].toUpperCase());
         });
+        // Quote pages on finance portals (e.g. links to /quote/AAPL)
+        document.querySelectorAll('a[href*="/quote/"]').forEach((a) => {
+          if (inOwnUi(a)) return;
+          const m = String(a.getAttribute('href') || '').match(/\/quote\/([A-Za-z0-9.\-^=_]{1,24})/i);
+          if (m) vals.push(m[1].toUpperCase());
+        });
         document.querySelectorAll('[data-symbol-short], [data-ticker], [data-symbol], [data-instrument_token]').forEach((el) => {
+          if (inOwnUi(el)) return;
           const v = el.getAttribute('data-symbol-short') || el.getAttribute('data-ticker') || el.getAttribute('data-symbol');
           if (v) vals.push(v);
         });
+        // Symbol/ticker/scrip spans in custom watchlist markup
+        document.querySelectorAll('[class*="symbol" i], [class*="ticker" i], [class*="scrip" i]').forEach((el) => {
+          if (inOwnUi(el)) return;
+          if (el.querySelector('[class*="symbol" i], [class*="ticker" i]')) return; // take leaf only
+          const ttxt = textOf(el).split('\n')[0].trim();
+          if (ttxt && ttxt.length <= 24) vals.push(ttxt.split(/\s{2,}|\t/)[0]);
+        });
         document.querySelectorAll('table tbody tr').forEach((tr) => {
+          if (inOwnUi(tr)) return;
           const first = tr.querySelector('td a, td strong, td');
           if (first) {
             const ttxt = textOf(first).split('\n')[0].trim();
@@ -1163,6 +1184,26 @@
         });
         pushTokens(out, seen, vals);
       }
+      // Always-on scan for ANY page: EXCHANGE:SYMBOL mentions in visible text
+      // (articles, forums, screeners with custom markup). The exchange prefix
+      // keeps precision high - bare words are never treated as tickers here.
+      // Runs even when structured scans hit, so text mentions are not lost.
+      try {
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        const found = [];
+        let scanned = 0;
+        let node = walker.nextNode();
+        while (node && scanned < 4000 && found.length < 200) {
+          scanned++;
+          const txt = node.nodeValue || '';
+          if (txt.length <= 500 && !inOwnUi(node.parentElement)) {
+            const m = txt.match(/\b([A-Z]{2,12}):([A-Za-z0-9.\-^=_]{1,12})\b/g);
+            if (m) found.push(...m);
+          }
+          node = walker.nextNode();
+        }
+        pushTokens(out, seen, found);
+      } catch (e) { /* text scan must never break the tape */ }
     } catch (e) { /* DOM scrape must never break the tape */ }
     return { site, url, items: out.slice(0, 200) };
   }

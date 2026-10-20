@@ -101,6 +101,9 @@
   "watchlistTitle": {
     "message": "Tu lista de seguimiento"
   },
+  "switchPortfolioTitle": {
+    "message": "Cambiar cartera"
+  },
   "liveBadge": {
     "message": "En vivo"
   },
@@ -629,5 +632,11 @@
         "content": "$1"
       }
     }
+  },
+  "sortBySymbol": {
+    "message": "Sort alphabetically by Symbol"
+  },
+  "sortByRatio": {
+    "message": "Sort by selected ratio (P/E, etc.)"
   }
 }

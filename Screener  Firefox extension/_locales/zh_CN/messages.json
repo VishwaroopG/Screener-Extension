@@ -101,6 +101,9 @@
   "watchlistTitle": {
     "message": "我的观察列表"
   },
+  "switchPortfolioTitle": {
+    "message": "切换投资组合"
+  },
   "liveBadge": {
     "message": "实时"
   },
@@ -629,5 +632,11 @@
         "content": "$1"
       }
     }
+  },
+  "sortBySymbol": {
+    "message": "Sort alphabetically by Symbol"
+  },
+  "sortByRatio": {
+    "message": "Sort by selected ratio (P/E, etc.)"
   }
 }
