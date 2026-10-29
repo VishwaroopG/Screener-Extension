@@ -1,5 +1,135 @@
 [
   {
+    "slug": "inflation-base-effects-disinflation-price-levels",
+    "title": "Inflation Is Falling. Why Are Prices Still High? Base Effects Explained",
+    "date": "2026-10-29",
+    "excerpt": "How base effects change annual inflation, why disinflation does not reverse past price increases, and what the distinction means for company margins.",
+    "tags": [
+      "Macroeconomics",
+      "Inflation",
+      "CPI",
+      "Consumer Spending"
+    ],
+    "inlineExtensionMention": true
+  },
+  {
+    "slug": "gdp-growth-inventories-imports-domestic-demand",
+    "title": "Beyond the GDP Headline: Inventories, Imports and the Quality of Growth",
+    "date": "2026-10-29",
+    "excerpt": "Learn to separate private demand from inventory and trade swings before connecting a GDP surprise to company sales and profits.",
+    "tags": [
+      "Macroeconomics",
+      "GDP",
+      "Economic Growth",
+      "Company Earnings"
+    ],
+    "inlineExtensionMention": true
+  },
+  {
+    "slug": "jobs-wages-productivity-unit-labour-costs",
+    "title": "Jobs, Wages and Productivity: Reading the Labour Market Beyond Payrolls",
+    "date": "2026-10-29",
+    "excerpt": "Why participation, hours worked and unit labour costs matter when assessing household spending, inflation and business profitability.",
+    "tags": [
+      "Macroeconomics",
+      "Employment",
+      "Productivity",
+      "Wages"
+    ],
+    "inlineExtensionMention": true
+  },
+  {
+    "slug": "bank-lending-standards-credit-cycle-business-growth",
+    "title": "When Banks Tighten Credit: The Economic Slowdown Beyond Interest Rates",
+    "date": "2026-10-29",
+    "excerpt": "Loan approvals, collateral and credit terms can change before policy rates do. Follow the connection to working capital, investment and refinancing.",
+    "tags": [
+      "Macroeconomics",
+      "Banking",
+      "Credit Cycle",
+      "Business Investment"
+    ],
+    "inlineExtensionMention": true
+  },
+  {
+    "slug": "government-debt-primary-deficits-refinancing-risk",
+    "title": "Government Debt Explained: Primary Deficits, Growth and Refinancing Risk",
+    "date": "2026-10-29",
+    "excerpt": "A practical guide to debt sustainability, the interest-growth relationship and the ways fiscal pressure can reach listed businesses.",
+    "tags": [
+      "Macroeconomics",
+      "Fiscal Policy",
+      "Government Debt",
+      "Bond Markets"
+    ],
+    "inlineExtensionMention": true
+  },
+  {
+    "slug": "india-current-account-services-remittances-rupee",
+    "title": "India's Current Account: How Services and Remittances Change the Rupee Story",
+    "date": "2026-10-29",
+    "excerpt": "Look beyond the merchandise trade deficit to services, income, transfers and financing quality when assessing external vulnerability.",
+    "tags": [
+      "Macroeconomics",
+      "India",
+      "Current Account",
+      "Currency"
+    ],
+    "inlineExtensionMention": true
+  },
+  {
+    "slug": "monsoon-food-inflation-rural-demand-india",
+    "title": "Monsoon to Market: Food Inflation and India's Rural Demand",
+    "date": "2026-10-29",
+    "excerpt": "Why rainfall distribution, harvest timing and food supply matter for household budgets, rural incomes and consumer-company margins.",
+    "tags": [
+      "Macroeconomics",
+      "India",
+      "Food Inflation",
+      "Rural Economy"
+    ],
+    "inlineExtensionMention": true
+  },
+  {
+    "slug": "shipping-costs-supply-chain-pressure-inflation-margins",
+    "title": "Shipping Costs and Supply Chains: How Freight Shocks Reach Inflation and Profits",
+    "date": "2026-10-29",
+    "excerpt": "Trace the effects of longer voyages and costlier freight through inventory, working capital, pricing and company cash flow.",
+    "tags": [
+      "Macroeconomics",
+      "Global Trade",
+      "Supply Chains",
+      "Inflation"
+    ],
+    "inlineExtensionMention": true
+  },
+  {
+    "slug": "real-interest-rates-inflation-expectations-company-debt",
+    "title": "Real Interest Rates: Why a Rate Cut May Not Mean Cheaper Money",
+    "date": "2026-10-29",
+    "excerpt": "Compare nominal rates with inflation expectations, then examine credit spreads and debt maturities to understand corporate borrowing conditions.",
+    "tags": [
+      "Macroeconomics",
+      "Interest Rates",
+      "Inflation Expectations",
+      "Corporate Debt"
+    ],
+    "inlineExtensionMention": true
+  },
+  {
+    "slug": "housing-rents-shelter-inflation-interest-rates",
+    "title": "Housing and Inflation: Why Rents, Home Prices and Mortgage Rates Can Disagree",
+    "date": "2026-10-29",
+    "excerpt": "Understand shelter inflation lags, rental equivalence and the different economic exposures of homebuilders, landlords and lenders.",
+    "tags": [
+      "Macroeconomics",
+      "Housing",
+      "Inflation",
+      "US Economy"
+    ],
+    "inlineExtensionMention": true
+  },
+  {
     "slug": "fed-rate-cuts-rbi-monetary-policy-divergence-equities",
     "title": "Fed Rate Cuts vs RBI Stance: How Central Bank Divergence Impacts Equities",
     "date": "2026-10-20",

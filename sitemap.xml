@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://vishwaroopg.github.io/Screener-Extension/blog/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -543,6 +543,66 @@
   <url>
     <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=defense-spending-supercycle-us-nato-indian-indigenisation</loc>
     <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=inflation-base-effects-disinflation-price-levels</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=gdp-growth-inventories-imports-domestic-demand</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=jobs-wages-productivity-unit-labour-costs</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=bank-lending-standards-credit-cycle-business-growth</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=government-debt-primary-deficits-refinancing-risk</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=india-current-account-services-remittances-rupee</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=monsoon-food-inflation-rural-demand-india</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=shipping-costs-supply-chain-pressure-inflation-margins</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=real-interest-rates-inflation-expectations-company-debt</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=housing-rents-shelter-inflation-interest-rates</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
