@@ -3391,6 +3391,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.local.get(['portfolios', 'screenerWatchlist', 'cachedData', 'alerts', 'colorTags', 'smartFocus', 'smartFocusMuted'], (res) => {
       const ports = res.portfolios || {};
       let list = ports[activePortfolio] || res.screenerWatchlist || [];
+      const watchlistCount = list.length;
       const cached = res.cachedData || {};
       const alertsObj = res.alerts || {};
       const colorTags = res.colorTags || {};
@@ -3488,7 +3489,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:right; color:var(--text-color); white-space:nowrap;">
           <thead>
             <tr style="background:var(--header-bg); border-bottom:1px solid var(--border-color); font-weight:400; text-align:center;">
-<td style="padding:10px; cursor:pointer; text-align:center;" id="sort-symbol" title="${t('sortBySymbol') || 'Sort alphabetically by Symbol'}">${bulkMode ? `<input type="checkbox" id="bulk-check-all" title="${t('bulkSelectAll') || 'Select / deselect all'}" style="margin-right:6px; vertical-align:middle; accent-color:var(--link-color,#1a73e8);">` : ''}${t('colSymbol')}${getSortIndicator('symbol')}</td>
+<td style="padding:10px; cursor:pointer; text-align:center;" id="sort-symbol" title="${t('sortBySymbol') || 'Sort alphabetically by Symbol'}">${bulkMode ? `<input type="checkbox" id="bulk-check-all" title="${t('bulkSelectAll') || 'Select / deselect all'}" style="margin-right:6px; vertical-align:middle; accent-color:var(--link-color,#1a73e8);">` : ''}${t('colSymbol')} (${watchlistCount})${getSortIndicator('symbol')}</td>
               <td style="padding:6px 10px;"><div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;"><div id="trend-title-label" style="font-weight:400; font-size:12px; text-align:center;">${trendTitle()}</div><select id="trend-range-select" title="${t('colTrend') || 'Change timeline'}" style="font-size:12px; font-weight:400; border:none; background:transparent; color:var(--text-color); cursor:pointer; text-align:center; padding:0;">${TREND_OPTIONS.map((o) => `<option value="${o.label}"${o.label === trendRangeLabel ? ' selected' : ''}>${o.label}</option>`).join('')}</select></div></td>
               <td style="padding:10px; cursor:pointer; text-align:center;" id="sort-price" title="${t('sortByPrice')}">${t('colPrice')}${getSortIndicator('price')}</td>
               <td style="padding:6px 10px; cursor:pointer; text-align:center;" id="sort-ratio" title="${t('sortByRatio') || 'Sort by ratio'}"><div style="display:inline-flex; align-items:center; justify-content:center; gap:2px;"><select id="ratio-col-select" title="${t('colRatioTitle') || 'Choose ratio column'}" style="font-size:12px; font-weight:400; border:none; background:transparent; color:var(--text-color); cursor:pointer; text-align:center; padding:0;">${RATIO_COLUMN_OPTIONS.map((o) => `<option value="${escHtml(o.key)}"${o.key === ratioColumnKey ? ' selected' : ''}>${o.short}</option>`).join('')}</select><span>${getSortIndicator('ratio')}</span></div></td>
