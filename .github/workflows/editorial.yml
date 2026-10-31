@@ -27,7 +27,7 @@ jobs:
       EDITORIAL_WORKER_URL: ${{ vars.EDITORIAL_WORKER_URL }}
       EDITORIAL_API_SECRET: ${{ secrets.EDITORIAL_API_SECRET }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-2.5-flash' }}
+      GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.5-flash-lite' }}
       JOB_MODE: ${{ inputs.mode }}
       DRAFT_ID: ${{ inputs.draft_id }}
     steps:

@@ -102,7 +102,7 @@ the project to another repository/branch/site.
 | Secret | `EDITORIAL_API_SECRET` (same value as Cloudflare `INTERNAL_API_SECRET`) |
 | Secret | `GEMINI_API_KEY` |
 | Variable | `EDITORIAL_WORKER_URL` |
-| Variable | `GEMINI_MODEL` (defaults to `gemini-2.5-flash`; choose an available free-tier model) |
+| Variable | `GEMINI_MODEL` (defaults to `gemini-3.5-flash-lite`; choose an available free-tier model) |
 
 ## Telegram commands
 

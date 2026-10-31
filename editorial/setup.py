@@ -85,7 +85,7 @@ def main():
         webbrowser.open('https://aistudio.google.com/apikey')
     github = getpass.getpass('Fine-grained GitHub token: this repo only, Actions read/write (hidden): ').strip()
     gemini = getpass.getpass('Gemini API key from an eligible free-tier project (hidden): ').strip()
-    model = input('Gemini model [gemini-2.5-flash]: ').strip() or 'gemini-2.5-flash'
+    model = input('Gemini model [gemini-3.5-flash-lite]: ').strip() or 'gemini-3.5-flash-lite'
     if not github or not gemini:
         raise ValueError('Both API credentials are required.')
     internal, webhook = secrets.token_urlsafe(32), secrets.token_urlsafe(32)

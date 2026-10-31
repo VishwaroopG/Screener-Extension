@@ -212,7 +212,7 @@ Return JSON matching the supplied schema.\n'''
     context = {'event': {k: v for k, v in event.items() if k != 'hosts'},
                'source_1': source, 'existing_titles': existing[:150], 'requested_edits': instructions}
     key = os.environ['GEMINI_API_KEY']
-    model = os.environ.get('GEMINI_MODEL', 'gemini-2.5-flash')
+    model = os.environ.get('GEMINI_MODEL', 'gemini-3.5-flash-lite')
     if not re.fullmatch(r'[a-zA-Z0-9.-]+', model):
         raise ValueError('Invalid model name')
     body = {'systemInstruction': {'parts': [{'text': prompt}]},
@@ -332,7 +332,7 @@ def diagnose():
              if 'generateContent' in model.get('supportedGenerationMethods', [])
              and re.fullmatch(r'models/gemini-[a-zA-Z0-9.-]+', model.get('name', ''))]
     print('Available Gemini generation models: ' + ', '.join(names))
-    model = os.environ.get('GEMINI_MODEL', 'gemini-2.5-flash')
+    model = os.environ.get('GEMINI_MODEL', 'gemini-3.5-flash-lite')
     if not re.fullmatch(r'[a-zA-Z0-9.-]+', model):
         raise ValueError('Invalid model name')
     print('Testing configured model: ' + model)
@@ -340,6 +340,8 @@ def diagnose():
             'generationConfig': {'maxOutputTokens': 64}}
     model_request(f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent', headers, body)
     print('Configured model accepted a real generation request. API key and current quota work.')
+    api('/internal/trigger-scan', {})
+    print('Cloudflare dispatched a research scan using its own GitHub credential.')
 
 
 def revise(draft_id):

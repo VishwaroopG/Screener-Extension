@@ -172,6 +172,10 @@ async function webhook(request, env) {
 async function internal(request, env, path) {
   if (!await secretEqual(request.headers.get('Authorization'), `Bearer ${env.INTERNAL_API_SECRET}`) || !env.INTERNAL_API_SECRET) return json({ error: 'Unauthorized' }, 401);
   const body = request.method === 'POST' ? await request.json() : {};
+  if (path === '/internal/trigger-scan' && request.method === 'POST') {
+    await dispatch(env, 'scan');
+    return json({ dispatched: true });
+  }
   if (path === '/internal/event/claim' && request.method === 'POST') {
     if (!/^[a-f0-9]{64}$/.test(body.id) || typeof body.url !== 'string') return json({ error: 'Invalid event' }, 400);
     const limit = Number(env.MAX_DRAFTS_PER_DAY || 6);
