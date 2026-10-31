@@ -90,8 +90,9 @@
           return r.text();
         }).then(function (body) {
           var tags = (meta.tags || []).map(function (t) { return '<span class="tag">' + t + '</span>'; }).join('');
-          var hasFaq = /<h[2-3][^>]*>\s*frequently asked questions\s*<\/h[2-3]>/i.test(body);
-          var faq = hasFaq ? '' : '<section class="article-faq" aria-labelledby="article-faq-title">'
+          // Topic-specific FAQs must not suppress the standard footer on any post.
+          body = body.replace(/(<h[23]\b[^>]*>)\s*frequently asked questions\s*(<\/h[23]>)/gi, '$1Questions about this topic$2');
+          var faq = '<section class="article-faq" aria-labelledby="article-faq-title">'
             + '<h2 id="article-faq-title">Frequently asked questions</h2>'
             + '<h3>Is this financial advice?</h3>'
             + '<p>No. This article is for education and research. Make decisions based on your own goals and due diligence.</p>'

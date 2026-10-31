@@ -79,7 +79,12 @@ export function previewText(p) {
   return `${p.title}\n\n${p.excerpt}\n\nEvent: ${p.event_title}\nSource date: ${p.event_date}\nRegion: ${p.region}\n\n` +
     p.sections.map(s => `${s.heading}\n\n${s.paragraphs.join('\n\n')}`).join('\n\n') +
     '\n\nSources\n' + p.sources.map((s, i) => `[${i + 1}] ${s.title}\n${s.url}`).join('\n\n') +
-    '\n\nAI-assisted draft. Verify the facts before approving. Educational analysis; no investment recommendation.\n';
+    '\n\nFrequently asked questions\n\nIs this financial advice?\nNo. This article is for education and research. Make decisions based on your own goals and due diligence.' +
+    '\n\nHow should I use this information?\nUse it as a starting point, verify important details with reliable sources, and consider the wider market context.' +
+    '\n\nWhere can I follow stocks while I research?\nTicker Screener keeps your watchlist, charts and ticker tape available in your browser.' +
+    '\n\nTrack these markets live.\nTicker Screener puts your watchlist, charts and ticker tape in every browser tab.' +
+    '\nGet the extension: https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en\n' +
+    '\nAI-assisted draft. Verify the facts before approving. Educational analysis; no investment recommendation.\n';
 }
 async function sendPreview(env, row) {
   const p = JSON.parse(row.payload);
