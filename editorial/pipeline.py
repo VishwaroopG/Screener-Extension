@@ -340,7 +340,15 @@ def diagnose():
             'generationConfig': {'maxOutputTokens': 64}}
     model_request(f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent', headers, body)
     print('Configured model accepted a real generation request. API key and current quota work.')
-    api('/internal/trigger-scan', {})
+
+
+def verify_dispatch():
+    result = api('/internal/trigger-scan', {})
+    if not result.get('dispatched'):
+        status = result.get('status')
+        if result.get('service') == 'github' and isinstance(status, int):
+            raise RequestFailure(status, 'api.github.com')
+        raise RuntimeError('Cloud dispatch failed')
     print('Cloudflare dispatched a research scan using its own GitHub credential.')
 
 
@@ -454,14 +462,16 @@ def complete(draft_id):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('mode', choices=['scan', 'revise', 'publish', 'complete', 'failed', 'revision-failed', 'check-feeds', 'pack-site', 'diagnose'])
+    parser.add_argument('mode', choices=['scan', 'revise', 'publish', 'complete', 'failed', 'revision-failed', 'check-feeds', 'pack-site', 'diagnose', 'verify-dispatch'])
     parser.add_argument('--draft-id', default='')
     args = parser.parse_args()
-    if args.mode not in ('scan', 'check-feeds', 'pack-site', 'diagnose') and not re.fullmatch('[a-f0-9]{16}', args.draft_id):
+    if args.mode not in ('scan', 'check-feeds', 'pack-site', 'diagnose', 'verify-dispatch') and not re.fullmatch('[a-f0-9]{16}', args.draft_id):
         raise ValueError('Invalid draft ID')
     if args.mode == 'publish' and os.environ.get('GITHUB_ACTIONS') != 'true':
         raise ValueError('Publishing is allowed only in the dedicated GitHub Actions checkout')
-    if args.mode == 'diagnose':
+    if args.mode == 'verify-dispatch':
+        verify_dispatch()
+    elif args.mode == 'diagnose':
         diagnose()
     elif args.mode == 'pack-site':
         pack_site()

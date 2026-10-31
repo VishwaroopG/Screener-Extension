@@ -2,6 +2,13 @@
 // secret or a Telegram webhook secret AND the configured private-chat owner.
 export const now = () => Math.floor(Date.now() / 1000);
 const json = (value, status = 200) => Response.json(value, { status });
+class UpstreamFailure extends Error {
+  constructor(service, status) {
+    super('Upstream service request failed');
+    this.service = service;
+    this.status = status;
+  }
+}
 export async function digest(text) {
   return [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)))].map(x => x.toString(16).padStart(2, '0')).join('');
 }
@@ -39,7 +46,7 @@ async function dispatch(env, mode, draftId = '') {
       'X-GitHub-Api-Version': '2022-11-28', 'User-Agent': 'Screener-Editorial', 'Content-Type': 'application/json'
     }, body: JSON.stringify({ ref: env.GITHUB_REF, inputs: { mode, draft_id: draftId } }), signal: AbortSignal.timeout(15000)
   });
-  if (!res.ok) throw new Error(`GitHub dispatch failed (${res.status})`);
+  if (!res.ok) throw new UpstreamFailure('github', res.status);
 }
 async function drainPublishQueue(env) {
   // One publication at a time prevents older website snapshots overwriting
@@ -173,8 +180,13 @@ async function internal(request, env, path) {
   if (!await secretEqual(request.headers.get('Authorization'), `Bearer ${env.INTERNAL_API_SECRET}`) || !env.INTERNAL_API_SECRET) return json({ error: 'Unauthorized' }, 401);
   const body = request.method === 'POST' ? await request.json() : {};
   if (path === '/internal/trigger-scan' && request.method === 'POST') {
-    await dispatch(env, 'scan');
-    return json({ dispatched: true });
+    try {
+      await dispatch(env, 'scan');
+      return json({ dispatched: true });
+    } catch (error) {
+      if (error instanceof UpstreamFailure) return json({ dispatched: false, service: error.service, status: error.status });
+      throw error;
+    }
   }
   if (path === '/internal/event/claim' && request.method === 'POST') {
     if (!/^[a-f0-9]{64}$/.test(body.id) || typeof body.url !== 'string') return json({ error: 'Invalid event' }, 400);
