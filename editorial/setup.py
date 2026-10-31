@@ -10,6 +10,7 @@ import secrets
 import shutil
 import subprocess
 import sys
+import webbrowser
 from urllib.parse import urlparse
 
 from pipeline import fetch
@@ -41,7 +42,9 @@ def main():
     config = json.loads((HERE / 'wrangler.jsonc').read_text(encoding='utf-8'))
     if config['d1_databases'][0]['database_id'].startswith('REPLACE_'):
         raise ValueError('Create the D1 database and enter its database_id in wrangler.jsonc first.')
-    worker = input('Deployed Worker HTTPS URL (for example https://screener-editorial.YOUR-SUBDOMAIN.workers.dev): ').strip().rstrip('/')
+    bootstrap_path = HERE / '.wrangler/bootstrap.json'
+    default_worker = json.loads(bootstrap_path.read_text(encoding='utf-8')).get('worker_url', '') if bootstrap_path.exists() else ''
+    worker = (input(f'Deployed Worker HTTPS URL [{default_worker or "https://screener-editorial.YOUR-SUBDOMAIN.workers.dev"}]: ').strip() or default_worker).rstrip('/')
     parsed = urlparse(worker)
     if parsed.scheme != 'https' or not parsed.hostname or parsed.path or parsed.query or parsed.fragment or parsed.username:
         raise ValueError('Enter the bare HTTPS Worker origin.')
@@ -72,6 +75,14 @@ def main():
             raise ValueError('User ID does not match a private chat observed by this bot.')
     if not owner.isdigit():
         raise ValueError('A numeric private-chat user ID is required.')
+    print('\nNext: create a fine-grained GitHub token at https://github.com/settings/personal-access-tokens/new')
+    print('Resource owner must own Screener-Extension. Select only that repository.')
+    print('Repository permission: Actions = Read and write. Copy the generated token.')
+    print('For drafting, create a Gemini API key at https://aistudio.google.com/apikey')
+    print('Use a project with Free Tier access; paid billing is not required by this setup.')
+    if input('Open both credential pages in your browser? [Y/n]: ').strip().lower() != 'n':
+        webbrowser.open('https://github.com/settings/personal-access-tokens/new')
+        webbrowser.open('https://aistudio.google.com/apikey')
     github = getpass.getpass('Fine-grained GitHub token: this repo only, Actions read/write (hidden): ').strip()
     gemini = getpass.getpass('Gemini API key from an eligible free-tier project (hidden): ').strip()
     model = input('Gemini model [gemini-2.5-flash]: ').strip() or 'gemini-2.5-flash'
@@ -82,8 +93,10 @@ def main():
     for name, value in {'TELEGRAM_BOT_TOKEN': token, 'TELEGRAM_WEBHOOK_SECRET': webhook,
                         'INTERNAL_API_SECRET': internal, 'GITHUB_TOKEN': github}.items():
         run([npx, '--no-install', 'wrangler', 'secret', 'put', name], value)
+        print(f'Cloudflare secret configured: {name}')
     for name, value in {'EDITORIAL_API_SECRET': internal, 'GEMINI_API_KEY': gemini}.items():
         run([gh, 'secret', 'set', name, '--repo', REPO], value)
+        print(f'GitHub secret configured: {name}')
     for name, value in {'EDITORIAL_WORKER_URL': worker, 'GEMINI_MODEL': model}.items():
         run([gh, 'variable', 'set', name, '--repo', REPO, '--body', value])
     config['vars']['TELEGRAM_OWNER_ID'] = owner
@@ -96,6 +109,8 @@ def main():
                                           'allowed_updates': ['message', 'callback_query'], 'drop_pending_updates': True})
     if not result.get('ok'):
         raise ValueError('Webhook registration failed. Re-run setup to retry.')
+    (HERE / '.wrangler').mkdir(exist_ok=True)
+    (HERE / '.wrangler/activation.json').write_text(json.dumps({'connected': True, 'worker_url': worker}), encoding='utf-8')
     print('Private bot connected. Send /status in Telegram to test it.')
     print('Detection is OFF. Run a manual scan in GitHub Actions first; then set ENABLED=true in wrangler.jsonc and deploy.')
     print('Set GitHub Settings → Pages → Source to GitHub Actions before approving your first article.')

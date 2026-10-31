@@ -8,7 +8,7 @@
   "d1_databases": [{
     "binding": "DB",
     "database_name": "screener-editorial",
-    "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+    "database_id": "eb67a1af-7b62-47e2-b3bf-440c22cee3d4",
     "migrations_dir": "migrations"
   }],
   "vars": {
