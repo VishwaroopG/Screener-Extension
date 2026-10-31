@@ -1,0 +1,81 @@
+name: Editorial autopilot
+run-name: Editorial ${{ inputs.mode }} ${{ inputs.draft_id }}
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Job requested by the private editorial service
+        type: choice
+        options: [scan, revise, publish]
+        required: true
+      draft_id:
+        description: Private draft ID (empty for scan)
+        type: string
+        default: ''
+permissions: {}
+concurrency:
+  group: editorial-${{ inputs.mode }}-${{ inputs.draft_id }}
+  cancel-in-progress: false
+jobs:
+  research:
+    if: inputs.mode == 'scan' || inputs.mode == 'revise'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    env:
+      EDITORIAL_WORKER_URL: ${{ vars.EDITORIAL_WORKER_URL }}
+      EDITORIAL_API_SECRET: ${{ secrets.EDITORIAL_API_SECRET }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-2.5-flash' }}
+      JOB_MODE: ${{ inputs.mode }}
+      DRAFT_ID: ${{ inputs.draft_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python editorial/pipeline.py "$JOB_MODE" --draft-id "$DRAFT_ID"
+      - name: Recover a failed revision
+        if: failure() && inputs.mode == 'revise'
+        run: python editorial/pipeline.py revision-failed --draft-id "$DRAFT_ID"
+  publish:
+    if: inputs.mode == 'publish'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      EDITORIAL_WORKER_URL: ${{ vars.EDITORIAL_WORKER_URL }}
+      EDITORIAL_API_SECRET: ${{ secrets.EDITORIAL_API_SECRET }}
+      DRAFT_ID: ${{ inputs.draft_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Claim exact approved version, commit and prepare website
+        run: python editorial/pipeline.py publish --draft-id "$DRAFT_ID"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/editorial-site
+      - name: Deploy approved article
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Confirm publication privately
+        run: python editorial/pipeline.py complete --draft-id "$DRAFT_ID"
+      - name: Preserve approved draft on failure
+        if: failure()
+        run: python editorial/pipeline.py failed --draft-id "$DRAFT_ID"

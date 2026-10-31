@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "screener-editorial",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-31",
+  "workers_dev": true,
+  "triggers": { "crons": ["7,22,37,52 * * * *"] },
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "screener-editorial",
+    "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+    "migrations_dir": "migrations"
+  }],
+  "vars": {
+    "GITHUB_REPOSITORY": "VishwaroopG/Screener-Extension",
+    "GITHUB_REF": "main",
+    "SITE_URL": "https://vishwaroopg.github.io/Screener-Extension",
+    "TELEGRAM_OWNER_ID": "REPLACE_WITH_YOUR_NUMERIC_USER_ID",
+    "TELEGRAM_CHAT_ID": "REPLACE_WITH_YOUR_PRIVATE_CHAT_ID",
+    "MAX_DRAFTS_PER_DAY": "6",
+    "MAX_MODEL_CALLS_PER_DAY": "24",
+    "DRAFT_TTL_HOURS": "12",
+    "ENABLED": "false"
+  }
+}

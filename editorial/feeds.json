@@ -1,0 +1,6 @@
+[
+  {"name":"Federal Reserve monetary policy","region":"US","url":"https://www.federalreserve.gov/feeds/press_monetary.xml","hosts":["www.federalreserve.gov","federalreserve.gov"]},
+  {"name":"US economic releases (BEA)","region":"US","url":"https://apps.bea.gov/rss/rss.xml","hosts":["apps.bea.gov","www.bea.gov","bea.gov"]},
+  {"name":"European Central Bank","region":"Europe","url":"https://www.ecb.europa.eu/rss/press.html","hosts":["www.ecb.europa.eu","ecb.europa.eu"]},
+  {"name":"Bank of Japan English updates","region":"Japan","url":"https://www.boj.or.jp/en/rss/whatsnew.xml","hosts":["www.boj.or.jp","boj.or.jp"]}
+]
