@@ -20,7 +20,7 @@ REPO = 'VishwaroopG/Screener-Extension'
 
 
 def run(args, secret=None):
-    return subprocess.run(args, cwd=HERE, input=secret, text=True, check=True,
+    return subprocess.run(args, cwd=HERE, input=secret, text=True, encoding='utf-8', errors='replace', check=True,
                           stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                           env={**os.environ, 'CI': 'true', 'WRANGLER_SEND_METRICS': 'false'}).stdout.strip()
 

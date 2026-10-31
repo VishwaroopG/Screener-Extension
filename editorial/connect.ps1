@@ -1,4 +1,5 @@
 $ErrorActionPreference = 'Stop'
+$env:PYTHONUTF8 = '1'
 Set-Location -LiteralPath $PSScriptRoot
 Write-Host 'Screener Editorial - private credential setup' -ForegroundColor Cyan
 Write-Host 'Secret fields are hidden. Paste into this terminal only, never into chat.'
