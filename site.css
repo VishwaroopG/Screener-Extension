@@ -1012,7 +1012,7 @@ h1 .accent { color: var(--accent-warm); }
 .article-body ul { margin: 0 0 16px; padding-left: 20px; }
 .article-body li { margin-bottom: 8px; }
 .article-body strong { color: var(--text); }
-.article-body a { color: var(--accent-warm); font-weight: 600; }
+.article-body a:not(.button) { color: var(--accent-warm); font-weight: 600; }
 .shot { margin: 24px 0; }
 .shot img { display: block; width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border); }
 .shot figcaption { margin-top: 8px; color: var(--text-muted); font-size: 0.84rem; line-height: 1.6; }
