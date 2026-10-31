@@ -6,7 +6,7 @@ on:
       mode:
         description: Job requested by the private editorial service
         type: choice
-        options: [scan, revise, publish]
+        options: [scan, revise, publish, diagnose]
         required: true
       draft_id:
         description: Private draft ID (empty for scan)
@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   research:
-    if: inputs.mode == 'scan' || inputs.mode == 'revise'
+    if: inputs.mode == 'scan' || inputs.mode == 'revise' || inputs.mode == 'diagnose'
     runs-on: ubuntu-latest
     timeout-minutes: 12
     permissions:

@@ -34,6 +34,20 @@ class NoRedirect(HTTPRedirectHandler):
         return None
 
 
+class RequestFailure(RuntimeError):
+    def __init__(self, status, host):
+        self.status = status
+        self.host = host
+        super().__init__(f'HTTP {status} from {host}')
+
+
+def safe_error(error):
+    # Never include arbitrary upstream error bodies, URLs or API key values.
+    if isinstance(error, RequestFailure):
+        return f'HTTP {error.status} from {error.host}'
+    return type(error).__name__
+
+
 def fetch(url, *, hosts, data=None, headers=None, method=None):
     """Validate every redirect; never send secrets to redirected origins."""
     for _ in range(4):
@@ -52,7 +66,7 @@ def fetch(url, *, hosts, data=None, headers=None, method=None):
                 url = urljoin(url, error.headers['Location'])
                 continue
             # Do not expose API response bodies or credential-bearing URLs.
-            raise RuntimeError(f'HTTP request failed ({error.code})') from None
+            raise RequestFailure(error.code, parsed.hostname) from None
     raise ValueError('Too many redirects')
 
 
@@ -277,22 +291,46 @@ def scan():
         if not result['claimed']:
             continue
         attempted += 1
+        stage = 'source retrieval'
         try:
-            payload = generate(event, source_text(event), existing)
+            source = source_text(event)
+            stage = 'AI generation and validation'
+            payload = generate(event, source, existing)
             if payload:
+                stage = 'private draft delivery'
                 api('/internal/draft', {'event_id': event_id, 'payload': payload})
                 existing.append(payload['title'])
                 print('Private draft submitted for approval')
             else:
                 api('/internal/event/ignore', {'id': event_id})
-        except Exception:
+        except Exception as error:
             # Lease expires and allows up to 3 total attempts. Do not log
             # arbitrary upstream exception strings which could contain secrets.
-            failures.append('article preparation')
-            print('Article preparation failed; event will be eligible for retry')
+            description = f'{stage}: {safe_error(error)}'
+            failures.append(description)
+            print(f'Article preparation failed ({description}); event will be eligible for retry')
     if not successful_feeds:
         raise RuntimeError('All configured feeds failed')
     api('/internal/scan-complete', {'failures': failures})
+
+
+def diagnose():
+    headers = {'x-goog-api-key': os.environ['GEMINI_API_KEY'], 'Content-Type': 'application/json'}
+    models = json.loads(fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000',
+                              hosts=['generativelanguage.googleapis.com'], headers=headers))
+    names = [model['name'].removeprefix('models/') for model in models.get('models', [])
+             if 'generateContent' in model.get('supportedGenerationMethods', [])
+             and re.fullmatch(r'models/gemini-[a-zA-Z0-9.-]+', model.get('name', ''))]
+    print('Available Gemini generation models: ' + ', '.join(names))
+    model = os.environ.get('GEMINI_MODEL', 'gemini-2.5-flash')
+    if not re.fullmatch(r'[a-zA-Z0-9.-]+', model):
+        raise ValueError('Invalid model name')
+    print('Testing configured model: ' + model)
+    body = {'contents': [{'parts': [{'text': 'Respond with the word OK.'}]}],
+            'generationConfig': {'maxOutputTokens': 64}}
+    fetch(f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
+          hosts=['generativelanguage.googleapis.com'], headers=headers, data=json.dumps(body).encode())
+    print('Configured model accepted a real generation request. API key and current quota work.')
 
 
 def revise(draft_id):
@@ -405,14 +443,16 @@ def complete(draft_id):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('mode', choices=['scan', 'revise', 'publish', 'complete', 'failed', 'revision-failed', 'check-feeds', 'pack-site'])
+    parser.add_argument('mode', choices=['scan', 'revise', 'publish', 'complete', 'failed', 'revision-failed', 'check-feeds', 'pack-site', 'diagnose'])
     parser.add_argument('--draft-id', default='')
     args = parser.parse_args()
-    if args.mode not in ('scan', 'check-feeds', 'pack-site') and not re.fullmatch('[a-f0-9]{16}', args.draft_id):
+    if args.mode not in ('scan', 'check-feeds', 'pack-site', 'diagnose') and not re.fullmatch('[a-f0-9]{16}', args.draft_id):
         raise ValueError('Invalid draft ID')
     if args.mode == 'publish' and os.environ.get('GITHUB_ACTIONS') != 'true':
         raise ValueError('Publishing is allowed only in the dedicated GitHub Actions checkout')
-    if args.mode == 'pack-site':
+    if args.mode == 'diagnose':
+        diagnose()
+    elif args.mode == 'pack-site':
         pack_site()
     elif args.mode == 'check-feeds':
         errors = 0
@@ -443,7 +483,8 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-    except Exception:
+    except Exception as error:
+        print('Failure category: ' + safe_error(error), file=sys.stderr)
         print('Editorial job failed. Review service configuration, quotas and source availability; no secrets logged.', file=sys.stderr)
         if len(sys.argv) > 1 and sys.argv[1] in ('scan', 'revise'):
             try:
