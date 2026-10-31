@@ -178,6 +178,7 @@ def source_text(event):
 ARTICLE_SCHEMA = {
     'type': 'object', 'properties': {
         'significant': {'type': 'boolean'},
+        'topic': {'type': 'string', 'enum': ['macroeconomics', 'stock_market', 'company_stocks', 'not_relevant']},
         'reason': {'type': 'string'},
         'title': {'type': 'string'},
         'excerpt': {'type': 'string'},
@@ -185,12 +186,19 @@ ARTICLE_SCHEMA = {
         'sections': {'type': 'array', 'items': {'type': 'object', 'properties': {
             'heading': {'type': 'string'}, 'paragraphs': {'type': 'array', 'items': {'type': 'string'}}
         }, 'required': ['heading', 'paragraphs']}}
-    }, 'required': ['significant', 'reason', 'title', 'excerpt', 'tags', 'sections']
+    }, 'required': ['significant', 'topic', 'reason', 'title', 'excerpt', 'tags', 'sections']
 }
 
 
 def generate(event, source, existing, instructions=None):
     prompt = '''You are a careful financial-news editor for Ticker Screener.
+Only cover macroeconomics, stock markets, or individual stocks/listed companies.
+Classify the topic as macroeconomics, stock_market, company_stocks or not_relevant.
+Exclude general politics, lifestyle, entertainment, product tutorials and unrelated
+technology news. Trade, geopolitics or technology qualify only when the supplied
+source establishes a concrete connection to one of the three allowed topics.
+Do not manufacture a stock-market connection to justify an unrelated story.
+Return significant=false and topic=not_relevant for anything outside this scope.
 Decide whether this NEW official release materially affects investors, company
 fundamentals, trade, inflation, currencies or monetary policy. Routine notices,
 appointments, statistical corrections without material effect, and generic
@@ -226,7 +234,7 @@ Return JSON matching the supplied schema.\n'''
         raise ValueError('Model output incomplete or blocked')
     parts = candidates[0].get('content', {}).get('parts', [])
     output = json.loads(''.join(p.get('text', '') for p in parts if not p.get('thought')))
-    if output.get('significant') is not True:
+    if output.get('significant') is not True or output.get('topic') not in ('macroeconomics', 'stock_market', 'company_stocks'):
         return None
     # Stable event suffix avoids filename collisions. Model never chooses paths.
     suffix = hashlib.sha256(event['url'].encode()).hexdigest()[:10]

@@ -126,6 +126,7 @@ class PublicationTests(unittest.TestCase):
         article = fixture()
         model = {k: article[k] for k in ('title', 'excerpt', 'reason', 'tags', 'sections')}
         model['significant'] = True
+        model['topic'] = 'macroeconomics'
         event = {**article['event'], 'title': 'Official policy decision', 'published_at': '2026-10-31T01:00:00+00:00',
                  'source': 'Federal Reserve', 'region': 'US'}
         response = {'candidates': [{'finishReason': 'STOP', 'content': {'parts': [{'text': json.dumps(model)}]}}]}
