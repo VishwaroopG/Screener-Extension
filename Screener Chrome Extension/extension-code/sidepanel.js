@@ -2418,9 +2418,10 @@ document.addEventListener('DOMContentLoaded', () => {
              i++;
            }
             html += `</table></div>`;
-            // Screener.in links & peers only make sense for equities -
-            // skip them for crypto/forex/commodities
-            if (!isNonEquity) {
+            // Screener.in links & peers only make sense for Indian equities -
+            // skip them for crypto/forex/commodities and for Yahoo-sourced
+            // (US/global) symbols: screener.in/company/AAPL/ is a Resolver404.
+            if (!isNonEquity && data.source !== 'yahoo') {
               html += `<div style="text-align:right; margin-top:8px;">
                 <a href="https://www.screener.in/company/${ticker}/" target="_blank" style="color:var(--text-color); font-size:12px; text-decoration:none; font-weight:500;">${t('customizeScreener')}</a>
               </div>`;
@@ -2434,8 +2435,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 resultsSearch.innerHTML = html;
                 setWatchlistVisible(false);
 
-                // Async fetch for Fundamentals Depth + Peers & Announcements (equities only)
-              if (!isNonEquity) {
+                // Async fetch for Fundamentals Depth + Peers & Announcements
+                // (Indian equities only - the scrape hits screener.in, whose
+                // company pages don't exist for US/global symbols)
+              if (!isNonEquity && data.source !== 'yahoo') {
               const linkColor = 'var(--text-color)';
               fetch(`https://www.screener.in/company/${ticker}/consolidated/`)
                .then(r => {
@@ -3336,6 +3339,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // pattern. Left-click opens the menu; middle-click still follows the
   // ticker href directly.
   function platformLinks(ticker, source) {
+    // The row anchor carries data-ticker; if it is ever missing or stale,
+    // show no menu instead of four dead URLs built from an empty symbol.
+    if (!String(ticker || '').trim()) return [];
     const data = source ? { source } : null;
     const base = rowBaseSymbol(ticker);
     const ex = rowTvExchange(ticker, data);
@@ -3344,9 +3350,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const isIndex = ticker && ticker.startsWith('^');
     const links = [{ label: 'TradingView', url: 'https://www.tradingview.com/chart/?symbol=' + encodeURIComponent(tvSym) }];
     if (!isIndex) {
-      links.push({ label: 'Screener', url: 'https://www.screener.in/company/' + encodeURIComponent(base) + '/' });
-      links.push({ label: 'Stock Analysis', url: 'https://stockanalysis.com/stocks/' + encodeURIComponent(base.toLowerCase()) + '/' });
-      links.push({ label: 'Yahoo Finance', url: 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) });
+      // Screener.in is India-only (/company/AAPL/ => Resolver404), so the
+      // Screener entry is skipped for US/global symbols. A blank source
+      // (legacy cache rows) keeps the old Screener-first behaviour.
+      if (isInd || !source) {
+        links.push({ label: 'Screener', url: 'https://www.screener.in/company/' + encodeURIComponent(base) + '/' });
+      }
+      // Stock Analysis splits markets: Indian quotes live under /quote/nse/
+      // (/stocks/<name>/ 404s for NSE symbols), US tickers under /stocks/.
+      // Numeric BSE-only codes have no page there at all, so skip them.
+      if (!(isInd && /^\d+$/.test(base))) {
+        links.push({ label: 'Stock Analysis', url: isInd ? 'https://stockanalysis.com/quote/nse/' + encodeURIComponent(base) + '/' : 'https://stockanalysis.com/stocks/' + encodeURIComponent(base.toLowerCase()) + '/' });
+      }
+      // Bare NSE symbols need the exchange suffix on Yahoo (RELIANCE 404s,
+      // RELIANCE.NS resolves); BSE-only numeric codes use .BO.
+      const ySym = (isInd && !/\.(NS|BO)$/i.test(ticker || '')) ? base + (/^\d+$/.test(base) ? '.BO' : '.NS') : ticker;
+      links.push({ label: 'Yahoo Finance', url: 'https://finance.yahoo.com/quote/' + encodeURIComponent(ySym) });
     } else {
       links.push({ label: 'Yahoo Finance', url: 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) });
     }
@@ -3387,6 +3406,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     setTimeout(() => document.addEventListener('click', closePlatformMenuOutside), 0);
   }
+  let watchlistScrollObserver = null;
   function renderWatchlist() {
     if (isDragging) return; // Do not interrupt drag and drop
 
@@ -3413,6 +3433,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (tagClearBtn) tagClearBtn.style.display = (activeTagFilter !== 'all') ? '' : 'none';
       if (activeTagFilter !== 'all') list = list.filter((tk) => colorTags[tk] === activeTagFilter);
       if (focusOnly) list = list.filter((tk) => sfActive(tk));
+
+      if (watchlistScrollObserver) {
+        watchlistScrollObserver.disconnect();
+        watchlistScrollObserver = null;
+      }
 
       if (list.length === 0) {
         const emptyMsg = focusOnly ? (t('sfEmpty') || 'No Smart Focus highlights right now.') : (activeTagFilter !== 'all' ? (t('tagEmpty') || 'No stocks with this tag.') : t('watchlistEmpty'));
@@ -3488,7 +3513,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <button id="bulk-cancel" style="${bb}">${t('bulkCancel') || 'Cancel'}</button>
         </div>`;
       }
-      let html = bulkBar + `<div style="width:100%; overflow-x:auto; border:1px solid var(--border-color); border-radius:8px;">
+      let html = bulkBar + `<div style="width:100%; border:1px solid var(--border-color); border-radius:8px; overflow:hidden;">
+        <div class="wl-topscroll" tabindex="0" role="region" aria-label="Watchlist horizontal scroll" style="display:none;"><div class="wl-topscroll-spacer"></div></div>
+        <div class="wl-scroller" style="width:100%; overflow-x:auto;">
         <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:right; color:var(--text-color); white-space:nowrap;">
           <thead>
             <tr style="background:var(--header-bg); border-bottom:1px solid var(--border-color); font-weight:400; text-align:center;">
@@ -3537,7 +3564,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   <span style="color:#aaa; margin-right:4px; font-size:10px;" title="${t('dragHint')}">⣿</span>
                   ${bulkMode ? `<input type="checkbox" class="screener-bulk-check" data-ticker="${ticker}"${bulkSelected.has(ticker) ? ' checked' : ''} style="margin-right:6px; vertical-align:middle; accent-color:var(--link-color,#1a73e8);">` : ''}
                   <button class="screener-tag-btn${tag && COLOR_TAGS[tag] ? ' has-tag' : ''}" data-ticker="${ticker}" title="${dotTitle}" aria-label="${dotTitle}" style="background:none; border:1px dashed var(--border-color); border-radius:50%; cursor:pointer; padding:4px; vertical-align:middle; line-height:0;"><svg width="14" height="14" viewBox="0 0 24 24" style="fill:${dotColor}; display:block;"><circle cx="12" cy="12" r="8"/></svg></button>
-                  <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + ticker + '/'}" target="_blank" title="${data.companyName || ticker}" style="color:var(--link-green); text-decoration:none;" class="screener-ticker-link" data-source="${data.source || ''}">${ticker}</a>
+                  <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + encodeURIComponent(rowBaseSymbol(ticker)) + '/'}" target="_blank" title="${data.companyName || ticker}" style="color:var(--link-green); text-decoration:none;" class="screener-ticker-link" data-ticker="${escHtml(ticker)}" data-source="${data.source || ''}">${ticker}</a>
                 </td>
                 <td class="trend-cell" data-ticker="${ticker}" style="padding:10px;">${spark}</td>
                 <td class="${flashClass}" style="padding:10px;">${ratios['Current Price']||'-'}<br/>${pctHtml}</td>
@@ -3553,18 +3580,41 @@ document.addEventListener('DOMContentLoaded', () => {
           idx++;
         }
         
-        html += `</tbody></table></div>`;
+        html += `</tbody></table></div></div>`;
         // Preserve horizontal scroll: re-rendering innerHTML destroys the
         // overflow-x scroller and jumps back to the Symbol column.
         let savedScrollLeft = 0;
         try {
-          const prev = wlItemsContainer.firstElementChild;
+          const prev = wlItemsContainer.querySelector('.wl-scroller');
           if (prev) savedScrollLeft = prev.scrollLeft || 0;
         } catch (e) {}
         wlItemsContainer.innerHTML = html;
         try {
-          const next = wlItemsContainer.firstElementChild;
+          const next = wlItemsContainer.querySelector('.wl-scroller');
           if (next && savedScrollLeft) next.scrollLeft = savedScrollLeft;
+        } catch (e) {}
+        // Twin horizontal scrollbar above the table, mirroring the real one below
+        // so users can grab a scrollbar without scrolling to the bottom of the list.
+        try {
+          const wlScroller = wlItemsContainer.querySelector('.wl-scroller');
+          const wlTopbar = wlItemsContainer.querySelector('.wl-topscroll');
+          const wlSpacer = wlItemsContainer.querySelector('.wl-topscroll-spacer');
+          if (wlScroller && wlTopbar && wlSpacer) {
+            const syncTopbar = () => {
+              const needed = wlScroller.clientWidth > 0 && wlScroller.scrollWidth > wlScroller.clientWidth;
+              wlTopbar.style.display = needed ? '' : 'none';
+              if (needed) wlSpacer.style.width = wlScroller.scrollWidth + 'px';
+              wlTopbar.scrollLeft = wlScroller.scrollLeft;
+            };
+            wlScroller.addEventListener('scroll', syncTopbar, { passive: true });
+            wlTopbar.addEventListener('scroll', () => { wlScroller.scrollLeft = wlTopbar.scrollLeft; }, { passive: true });
+            syncTopbar();
+            // Recheck when the panel opens, its width changes, or table content resizes.
+            watchlistScrollObserver = new ResizeObserver(syncTopbar);
+            watchlistScrollObserver.observe(wlScroller);
+            const table = wlScroller.querySelector('table');
+            if (table) watchlistScrollObserver.observe(table);
+          }
         } catch (e) {}
 
         // Wire up sorting

@@ -36,7 +36,7 @@ function nav(active) {
     + link('../learn/', 'Learn', 'learn')
     + link('../blog/', 'Blog', 'blog')
     + '</nav>'
-    + '<span class="nav-meta">v2.6.9</span>'
+    + '<span class="nav-meta">v2.6.10</span>'
     + '<a class="button button-secondary" href="' + EXT_URL + '">Get the extension</a>'
     + '<button class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer"><span></span><span></span><span></span></button>'
     + '</header>'

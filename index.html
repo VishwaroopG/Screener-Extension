@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Ticker Screener v2.6.9 live US watchlist (NYSE, Nasdaq), S&P 500 / Nasdaq / Dow ticker tape, 10-economy Markets tab with Market Mood gauge (live Tickertape MMI for India, CNN Fear & Greed for the USA), Fundamentals Depth on every stock search (SWOT, checklist score, red-flags, shareholding, concalls, PDF report), whole-market breadth, heatmap and alerts.">
+  <meta name="description" content="Ticker Screener v2.6.10 live US watchlist (NYSE, Nasdaq), S&P 500 / Nasdaq / Dow ticker tape, 10-economy Markets tab with Market Mood gauge (live Tickertape MMI for India, CNN Fear & Greed for the USA), Fundamentals Depth on every stock search (SWOT, checklist score, red-flags, shareholding, concalls, PDF report), whole-market breadth, heatmap and alerts.">
   <meta name="color-scheme" content="light dark">
   <title>Ticker Screener | Live Stock Watchlist, Markets & Ticker Tape</title>
   <link rel="preconnect" href="https://api.fontshare.com">
@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=37">
+  <link rel="stylesheet" href="site.css?v=38">
   <link rel="icon" type="image/png" sizes="16x16" href="store-assets/icon_16.png?v=logo-transparent">
   <link rel="icon" type="image/png" sizes="48x48" href="store-assets/icon_48.png?v=logo-transparent">
   <link rel="apple-touch-icon" href="store-assets/icon_128.png?v=logo-transparent">
@@ -22,7 +22,7 @@
       <header class="container nav">
         <a class="brand" href="./"><img class="brand-mark" src="store-assets/icon_128.png?v=logo-transparent" alt="Ticker Screener icon"><span class="brand-text">Ticker <em>Screener</em></span></a>
         <nav class="nav-links" aria-label="Primary navigation"><a href="#features">Features</a><a href="#markets">Markets</a><a href="collections/">Collections</a><a href="glossary/">Glossary</a><a href="learn/">Learn</a><a href="blog/">Blog</a><a href="#developer">Developer</a></nav>
-        <span class="nav-meta">v2.6.9</span>
+        <span class="nav-meta">v2.6.10</span>
         <a class="button button-primary" href="https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en">Get the extension</a>
         <button class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer"><span></span><span></span><span></span></button>
       </header>
@@ -44,7 +44,7 @@
         <div class="hero-orb-1" aria-hidden="true"></div>
         <div class="hero-orb-2" aria-hidden="true"></div>
         <div class="container hero-text-wrap">
-          <span class="eyebrow">v2.6.9 S&P 500 Nasdaq Dow</span>
+          <span class="eyebrow">v2.6.10 S&P 500 Nasdaq Dow</span>
           <h1>Your market, <span class="accent">always in sight.</span></h1>
           <p class="hero-copy">Live NYSE watchlist with switchable ratios, silk S&P tape, one-click import, whole-market breadth - plus Fundamentals Depth on every stock search: SWOT, checklist score, red-flags, shareholding, concalls and one-click PDF.</p>
           <div class="hero-actions"><a class="button button-primary" href="https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en">Get the extension</a><a class="button button-secondary" href="#features">See what it does</a></div>
@@ -85,7 +85,7 @@
       </section>
 
       <section class="container section" id="features">
-        <div class="section-head"><h2 class="section-title">One command center for every market you watch.</h2><p class="section-copy">v2.6.9: Fundamentals Depth on every stock search - free checklist score, SWOT from Screener pros/cons, forensic red-flags, promoter/FII/DII shareholding with trend, concall transcripts with PPT links, research shortcuts and one-click PDF - plus Market Mood gauge with live Tickertape MMI for India and CNN Fear &amp; Greed for the USA, switchable P/E / Div / ROCE / ROE / P/B column, color tags with Smart Focus, bulk Select-All, true advance/decline breadth, one-click Kite / Screener / TradingView import, and a silk 60Hz/120Hz-identical tape.</p></div>
+        <div class="section-head"><h2 class="section-title">One command center for every market you watch.</h2><p class="section-copy">v2.6.10: Fundamentals Depth on every stock search - free checklist score, SWOT from Screener pros/cons, forensic red-flags, promoter/FII/DII shareholding with trend, concall transcripts with PPT links, research shortcuts and one-click PDF - plus Market Mood gauge with live Tickertape MMI for India and CNN Fear &amp; Greed for the USA, switchable P/E / Div / ROCE / ROE / P/B column, color tags with Smart Focus, bulk Select-All, true advance/decline breadth, one-click Kite / Screener / TradingView import, and a silk 60Hz/120Hz-identical tape.</p></div>
         <div class="bento" id="bento-grid">
           <article class="tile span-8" data-3d-card><div class="bento-num">01 Watchlist</div><h3>Add to Watchlist</h3><p>Right-click any stock name or ticker symbol on any webpage to instantly add it to your Screener watchlist. No copy-pasting required.</p><p>Tap the P/E header to switch the same column to Div Yld, ROCE, ROE, or P/B - choice persists, P/B auto-derived so Indian stocks never show blank, ratios render Screener-style (51.5 not 51.50). Dot-tag holdings with color tags, filter by tag, and let Smart Focus blue-dot big moves (&gt;5%), unusual swings, or near 52-week highs/lows - hit Focus for firing stocks only, mute per stock. Bulk Select mode adds header Select-All with tag / move / delete across portfolios without losing scroll.</p><figure><img src="store-assets/screenshot_v2_5_contextmenu_1280x800_gold.jpg" alt="Add to Screener Watchlist context menu" loading="lazy"><figcaption>Highlight, right-click, and add  the extension resolves the ticker automatically.</figcaption></figure></article>
           <article class="tile span-4" data-3d-card><div class="bento-num">02 Markets</div><h3>USA + 9 more</h3><p>Opens on the USA. S&amp;P 500, Nasdaq, Dow. Switch economies without losing your watchlist. Track the FTSE 100 in the UK, Nifty 50 in India, Nikkei 225 in Japan, Hang Seng in Hong Kong, DAX in Germany, CAC 40 in France, ASX 200 in Australia, TSX in Canada, and the Straits Times Index in Singapore. Each economy displays its native currency with live macro indicators tied to World Bank data.</p><p>Whole-market advance / decline breadth sits above gainers and losers: Nifty 500 totals for India and combined NYSE + Nasdaq totals for the USA, so you see true market participation instead of a partial count. A Market Mood gauge tops the tab: the live Tickertape Market Mood Index for India and the CNN Fear &amp; Greed index for the USA, with a data-driven proxy for other economies - hover any arc for its zone, tap the ⓘ for the factors behind the number. Portfolios stay intact in the side panel while you browse global macro data. Switch between any two economies instantly  your watchlist, alerts, and chart preferences carry over without reset. Macro tiles like inflation, GDP, and unemployment update per economy so you always see the context behind the numbers.</p></article>
@@ -95,7 +95,7 @@
           <article class="tile span-6" data-3d-card><div class="bento-num">06 Signals</div><h3>Alerts without leaving your tab</h3><p>Green / red movement highlights, market cap, P/E, AI verdicts and background price alerts with desktop notifications. Every price tick is evaluated against your alert thresholds in the background. When a condition is met  whether a percentage swing, a market-cap milestone, or a P/E level  a desktop notification fires instantly, even when the side panel is closed.</p><p>Alerts run on background alarms with desktop notifications as prices stream in. Movement highlights paint green or red on the ticker row the moment a threshold is crossed. AI verdicts synthesize price action, volume and fundamentals into a concise buy / hold / watch signal. You stay informed without refreshing, switching tabs, or losing focus on what you are reading.</p></article>
           <article class="tile span-6" data-3d-card><div class="bento-num">07 Import</div><h3>One-click Kite / Screener / TradingView import</h3><p>Bring holdings over from Zerodha Kite, Screener.in, or TradingView - auto-detect tickers from the open tab (even login-walled pages), paste a list, or upload a holdings CSV or TXT file. Every ticker resolves automatically and merges into your active portfolio, skipping duplicates, with a checkbox preview and live selection counts.</p><p>Nothing is read in the background: tickers are read only at the moment you click Detect, shown for confirmation, and added only after you approve. Portfolio dropdown sits beside Your Watchlist for faster switching after import.</p></article>
           <article class="tile span-6" data-3d-card><div class="bento-num">08 Tape</div><h3>Silk tape, same speed everywhere</h3><p>Time-based scroll engine moves at identical px/sec on 60Hz, 120Hz, and throttled tabs, with a seamless loop in both left and right directions. Flash highlights are background-only so live ticks never jitter or shift marquee width mid-scroll - DOM updates only when values actually change.</p><p>Speed popover is fixed-position so header overflow never clips 2.0x+ presets, closes with ESC, and all native dropdowns (trend, ratio, portfolio, markets) render readable in dark mode.</p></article>
-          <article class="tile span-12" data-3d-card><div class="bento-num">09 Fundamentals Depth - new in v2.6.9</div><h3>SWOT, checklist, red-flags on every search</h3><p>Search any stock - RELIANCE, HDFCBANK, AAPL - and get Tickertape-parity depth free: a Checklist score out of 10, SWOT built from Screener pros/cons, forensic red-flags (low ROE, high P/E with low ROCE, weak payout, pledge/contingent/debtor keywords), promoter / FII / DII / public shareholding with quarterly trend, concall transcripts with PPT and AI-summary links, plus one-click shortcuts to Screener report, annual reports, Tickertape and Trendlyne Superstars. Hit PDF to save the card. Indian equities parse live from Screener.in; global stocks get Yahoo fundamentals with the same layout.</p><p>Why free? Tickertape locks score, rank and forecasts behind Pro. Here the checklist, SWOT and flags stay in the side panel - no paywall, no new tab.</p></article>
+          <article class="tile span-12" data-3d-card><div class="bento-num">09 Fundamentals Depth - new in v2.6.10</div><h3>SWOT, checklist, red-flags on every search</h3><p>Search any stock - RELIANCE, HDFCBANK, AAPL - and get Tickertape-parity depth free: a Checklist score out of 10, SWOT built from Screener pros/cons, forensic red-flags (low ROE, high P/E with low ROCE, weak payout, pledge/contingent/debtor keywords), promoter / FII / DII / public shareholding with quarterly trend, concall transcripts with PPT and AI-summary links, plus one-click shortcuts to Screener report, annual reports, Tickertape and Trendlyne Superstars. Hit PDF to save the card. Indian equities parse live from Screener.in; global stocks get Yahoo fundamentals with the same layout.</p><p>Why free? Tickertape locks score, rank and forecasts behind Pro. Here the checklist, SWOT and flags stay in the side panel - no paywall, no new tab.</p></article>
         </div>
       </section>
 
@@ -137,7 +137,7 @@
         try { return new Date(iso + 'T00:00:00').toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }); }
         catch (e) { return iso; }
       }
-      fetch('blog/posts.json?v=6').then(function (r) { return r.json(); }).then(function (posts) {
+      fetch('blog/posts.json?v=10').then(function (r) { return r.json(); }).then(function (posts) {
         posts.sort(function (a, b) { return b.date.localeCompare(a.date); });
         var latest = posts.slice(0, 3);
         if (!latest.length) { wrap.innerHTML = '<p class="section-copy">No posts yet. Check back soon.</p>'; return; }

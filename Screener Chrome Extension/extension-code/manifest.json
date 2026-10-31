@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Ticker Screener – Live Watchlist & Ticker",
-  "version": "2.6.9",
+  "version": "2.6.10",
   "default_locale": "en",
   "icons": {
     "16": "icon_16.png",
@@ -22,7 +22,9 @@
     "https://www.screener.in/*",
     "https://query1.finance.yahoo.com/*",
     "https://query2.finance.yahoo.com/*",
+    "https://fc.yahoo.com/*",
     "https://finviz.com/*",
+    "https://stockanalysis.com/*",
     "https://api.worldbank.org/*",
     "https://news.google.com/*",
     "https://formsubmit.co/*",

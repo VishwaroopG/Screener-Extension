@@ -19,15 +19,13 @@
 - Live ticker tape on every website (S&P 500, Nasdaq, Dow, watchlist; pause, 0.5x–3.0x speed, per-site disable; % change, amount change, or both combined like +$5.20 (+0.37%)). v2.6.3 silk engine: time-based 60Hz/120Hz-identical speed, seamless both-direction loop, jitter-free background-only flashes, fixed speed popover + ESC, dark-mode readable dropdowns.
 - Markets tab: opens on the USA, plus UK, India, Singapore, Japan, Hong Kong, Germany, France, Australia, Canada - Market Mood gauge on top (live Tickertape MMI for India, CNN Fear & Greed for the USA, market-data proxy elsewhere; hover arcs for zones, ⓘ lists factors), whole-market advance/decline breadth (Nifty 500 for India via Moneycontrol, NYSE + Nasdaq for USA via WSJ, 10-min cache), index heatmap, top gainers/losers, World Bank macro tiles (inflation, unemployment, GDP growth, GDP per capita).
 - Smart verdicts from P/E + ROCE (undervalued / overvalued / high risk) + custom price alerts with notifications.
-- v2.7.0 Fundamentals Depth on every stock search: free checklist score /10, SWOT from Screener pros/cons, forensic red-flags, promoter/FII/DII/public shareholding with trend, concall transcripts with PPT links, research shortcuts (Screener, Tickertape, Trendlyne Superstars) + one-click PDF.
+- v2.6.10 Live Watchlist, Global Markets & Ticker Tape: dynamic live valuation (P/E, Market Cap, P/B recalculating on every price tick), multi-source fundamentals fallback engine (Screener.in, Yahoo Finance, Finviz, Stock Analysis), twin synchronized horizontal scrollbar for wide columns, active stock counter, two-way watchlist column sorting, and conflict-free background cache syncing.
+- Fundamentals Depth on every stock search: free checklist score /10, SWOT from Screener pros/cons, forensic red-flags, promoter/FII/DII/public shareholding with trend, concall transcripts with PPT links, research shortcuts (Screener, Tickertape, Trendlyne Superstars) + one-click PDF.
 - Add stocks from any webpage via right-click; Screener.in Top Ratios sync when logged in.
 - Multiple portfolios, CSV export, stock news feed with publisher thumbnails, dark mode, interactive 1M–MAX charts (hardened popup buttons + Read more/less), dashboard refresh button, full-screen tab view (fullscreen header button).
 
 ## Blog posts (22: 10 new Oct 2026 US-first batch + 12 existing)
 
-- Tape, Heatmap, Breadth: Read the Whole US Market in 30 Seconds: https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=ticker-tape-heatmap-breadth-read-market-30-seconds
-- Price Alerts That Actually Work: Background Notifications for NYSE & Nasdaq: https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=price-alerts-nyse-nasdaq-background-notifications
-- Build a Live US Watchlist in 5 Minutes (TradingView Import, Tags, Smart Focus): https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=build-us-watchlist-5-minutes-tradingview-import
 - Gold ETFs vs Gold Miners in 2026: Insurance or Trade?: https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=gold-etfs-vs-gold-miners-us-risk-off-2026
 - 10Y Above 5%, Fed Near 4%: What It Means for Nasdaq Growth Stocks: https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=us-10y-above-5-fed-4-percent-nasdaq-growth-stocks
 - Q3 2026 US Earnings: Magnificent 7, Big Banks and What Moves the S&P 500: https://vishwaroopg.github.io/Screener-Extension/blog/post.html?slug=q3-2026-us-earnings-magnificent-7-banks

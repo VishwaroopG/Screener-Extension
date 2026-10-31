@@ -1,6 +1,46 @@
+// Serialize cache commits and merge only fields changed by this refresh.
+// If another refresh changed the same field since our read, keep its newer value.
+let cacheCommitQueue = Promise.resolve();
+function mergeRefreshState(before, proposed, current) {
+  const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+  if (same(before, proposed)) return current;
+  const object = v => v && typeof v === 'object' && !Array.isArray(v);
+  if (object(proposed) && (object(current) || current === undefined)) {
+    const out = { ...(current || {}) };
+    for (const key of Object.keys(proposed)) {
+      const value = mergeRefreshState(before?.[key], proposed[key], current?.[key]);
+      if (value !== undefined) out[key] = value;
+    }
+    return out;
+  }
+  return same(before, current) ? proposed : current;
+}
+function commitRefreshState(proposed, baseline) {
+  const pending = JSON.parse(JSON.stringify(proposed));
+  const before = JSON.parse(JSON.stringify(baseline));
+  const commit = cacheCommitQueue.then(async () => {
+    const current = await chrome.storage.local.get(Object.keys(pending));
+    const merged = {};
+    for (const key of Object.keys(pending)) {
+      merged[key] = key === 'cachedData' || key === 'marketIndices'
+        ? mergeRefreshState(before[key], pending[key], current[key])
+        : pending[key];
+    }
+    await chrome.storage.local.set(merged);
+    Object.assign(baseline, pending);
+  });
+  cacheCommitQueue = commit.catch(() => {});
+  return commit;
+}
+
 let fastPollInterval = null;
 let isFetchingFastPrices = false;
 let lastFastFallbackAt = 0;
+let yahooCrumb = null;
+let yahooCrumbAt = 0;
+let yahooCrumbPromise = null;
+let isFetchingQuotes = false;
+let lastFundamentalsAt = 0;
 const PRICE_DECIMALS = 2;
 // Sub-dollar assets (e.g. altcoins, JPY-cross forex) need more precision
 function priceDecimalsFor(v) {
@@ -289,6 +329,326 @@ function formatMarketCap(value) {
   });
 }
 
+function parseMarketCapToNumber(str) {
+  if (typeof str === 'number') return str;
+  if (str == null || str === '' || str === '-') return NaN;
+  const s = String(str).replace(/,/g, '').trim();
+  const cr = s.match(/([\d.]+)\s*Cr/i);
+  if (cr) {
+    const n = parseFloat(cr[1]);
+    return Number.isFinite(n) ? n * 1e7 : NaN;
+  }
+  const m = s.match(/([\d.]+)\s*([TBMK])?/i);
+  if (!m) return NaN;
+  const n = parseFloat(m[1]);
+  if (!Number.isFinite(n)) return NaN;
+  const mul = { T: 1e12, B: 1e9, M: 1e6, K: 1e3 }[(m[2] || '').toUpperCase()] || 1;
+  return n * mul;
+}
+
+function formatMarketCapFromNumber(num, currencyCode) {
+  if (!Number.isFinite(num) || num <= 0) return null;
+  const currency = getCurrencyDetails(currencyCode);
+  const prefix = currency.prefix || '';
+  if ((currencyCode || 'INR') === 'INR') {
+    const cr = num / 1e7;
+    const decimals = Math.abs(cr) >= 100 ? 0 : 2;
+    return prefix + cr.toLocaleString('en-IN', { maximumFractionDigits: decimals, minimumFractionDigits: 0 }) + ' Cr.';
+  }
+  const abs = Math.abs(num);
+  let out;
+  if (abs >= 1e12) out = (num / 1e12).toFixed(2) + 'T';
+  else if (abs >= 1e9) out = (num / 1e9).toFixed(2) + 'B';
+  else if (abs >= 1e6) out = (num / 1e6).toFixed(2) + 'M';
+  else out = num.toLocaleString(currency.locale || 'en-US', { maximumFractionDigits: 0 });
+  return prefix + out;
+}
+
+function parsePriceNumber(str) {
+  if (typeof str === 'number') return str;
+  if (str == null || str === '') return NaN;
+  return parseFloat(String(str).replace(/[^\d.-]/g, ''));
+}
+
+function captureValuationAnchors(entry, price) {
+  if (!entry || !entry.ratios || !Number.isFinite(price) || price <= 0) return;
+  const pe = parseFloat(String(entry.ratios['Stock P/E'] || '').replace(/,/g, ''));
+  if (Number.isFinite(pe) && pe > 0) entry.epsTTM = price / pe;
+  const mcap = parseMarketCapToNumber(entry.ratios['Market Cap']);
+  if (Number.isFinite(mcap) && mcap > 0) entry.sharesOutstanding = mcap / price;
+  const pb = parseFloat(String(entry.ratios['Price to book value'] || '').replace(/,/g, ''));
+  if (Number.isFinite(pb) && pb > 0) entry.bookValue = price / pb;
+}
+
+function refreshLiveValuation(entry, price, currencyCode) {
+  if (!entry || !Number.isFinite(price) || price <= 0) return false;
+  if (!entry.ratios) entry.ratios = {};
+  const code = currencyCode || entry.currency;
+  let changed = false;
+  if (typeof entry.epsTTM === 'number' && Number.isFinite(entry.epsTTM) && entry.epsTTM !== 0) {
+    const pe = price / entry.epsTTM;
+    if (Number.isFinite(pe) && pe > 0) {
+      const formatted = formatPureRatio(pe.toFixed(2));
+      if (entry.ratios['Stock P/E'] !== formatted) {
+        entry.ratios['Stock P/E'] = formatted;
+        changed = true;
+      }
+    }
+  }
+  if (typeof entry.sharesOutstanding === 'number' && entry.sharesOutstanding > 0) {
+    const formatted = formatMarketCapFromNumber(price * entry.sharesOutstanding, code);
+    if (formatted && entry.ratios['Market Cap'] !== formatted) {
+      entry.ratios['Market Cap'] = formatted;
+      changed = true;
+    }
+  }
+  if (typeof entry.bookValue === 'number' && Number.isFinite(entry.bookValue) && entry.bookValue !== 0) {
+    const pb = price / entry.bookValue;
+    if (Number.isFinite(pb) && pb > 0) {
+      const formatted = formatPureRatio(pb.toFixed(2));
+      if (entry.ratios['Price to book value'] !== formatted) {
+        entry.ratios['Price to book value'] = formatted;
+        changed = true;
+      }
+    }
+  }
+  return changed;
+}
+
+function applyQuoteFundamentals(entry, quote) {
+  if (!entry || !quote) return false;
+  if (!entry.ratios) entry.ratios = {};
+  const ratios = entry.ratios;
+  const currencyCode = quote.currency || entry.currency;
+  let changed = false;
+  if (quote.currency && entry.currency !== quote.currency) {
+    entry.currency = quote.currency;
+    changed = true;
+  }
+  if (quote.shortName && !entry.companyName) {
+    entry.companyName = quote.shortName;
+    changed = true;
+  }
+  entry.success = true;
+  if (typeof quote.epsTrailingTwelveMonths === 'number' && Number.isFinite(quote.epsTrailingTwelveMonths) && quote.epsTrailingTwelveMonths !== 0) {
+    entry.epsTTM = quote.epsTrailingTwelveMonths;
+  }
+  if (typeof quote.sharesOutstanding === 'number' && quote.sharesOutstanding > 0) {
+    entry.sharesOutstanding = quote.sharesOutstanding;
+  }
+  if (typeof quote.bookValue === 'number' && Number.isFinite(quote.bookValue) && quote.bookValue !== 0) {
+    entry.bookValue = quote.bookValue;
+  }
+  const pe = quote.trailingPE ?? quote.forwardPE;
+  if (typeof pe === 'number' && Number.isFinite(pe) && pe > 0) {
+    const formatted = formatPureRatio(pe.toFixed(2));
+    if (ratios['Stock P/E'] !== formatted) {
+      ratios['Stock P/E'] = formatted;
+      changed = true;
+    }
+  }
+  if (typeof quote.marketCap === 'number' && quote.marketCap > 0) {
+    const formatted = formatMarketCapFromNumber(quote.marketCap, currencyCode);
+    if (formatted && ratios['Market Cap'] !== formatted) {
+      ratios['Market Cap'] = formatted;
+      changed = true;
+    }
+  }
+  if (!ratios['Price to book value']) {
+    const pb = quote.priceToBook;
+    if (typeof pb === 'number' && Number.isFinite(pb) && pb > 0) {
+      ratios['Price to book value'] = formatPureRatio(pb.toFixed(2));
+      changed = true;
+    }
+  }
+  if (!ratios['Dividend Yield']) {
+    const dy = quote.trailingAnnualDividendYield ?? quote.dividendYield;
+    if (typeof dy === 'number' && Number.isFinite(dy) && dy > 0) {
+      ratios['Dividend Yield'] = (dy * 100).toFixed(2) + '%';
+      changed = true;
+    }
+  }
+  const price = quote.regularMarketPrice;
+  if (Number.isFinite(price) && price > 0) {
+    if (refreshLiveValuation(entry, price, currencyCode)) changed = true;
+    captureValuationAnchors(entry, price);
+  }
+  return changed;
+}
+
+// Bounded fetch: an unbounded request in the service worker can hang for
+// minutes, which stalls the P/E + market-cap pipeline and keeps the
+// isFetchingQuotes lock held, blocking every later refresh.
+async function fetchWithTimeout(url, opts, ms, bufferText = false) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms);
+  try {
+    const response = await fetch(url, Object.assign({}, opts, { signal: controller.signal }));
+    if (!bufferText) return response;
+    // Keep the deadline active while HTML downloads, not just until headers.
+    const body = await response.text();
+    return { ok: response.ok, status: response.status, text: async () => body };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// Warm the cookie+crumb handshake at startup so the very first P/E / market-cap
+// refresh does not pay for two extra round-trips on a cold service worker.
+// Fire-and-forget: fetchYahooQuotes still retries the crumb on 401/403.
+ensureYahooCrumb().catch(() => {});
+
+async function ensureYahooCrumb(force) {
+  if (!force && yahooCrumb && (Date.now() - yahooCrumbAt) < 30 * 60 * 1000) return yahooCrumb;
+  if (yahooCrumbPromise) return yahooCrumbPromise;
+  yahooCrumbPromise = (async () => {
+    try {
+      await fetchWithTimeout('https://fc.yahoo.com/', { credentials: 'include', cache: 'no-store' }, 6000).catch(() => {});
+      const res = await fetchWithTimeout('https://query1.finance.yahoo.com/v1/test/getcrumb', { credentials: 'include', cache: 'no-store' }, 6000);
+      const crumb = String(await res.text() || '').trim();
+      if (!res.ok || !crumb || crumb.length > 80 || /unauthorized|error/i.test(crumb)) {
+        yahooCrumb = null;
+        return null;
+      }
+      yahooCrumb = crumb;
+      yahooCrumbAt = Date.now();
+      return crumb;
+    } catch (e) {
+      yahooCrumb = null;
+      return null;
+    } finally {
+      yahooCrumbPromise = null;
+    }
+  })();
+  return yahooCrumbPromise;
+}
+
+// Renamed NSE symbols: when a company renames, the exchange retires the old
+// code and BOTH data sources 404 on it (ICICI Prudential Life -> ICICI Life;
+// ICICIPRULI -> ICICILIFE on 2026-10-23; ICICIPRULIFE is a common misspelling
+// seen in imported watchlists). Without this map those rows sit dead as
+// "Could not fetch" forever, with no P/E, Market Cap or price. Network calls
+// use the live symbol; the cache key stays the user's original ticker.
+// Keep in sync with the copies in sidepanel.js and ticker_tape.js.
+const SYMBOL_ALIASES = {
+  ICICIPRULI: 'ICICILIFE',
+  ICICIPRULIFE: 'ICICILIFE'
+};
+function resolveSymbolAlias(ticker) {
+  const bare = String(ticker || '').trim().toUpperCase().replace(/\.(NS|BO)$/, '');
+  return SYMBOL_ALIASES[bare] || ticker;
+}
+
+async function fetchYahooQuotes(symbols) {
+  const unique = [...new Set((symbols || []).filter(Boolean))];
+  if (!unique.length) return {};
+  let crumb = await ensureYahooCrumb();
+  if (!crumb) return {};
+  const out = {};
+  const chunkSize = 40;
+  for (let i = 0; i < unique.length; i += chunkSize) {
+    const chunk = unique.slice(i, i + chunkSize);
+    const urlFor = (c) => `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(chunk.join(','))}&crumb=${encodeURIComponent(c)}`;
+    try {
+      let res = await fetchWithTimeout(urlFor(crumb), { credentials: 'include', cache: 'no-store' }, 10000);
+      if (res.status === 401 || res.status === 403) {
+        yahooCrumb = null;
+        crumb = await ensureYahooCrumb(true);
+        if (!crumb) break;
+        res = await fetchWithTimeout(urlFor(crumb), { credentials: 'include', cache: 'no-store' }, 10000);
+      }
+      if (!res.ok) continue;
+      const data = await res.json();
+      for (const q of data?.quoteResponse?.result || []) {
+        if (q && q.symbol) out[q.symbol] = q;
+      }
+    } catch (e) {}
+  }
+  return out;
+}
+
+function yahooQuoteForTicker(ticker, quotes, cached) {
+  if (!quotes) return null;
+  // Retired NSE symbols resolve to their live code (SYMBOL_ALIASES) so a
+  // stale watchlist row still picks up P/E and Market Cap.
+  const live = resolveSymbolAlias(ticker);
+  if (quotes[live]) return quotes[live];
+  if (quotes[live + '.NS']) return quotes[live + '.NS'];
+  if (quotes[ticker]) return quotes[ticker];
+  if (quotes[ticker + '.NS']) return quotes[ticker + '.NS'];
+  const currency = cached && cached.currency;
+  if (currency && currency !== 'INR' && quotes[ticker]) return quotes[ticker];
+  return null;
+}
+
+function needsValuationRefresh(entry, ticker) {
+  const kind = (entry && entry.assetKind) || classifyAsset(ticker);
+  if (kind !== 'stock') return false;
+  const ratios = (entry && entry.ratios) || {};
+  return !ratios['Stock P/E'] || ratios['Stock P/E'] === '-' || !ratios['Market Cap'] || ratios['Market Cap'] === '-' || !entry || !entry.epsTTM || !entry.sharesOutstanding;
+}
+
+async function refreshWatchlistFundamentals(symbols, allTickers) {
+  if (isFetchingQuotes) return;
+  isFetchingQuotes = true;
+  try {
+    const stockSymbols = (symbols || []).filter((s) => s && !String(s).startsWith('^'));
+    const quotes = await fetchYahooQuotes(stockSymbols);
+    const stored = await chrome.storage.local.get(['cachedData']);
+    const cachedData = stored.cachedData || {};
+    const refreshBaseline = structuredClone({ cachedData });
+    let changed = false;
+    for (const ticker of allTickers || []) {
+      if (classifyAsset(ticker) !== 'stock') continue;
+      const quote = yahooQuoteForTicker(ticker, quotes, cachedData[ticker]);
+      if (!quote) continue;
+      if (!cachedData[ticker]) cachedData[ticker] = { ticker, ratios: {}, source: 'yahoo', success: true };
+      if (applyQuoteFundamentals(cachedData[ticker], quote)) changed = true;
+    }
+    // Yahoo can answer for none of the tickers (crumb rotated, rate limited)
+    // or only some of them. Either way the non-Yahoo sources still get a turn
+    // so P/E and market cap do not sit on "-" across the whole watchlist.
+    // Bounded per cycle so one refresh cannot become dozens of serial scrapes.
+    const gapTickers = (allTickers || []).filter((tk) => {
+      if (classifyAsset(tk) !== 'stock') return false;
+      const entry = cachedData[tk];
+      if (!entry || !entry.ratios) return false;
+      return !fundHasNumber(entry.ratios['Stock P/E']) || !fundHasNumber(entry.ratios['Market Cap']);
+    });
+    // Rotate the batch so unavailable/loss-making stocks cannot starve later rows.
+    const batch = [];
+    for (let i = 0; i < Math.min(6, gapTickers.length); i++) {
+      batch.push(gapTickers[(fundRefreshCursor + i) % gapTickers.length]);
+    }
+    fundRefreshCursor = gapTickers.length ? (fundRefreshCursor + batch.length) % gapTickers.length : 0;
+    for (const tk of batch) {
+      const entry = cachedData[tk];
+      const ind = /\.(NS|BO)$/i.test(tk) || entry.currency === 'INR' || entry.source === 'screener';
+      try {
+        const ok = await resolveValuationFundamentals(tk, entry, {
+          currency: entry.currency || (ind ? 'INR' : 'USD'),
+          isIndian: ind,
+          // The bulk Yahoo quote above already had its turn.
+          skip: ['yahooQuote'],
+          primaryRank: FUND_SOURCE_RANK.yahooQuote
+        });
+        if (ok) changed = true;
+      } catch (e) {}
+    }
+    if (changed) {
+      await commitRefreshState({ cachedData }, refreshBaseline);
+      chrome.runtime.sendMessage({ type: 'WATCHLIST_UPDATED' }).catch(() => {});
+    }
+  } catch (e) {
+  } finally {
+    // Stamp on completion, not on entry: a slow or failed attempt should not
+    // consume the throttle window on top of the time it already burned, or the
+    // retry lands far later than the caller's interval implies.
+    lastFundamentalsAt = Date.now();
+    isFetchingQuotes = false;
+  }
+}
+
 function getCurrencyDetails(currency) {
   switch (currency || 'INR') {
     case 'INR': return { code: 'INR', prefix: '₹', locale: 'en-IN' };
@@ -339,15 +699,281 @@ async function fetchChartQuote(symbol) {
   }
 }
 
+// ============================================================================
+// Multi-source P/E + market-cap fallback chain
+// ============================================================================
+// P/E and Market Cap are the two headline watchlist numbers, so they get an
+// ordered chain of independent sources rather than a single upstream. Every
+// source is time-boxed, records its own health, and may only write a field it
+// outranks - so the best source wins per field while any source can backfill
+// whatever is still empty.
+//
+// Yahoo quotes require a cookie/crumb handshake. Screener and Finviz cover
+// different markets; Stock Analysis provides an independent HTML fallback.
+// Endpoint availability and HTML layouts may change, so failures must fall
+// through without replacing previously cached values.
+
+const FUND_SOURCE_RANK = { screener: 10, finviz: 20, yahooQuote: 30, stockAnalysis: 40 };
+const FUND_SOURCE_COOLDOWN_MS = 10 * 60 * 1000;
+let fundSourceHealth = {};
+let fundRefreshCursor = 0;
+try {
+  chrome.storage.local.get(['fundSourceHealth'], (res) => {
+    if (res && res.fundSourceHealth && typeof res.fundSourceHealth === 'object') fundSourceHealth = res.fundSourceHealth;
+  });
+} catch (e) {}
+
+const fundHasNumber = (v) => /\d/.test(String(v || ''));
+// RELIANCE.NS / 500325.BO -> RELIANCE / 500325
+const fundBaseSymbol = (t) => String(t || '').replace(/\.(NS|BO)$/i, '').toUpperCase();
+
+function fundNoteSource(id, ticker, ok) {
+  // A missing symbol or changed page affects this ticker only. Never disable
+  // a provider for the whole watchlist because one company was unavailable.
+  const now = Date.now();
+  const key = id + ':' + ticker;
+  if (ok) delete fundSourceHealth[key];
+  else fundSourceHealth[key] = { ok: false, at: now };
+  for (const k of Object.keys(fundSourceHealth)) {
+    if (!k.includes(':') || now - fundSourceHealth[k].at >= FUND_SOURCE_COOLDOWN_MS) delete fundSourceHealth[k];
+  }
+  try { chrome.storage.local.set({ fundSourceHealth }).catch(() => {}); } catch (e) {}
+}
+function fundSourceCoolingDown(id, ticker) {
+  const h = fundSourceHealth[id + ':' + ticker];
+  return !!(h && !h.ok && (Date.now() - h.at) < FUND_SOURCE_COOLDOWN_MS);
+}
+
+// Source result key -> ratio key. `eps` / `shares` are live-refresh anchors
+// instead of display values, so they are applied separately by the resolver.
+const FUND_FIELD_MAP = [
+  ['pe', 'Stock P/E'],
+  ['marketCap', 'Market Cap'],
+  ['roce', 'ROCE'],
+  ['roe', 'ROE'],
+  ['dividendYield', 'Dividend Yield'],
+  ['pb', 'Price to book value']
+];
+
+// stockanalysis.com: the only crumb-free source that also covers India, which
+// makes it the backstop for both a Yahoo crumb outage and a Finviz block.
+async function fundFromStockAnalysis(ticker, ctx) {
+  const base = fundBaseSymbol(ticker);
+  if (!base) throw new Error('no symbol');
+  // Numeric BSE codes are not NSE symbols. Do not guess a different listing.
+  if (/\.BO$/i.test(ticker)) return {};
+  if (!ctx.isIndian && (ctx.currency !== 'USD' || base.includes('.'))) return {};
+  const url = ctx.isIndian
+    ? `https://stockanalysis.com/quote/nse/${encodeURIComponent(base)}/`
+    : `https://stockanalysis.com/stocks/${encodeURIComponent(base.toLowerCase())}/`;
+  const res = await fetchWithTimeout(url, { cache: 'no-store' }, 6000, true);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const html = await res.text();
+  // The overview table renders server-side. The label cell is sometimes a
+  // plain <td> ("PE Ratio") and sometimes link-wrapped ("Market Cap"), and the
+  // value cell can trail a change <span>, so skip past the label's </td> and
+  // take the whole next cell, then strip tags and HTML comments.
+  const cell = (label) => {
+    const i = html.indexOf('>' + label);
+    if (i < 0) return null;
+    const after = html.slice(i);
+    const labelEnd = after.indexOf('</td>');
+    if (labelEnd < 0) return null;
+    const valueCell = after.slice(labelEnd + 5);
+    const valueEnd = valueCell.indexOf('</td>');
+    if (valueEnd < 0) return null;
+    return valueCell.slice(0, valueEnd)
+      .replace(/<!--[\s\S]*?-->/g, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  };
+  const out = {};
+  const peRaw = cell('PE Ratio');
+  const pe = peRaw && peRaw !== '-' ? parseFloat(peRaw.replace(/[^\d.-]/g, '')) : NaN;
+  if (Number.isFinite(pe) && pe > 0) out.pe = formatPureRatio(pe.toFixed(2));
+  const mcRaw = cell('Market Cap');
+  if (mcRaw && mcRaw !== '-') {
+    // "15.76T" -> 15.76e12 -> re-emitted in the row's own currency, matching
+    // the Screener/Yahoo shape ("₹15,76,400 Cr." / "$5.03T").
+    const n = parseMarketCapToNumber(mcRaw);
+    if (Number.isFinite(n) && n > 0) out.marketCap = formatMarketCapFromNumber(n, ctx.currency);
+  }
+  return out;
+}
+
+// Finviz: canonical for US equities. Returns the full fundamentals set, not
+// just P/E and market cap, so ROCE / ROE / dividend / P-B keep flowing too.
+async function fundFromFinviz(ticker, ctx) {
+  const base = fundBaseSymbol(ticker);
+  const res = await fetchWithTimeout(`https://finviz.com/quote.ashx?t=${encodeURIComponent(base)}`, { cache: 'no-store' }, 6000, true);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const html = await res.text();
+  const extract = (field) => {
+    // Tolerate inner tags around the label (e.g. "Dividend TTM" is wrapped in
+    // an <a> link) and values that live in <b> or <span>.
+    const labelTail = `(?:<[^>]+>)*\\s*<\\/div>\\s*<\\/td>\\s*<td[^>]*>\\s*<div[^>]*>`;
+    let m = html.match(new RegExp(`>${field}${labelTail}.*?<b>(.*?)<\\/b>`, 's'));
+    if (m && m[1]) return m[1].replace(/<[^>]+>/g, '').trim();
+    m = html.match(new RegExp(`>${field}${labelTail}.*?<span[^>]*>(.*?)<\\/span>`, 's'));
+    if (m && m[1]) return m[1].replace(/<[^>]+>/g, '').trim();
+    m = html.match(new RegExp(`snapshot-td-label[^>]*>(?:<[^>]+>)*\\s*${field}(?:<[^>]+>)*\\s*<\\/td>\\s*<td[^>]*>\\s*<div[^>]*>(.*?)<\\/div>`, 's'));
+    if (m && m[1]) { const c = m[1].replace(/<[^>]+>/g, '').trim(); if (c) return c; }
+    return null;
+  };
+  const out = {};
+  const pe = extract('P\\/E');
+  if (pe && pe !== '-') out.pe = pe;
+  // Finviz redesign: capital efficiency is labeled "ROIC" (old "ROI")
+  const roic = extract('ROIC') || extract('ROI');
+  if (roic && roic !== '-') out.roce = roic;
+  const mcap = extract('Market Cap');
+  if (mcap && mcap !== '-') {
+    const formatted = formatMarketCap(mcap);
+    out.marketCap = (/^[^\d\-+.,\s]+/.test(formatted) || !ctx.prefix) ? formatted : ctx.prefix + formatted;
+  }
+  // Finviz redesign: dividend is labeled "Dividend TTM" (e.g. "3.64 (0.74%)")
+  const div = extract('Dividend TTM') || extract('Dividend %') || extract('Dividend');
+  if (div && div !== '-') {
+    const pct = div.match(/([\d.,]+%)/);
+    out.dividendYield = pct ? pct[1] : div;
+  }
+  const pb = extract('P\\/B');
+  if (pb && pb !== '-') out.pb = pb;
+  const roe = extract('ROE');
+  if (roe && roe !== '-') out.roe = roe;
+  return out;
+}
+
+// Yahoo bulk quote: cheapest single round-trip, but it only answers while the
+// cookie+crumb handshake is healthy.
+async function fundFromYahooQuote(ticker, ctx) {
+  const symbol = ctx.isIndian && !/\.(NS|BO)$/i.test(ticker) ? ticker + '.NS' : ticker;
+  const quotes = await fetchYahooQuotes([symbol]);
+  const quote = quotes[symbol];
+  if (!quote) throw new Error('no quote');
+  const out = {};
+  const pe = quote.trailingPE ?? quote.forwardPE;
+  if (typeof pe === 'number' && Number.isFinite(pe) && pe > 0) out.pe = formatPureRatio(pe.toFixed(2));
+  if (typeof quote.marketCap === 'number' && quote.marketCap > 0) {
+    out.marketCap = formatMarketCapFromNumber(quote.marketCap, ctx.currency);
+  }
+  const pb = quote.priceToBook;
+  if (typeof pb === 'number' && Number.isFinite(pb) && pb > 0) out.pb = formatPureRatio(pb.toFixed(2));
+  const dy = quote.trailingAnnualDividendYield ?? quote.dividendYield;
+  if (typeof dy === 'number' && Number.isFinite(dy) && dy > 0) out.dividendYield = (dy * 100).toFixed(2) + '%';
+  out.eps = quote.epsTrailingTwelveMonths;
+  out.shares = quote.sharesOutstanding;
+  return out;
+}
+
+// Screener.in: canonical for NSE/BSE ratios, including the user's customised
+// top-ratios ordering. Only used when the caller did not already scrape it.
+async function fundFromScreener(ticker, ctx) {
+  const base = fundBaseSymbol(ticker);
+  const res = await fetchWithTimeout(`https://www.screener.in/company/${encodeURIComponent(base)}/`, { cache: 'no-store' }, 6000, true);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const html = await res.text();
+  const m = html.match(/<ul id="top-ratios">([\s\S]*?)<\/ul>/);
+  if (!m) throw new Error('no top-ratios');
+  const out = {};
+  const liRe = /<li[^>]*>([\s\S]*?)<\/li>/g;
+  let li;
+  while ((li = liRe.exec(m[1])) !== null) {
+    const nameM = li[1].match(/<span class="name">\s*([^<]+)\s*<\/span>/);
+    if (!nameM) continue;
+    const name = nameM[1].trim();
+    if (name !== 'Stock P/E' && name !== 'Market Cap') continue;
+    const val = li[1].substring(nameM.index + nameM[0].length).replace(/<[^>]+>/g, '').trim().replace(/\s+/g, ' ');
+    if (!/\d/.test(val)) continue;
+    if (name === 'Market Cap') out.marketCap = /^[^\d\-+.,\s]+/.test(formatMarketCap(val)) ? formatMarketCap(val) : '₹' + formatMarketCap(val);
+    else out.pe = formatPureRatio(val);
+  }
+  if (!out.pe && !out.marketCap) throw new Error('empty ratios');
+  return out;
+}
+
+const FUND_SOURCES = [
+  { id: 'screener', applies: (ctx) => ctx.isIndian, run: fundFromScreener },
+  { id: 'finviz', applies: (ctx) => !ctx.isIndian && ctx.currency === 'USD', run: fundFromFinviz },
+  { id: 'yahooQuote', applies: () => true, run: fundFromYahooQuote },
+  { id: 'stockAnalysis', applies: () => true, run: fundFromStockAnalysis }
+];
+
+// Fill any missing P/E / market-cap fields on `entry` from the first sources
+// that answer, honouring per-field ranking. `opts.skip` names sources the
+// caller already satisfied (so a Screener scrape is never repeated), and
+// `opts.primaryRank` says which rank the fields already present came from.
+// Returns true when anything on the entry changed.
+async function resolveValuationFundamentals(ticker, entry, opts) {
+  if (!entry || !entry.ratios || classifyAsset(ticker) !== 'stock') return false;
+  const o = opts || {};
+  const skip = new Set(o.skip || []);
+  ticker = resolveSymbolAlias(ticker);
+  const currency = o.currency || entry.currency || (/\.(NS|BO)$/i.test(String(ticker || '')) ? 'INR' : 'USD');
+  const isIndian = o.isIndian !== undefined ? !!o.isIndian : currency === 'INR' || /\.(NS|BO)$/i.test(String(ticker || ''));
+  const prefix = getCurrencyDetails(currency).prefix || '';
+  const ctx = { isIndian, currency, prefix };
+
+  // rank[field] records which source currently owns each ratio, so a better
+  // source can still overwrite a value a worse one left behind.
+  const rank = {};
+  const seededRank = o.primaryRank || FUND_SOURCE_RANK.yahooQuote;
+  for (const [, ratioKey] of FUND_FIELD_MAP) {
+    if (fundHasNumber(entry.ratios[ratioKey])) rank[ratioKey] = seededRank;
+  }
+  const complete = () => fundHasNumber(entry.ratios['Stock P/E']) && fundHasNumber(entry.ratios['Market Cap']);
+
+  let changed = false;
+  for (const src of FUND_SOURCES) {
+    if (complete()) break;
+    if (skip.has(src.id) || fundSourceCoolingDown(src.id, ticker)) continue;
+    if (src.applies && !src.applies(ctx)) continue;
+    let got = null;
+    try {
+      got = await src.run(ticker, ctx);
+      if (!got || !FUND_FIELD_MAP.some(([key]) => fundHasNumber(got[key]))) throw new Error('empty fundamentals');
+      fundNoteSource(src.id, ticker, true);
+    } catch (e) {
+      fundNoteSource(src.id, ticker, false);
+      continue;
+    }
+    if (!got) continue;
+    const srcRank = FUND_SOURCE_RANK[src.id] || 99;
+    for (const [key, ratioKey] of FUND_FIELD_MAP) {
+      const v = got[key];
+      if (!fundHasNumber(v)) continue;
+      if (rank[ratioKey] !== undefined && srcRank >= rank[ratioKey]) continue;
+      if (entry.ratios[ratioKey] !== v) {
+        entry.ratios[ratioKey] = v;
+        rank[ratioKey] = srcRank;
+        changed = true;
+      }
+    }
+    // Anchors let refreshLiveValuation keep P/E and market cap live as price
+    // moves, so they matter as much as the display values themselves.
+    if (typeof got.eps === 'number' && Number.isFinite(got.eps) && got.eps !== 0 && !entry.epsTTM) {
+      entry.epsTTM = got.eps;
+      changed = true;
+    }
+    if (typeof got.shares === 'number' && got.shares > 0 && !entry.sharesOutstanding) {
+      entry.sharesOutstanding = got.shares;
+      changed = true;
+    }
+  }
+  return changed;
+}
+
 async function fetchYahooData(symbol) {
   try {
-    let sym = symbol;
-    let chartRes = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=1d`);
+    // Retired NSE symbols resolve to their live code (SYMBOL_ALIASES).
+    let sym = resolveSymbolAlias(symbol);
+    let chartRes = await fetchWithTimeout(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=1d`, {}, 6000);
     // `.NS` retry is only for plain Indian tickers - never for indices, dotted
     // symbols, or crypto/forex/futures (BTC-USD, EURUSD=X, GC=F, BRK-B, …)
     if (!chartRes.ok && !sym.startsWith('^') && !sym.includes('.') && !sym.includes('=') && !sym.includes('-')) {
-      sym = `${symbol}.NS`;
-      chartRes = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=1d`);
+      sym = `${sym}.NS`;
+      chartRes = await fetchWithTimeout(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=1d`, {}, 6000);
     }
     if (!chartRes.ok) throw new Error('Quote not found. Try another ticker.');
     const chartData = await chartRes.json();
@@ -406,88 +1032,29 @@ async function fetchYahooData(symbol) {
       }
     } catch(e) {}
 
-    // Fetch fundamental data from Finviz for US stocks only -
-    // crypto/forex/futures have no P/E or balance sheet, so skip the request
+    // Fundamentals (P/E, market cap, ROCE, ROE, dividend, P/B) come from the
+    // multi-source chain below: Finviz for US names, Yahoo's bulk quote next,
+    // then stockanalysis.com as the crumb-free backstop. crypto/forex/futures
+    // and indices have no P/E or balance sheet, so skip the whole chain.
+    const yahooHolder = { ratios, currency: meta.currency };
     if (!isIndex && assetKind === 'stock') {
       try {
-        const finvizRes = await fetch(`https://finviz.com/quote.ashx?t=${encodeURIComponent(sym.replace('.NS', ''))}`);
-        if (finvizRes.ok) {
-          const finvizHtml = await finvizRes.text();
-          
-          const extractFinviz = (field) => {
-            // Tolerate inner tags around the label (e.g. "Dividend TTM" is wrapped in an <a> link)
-            const labelTail = `(?:<[^>]+>)*\\s*<\\/div>\\s*<\\/td>\\s*<td[^>]*>\\s*<div[^>]*>`;
-            let regex = new RegExp(`>${field}${labelTail}.*?<b>(.*?)<\\/b>`, 's');
-            let match = finvizHtml.match(regex);
-            if (match && match[1]) {
-              return match[1].replace(/<[^>]+>/g, '').trim();
-            }
-            // fallback if it's not inside <b> tags
-            regex = new RegExp(`>${field}${labelTail}.*?<span[^>]*>(.*?)<\\/span>`, 's');
-            match = finvizHtml.match(regex);
-            if (match && match[1]) {
-              return match[1].replace(/<[^>]+>/g, '').trim();
-            }
-            // last resort: grab the whole value cell via the snapshot structure
-            regex = new RegExp(`snapshot-td-label[^>]*>(?:<[^>]+>)*\\s*${field}(?:<[^>]+>)*\\s*<\\/div>\\s*<\\/td>\\s*<td[^>]*>\\s*<div[^>]*>(.*?)<\\/div>`, 's');
-            match = finvizHtml.match(regex);
-            if (match && match[1]) {
-              const cleaned = match[1].replace(/<[^>]+>/g, '').trim();
-              if (cleaned) return cleaned;
-            }
-            return null;
-          };
-
-          const pe = extractFinviz('P\\/E');
-          if (pe && pe !== '-') ratios['Stock P/E'] = pe;
-
-          // Finviz redesign: capital efficiency is labeled "ROIC" (old "ROI")
-          const roic = extractFinviz('ROIC') || extractFinviz('ROI');
-          if (roic && roic !== '-') ratios['ROCE'] = roic; // mapping ROIC to ROCE for UI consistency
-
-          const mcap = extractFinviz('Market Cap');
-          if (mcap && mcap !== '-') {
-            const formattedMcap = formatMarketCap(mcap);
-            ratios['Market Cap'] = (/^[^\d\-+.,\s]+/.test(formattedMcap) || !curr) ? formattedMcap : curr + formattedMcap;
-          }
-
-          // Finviz redesign: dividend is labeled "Dividend TTM" (e.g. "3.64 (0.74%)")
-          const div = extractFinviz('Dividend TTM') || extractFinviz('Dividend %') || extractFinviz('Dividend');
-          if (div && div !== '-') {
-            const pctMatch = div.match(/([\d.,]+%)/);
-            ratios['Dividend Yield'] = pctMatch ? pctMatch[1] : div;
-          }
-
-          const pb = extractFinviz('P\\/B');
-          if (pb && pb !== '-') ratios['Price to book value'] = pb;
-          
-          const roe = extractFinviz('ROE');
-          if (roe && roe !== '-') ratios['ROE'] = roe;
-        }
-      } catch(e) {}
-      // Yahoo meta fallbacks (used when Finviz is blocked or a field is missing)
-      try {
-        if (!ratios['Dividend Yield']) {
-          const dy = meta.trailingAnnualDividendYield ?? meta.dividendYield;
-          if (typeof dy === 'number' && isFinite(dy) && dy > 0) {
-            ratios['Dividend Yield'] = (dy * 100).toFixed(2) + '%';
-          }
-        }
-        if (!ratios['Stock P/E']) {
-          const tpe = meta.trailingPE ?? meta.forwardPE;
-          if (typeof tpe === 'number' && isFinite(tpe) && tpe > 0) {
-            ratios['Stock P/E'] = formatPureRatio(tpe.toFixed(2));
-          }
-        }
-        if (!ratios['Price to book value']) {
-          const pbm = meta.priceToBook ?? meta.priceToBookRatio;
-          if (typeof pbm === 'number' && isFinite(pbm) && pbm > 0) {
-            ratios['Price to book value'] = formatPureRatio(pbm.toFixed(2));
-          }
-        }
-      } catch(e) {}
+        const quotes = await fetchYahooQuotes([sym]);
+        const quote = quotes[sym];
+        if (quote) applyQuoteFundamentals(yahooHolder, quote);
+      } catch (e) {}
+      // yahooQuote already ran above, so the chain only covers what it missed.
+      // primaryRank records that the fields already present came from Yahoo,
+      // which is what still lets the better-ranked Finviz source take them over.
+      await resolveValuationFundamentals(sym, yahooHolder, {
+        currency: meta.currency,
+        isIndian: /\.(NS|BO)$/i.test(sym) || meta.currency === 'INR',
+        skip: ['yahooQuote'],
+        primaryRank: FUND_SOURCE_RANK.yahooQuote
+      }).catch(() => {});
     }
 
+    if (price !== undefined) captureValuationAnchors(yahooHolder, price);
     return {
       success: true,
       ticker: symbol,
@@ -500,7 +1067,10 @@ async function fetchYahooData(symbol) {
       isIndex,
       assetKind,
       source: 'yahoo',
-      currency: meta.currency
+      currency: meta.currency,
+      epsTTM: yahooHolder.epsTTM,
+      sharesOutstanding: yahooHolder.sharesOutstanding,
+      bookValue: yahooHolder.bookValue
     };
   } catch(err) {
     return { success: false, ticker: symbol, error: err.message };
@@ -514,10 +1084,15 @@ async function fetchScreenerData(ticker) {
     return fetchYahooData(ticker);
   }
 
+  // Retired NSE symbols (ICICIPRULI -> ICICILIFE after the 2026 ICICI Life
+  // rename) 404 on BOTH Screener.in and Yahoo. Fetch the live symbol but
+  // keep `ticker` as the cache key so the user's watchlist row is untouched.
+  const live = resolveSymbolAlias(ticker);
+
   try {
-    let response = await fetch(`https://www.screener.in/company/${ticker}/consolidated/`);
+    let response = await fetchWithTimeout(`https://www.screener.in/company/${live}/consolidated/`, {}, 6000);
     if (!response.ok) {
-      response = await fetch(`https://www.screener.in/company/${ticker}/`);
+      response = await fetchWithTimeout(`https://www.screener.in/company/${live}/`, {}, 6000);
       if (!response.ok) throw new Error('Not found on Screener');
     }
     let htmlText = await response.text();
@@ -560,7 +1135,7 @@ async function fetchScreenerData(ticker) {
     // 200 - fall back to the base page and backfill any missing ratios.
     if (!hasNumbers(ratios)) {
       try {
-        const stdRes = await fetch(`https://www.screener.in/company/${ticker}/`);
+        const stdRes = await fetchWithTimeout(`https://www.screener.in/company/${live}/`, {}, 6000);
         if (stdRes.ok) {
           const stdHtml = await stdRes.text();
           const stdRatios = parseTopRatios(stdHtml);
@@ -596,7 +1171,7 @@ async function fetchScreenerData(ticker) {
 
     let sparkline = [];
     try {
-      const yahooRes = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}.NS?interval=1d&range=1y`);
+      const yahooRes = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${live}.NS?interval=1d&range=1y`);
       if (yahooRes.ok) {
         const yahooData = await yahooRes.json();
         const quotes = yahooData.chart.result[0].indicators.quote[0];
@@ -617,7 +1192,20 @@ async function fetchScreenerData(ticker) {
       } catch (e) {}
     }
 
-    return { success: true, ticker, companyName, ratios, aboutText, changeDir, changePct, sparkline, source: 'screener', currency: 'INR' };
+    const screenerEntry = { success: true, ticker, companyName, ratios, aboutText, changeDir, changePct, sparkline, source: 'screener', currency: 'INR' };
+    // Screener is the top-ranked Indian source and already supplied everything
+    // it has, so the chain skips it and only backfills the gaps (Screener
+    // omits Stock P/E / Market Cap for some banks and standalone-only firms).
+    // Pass `live` (alias-resolved) so each fund source fetches the live NSE
+    // symbol; `screenerEntry.ticker` keeps the user's original key.
+    await resolveValuationFundamentals(live, screenerEntry, {
+      currency: 'INR',
+      isIndian: true,
+      skip: ['screener'],
+      primaryRank: FUND_SOURCE_RANK.screener
+    }).catch(() => {});
+    captureValuationAnchors(screenerEntry, parsePriceNumber(ratios['Current Price']));
+    return screenerEntry;
   } catch (err) {
     // Seamless fallback to Yahoo Finance for international stocks, non-Screener tickers, or indices
     const fallback = await fetchYahooData(ticker);
@@ -894,10 +1482,35 @@ async function syncWatchlistData() {
   }
   allTickers = [...new Set(allTickers)]; // remove duplicates
   const indicesPromise = fetchIndices();
-  
-  const cachedData = {};
+
+  // Fill P/E and market cap from Yahoo in one batch so the watchlist
+  // is not stuck on "-" until the slow per-ticker Screener/Finviz scrape.
+  const quoteSymbols = [];
+  for (const t of allTickers) {
+    if (t.startsWith('^') || classifyAsset(t) !== 'stock') continue;
+    if (t.includes('.') || t.includes('=') || t.includes('-')) quoteSymbols.push(t);
+    else if (oldCachedData[t] && oldCachedData[t].currency && oldCachedData[t].currency !== 'INR') quoteSymbols.push(t);
+    else quoteSymbols.push(t + '.NS');
+  }
+  let cachedData = structuredClone(oldCachedData);
+  const refreshBaseline = structuredClone({ cachedData, marketIndices: oldIndices });
+  try {
+    const quotes = await fetchYahooQuotes(quoteSymbols);
+    let seeded = false;
+    for (const ticker of allTickers) {
+      const quote = yahooQuoteForTicker(ticker, quotes, cachedData[ticker]);
+      if (!quote) continue;
+      if (!cachedData[ticker]) cachedData[ticker] = { ticker, ratios: {}, source: 'yahoo', success: true };
+      if (applyQuoteFundamentals(cachedData[ticker], quote)) seeded = true;
+    }
+    if (seeded) {
+      await commitRefreshState({ cachedData }, refreshBaseline);
+      chrome.runtime.sendMessage({ type: 'WATCHLIST_UPDATED' }).catch(() => {});
+    }
+  } catch (e) {}
+
   for (const ticker of allTickers) {
-    const data = await fetchScreenerData(ticker);
+    let data = await fetchScreenerData(ticker);
     
     // Compare price for flash animation
     const oldData = oldCachedData[ticker];
@@ -913,13 +1526,44 @@ async function syncWatchlistData() {
        }
     }
     
+    const live = cachedData[ticker];
+    if (live && data && data.success && data.ratios) {
+      // Carry anchors and missing ratios BEFORE refreshLiveValuation: that
+      // recompute reads data.epsTTM / sharesOutstanding to rebuild P/E and
+      // market cap, so copying them after would be one pass too late.
+      if (live.epsTTM && !data.epsTTM) data.epsTTM = live.epsTTM;
+      if (live.sharesOutstanding && !data.sharesOutstanding) data.sharesOutstanding = live.sharesOutstanding;
+      if (live.bookValue && !data.bookValue) data.bookValue = live.bookValue;
+      if (live.ratios) {
+        for (const k of ['Stock P/E', 'Market Cap', 'Price to book value', 'Dividend Yield', 'ROCE', 'ROE']) {
+          if (!/\d/.test(String(data.ratios[k] || '')) && /\d/.test(String(live.ratios[k] || ''))) {
+            data.ratios[k] = live.ratios[k];
+          }
+        }
+      }
+      const livePrice = parsePriceNumber((live.ratios || {})['Current Price']);
+      if (Number.isFinite(livePrice) && livePrice > 0) {
+        data.ratios['Current Price'] = live.ratios['Current Price'];
+        captureValuationAnchors(data, livePrice);
+        refreshLiveValuation(data, livePrice, data.currency || live.currency);
+      }
+    } else if (data && data.success) {
+      captureValuationAnchors(data, parsePriceNumber((data.ratios || {})['Current Price']));
+    }
+    // Never let a failed fetch wipe a working entry: the row would drop to
+    // "Could not fetch" and lose its P/E / market cap until the next full sync.
+    if (data && data.success === false && live && live.success && live.ratios) {
+      data = Object.assign({}, live, { success: true, lastError: data.error, errorTime: Date.now() });
+    }
     cachedData[ticker] = data;
+    await commitRefreshState({ cachedData }, refreshBaseline);
+    chrome.runtime.sendMessage({ type: 'WATCHLIST_UPDATED' }).catch(() => {});
 
     // Check Price Alerts
     if (priceAlerts[ticker] && data.success) {
       const priceStr = data.ratios['Current Price'];
       if (priceStr) {
-        const currentPrice = parseFloat(priceStr.replace(/,/g, ''));
+        const currentPrice = parsePriceNumber(priceStr);
         const alert = priceAlerts[ticker];
         
         let triggered = false;
@@ -942,7 +1586,7 @@ async function syncWatchlistData() {
     }
 
     // Sleep slightly to avoid spamming
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 200));
   }
 
   const indices = await indicesPromise;
@@ -962,7 +1606,7 @@ async function syncWatchlistData() {
     }
   }
 
-  await chrome.storage.local.set({ cachedData, marketIndices: indices || oldIndices || {}, priceAlerts, lastSync: Date.now() });
+  await commitRefreshState({ cachedData, marketIndices: indices || oldIndices || {}, priceAlerts, lastSync: Date.now() }, refreshBaseline);
   
   // Notify tabs that data was updated so they can refresh
   chrome.runtime.sendMessage({ type: 'WATCHLIST_UPDATED' }).catch(() => {});
@@ -1602,8 +2246,9 @@ if (message.type === 'FETCH_MOOD_METER') {
       fetchScreenerData(message.ticker).then(data => {
         chrome.storage.local.get(['cachedData'], (res) => {
           const cachedData = res.cachedData || {};
+          const refreshBaseline = structuredClone({ cachedData });
           cachedData[message.ticker] = data;
-          chrome.storage.local.set({ cachedData }, () => {
+          commitRefreshState({ cachedData }, refreshBaseline).then(() => {
              sendResponse({ success: true });
              chrome.runtime.sendMessage({ type: 'WATCHLIST_UPDATED' }).catch(() => {});
           });
@@ -2021,6 +2666,7 @@ async function fetchFastPrices() {
     const portfolios = data.portfolios || {};
     const cachedData = data.cachedData || {};
     const marketIndices = data.marketIndices || {};
+    const refreshBaseline = structuredClone({ cachedData, marketIndices });
 
     let allTickers = [...screenerWatchlist];
     for (const list of Object.values(portfolios)) {
@@ -2104,7 +2750,7 @@ async function fetchFastPrices() {
               }
             }
 
-            if (marketIndices[idx.key]?.price !== formatted || flash !== oldIdx?.flash) {
+            if (marketIndices[idx.key]?.price !== formatted || flash !== oldIdx?.flash || oldIdx?.changePct !== Math.abs(parseFloat(pct)).toFixed(2) + '%' || oldIdx?.changeDir !== (diff >= 0 ? 'up' : 'down')) {
               marketIndices[idx.key] = {
                 symbol: idx.symbol,
                 price: formatted,
@@ -2148,11 +2794,14 @@ async function fetchFastPrices() {
             const wpd = priceDecimalsFor(price);
             const formattedPrice = `${currPrefix}${price.toLocaleString(currency.locale, { minimumFractionDigits: wpd, maximumFractionDigits: wpd })}`;
 
-            if (currentStr !== formattedPrice) {
+            if (currentStr !== formattedPrice || cachedData[ticker].changePct !== Math.abs(parseFloat(pct)).toFixed(2) + '%' || cachedData[ticker].changeDir !== (diff >= 0 ? 'up' : 'down')) {
               const oldNum = parseFloat((currentStr || '0').replace(/[^\d\.]/g, ''));
               if (oldNum && oldNum !== price) {
                 cachedData[ticker].flash = price > oldNum ? 'up' : 'down';
                 cachedData[ticker].flashTime = Date.now();
+                if (!cachedData[ticker].epsTTM || !cachedData[ticker].sharesOutstanding) {
+                  captureValuationAnchors(cachedData[ticker], oldNum);
+                }
               }
               cachedData[ticker].ratios['Current Price'] = formattedPrice;
               cachedData[ticker].currency = currency.code;
@@ -2160,13 +2809,23 @@ async function fetchFastPrices() {
               cachedData[ticker].changeDir = diff >= 0 ? 'up' : 'down';
               changed = true;
             }
+            if (refreshLiveValuation(cachedData[ticker], price, currency.code)) changed = true;
           }
         }
       }
 
     if (changed) {
-      await chrome.storage.local.set({ cachedData, marketIndices, lastFastPoll: Date.now() });
+      await commitRefreshState({ cachedData, marketIndices, lastFastPoll: Date.now() }, refreshBaseline);
       chrome.runtime.sendMessage({ type: 'WATCHLIST_UPDATED' }).catch(() => {});
+    }
+
+    const needsFundamentals = allTickers.some((t) => needsValuationRefresh(cachedData[t], t));
+    // When P/E or market cap are still blank the user is staring at "-", so
+    // retry on a short cadence. Once everything is filled the 60s steady-state
+    // poll takes over.
+    const fundWaitMs = needsFundamentals ? 3000 : 60000;
+    if (Date.now() - lastFundamentalsAt >= fundWaitMs) {
+      refreshWatchlistFundamentals(uniqueSymbols, allTickers);
     }
   } catch (e) {
   } finally {

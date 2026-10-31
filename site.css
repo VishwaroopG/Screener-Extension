@@ -311,8 +311,17 @@ img { max-width: 100%; height: auto; }
   padding-bottom: 48px;
 }
 /* keep h1 and hero-copy max-width for readability */
-.hero-text-wrap h1 { max-width: 720px; margin: 20px 0 0; }
-.hero-text-wrap .hero-copy { max-width: 52ch; }
+.hero-text-wrap h1 { max-width: 860px; margin: 20px 0 0; }
+.hero-text-wrap .hero-copy {
+  max-width: 780px;
+  width: 100%;
+  text-align: center;
+  text-align-last: center;
+  font-size: 1.15rem;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+  margin: 20px auto 0;
+}
 .hero-text-wrap .hero-actions { justify-content: center; }
 .hero-text-wrap .proof { justify-content: center; }
 

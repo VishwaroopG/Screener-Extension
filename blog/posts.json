@@ -259,19 +259,6 @@
     ]
   },
   {
-    "slug": "two-way-column-sorting-watchlist-mcap-pe-price",
-    "title": "Two-Way Column Sorting: Rank Stocks by Market Cap, P/E, Price & Symbol",
-    "date": "2026-10-20",
-    "excerpt": "Instantly sort watchlist constituents alphabetically, by live price, custom financial ratios, or scale-aware market cap in ascending and descending directions.",
-    "tags": [
-      "Product",
-      "Features",
-      "Watchlist",
-      "US Stocks",
-      "Indian Stocks"
-    ]
-  },
-  {
     "slug": "nifty-50-market-breadth-advances-declines-sync",
     "title": "NIFTY 50 Advance-Decline Sync: Real-Time Indian Market Breadth",
     "date": "2026-10-20",
@@ -295,31 +282,6 @@
       "P/E",
       "ROCE",
       "Fundamentals"
-    ]
-  },
-  {
-    "slug": "portfolio-management-multiple-watchlists-color-tags",
-    "title": "Organise Your Portfolios: Multiple Watchlists, Renaming & Color Tags",
-    "date": "2026-10-20",
-    "excerpt": "Keep core holdings, earnings swing ideas, and momentum breakouts cleanly segregated with inline switcher dropdowns, bulk tagging, and custom list views.",
-    "tags": [
-      "Product",
-      "Portfolio Management",
-      "Watchlist",
-      "Productivity"
-    ]
-  },
-  {
-    "slug": "seamless-watchlist-migration-zerodha-tradingview-screener",
-    "title": "Seamless Watchlist Migration: Import from Zerodha, TradingView & Screener.in",
-    "date": "2026-10-20",
-    "excerpt": "Migrate your watchlists in seconds without copy-pasting dozens of tickers. Use tab detection, CSV upload, or quick paste with instant duplicate filtering.",
-    "tags": [
-      "Product",
-      "Import",
-      "TradingView",
-      "Zerodha",
-      "Tools"
     ]
   },
   {
@@ -348,18 +310,6 @@
     ]
   },
   {
-    "slug": "smart-focus-engine-finding-daily-market-outliers",
-    "title": "Smart Focus Engine: Spotting Unusual Daily Market Outliers Automatically",
-    "date": "2026-10-20",
-    "excerpt": "Eliminate notification fatigue. How Ticker Screener automatically flags sharp intraday swings, breakout signals, and extreme volume surges with Smart Focus.",
-    "tags": [
-      "Product",
-      "Smart Focus",
-      "Algorithms",
-      "Watchlist"
-    ]
-  },
-  {
     "slug": "reading-balance-sheets-red-flags-every-retail-investor-must-check",
     "title": "Reading Balance Sheets: 5 Critical Red Flags Every Retail Investor Must Check",
     "date": "2026-10-20",
@@ -369,58 +319,6 @@
       "Risk Management",
       "Investing",
       "Balance Sheet"
-    ]
-  },
-  {
-    "slug": "why-browser-sidepanels-beat-traditional-market-dashboards",
-    "title": "Why Browser Sidepanels Beat Clunky Multi-Monitor Market Dashboards",
-    "date": "2026-10-20",
-    "excerpt": "How persistent browser sidebars allow active traders to research news, read financials, and execute trades without toggling through 15 different browser tabs.",
-    "tags": [
-      "Productivity",
-      "Browser Extension",
-      "Chrome",
-      "Firefox",
-      "Trading Workflow"
-    ]
-  },
-  {
-    "slug": "ticker-tape-heatmap-breadth-read-market-30-seconds",
-    "title": "Tape, Heatmap, Breadth: Read the Whole US Market in 30 Seconds",
-    "date": "2026-10-11",
-    "excerpt": "Tape for direction, heatmap for composition, NYSE + Nasdaq breadth plus CNN Fear & Greed for conviction - the 30-second routine inside Ticker Screener.",
-    "tags": [
-      "Product",
-      "US Stocks",
-      "S&P 500",
-      "Nasdaq",
-      "Markets"
-    ]
-  },
-  {
-    "slug": "price-alerts-nyse-nasdaq-background-notifications",
-    "title": "Price Alerts That Actually Work: Background Notifications for NYSE & Nasdaq",
-    "date": "2026-10-11",
-    "excerpt": "Background alarms fire desktop notifications even with the panel closed - three alert setups for earnings, breakouts and dividend targets.",
-    "tags": [
-      "Product",
-      "US Stocks",
-      "Alerts",
-      "NYSE",
-      "Nasdaq"
-    ]
-  },
-  {
-    "slug": "build-us-watchlist-5-minutes-tradingview-import",
-    "title": "Build a Live US Watchlist in 5 Minutes (TradingView Import, Tags, Smart Focus)",
-    "date": "2026-10-11",
-    "excerpt": "Detect tickers from TradingView, paste a list or upload a CSV - deduped merge, dollar prices, tags and Smart Focus sorting in minutes.",
-    "tags": [
-      "Product",
-      "Guides",
-      "US Stocks",
-      "Watchlist",
-      "TradingView"
     ]
   },
   {
@@ -512,19 +410,6 @@
       "ROCE",
       "ROE",
       "US Stocks"
-    ]
-  },
-  {
-    "slug": "fundamentals-depth-v270-checklist-swot-redflags",
-    "title": "New in v2.7.0: Fundamentals Depth - Checklist, SWOT & Red-Flags on Every Search",
-    "date": "2026-10-11",
-    "excerpt": "Search any stock and get a free checklist score, SWOT from Screener pros/cons, forensic red-flags, promoter/FII/DII trends, concall transcripts and one-click PDF - Tickertape depth without the paywall.",
-    "tags": [
-      "Product",
-      "India",
-      "Fundamentals",
-      "Checklist",
-      "SWOT"
     ]
   },
   {
@@ -655,21 +540,6 @@
       "Markets",
       "India",
       "Investing"
-    ]
-  },
-  {
-    "slug": "welcome-to-screener-pro-blog",
-    "title": "Ticker Screener Explained: Live NYSE & Nasdaq Watchlist, Ticker Tape & Stock Alerts in Your Browser",
-    "date": "2026-09-12",
-    "excerpt": "Free Chrome & Firefox extension: live watchlist, ticker tape, 10-economy markets, P/E + ROCE verdicts and price alerts  full guide.",
-    "tags": [
-      "Guides",
-      "Product",
-      "Browser Extension",
-      "NYSE",
-      "Nasdaq",
-      "NSE",
-      "BSE"
     ]
   }
 ]

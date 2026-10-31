@@ -1,4 +1,4 @@
-Ticker Screener – Live Watchlist, Markets & Ticker Tape (v2.6.8 canonical)
+Ticker Screener – Live Watchlist, Markets & Ticker Tape (v2.6.10 canonical)
 Short description (Chrome Web Store, max 132 chars):
 Live stock watchlist, streaming ticker tape, global markets & price alerts.
 
@@ -7,6 +7,7 @@ LONG DESCRIPTION (paste into Chrome Web Store "Detailed description")
 ============================================================
 
 Ticker Screener: Live Watchlist, Global Markets & Ticker Tape
+
 Your market workspace, always in sight. Ticker Screener turns your browser into a real-time financial dashboard with a live watchlist for stocks, crypto, forex and commodities, a scrolling ticker tape that works on any website, interactive charts, fundamentals on every search, and a 10-economy Global Markets hub with a Market Mood gauge.
 
 Prices display in their native trading currencies ($ for US markets and crypto, ₹ for Indian equities, local currencies elsewhere). No silent or confusing conversions.
@@ -16,39 +17,61 @@ Available in 10 languages: English, Hindi, Spanish, French, German, Portuguese (
 🔥 KEY FEATURES
 
 📈 1. Live Watchlists & Multi-Portfolio Management
-Real-time price ticks, 1-day change, 1-year sparklines, valuation ratios, market cap, dividend yield and return ratios with green/red momentum flashes.
+Real-time price ticks, 1-day change, multi-range sparklines, valuation ratios, market cap, dividend yield and return ratios with green/red momentum flashes.
+
+Live Dynamic Valuation on Every Tick: P/E, Market Cap, and Price-to-Book (P/B) update dynamically with real-time price ticks anchored to trailing earnings and shares outstanding.
+
+Full Two-Way Column Sorting: Sort your active portfolio ascending or descending by Symbol, Price / Day Change, active Valuation Ratio (P/E, ROCE, ROE, P/B, Div Yield), and Market Cap with a single click.
+
+Dual Horizontal Scrollbar & Stock Counter: A synchronized top horizontal scrollbar mirrors the bottom scroller, allowing effortless column scrolling on large watchlists without scrolling to the bottom. The Symbol header displays your live active stock count.
+
 Switchable ratio column: tap the header to toggle between P/E, Dividend Yield, return ratios and price-to-book. Your choice persists.
-Multiple portfolios with drag-and-drop ordering, column sorting and 1-click CSV export.
+
+Multiple portfolios with seamless in-header switching, drag-and-drop ordering, column sorting and 1-click CSV export.
+
 Color tags with one-click filtering and a quick reset button, smart blue-dot highlights for big moves and 52-week extremes, and bulk edit mode to tag, move, copy or delete holdings.
+
 Price alerts for target levels, daily move spikes and 52-week breakouts, with repeat options, expiry dates, notes, sound chime and desktop notifications. All alerts are managed from the header bell.
+
 Automatic valuation badges (Undervalued / Solid / Expensive / High Risk) based on earnings multiples, return metrics and peer comparison.
 
-📥 2. One-Click Watchlist Import From Any Open Tab
-Bring your existing holdings without rebuilding from scratch. Open any holdings, watchlist or research page — or any article or forum mentioning tickers — and import in one click.
+🔬 2. Multi-Source Fundamentals & Resilient Fallback Engine
+Never get stuck with blank ratios or missing market caps. An intelligent multi-tier resolver automatically backfills missing fundamentals across global exchanges:
+• Indian Equities: Screener.in → Yahoo Finance Quotes → Stock Analysis (NSE).
+• US Equities: Finviz → Yahoo Finance Quotes → Stock Analysis.
+• International Equities & ETFs: Yahoo Finance real-time bulk quotes with resilient session recovery.
+Non-blocking background refresh fills blanks rapidly on startup and transitions into low-overhead steady-state polling, backed by conflict-free cache state serialization.
+
+📥 3. One-Click Watchlist Import From Any Open Tab
+Bring your existing holdings without rebuilding from scratch. Open any holdings, watchlist or research page — Zerodha Kite, Screener.in, TradingView, or any article or forum mentioning tickers — and import in one click.
+
 Anything already in your active portfolio is skipped automatically with counts shown. Paste ticker lists (comma, space or newline separated) or upload a CSV / TXT export. Review everything in a checkbox preview before adding. Nothing is added without your confirmation.
 
-🪙 3. Crypto, Forex & Commodities
+🪙 4. Crypto, Forex & Commodities
 Track major coins, currency pairs and commodities including gold, silver and crude oil with the same terminal capabilities as stocks: live quotes, day ranges, 1-year sparklines, alerts and ticker-tape support. Sub-dollar assets show up to 6 decimal places with clear asset-type badges.
 
-🎞️ 4. Floating Ticker Tape (Follows You Everywhere)
+🎞️ 5. Floating Ticker Tape (Follows You Everywhere)
 Keep your watchlist and market benchmarks scrolling over any website you browse. Time-based animation stays smooth on 60Hz, 120Hz and background tabs with seamless looping in both directions.
+
 Pin to top or bottom, choose Compact, Comfortable or Large sizing, pick Dark, Light or Blue theme, adjust speed from 0.5x to 3.0x, pause on hover, or disable on specific sites. Tape items open clean popups with multi-timeframe charts and company descriptions.
 
-🌐 5. 10-Economy Global Markets Hub
+🌐 6. 10-Economy Global Markets Hub & True Market Breadth
 Switch between the USA, India, UK, Singapore, Japan, Hong Kong, Germany, France, Australia and Canada.
-A Market Mood dial tops the tab with live sentiment for India and the US and a data-driven proxy elsewhere — hover any arc to see zones from Extreme Fear to Extreme Greed and the factors behind the reading.
-See true whole-market breadth (advances vs declines), momentum heatmaps with top gainers and losers, and 35+ preset benchmark cards for indices, commodities and currency pairs that pin to your watchlist in one click.
 
-📊 6. Macroeconomic Indicators
+A Market Mood dial tops the tab with live sentiment for India and the US and a data-driven proxy elsewhere — hover any arc to see zones from Extreme Fear to Extreme Greed and the factors behind the reading.
+
+See true whole-market breadth (advances vs declines) powered by synchronized real-time feeds (NIFTY 50 and NYSE/NASDAQ), momentum heatmaps with top gainers and losers, and 35+ preset benchmark cards for indices, commodities and currency pairs that pin to your watchlist in one click.
+
+📊 7. Macroeconomic Indicators
 Track inflation, unemployment, GDP growth, GDP per capita, national debt, trade balance, reserves and population. Every tile links directly to its verified public source table.
 
-📉 7. Interactive Charts
+📉 8. Interactive Charts
 1M, 6M, 1Y, 3Y, 5Y, 10Y and MAX history with hover crosshair for exact price and date. Trend lines shift green or red based on net return in the selected window.
 
-🕒 8. Market Clocks & Curated News
+🕒 9. Market Clocks & Curated News
 15 world market clocks with live Open / Closed badges and automatic holiday detection. Drag to reorder. News is filtered strictly to your active holdings plus macro headlines, with publisher thumbnails.
 
-🔬 9. Fundamentals Depth on Every Search
+📑 10. In-Depth Research on Every Search
 Every stock search adds a fundamentals card: a 10-point checklist score, pros/cons SWOT summary, forensic red flags, promoter and institutional shareholding trends, concall materials with summaries, research shortcuts and 1-click PDF export.
 
 🔒 PRIVACY — YOUR DATA STAYS YOURS
@@ -60,12 +83,23 @@ Ticker symbols you look up are sent to public market-data endpoints only to retu
 Press Ctrl + Shift + S (Windows/Linux) or Cmd + Shift + S (Mac) to open the side panel. Search any symbol to build your watchlist or click Import to pull holdings from any open tab. Open the Markets tab for mood, breadth, heatmaps, macro data and clocks. Click the Gear icon to customize the tape, or the Full-Screen icon to expand into a full-tab workspace.
 
 ❓ FREQUENTLY ASKED QUESTIONS
-Is the price data live? Yes. Quotes update via background polling with instant in-tab updates. As with any market feed, some exchanges may be slightly delayed.
-Does it work on all websites? Yes. The tape overlays any standard webpage and the watchlist lives in the side panel or full tab.
-Can I import my existing holdings? Yes. Click Import, then Detect from any open holdings or article tab — or paste a list or upload a CSV. Duplicates are skipped automatically.
-Can I track crypto, forex and commodities? Yes. Major coins, pairs, gold, oil and more get live prices, charts, alerts and tape support.
-Is it really free? Yes. Free with no account, no premium tier and no time limits.
-Why do prices show $, ₹ and other symbols? Every asset shows in its native trading currency so you always know what you are looking at.
+Is the price data live? 
+Yes. Quotes update via background polling with instant in-tab updates. As with any market feed, some exchanges may be slightly delayed.
+
+Does it work on all websites? 
+Yes. The tape overlays any standard webpage and the watchlist lives in the side panel or full tab.
+
+Can I import my existing holdings? 
+Yes. Click Import, then Detect from any open holdings or article tab — or paste a list or upload a CSV. Duplicates are skipped automatically.
+
+Can I track crypto, forex and commodities? 
+Yes. Major coins, pairs, gold, oil and more get live prices, charts, alerts and tape support.
+
+Is it really free? 
+Yes. Free with no account, no premium tier and no time limits.
+
+Why do prices show $, ₹ and other symbols? 
+Every asset shows in its native trading currency so you always know what you are looking at.
 
 📡 DATA & DISCLAIMER
 Quotes, charts, fundamentals, breadth, sentiment, macro data and news are provided by public third-party market-data endpoints. Market data may be delayed. Independent extension, not affiliated with or endorsed by any exchange, broker or data provider. For informational and educational purposes only, not financial advice.
@@ -74,5 +108,9 @@ Privacy Policy: https://vishwaroopg.github.io/Screener-Extension/privacy.html
 ☕ SUPPORT THE DEVELOPER
 To support ongoing maintenance, see the link on our website. For real-time market discussions, join the community channel linked there.
 
-📜 WHAT'S NEW (v2.6.7)
-Fundamentals card on every stock search (checklist score, SWOT, red flags, shareholding, concall links, PDF export), smarter tab import with automatic duplicate skipping, Market Mood gauge with hover zones, advanced price alerts (day-move spikes, 52-week breakouts, chime, notes, alert manager) and one-click tag-filter reset.
+📜 WHAT'S NEW (v2.6.10)
+• Dynamic live valuation: P/E, Market Cap, and P/B now recalculate in real-time as prices tick.
+• Multi-source fundamentals fallback engine (Screener.in, Yahoo Finance, Finviz, and Stock Analysis) eliminating missing ratios and valuation blanks.
+• Synchronized twin horizontal scrollbar positioned above the watchlist table for instant navigation across wide columns.
+• Active stock count indicator directly on the Symbol column header.
+• Enhanced two-way column sorting (Symbol, Price/Change, active Valuation Ratio, Market Cap) and serialized conflict-free cache syncing.

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Ticker Screener – Live Watchlist & Ticker",
-  "version": "2.6.9",
+  "version": "2.6.10",
   "default_locale": "en",
   "browser_specific_settings": {
     "gecko": {
@@ -31,6 +31,7 @@
     "*://*.screener.in/*",
     "*://*.yahoo.com/*",
     "*://*.finviz.com/*",
+    "*://*.stockanalysis.com/*",
     "*://api.worldbank.org/*",
     "*://news.google.com/*",
     "https://formsubmit.co/*",
