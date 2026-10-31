@@ -48,6 +48,17 @@ def safe_error(error):
     return type(error).__name__
 
 
+def model_request(url, headers, body):
+    for attempt in range(3):
+        try:
+            return fetch(url, hosts=['generativelanguage.googleapis.com'], headers=headers, data=json.dumps(body).encode())
+        except RequestFailure as error:
+            if error.status not in (502, 503, 504) or attempt == 2:
+                raise
+            print(f'Model temporarily unavailable (HTTP {error.status}); retrying.')
+            time.sleep(2 ** (attempt + 1))
+
+
 def fetch(url, *, hosts, data=None, headers=None, method=None):
     """Validate every redirect; never send secrets to redirected origins."""
     for _ in range(4):
@@ -208,9 +219,8 @@ Return JSON matching the supplied schema.\n'''
             'contents': [{'role': 'user', 'parts': [{'text': json.dumps(context, ensure_ascii=False)}]}],
             'generationConfig': {'responseMimeType': 'application/json', 'responseSchema': ARTICLE_SCHEMA,
                                  'temperature': 0.25, 'maxOutputTokens': 8000}}
-    response = json.loads(fetch(f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
-        hosts=['generativelanguage.googleapis.com'], data=json.dumps(body).encode(),
-        headers={'x-goog-api-key': key, 'Content-Type': 'application/json'}))
+    response = json.loads(model_request(f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
+        {'x-goog-api-key': key, 'Content-Type': 'application/json'}, body))
     candidates = response.get('candidates', [])
     if not candidates or candidates[0].get('finishReason') != 'STOP':
         raise ValueError('Model output incomplete or blocked')
@@ -328,8 +338,7 @@ def diagnose():
     print('Testing configured model: ' + model)
     body = {'contents': [{'parts': [{'text': 'Respond with the word OK.'}]}],
             'generationConfig': {'maxOutputTokens': 64}}
-    fetch(f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
-          hosts=['generativelanguage.googleapis.com'], headers=headers, data=json.dumps(body).encode())
+    model_request(f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent', headers, body)
     print('Configured model accepted a real generation request. API key and current quota work.')
 
 

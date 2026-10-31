@@ -57,6 +57,16 @@ class FeedTests(unittest.TestCase):
 
 
 class PublicationTests(unittest.TestCase):
+    def test_transient_model_errors_retry_but_quota_errors_do_not(self):
+        host = 'generativelanguage.googleapis.com'
+        with patch.object(p, 'fetch', side_effect=[p.RequestFailure(503, host), b'{}']) as request, patch.object(p.time, 'sleep'):
+            self.assertEqual(p.model_request('https://' + host, {}, {}), b'{}')
+            self.assertEqual(request.call_count, 2)
+        with patch.object(p, 'fetch', side_effect=p.RequestFailure(429, host)) as request, patch.object(p.time, 'sleep'):
+            with self.assertRaises(p.RequestFailure):
+                p.model_request('https://' + host, {}, {})
+            self.assertEqual(request.call_count, 1)
+
     def test_html_escape_and_source_validation(self):
         article = fixture()
         article['sections'][0]['paragraphs'][0] += ' Interest & credit remain uncertain.'
