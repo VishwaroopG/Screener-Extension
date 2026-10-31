@@ -90,16 +90,26 @@
           return r.text();
         }).then(function (body) {
           var tags = (meta.tags || []).map(function (t) { return '<span class="tag">' + t + '</span>'; }).join('');
+          var hasFaq = /<h[2-3][^>]*>\s*frequently asked questions\s*<\/h[2-3]>/i.test(body);
+          var faq = hasFaq ? '' : '<section class="article-faq" aria-labelledby="article-faq-title">'
+            + '<h2 id="article-faq-title">Frequently asked questions</h2>'
+            + '<h3>Is this financial advice?</h3>'
+            + '<p>No. This article is for education and research. Make decisions based on your own goals and due diligence.</p>'
+            + '<h3>How should I use this information?</h3>'
+            + '<p>Use it as a starting point, verify important details with reliable sources, and consider the wider market context.</p>'
+            + '<h3>Where can I follow stocks while I research?</h3>'
+            + '<p>Ticker Screener keeps your watchlist, charts and ticker tape available in your browser.</p>'
+            + '</section>';
           article.innerHTML = '<span class="eyebrow">' + fmtDate(meta.date) + '</span>'
             + '<h1 class="article-title">' + meta.title + '</h1>'
             + (tags ? '<div class="tag-row">' + tags + '</div>' : '')
             + '<div class="post-date">Posted on ' + fmtDate(meta.date) + '</div>'
-            + '<div class="article-body">' + body + '</div>'
-            + (meta.inlineExtensionMention ? '' : '<hr class="post-divider">'
+            + '<div class="article-body">' + body + faq + '</div>'
+            + '<hr class="post-divider">'
             + '<div class="extension-cta">'
             + '<div><strong>Track these markets live.</strong><p>Ticker Screener puts your watchlist, charts and ticker tape in every browser tab.</p></div>'
             + '<a class="button button-primary" href="https://chromewebstore.google.com/detail/screener-pro-%E2%80%93-live-watch/pfaifjhdbnpfdjieppkhciemgccbpifi?authuser=0&hl=en">Get the extension</a>'
-            + '</div>');
+            + '</div>';
         });
       }).catch(function () {
         article.innerHTML = '<p class="section-copy">Post not found. <a href="./">Back to all posts</a>.</p>';

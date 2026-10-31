@@ -994,7 +994,7 @@ h1 .accent { color: var(--accent-warm); }
 /* Article page */
 .back-link { display: inline-block; margin-bottom: 24px; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; }
 .back-link:hover { color: var(--accent-warm); }
-.article { max-width: 780px; }
+.article { max-width: 980px; }
 .article-title {
   margin: 14px 0 8px;
   font-family: 'Satoshi', sans-serif;
@@ -1007,6 +1007,7 @@ h1 .accent { color: var(--accent-warm); }
 }
 .article-body { margin-top: 28px; color: var(--text-secondary); font-size: 1rem; line-height: 1.8; }
 .article-body h2 { margin: 36px 0 12px; color: var(--text); font-weight: 700; font-size: 1.4rem; }
+.article-body h3 { margin: 24px 0 12px; color: var(--text); font-weight: 700; font-size: 1.15rem; }
 .article-body p { margin: 0 0 16px; }
 .article-body ul { margin: 0 0 16px; padding-left: 20px; }
 .article-body li { margin-bottom: 8px; }
