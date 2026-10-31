@@ -184,7 +184,7 @@ img { max-width: 100%; height: auto; }
 .button-primary {
   position: relative;
   overflow: hidden;
-  color: #0b0c10;
+  color: #ffffff;
   background: linear-gradient(135deg, #e5c98d 0%, var(--accent-warm) 100%);
   box-shadow: 0 6px 24px rgba(201, 169, 110, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
