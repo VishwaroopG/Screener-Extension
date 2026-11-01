@@ -6,19 +6,23 @@ on:
       mode:
         description: Job requested by the private editorial service
         type: choice
-        options: [scan, revise, publish, diagnose, verify-dispatch]
+        options: [scan, revise, publish, diagnose, verify-dispatch, custom]
         required: true
       draft_id:
-        description: Private draft ID (empty for scan)
+        description: Private draft ID (empty for scan/custom)
+        type: string
+        default: ''
+      custom_input:
+        description: URL or topic for custom writing
         type: string
         default: ''
 permissions: {}
 concurrency:
-  group: editorial-${{ inputs.mode }}-${{ inputs.draft_id }}
+  group: editorial-${{ inputs.mode }}-${{ inputs.draft_id }}-${{ inputs.custom_input }}
   cancel-in-progress: false
 jobs:
   research:
-    if: inputs.mode == 'scan' || inputs.mode == 'revise' || inputs.mode == 'diagnose' || inputs.mode == 'verify-dispatch'
+    if: inputs.mode == 'scan' || inputs.mode == 'revise' || inputs.mode == 'diagnose' || inputs.mode == 'verify-dispatch' || inputs.mode == 'custom'
     runs-on: ubuntu-latest
     timeout-minutes: 12
     permissions:
@@ -30,6 +34,7 @@ jobs:
       GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.5-flash-lite' }}
       JOB_MODE: ${{ inputs.mode }}
       DRAFT_ID: ${{ inputs.draft_id }}
+      CUSTOM_INPUT: ${{ inputs.custom_input }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,7 +43,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python editorial/pipeline.py "$JOB_MODE" --draft-id "$DRAFT_ID"
+      - run: python editorial/pipeline.py "$JOB_MODE" --draft-id "$DRAFT_ID" --custom-input "$CUSTOM_INPUT"
       - name: Recover a failed revision
         if: failure() && inputs.mode == 'revise'
         run: python editorial/pipeline.py revision-failed --draft-id "$DRAFT_ID"

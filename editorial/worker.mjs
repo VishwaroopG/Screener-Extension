@@ -39,12 +39,12 @@ async function telegram(env, method, body) {
   return value.result;
 }
 const tell = (env, text, extra = {}) => telegram(env, 'sendMessage', { chat_id: env.TELEGRAM_CHAT_ID, text, ...extra });
-async function dispatch(env, mode, draftId = '') {
+async function dispatch(env, mode, draftId = '', customInput = '') {
   const res = await fetch(`https://api.github.com/repos/${env.GITHUB_REPOSITORY}/actions/workflows/editorial.yml/dispatches`, {
     method: 'POST', headers: {
       Authorization: `Bearer ${env.GITHUB_TOKEN}`, Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28', 'User-Agent': 'Screener-Editorial', 'Content-Type': 'application/json'
-    }, body: JSON.stringify({ ref: env.GITHUB_REF, inputs: { mode, draft_id: draftId } }), signal: AbortSignal.timeout(15000)
+    }, body: JSON.stringify({ ref: env.GITHUB_REF, inputs: { mode, draft_id: draftId, custom_input: customInput } }), signal: AbortSignal.timeout(15000)
   });
   if (!res.ok) throw new UpstreamFailure('github', res.status);
 }
@@ -149,9 +149,71 @@ async function webhook(request, env) {
     }
     return json({ ok: true });
   }
-  const text = update.message?.text || '';
+  const text = (update.message?.text || '').trim();
   if (/^\/(start|help)(?:\s|$)/.test(text)) {
-    await tell(env, 'Editorial autopilot: events create drafts, never automatic posts.\n/pending — resend pending drafts\n/status — health and queue\n/pause — stop detecting new stories\n/resume — resume detection\n/revise ID instructions — revise or refresh a draft\n/retry ID — retry an approved failed publication\nEvery revised draft needs fresh approval.');
+    await tell(env, 'Editorial autopilot:\n\n' +
+      '✍️ Drafting:\n' +
+      '• Send any link (https://...) to draft from an article or release\n' +
+      '• /write <topic or link> — draft a sourced explainer\n' +
+      '• /revise ID instructions — rewrite an existing draft\n\n' +
+      '⚙️ Management:\n' +
+      '• /status — health, scan times & queue\n' +
+      '• /scan — trigger feed scan immediately\n' +
+      '• /pending — review pending drafts & buttons\n' +
+      '• /latest — view recently published articles\n' +
+      '• /reject ID — reject a pending draft\n' +
+      '• /retry ID — retry a failed approved publication\n' +
+      '• /pause / /resume — pause or resume automatic detection');
+  } else if (text === '/scan') {
+    try {
+      await dispatch(env, 'scan');
+      await tell(env, '🔍 Started feed scan. If new events are found, drafts will arrive here shortly.');
+    } catch {
+      await tell(env, 'Could not trigger scan. Check GitHub Actions status.');
+    }
+  } else if (text === '/latest' || text === '/articles') {
+    const rows = await env.DB.prepare("SELECT * FROM drafts WHERE status='published' ORDER BY approved_at DESC, created_at DESC LIMIT 5").all();
+    if (!rows.results?.length) {
+      await tell(env, 'No published articles found yet.');
+    } else {
+      const items = rows.results.map((r, i) => {
+        let title = r.id;
+        try { title = JSON.parse(r.payload).title || r.id; } catch {}
+        return `${i + 1}. ${title}\n${r.published_url || env.SITE_URL + '/blog/post.html?slug=' + r.id}`;
+      }).join('\n\n');
+      await tell(env, `📰 Latest published articles:\n\n${items}`);
+    }
+  } else if (/^\/reject(?:\s|$)/.test(text)) {
+    const id = text.slice(8).trim();
+    if (!id) {
+      await tell(env, 'Usage: /reject DRAFT_ID');
+      return json({ ok: true });
+    }
+    const row = await first(env, 'SELECT * FROM drafts WHERE id=?', id);
+    if (!row || row.status !== 'pending') {
+      await tell(env, `Draft ${id} is not pending or was already handled.`);
+    } else {
+      const result = await query(env, "UPDATE drafts SET status='rejected' WHERE id=? AND status='pending'", id);
+      if (result.meta.changes) {
+        await audit(env, id, 'rejected');
+        await tell(env, `Rejected ${id}. Nothing will be published.`);
+      }
+    }
+  } else if (/^\/write(?:\s|$)/.test(text) || /^https?:\/\//i.test(text)) {
+    const input = (/^\/write\s+/i.test(text) ? text.replace(/^\/write\s+/i, '') : text).trim();
+    if (!input) {
+      await tell(env, 'Usage: /write <topic or link>\nExample: /write Why copper prices signal global manufacturing demand\nOr paste any URL directly.');
+      return json({ ok: true });
+    }
+    try {
+      await dispatch(env, 'custom', '', input);
+      const isUrl = /^https?:\/\//i.test(input);
+      await tell(env, isUrl
+        ? `✍️ Reading link and preparing draft...\n${input}\nI'll deliver the preview here once ready.`
+        : `✍️ Researching topic and preparing draft...\n"${input.slice(0, 120)}"\nI'll deliver the preview here once ready.`);
+    } catch {
+      await tell(env, 'Could not dispatch writing job. Check GitHub Actions status or quota.');
+    }
   } else if (text === '/pause' || text === '/resume') {
     await query(env, "INSERT INTO settings(key,value) VALUES('paused',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value", text === '/pause' ? '1' : '0');
     await tell(env, text === '/pause' ? 'New-story detection paused. Pending drafts still need your decision.' : 'New-story detection resumed.');
@@ -178,6 +240,8 @@ async function webhook(request, env) {
     const row = await first(env, 'SELECT * FROM drafts WHERE id=?', id);
     if (!row || row.status !== 'failed' || !row.approved_at || row.expires_at <= now()) await tell(env, 'Retry requires an unexpired, previously approved failed draft. Otherwise use /revise ID refresh with current sources.');
     else if (await changeAndDispatch(env, row, 'queued', 'publish')) await tell(env, `Retry queued for ${id}, using the same approved version.`);
+  } else if (text) {
+    await tell(env, 'I did not recognize that command.\n\n💡 Try:\n• /write <topic or link> (or paste a URL)\n• /status — check bot status\n• /scan — scan feeds now\n• /latest — view published posts\n• /help — see all commands');
   }
   return json({ ok: true });
 }

@@ -159,3 +159,67 @@ test('daily model budget stops further claims without calling external services'
   assert.equal((await response.json()).budget, true);
   assert.equal(sqlite.prepare('SELECT COUNT(*) AS n FROM events').get().n, 1);
 });
+
+test('extended commands: /write, raw URL, /scan, /latest, /reject, and fallback', async t => {
+  const { env, sqlite } = setup();
+  const dispatchedModes = [];
+  const telegramMessages = [];
+  t.mock.method(globalThis, 'fetch', async (url, options) => {
+    if (String(url).startsWith('https://api.github.com/')) {
+      const body = JSON.parse(options.body);
+      dispatchedModes.push({ mode: body.inputs.mode, custom_input: body.inputs.custom_input });
+      return new Response(null, { status: 204 });
+    }
+    if (String(url).includes('sendMessage')) {
+      const body = JSON.parse(options.body);
+      telegramMessages.push(body.text);
+      return Response.json({ ok: true, result: { message_id: 101 } });
+    }
+    return Response.json({ ok: true, result: {} });
+  });
+
+  const sendMsg = async (text) => {
+    const res = await worker.fetch(new Request('https://worker.example/telegram', {
+      method: 'POST',
+      headers: { 'X-Telegram-Bot-Api-Secret-Token': 'private-hook', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: { from: { id: 123 }, chat: { id: 123, type: 'private' }, text } })
+    }), env);
+    assert.equal(res.status, 200);
+  };
+
+  // Test /scan
+  await sendMsg('/scan');
+  assert.equal(dispatchedModes.at(-1)?.mode, 'scan');
+  assert.match(telegramMessages.at(-1), /Started feed scan/);
+
+  // Test /write topic
+  await sendMsg('/write Why copper prices signal manufacturing demand');
+  assert.equal(dispatchedModes.at(-1)?.mode, 'custom');
+  assert.equal(dispatchedModes.at(-1)?.custom_input, 'Why copper prices signal manufacturing demand');
+  assert.match(telegramMessages.at(-1), /Researching topic/);
+
+  // Test raw URL
+  await sendMsg('https://example.com/article-release');
+  assert.equal(dispatchedModes.at(-1)?.mode, 'custom');
+  assert.equal(dispatchedModes.at(-1)?.custom_input, 'https://example.com/article-release');
+  assert.match(telegramMessages.at(-1), /Reading link/);
+
+  // Test /reject
+  const draftId = 'f'.repeat(16);
+  sqlite.prepare('INSERT INTO events(id,url,lease_until,created_at) VALUES(?,?,?,?)').run('f'.repeat(64), 'https://example.com', 1, 1);
+  sqlite.prepare('INSERT INTO drafts(id,event_id,payload,digest,status,created_at,expires_at) VALUES(?,?,?,?,?,?,?)')
+    .run(draftId, 'f'.repeat(64), JSON.stringify(payload), 'hash', 'pending', 1, 9999999999);
+  await sendMsg(`/reject ${draftId}`);
+  assert.equal(sqlite.prepare('SELECT status FROM drafts WHERE id=?').get(draftId).status, 'rejected');
+  assert.match(telegramMessages.at(-1), /Rejected/);
+
+  // Test /latest
+  sqlite.prepare("UPDATE drafts SET status='published', published_url='https://site.example/blog/p.html' WHERE id=?").run(draftId);
+  await sendMsg('/latest');
+  assert.match(telegramMessages.at(-1), /Latest published articles/);
+  assert.match(telegramMessages.at(-1), /https:\/\/site\.example\/blog\/p\.html/);
+
+  // Test unrecognized command
+  await sendMsg('hello random text');
+  assert.match(telegramMessages.at(-1), /I did not recognize that command/);
+});

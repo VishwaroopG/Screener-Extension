@@ -9,6 +9,7 @@ from email.utils import parsedate_to_datetime
 import hashlib
 from html import escape
 from html.parser import HTMLParser
+import ipaddress
 import json
 import os
 from pathlib import Path
@@ -77,6 +78,43 @@ def fetch(url, *, hosts, data=None, headers=None, method=None):
                 url = urljoin(url, error.headers['Location'])
                 continue
             # Do not expose API response bodies or credential-bearing URLs.
+            raise RequestFailure(error.code, parsed.hostname) from None
+    raise ValueError('Too many redirects')
+
+
+def is_safe_public_host(hostname):
+    if not hostname:
+        return False
+    try:
+        ip = ipaddress.ip_address(hostname)
+        return not (ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved or ip.is_multicast)
+    except ValueError:
+        pass
+    lower = hostname.lower()
+    if lower in ('localhost', 'metadata.google.internal', 'instance-data') or lower.endswith('.local') or lower.endswith('.internal'):
+        return False
+    return True
+
+
+def fetch_custom_url(url):
+    """Safely fetch any public HTTPS web page for user-requested article drafting."""
+    for _ in range(4):
+        parsed = urlparse(url)
+        if parsed.scheme != 'https' or parsed.username or parsed.password or parsed.port not in (None, 443):
+            raise ValueError('Source URL must be standard HTTPS')
+        if not is_safe_public_host(parsed.hostname):
+            raise ValueError('Source host is not allowed')
+        req = Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 ScreenerEditorial/1.0'})
+        try:
+            with build_opener(NoRedirect).open(req, timeout=30) as response:
+                body = response.read(MAX_BYTES + 1)
+                if len(body) > MAX_BYTES:
+                    raise ValueError('Response exceeds size limit')
+                return body, parsed.hostname
+        except HTTPError as error:
+            if error.code in (301, 302, 303, 307, 308):
+                url = urljoin(url, error.headers['Location'])
+                continue
             raise RequestFailure(error.code, parsed.hostname) from None
     raise ValueError('Too many redirects')
 
@@ -191,7 +229,20 @@ ARTICLE_SCHEMA = {
 
 
 def generate(event, source, existing, instructions=None):
-    prompt = '''You are a careful financial-news editor for Ticker Screener.
+    is_custom = event.get('is_custom', False)
+    guidance = (
+        'This article was explicitly requested by the editor on this topic or source. '
+        'Classify the appropriate topic (macroeconomics, stock_market, or company_stocks) '
+        'and write an original, high-quality 450-750 word contemporary English explainer. Set significant=true. '
+    ) if is_custom else (
+        'Decide whether this NEW official release materially affects investors, company '
+        'fundamentals, trade, inflation, currencies or monetary policy. Routine notices, '
+        'appointments, statistical corrections without material effect, and generic '
+        'speeches are not significant. Do not duplicate the existing article list. '
+        'If insignificant return significant=false and empty sections, title, excerpt, tags. '
+        'Otherwise write an ORIGINAL 450-750 word contemporary English explainer. '
+    )
+    prompt = f'''You are a careful financial-news editor for Ticker Screener.
 Only cover macroeconomics, stock markets, or individual stocks/listed companies.
 Classify the topic as macroeconomics, stock_market, company_stocks or not_relevant.
 Exclude general politics, lifestyle, entertainment, product tutorials and unrelated
@@ -199,12 +250,7 @@ technology news. Trade, geopolitics or technology qualify only when the supplied
 source establishes a concrete connection to one of the three allowed topics.
 Do not manufacture a stock-market connection to justify an unrelated story.
 Return significant=false and topic=not_relevant for anything outside this scope.
-Decide whether this NEW official release materially affects investors, company
-fundamentals, trade, inflation, currencies or monetary policy. Routine notices,
-appointments, statistical corrections without material effect, and generic
-speeches are not significant. Do not duplicate the existing article list.
-If insignificant return significant=false and empty sections, title, excerpt, tags.
-Otherwise write an ORIGINAL 450-750 word contemporary English explainer.
+{guidance}
 Use headings covering What happened, Why it matters, US/Europe/Japan connections
 where supported, and What to watch / uncertainties. Separate confirmed facts from
 conditional analysis. Attribute facts using [1]. Never invent numbers, market
@@ -468,12 +514,82 @@ def complete(draft_id):
     api('/internal/draft/' + draft_id + '/complete', {**receipt, 'run_id': os.environ['GITHUB_RUN_ID']})
 
 
+def custom(input_text):
+    input_text = (input_text or '').strip()
+    if not input_text:
+        raise ValueError('No topic or URL provided for custom writing')
+    existing = [p['title'] for p in json.loads((ROOT / 'blog/posts.json').read_text(encoding='utf-8'))]
+
+    is_url = bool(re.match(r'^https?://', input_text, re.IGNORECASE))
+    now_iso = datetime.now(UTC).isoformat()
+    bucket = datetime.now(UTC).strftime('%Y%m%d%H%M')[:-1]
+
+    if is_url:
+        target_url = 'https://' + input_text[7:] if input_text.startswith('http://') else input_text
+        print(f'Custom writing from URL: {target_url}')
+        raw, host = fetch_custom_url(target_url)
+        if raw.startswith(b'%PDF'):
+            raise ValueError('PDF links cannot be parsed automatically')
+        parser = SourceText()
+        parser.feed(raw.decode('utf-8', errors='replace'))
+        text = '\n'.join(parser.text)
+        if len(text) < 200:
+            raise ValueError('Not enough readable text from the provided URL')
+        source = text[:26000]
+        event_url = canonical_url(target_url)
+        event_id = hashlib.sha256(f'{event_url}:{bucket}'.encode()).hexdigest()
+        event = {
+            'title': f'Analysis: {host}',
+            'url': event_url,
+            'published_at': now_iso,
+            'region': 'Global',
+            'source': host,
+            'hosts': [host],
+            'is_custom': True
+        }
+    else:
+        print(f'Custom writing from topic: {input_text}')
+        clean_topic = input_text[:160]
+        site_host = urlparse(SITE).hostname
+        event_id = hashlib.sha256(f'{clean_topic}:{bucket}'.encode()).hexdigest()
+        event_url = f'{SITE}/blog#{event_id[:10]}'
+        event = {
+            'title': clean_topic,
+            'url': event_url,
+            'published_at': now_iso,
+            'region': 'Global',
+            'source': 'Editorial Brief',
+            'hosts': [site_host],
+            'is_custom': True
+        }
+        source = (
+            f'Editor-requested analysis topic: {clean_topic}\n\n'
+            f'Context: Write a detailed, educational macroeconomic or stock-market analysis explainer on this topic. '
+            f'Explain key financial mechanisms, economic context, and factors to monitor [1].'
+        )
+
+    result = api('/internal/event/claim', {'id': event_id, 'url': event['url']})
+    if result.get('budget'):
+        raise RuntimeError('Daily model or draft budget reached')
+    if not result.get('claimed'):
+        print('Event already claimed or in progress; continuing with draft generation')
+
+    payload = generate(event, source, existing)
+    if not payload:
+        api('/internal/event/ignore', {'id': event_id})
+        raise ValueError('Could not generate an article on this input')
+
+    draft_res = api('/internal/draft', {'event_id': event_id, 'payload': payload})
+    print(f"Draft successfully created (ID: {draft_res.get('id')}): {payload['title']}")
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('mode', choices=['scan', 'revise', 'publish', 'complete', 'failed', 'revision-failed', 'check-feeds', 'pack-site', 'diagnose', 'verify-dispatch'])
+    parser.add_argument('mode', choices=['scan', 'revise', 'publish', 'complete', 'failed', 'revision-failed', 'check-feeds', 'pack-site', 'diagnose', 'verify-dispatch', 'custom'])
     parser.add_argument('--draft-id', default='')
+    parser.add_argument('--custom-input', default='')
     args = parser.parse_args()
-    if args.mode not in ('scan', 'check-feeds', 'pack-site', 'diagnose', 'verify-dispatch') and not re.fullmatch('[a-f0-9]{16}', args.draft_id):
+    if args.mode not in ('scan', 'check-feeds', 'pack-site', 'diagnose', 'verify-dispatch', 'custom') and not re.fullmatch('[a-f0-9]{16}', args.draft_id):
         raise ValueError('Invalid draft ID')
     if args.mode == 'publish' and os.environ.get('GITHUB_ACTIONS') != 'true':
         raise ValueError('Publishing is allowed only in the dedicated GitHub Actions checkout')
@@ -483,6 +599,8 @@ def main():
         diagnose()
     elif args.mode == 'pack-site':
         pack_site()
+    elif args.mode == 'custom':
+        custom(args.custom_input)
     elif args.mode == 'check-feeds':
         errors = 0
         for feed in FEEDS:
@@ -515,9 +633,9 @@ if __name__ == '__main__':
     except Exception as error:
         print('Failure category: ' + safe_error(error), file=sys.stderr)
         print('Editorial job failed. Review service configuration, quotas and source availability; no secrets logged.', file=sys.stderr)
-        if len(sys.argv) > 1 and sys.argv[1] in ('scan', 'revise'):
+        if len(sys.argv) > 1 and sys.argv[1] in ('scan', 'revise', 'custom'):
             try:
-                api('/internal/alert', {'message': 'Editorial research/revision job failed. Check GitHub Actions; use /pending to recover an undelivered preview.'})
+                api('/internal/alert', {'message': f'Editorial {sys.argv[1]} job failed: {safe_error(error)}. Check GitHub Actions.'})
             except Exception:
                 pass
         sys.exit(1)

@@ -109,6 +109,11 @@ the project to another repository/branch/site.
 | Command | Effect |
 |---|---|
 | `/help` | Show commands |
+| `/write topic or link` | Research and draft a new explainer from a topic or public URL |
+| `https://...` | Paste any public news link directly to draft an explainer |
+| `/scan` | Trigger an immediate scan of official feeds without waiting for cron |
+| `/latest` | List the last 5 published articles with links |
+| `/reject ID` | Reject a pending draft by ID |
 | `/status` | Enabled/paused state, last successful scan, pending count |
 | `/pending` | Resend up to 10 pending previews / show publication state |
 | `/pause` | Stop new-story detection; approved queue continues |

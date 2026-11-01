@@ -55,6 +55,19 @@ class FeedTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 p.fetch(url, hosts=['example.com'])
 
+    def test_is_safe_public_host_and_custom_url_guards(self):
+        self.assertTrue(p.is_safe_public_host('reuters.com'))
+        self.assertTrue(p.is_safe_public_host('www.federalreserve.gov'))
+        self.assertFalse(p.is_safe_public_host('127.0.0.1'))
+        self.assertFalse(p.is_safe_public_host('192.168.1.1'))
+        self.assertFalse(p.is_safe_public_host('169.254.169.254'))
+        self.assertFalse(p.is_safe_public_host('localhost'))
+        self.assertFalse(p.is_safe_public_host('metadata.google.internal'))
+        with self.assertRaises(ValueError):
+            p.fetch_custom_url('http://example.com')
+        with self.assertRaises(ValueError):
+            p.fetch_custom_url('https://127.0.0.1/test')
+
 
 class PublicationTests(unittest.TestCase):
     def test_transient_model_errors_retry_but_quota_errors_do_not(self):
