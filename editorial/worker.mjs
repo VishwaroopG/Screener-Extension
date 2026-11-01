@@ -151,19 +151,21 @@ async function webhook(request, env) {
   }
   const text = (update.message?.text || '').trim();
   if (/^\/(start|help)(?:\s|$)/.test(text)) {
-    await tell(env, 'Editorial autopilot:\n\n' +
+    await tell(env, 'Editorial autopilot: events create drafts, never automatic posts.\n\n' +
       '✍️ Drafting:\n' +
-      '• Send any link (https://...) to draft from an article or release\n' +
+      '• Paste any link (https://...) — draft directly from an article or release\n' +
       '• /write <topic or link> — draft a sourced explainer\n' +
-      '• /revise ID instructions — rewrite an existing draft\n\n' +
-      '⚙️ Management:\n' +
+      '• /revise ID instructions — rewrite or refresh a draft\n\n' +
+      '⚙️ Review & Publishing:\n' +
+      '• /pending — review pending drafts with Approve & Reject buttons\n' +
+      '• /reject ID — reject a pending draft\n' +
+      '• /retry ID — retry an approved failed publication\n' +
+      '• /latest — view recently published articles\n\n' +
+      '📡 Management:\n' +
       '• /status — health, scan times & queue\n' +
       '• /scan — trigger feed scan immediately\n' +
-      '• /pending — review pending drafts & buttons\n' +
-      '• /latest — view recently published articles\n' +
-      '• /reject ID — reject a pending draft\n' +
-      '• /retry ID — retry a failed approved publication\n' +
-      '• /pause / /resume — pause or resume automatic detection');
+      '• /pause / /resume — pause or resume automatic detection\n\n' +
+      'Every revised draft needs fresh approval.');
   } else if (text === '/scan') {
     try {
       await dispatch(env, 'scan');
