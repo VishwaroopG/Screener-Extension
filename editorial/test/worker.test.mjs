@@ -223,3 +223,26 @@ test('extended commands: /write, raw URL, /scan, /latest, /reject, and fallback'
   await sendMsg('hello random text');
   assert.match(telegramMessages.at(-1), /I did not recognize that command/);
 });
+
+test('owner can approve draft even if original expiry has passed (auto-renewal)', async t => {
+  const { env, sqlite } = setup();
+  let dispatches = 0;
+  t.mock.method(globalThis, 'fetch', async (url) => {
+    if (String(url).startsWith('https://api.github.com/')) { dispatches++; return new Response(null, { status: 204 }); }
+    return Response.json({ ok: true, result: { message_id: 88 } });
+  });
+
+  const eventId = '9'.repeat(64), id = eventId.slice(0, 16);
+  sqlite.prepare('INSERT INTO events(id,url,lease_until,created_at) VALUES(?,?,?,?)').run(eventId, 'https://example.com/expired-news', 1, 1);
+  // Draft created long ago with expired timestamp (expires_at = 100)
+  sqlite.prepare('INSERT INTO drafts(id,event_id,payload,digest,status,revision,created_at,expires_at) VALUES(?,?,?,?,?,?,?,?)')
+    .run(id, eventId, JSON.stringify(payload), 'digest-expired', 'pending', 1, 1, 100);
+
+  // Owner approves long after expiration
+  const res = await worker.fetch(callback('approve', id, 1), env);
+  assert.equal(res.status, 200);
+  assert.equal(dispatches, 1, 'Approval succeeds and dispatches publish even after long delay');
+  const row = sqlite.prepare('SELECT status, expires_at FROM drafts WHERE id=?').get(id);
+  assert.equal(row.status, 'queued');
+  assert.ok(row.expires_at > Math.floor(Date.now() / 1000) + 3600, 'expires_at is automatically renewed on approval');
+});

@@ -25,7 +25,7 @@
     "TELEGRAM_CHAT_ID": "824171961",
     "MAX_DRAFTS_PER_DAY": "6",
     "MAX_MODEL_CALLS_PER_DAY": "24",
-    "DRAFT_TTL_HOURS": "12",
+    "DRAFT_TTL_HOURS": "2160",
     "ENABLED": "true"
   }
 }

@@ -61,9 +61,9 @@ async function drainPublishQueue(env) {
   const row = await first(env, "SELECT * FROM drafts WHERE status='queued' ORDER BY approved_at,created_at LIMIT 1");
   if (!row) return;
   if (row.expires_at <= now()) {
-    await query(env, "UPDATE drafts SET status='failed' WHERE id=? AND status='queued'", row.id);
-    await tell(env, `Queued draft ${row.id} expired. Use /revise ${row.id} refresh with current source facts.`);
-    return;
+    const newExpiry = now() + Number(env.DRAFT_TTL_HOURS || 2160) * 3600;
+    await query(env, "UPDATE drafts SET expires_at=? WHERE id=? AND status='queued'", newExpiry, row.id);
+    row.expires_at = newExpiry;
   }
   const result = await query(env, 'INSERT OR IGNORE INTO publish_lane(slot,draft_id,lease_until) VALUES(1,?,?)', row.id, now() + 1800);
   if (!result.meta.changes) return;
@@ -96,7 +96,7 @@ async function sendPreview(env, row) {
   const res = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendDocument`, { method: 'POST', body: form, signal: AbortSignal.timeout(15000) });
   const result = await res.json();
   if (!res.ok || !result.ok) throw new Error('Telegram draft attachment failed');
-  const message = await tell(env, `${p.title}\n\n${p.excerpt}\n\n${p.reason}\n\nDraft: ${row.id} · v${row.revision}\nApproval expires: ${new Date(row.expires_at * 1000).toISOString()}\nFor edits: /revise ${row.id} your instructions`, {
+  const message = await tell(env, `${p.title}\n\n${p.excerpt}\n\n${p.reason}\n\nDraft: ${row.id} · v${row.revision}\nApproval window: Active (awaiting your decision)\nFor edits: /revise ${row.id} your instructions`, {
     reply_markup: { inline_keyboard: [[
       { text: 'Approve & publish', callback_data: `approve:${row.id}:${row.revision}` },
       { text: 'Reject', callback_data: `reject:${row.id}:${row.revision}` }
@@ -108,7 +108,7 @@ async function changeAndDispatch(env, row, status, mode, instructions = null) {
   const result = await query(env, 'UPDATE drafts SET status=?,instructions=? WHERE id=? AND status=? AND revision=?', status, instructions, row.id, row.status, row.revision);
   if (!result.meta.changes) return false;
   if (mode === 'publish') {
-    await query(env, 'UPDATE drafts SET approved_at=? WHERE id=?', now(), row.id);
+    await query(env, 'UPDATE drafts SET approved_at=?, expires_at=? WHERE id=?', now(), now() + Number(env.DRAFT_TTL_HOURS || 2160) * 3600, row.id);
     await audit(env, row.id, `approved:v${row.revision}:${row.digest}`);
     // Approval remains durably queued if dispatch is temporarily unavailable.
     try { await drainPublishQueue(env); } catch { /* next cron retries */ }
@@ -133,9 +133,19 @@ async function webhook(request, env) {
     const match = /^(approve|reject):([a-f0-9]{16}):(\d+)$/.exec(cb.data || '');
     if (!match) return json({ ok: true });
     const [, action, id, version] = match;
-    const row = await first(env, 'SELECT * FROM drafts WHERE id=?', id);
+    let row = await first(env, 'SELECT * FROM drafts WHERE id=?', id);
+    if (!row || row.status !== 'pending' || row.revision !== Number(version)) {
+      await tell(env, `Draft ${id} is changed, rejected, or already published. Use /pending.`);
+      return json({ ok: true });
+    }
+    // If the draft expired because the editor took time to review, auto-renew expiry upon explicit owner action
+    if (row.expires_at <= now()) {
+      const newExpiry = now() + Number(env.DRAFT_TTL_HOURS || 2160) * 3600;
+      await query(env, 'UPDATE drafts SET expires_at=? WHERE id=?', newExpiry, id);
+      row.expires_at = newExpiry;
+    }
     if (!approvalAllowed(row, Number(version))) {
-      await tell(env, `Draft ${id} is expired, changed, or already handled. Use /pending or /revise ${id} refresh using current source facts.`);
+      await tell(env, `Draft ${id} cannot be approved. Use /pending or /revise ${id} refresh using current source facts.`);
       return json({ ok: true });
     }
     if (action === 'reject') {
@@ -143,7 +153,7 @@ async function webhook(request, env) {
       if (result.meta.changes) { await audit(env, id, 'rejected'); await tell(env, `Rejected ${id}. Nothing will be published.`); }
     } else {
       if (await changeAndDispatch(env, row, 'queued', 'publish')) {
-        await query(env, 'UPDATE drafts SET approved_at=? WHERE id=?', now(), id);
+        await query(env, 'UPDATE drafts SET approved_at=?, expires_at=? WHERE id=?', now(), now() + Number(env.DRAFT_TTL_HOURS || 2160) * 3600, id);
         await tell(env, `Approved ${id} v${row.revision}. Publication queued; I’ll confirm after deployment.`);
       }
     }
@@ -228,8 +238,16 @@ async function webhook(request, env) {
     const rows = await env.DB.prepare("SELECT * FROM drafts WHERE status IN ('pending','failed','queued','publishing') ORDER BY created_at DESC LIMIT 10").all();
     if (!rows.results.length) await tell(env, 'No pending drafts.');
     for (const row of rows.results) {
-      if (row.status === 'pending') await sendPreview(env, row);
-      else await tell(env, `${row.id}: ${row.status}. ${row.status === 'failed' ? 'Use /retry ' + row.id : 'Publication is in progress.'}`);
+      if (row.status === 'pending') {
+        if (row.expires_at <= now()) {
+          const newExpiry = now() + Number(env.DRAFT_TTL_HOURS || 2160) * 3600;
+          await query(env, 'UPDATE drafts SET expires_at=? WHERE id=?', newExpiry, row.id);
+          row.expires_at = newExpiry;
+        }
+        await sendPreview(env, row);
+      } else {
+        await tell(env, `${row.id}: ${row.status}. ${row.status === 'failed' ? 'Use /retry ' + row.id : 'Publication is in progress.'}`);
+      }
     }
   } else if (/^\/revise /.test(text)) {
     const match = /^\/revise ([a-f0-9]{16}) ([\s\S]{1,2000})$/.exec(text);
@@ -240,8 +258,14 @@ async function webhook(request, env) {
   } else if (/^\/retry /.test(text)) {
     const id = text.slice(7).trim();
     const row = await first(env, 'SELECT * FROM drafts WHERE id=?', id);
-    if (!row || row.status !== 'failed' || !row.approved_at || row.expires_at <= now()) await tell(env, 'Retry requires an unexpired, previously approved failed draft. Otherwise use /revise ID refresh with current sources.');
-    else if (await changeAndDispatch(env, row, 'queued', 'publish')) await tell(env, `Retry queued for ${id}, using the same approved version.`);
+    if (!row || row.status !== 'failed' || !row.approved_at) {
+      await tell(env, 'Retry requires a previously approved failed draft. Otherwise use /revise ID refresh with current sources.');
+    } else {
+      const newExpiry = now() + Number(env.DRAFT_TTL_HOURS || 2160) * 3600;
+      await query(env, 'UPDATE drafts SET expires_at=? WHERE id=?', newExpiry, id);
+      row.expires_at = newExpiry;
+      if (await changeAndDispatch(env, row, 'queued', 'publish')) await tell(env, `Retry queued for ${id}, using the same approved version.`);
+    }
   } else if (text) {
     await tell(env, 'I did not recognize that command.\n\n💡 Try:\n• /write <topic or link> (or paste a URL)\n• /status — check bot status\n• /scan — scan feeds now\n• /latest — view published posts\n• /help — see all commands');
   }
@@ -284,10 +308,10 @@ async function internal(request, env, path) {
     if (payload.length > 60000) return json({ error: 'Draft too large' }, 400);
     if (body.revision) {
       const result = await query(env, `UPDATE drafts SET payload=?,digest=?,status='pending',revision=revision+1,expires_at=?,instructions=NULL,approved_at=NULL,run_id=NULL
-        WHERE id=? AND status='revising' AND revision=?`, payload, hash, now() + Number(env.DRAFT_TTL_HOURS || 12) * 3600, id, body.revision);
+        WHERE id=? AND status='revising' AND revision=?`, payload, hash, now() + Number(env.DRAFT_TTL_HOURS || 2160) * 3600, id, body.revision);
       if (!result.meta.changes) return json({ error: 'Revision conflict' }, 409);
     } else {
-      await query(env, 'INSERT OR IGNORE INTO drafts(id,event_id,payload,digest,created_at,expires_at) VALUES(?,?,?,?,?,?)', id, body.event_id, payload, hash, now(), now() + Number(env.DRAFT_TTL_HOURS || 12) * 3600);
+      await query(env, 'INSERT OR IGNORE INTO drafts(id,event_id,payload,digest,created_at,expires_at) VALUES(?,?,?,?,?,?)', id, body.event_id, payload, hash, now(), now() + Number(env.DRAFT_TTL_HOURS || 2160) * 3600);
     }
     await query(env, "UPDATE events SET status='drafted' WHERE id=?", body.event_id);
     await audit(env, id, body.revision ? 'revised' : 'drafted');
@@ -312,7 +336,12 @@ async function internal(request, env, path) {
     if (!action && request.method === 'GET') return json(row);
     if (request.method !== 'POST') return json({ error: 'Method' }, 405);
     if (action === 'claim') {
-      if (!body.run_id || row.expires_at <= now()) return json({ error: 'Expired or invalid publication' }, 409);
+      if (!body.run_id) return json({ error: 'Expired or invalid publication' }, 409);
+      if (row.expires_at <= now()) {
+        const newExpiry = now() + Number(env.DRAFT_TTL_HOURS || 2160) * 3600;
+        await query(env, 'UPDATE drafts SET expires_at=? WHERE id=?', newExpiry, id);
+        row.expires_at = newExpiry;
+      }
       const lane = await first(env, 'SELECT * FROM publish_lane WHERE slot=1');
       if (lane?.draft_id !== id || lane.lease_until <= now()) return json({ error: 'Publication lane not reserved' }, 409);
       const result = await query(env, "UPDATE drafts SET status='publishing',run_id=? WHERE id=? AND status='queued'", body.run_id, id);
