@@ -20,6 +20,9 @@
     }
   };
   if (document.getElementById('screener-ticker-tape')) return; // Already injected
+  // This script renders into arbitrary web pages: every third-party or
+  // user-supplied string (tickers, prices, % changes) must be escaped.
+  const ttEsc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   const tapeDiv = document.createElement('div');
   tapeDiv.id = 'screener-ticker-tape';
@@ -727,11 +730,11 @@
       metricsHtml = `
         <div class="screener-metric-box">
           <span class="screener-metric-label">${t('metricLastPrice')}</span>
-          <span class="screener-metric-val">${price}</span>
+          <span class="screener-metric-val">${ttEsc(price)}</span>
         </div>
         <div class="screener-metric-box">
           <span class="screener-metric-label" id="screener-return-label">${t('ret1M')}</span>
-          <span class="screener-metric-val ${colorCls}" id="screener-period-return">${pct}</span>
+          <span class="screener-metric-val ${colorCls}" id="screener-period-return">${ttEsc(pct)}</span>
         </div>
       `;
 
@@ -751,18 +754,18 @@
       const colorCls = data.changeDir === 'up' ? 'screener-metric-up' : 'screener-metric-down';
 
       const metrics = [
-        { label: t('metricLastPrice'), val: ratios['Current Price'] || '-' },
-        { label: t('ret1M'), val: `<span class="${colorCls}" id="screener-period-return">${pct}</span>`, labelId: 'screener-return-label' },
-        { label: t('ratioMCap'), val: formatMcapWithCurrency(ratios['Market Cap'], data) },
-        { label: t('metricPERatio'), val: formatPureRatioDisplay(ratios['Stock P/E'] || '-') },
-        { label: t('metricDivYield'), val: formatPureRatioDisplay(ratios['Dividend Yield'] || '-') },
-        { label: 'ROCE', val: formatPureRatioDisplay(ratios['ROCE'] || '-') }
+        { label: t('metricLastPrice'), val: ttEsc(ratios['Current Price'] || '-') },
+        { label: t('ret1M'), val: `<span class="${colorCls}" id="screener-period-return">${ttEsc(pct)}</span>`, labelId: 'screener-return-label' },
+        { label: t('ratioMCap'), val: ttEsc(formatMcapWithCurrency(ratios['Market Cap'], data)) },
+        { label: t('metricPERatio'), val: ttEsc(formatPureRatioDisplay(ratios['Stock P/E'] || '-')) },
+        { label: t('metricDivYield'), val: ttEsc(formatPureRatioDisplay(ratios['Dividend Yield'] || '-')) },
+        { label: 'ROCE', val: ttEsc(formatPureRatioDisplay(ratios['ROCE'] || '-')) }
       ];
 
       metrics.forEach(m => {
         metricsHtml += `
           <div class="screener-metric-box">
-            <span class="screener-metric-label"${m.labelId ? ` id="${m.labelId}"` : ''}>${m.label}</span>
+            <span class="screener-metric-label"${m.labelId ? ` id="${m.labelId}"` : ''}>${ttEsc(m.label)}</span>
             <span class="screener-metric-val">${m.val}</span>
           </div>
         `;
@@ -883,6 +886,7 @@
     const showAmt = tapeShowAmount === true;
     const color = isUp ? '#81c995' : '#f28b82';
     const arrow = isUp ? '▲' : '▼';
+    pctDisplay = ttEsc(pctDisplay);
     const dirClass = isUp ? 'screener-change-up' : 'screener-change-down';
     if (showPct && showAmt) {
       const amt = absChangeValue(priceStr, pctStr, isUp);
@@ -891,7 +895,7 @@
     if (showPct) return `<span class="screener-ticker-change ${dirClass}" style="color: ${color}; font-size: 12px;">${arrow}${pctDisplay}</span>`;
     if (showAmt) {
       const amt = absChangeText(priceStr, pctStr, isUp);
-      if (amt) return `<span class="screener-ticker-amount ${dirClass}" style="color: ${color};">${amt}</span>`;
+      if (amt) return `<span class="screener-ticker-amount ${dirClass}" style="color: ${color};">${ttEsc(amt)}</span>`;
     }
     return '';
   }
@@ -1003,9 +1007,9 @@
         }
 
         html += `
-          <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${idxName}" data-is-index="true" style="cursor: pointer;">
-            <span class="screener-ticker-name">${idxName.replace(/\s*\(.*\)\s*$/, '')}</span>
-            <span class="screener-ticker-price ${isUp ? 'screener-price-up' : 'screener-price-down'} ${flashClass}">${idx.price}</span>
+          <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${ttEsc(idxName)}" data-is-index="true" style="cursor: pointer;">
+            <span class="screener-ticker-name">${ttEsc(idxName.replace(/\s*\(.*\)\s*$/, ''))}</span>
+            <span class="screener-ticker-price ${isUp ? 'screener-price-up' : 'screener-price-down'} ${flashClass}">${ttEsc(idx.price)}</span>
             <span class="screener-ticker-moves" style="margin-left: 6px;">${changeAreaHtml(idx.price, idx.changePct, Math.abs(parseFloat(idx.changePct)).toFixed(2) + '%', isUp)}</span>
           </div>
         `;
@@ -1025,9 +1029,9 @@
           }
 
           html += `
-            <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${ticker}" style="cursor: pointer;">
-              <span class="screener-ticker-name">${ticker}</span>
-              <span class="screener-ticker-price ${data.changeDir === 'up' ? 'screener-price-up' : 'screener-price-down'} ${flashClass}">${price}</span>
+            <div class="screener-ticker-item screener-clickable-ticker" data-ticker="${ttEsc(ticker)}" style="cursor: pointer;">
+              <span class="screener-ticker-name">${ttEsc(ticker)}</span>
+              <span class="screener-ticker-price ${data.changeDir === 'up' ? 'screener-price-up' : 'screener-price-down'} ${flashClass}">${ttEsc(price)}</span>
               ${movesHtml}
             </div>
           `;

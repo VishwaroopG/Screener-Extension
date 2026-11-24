@@ -146,7 +146,6 @@ function getSyncEmail() {
             return;
           }
           const email = (info && info.email) || '';
-          console.log('getProfileUserInfo result:', email ? 'found email' : 'no email', email ? email.substring(0, 3) + '...' : '');
           resolve(email);
         });
       } else {

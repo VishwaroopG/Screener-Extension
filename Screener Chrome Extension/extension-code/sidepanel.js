@@ -2207,8 +2207,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const concallHtml = (concalls || []).length
       ? concalls.map(c => {
-          const linkBtns = (c.links || []).map(l => l.href
-            ? `<a href="${esc(l.href)}" target="_blank" style="font-size:10px; font-weight:700; padding:3px 8px; border-radius:20px; border:1px solid var(--border-color); color:var(--text-color); text-decoration:none; margin-right:4px;">${esc(l.text)}</a>`
+          const linkBtns = (c.links || []).map(l => safeUrl(l.href)
+            ? `<a href="${esc(safeUrl(l.href))}" rel="noopener noreferrer" target="_blank" style="font-size:10px; font-weight:700; padding:3px 8px; border-radius:20px; border:1px solid var(--border-color); color:var(--text-color); text-decoration:none; margin-right:4px;">${esc(l.text)}</a>`
             : `<span style="font-size:10px; color:var(--label-color); margin-right:4px;">${esc(l.text)}</span>`).join('');
           return `<div style="padding:8px 0; border-bottom:1px solid var(--border-color);"><div style="font-size:12px; font-weight:700; color:var(--text-color);" title="${esc(c.month || '')}">${esc(fyQuarter(c.month) || 'Concall')}</div><div style="margin-top:4px;">${linkBtns}</div></div>`;
         }).join('')
@@ -2388,9 +2388,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
            const companyUrl = (data.source === 'yahoo' || ticker.startsWith('^'))
              ? `https://finance.yahoo.com/quote/${encodeURIComponent(ticker)}`
-             : `https://www.screener.in/company/${ticker}/`;
+             : `https://www.screener.in/company/${encodeURIComponent(ticker)}/`;
            let html = `<div style="display:flex; justify-content:space-between; align-items:flex-start;">
-             <h3 style="margin:0 0 4px 0;"><a href="${companyUrl}" target="_blank" style="color:var(--link-green); text-decoration:none;">${data.companyName}</a></h3>
+             <h3 style="margin:0 0 4px 0;"><a href="${companyUrl}" target="_blank" style="color:var(--link-green); text-decoration:none;">${plainText(data.companyName || ticker)}</a></h3>
              <button id="btn-back-dashboard" class="screener-btn screener-btn-secondary" style="padding:4px 8px; font-size:11px; flex-shrink:0; margin-left:8px;">${t('backButton')}</button>
            </div>`;
              const assetKind = inferAssetKind(ticker, data);
@@ -2405,7 +2405,7 @@ document.addEventListener('DOMContentLoaded', () => {
              }
 
             // Add to Watchlist button
-           html += `<button id="btn-search-add-wl" data-ticker="${ticker}" style="margin-top:12px; width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color); cursor:pointer; font-weight:600; font-size:14px; background:var(--btn-wl-bg); color:#fff;">${t('addToWatchlist')}</button>`;
+           html += `<button id="btn-search-add-wl" data-ticker="${escHtml(ticker)}" style="margin-top:12px; width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color); cursor:pointer; font-weight:600; font-size:14px; background:var(--btn-wl-bg); color:#fff;">${t('addToWatchlist')}</button>`;
 
            html += `<div style="width:100%; overflow-x:auto; margin-top:16px; border:1px solid var(--border-color); border-radius:8px;">`;
            html += `<table style="width:100%; border-collapse:collapse; overflow:hidden; font-size:14px; font-family:Roboto,sans-serif;">`;
@@ -2413,7 +2413,7 @@ document.addEventListener('DOMContentLoaded', () => {
            for (const [k, v] of Object.entries(data.ratios)) {
              html += `<tr style="background:var(--verdict-bg);">
                <td style="padding:12px 16px; color:var(--label-color); font-weight:500; border-bottom:1px solid var(--border-light); white-space:nowrap;">${ratioLabel(k)}</td>
-                <td style="padding:12px 16px; color:var(--text-color); font-weight:400; text-align:right; border-bottom:1px solid var(--border-light);">${v}</td>
+                <td style="padding:12px 16px; color:var(--text-color); font-weight:400; text-align:right; border-bottom:1px solid var(--border-light);">${plainText(v)}</td>
              </tr>`;
              i++;
            }
@@ -2423,10 +2423,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // (US/global) symbols: screener.in/company/AAPL/ is a Resolver404.
             if (!isNonEquity && data.source !== 'yahoo') {
               html += `<div style="text-align:right; margin-top:8px;">
-                <a href="https://www.screener.in/company/${ticker}/" target="_blank" style="color:var(--text-color); font-size:12px; text-decoration:none; font-weight:500;">${t('customizeScreener')}</a>
+                <a href="https://www.screener.in/company/${encodeURIComponent(ticker)}/" target="_blank" style="color:var(--text-color); font-size:12px; text-decoration:none; font-weight:500;">${t('customizeScreener')}</a>
               </div>`;
             }
-           if (data.aboutText) html += `<div class="screener-about" style="margin-top:16px;">${data.aboutText}</div>`;
+           if (data.aboutText) html += `<div class="screener-about" style="margin-top:16px;">${plainText(data.aboutText)}</div>`;
 
              html += `<div id="search-fundamentals-container"></div>`;
              html += `<div id="search-peers-container"></div>`;
@@ -2440,9 +2440,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // company pages don't exist for US/global symbols)
               if (!isNonEquity && data.source !== 'yahoo') {
               const linkColor = 'var(--text-color)';
-              fetch(`https://www.screener.in/company/${ticker}/consolidated/`)
+              fetch(`https://www.screener.in/company/${encodeURIComponent(ticker)}/consolidated/`)
                .then(r => {
-                 if (!r.ok) return fetch(`https://www.screener.in/company/${ticker}/`);
+                 if (!r.ok) return fetch(`https://www.screener.in/company/${encodeURIComponent(ticker)}/`);
                  return r;
                })
                .then(r => r.text())
@@ -2501,10 +2501,6 @@ document.addEventListener('DOMContentLoaded', () => {
                   // Parse Peers
                  const peersTable = doc.querySelector('#peers table');
                  if (peersTable) {
-                   const stripEventAttrs = (h) => String(h || '')
-                     .replace(/<script[\s\S]*?<\/script\s*>/gi, '')
-                     .replace(/\son\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '')
-                     .replace(/href\s*=\s*["']\s*javascript:[^"']*["']/gi, 'href="#"');
                    const trs = Array.from(peersTable.querySelectorAll('tr'));
                    trs.forEach(tr => {
                       Array.from(tr.querySelectorAll('a')).forEach(a => a.style.color = linkColor);
@@ -2512,7 +2508,7 @@ document.addEventListener('DOMContentLoaded', () => {
                    });
                    const tableHtml = `<table style="width:100%; border-collapse:collapse; font-size:12px; text-align:right; color:var(--text-color); white-space:nowrap;">${trs.slice(0,4).map(tr => {
                      const isHeader = tr.querySelector('th');
-                     return `<tr style="border-bottom:1px solid var(--border-color); ${isHeader ? 'font-weight:bold; background:var(--row-even)' : ''}">${stripEventAttrs(tr.innerHTML)}</tr>`;
+                     return `<tr style="border-bottom:1px solid var(--border-color); ${isHeader ? 'font-weight:bold; background:var(--row-even)' : ''}">${sanitizeFragment('<table><tr>' + tr.innerHTML + '</tr></table>', { linkStyle: 'color:' + linkColor, cellStyle: 'padding:8px' }).replace(/^<table><tbody><tr>|<\/tr><\/tbody><\/table>$/g, '')}</tr>`;
                    }).join('')}</table>`;
                     document.getElementById('search-peers-container').innerHTML = `<h4 style="margin:16px 0 8px 0; color:var(--text-color);">${t('peerTitle')}</h4><div style="border:1px solid var(--border-color); border-radius:8px; overflow-x:auto;">${tableHtml}</div>`;
                  }
@@ -2536,9 +2532,7 @@ document.addEventListener('DOMContentLoaded', () => {
                            }
                          } catch (e) {}
                        }
-                       const safeInner = String(li.innerHTML || '')
-                         .replace(/<script[\s\S]*?<\/script\s*>/gi, '')
-                         .replace(/\son\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '');
+                       const safeInner = sanitizeFragment(li.innerHTML, { linkStyle: 'color:' + linkColor + '; text-decoration:none' });
                        return `<div style="padding:8px 0; border-bottom:1px solid var(--border-color); font-size:12px; color:var(--text-color);">${safeInner}</div>`;
                      }).join('');
                       document.getElementById('search-announcements-container').innerHTML = `<h4 style="margin:16px 0 8px 0; color:var(--text-color);">${t('annTitle')}</h4>${annHtml}`;
@@ -3149,6 +3143,62 @@ document.addEventListener('DOMContentLoaded', () => {
     return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
+  // --- Security helpers for third-party data -------------------------------
+  // Text that may carry entities/tags from a scraped page: decode it inertly
+  // (DOMParser documents never run scripts), keep only the text, escape it.
+  function plainText(s) {
+    if (s == null || s === '') return '';
+    try {
+      const d = new DOMParser().parseFromString('<!doctype html><body>' + String(s), 'text/html');
+      return escHtml(d.body.textContent || '');
+    } catch (e) {
+      return escHtml(s);
+    }
+  }
+  // Only http(s) URLs survive; relative paths resolve against screener.in.
+  function safeUrl(u) {
+    try {
+      const url = new URL(String(u || ''), 'https://www.screener.in/');
+      return (url.protocol === 'https:' || url.protocol === 'http:') ? url.href : '';
+    } catch (e) {
+      return '';
+    }
+  }
+  // Allowlist sanitizer for HTML fragments scraped from third-party pages.
+  // Unknown elements are unwrapped to their text, dangerous containers are
+  // dropped, and every attribute except a few inert ones is removed.
+  const SAFE_FRAGMENT_TAGS = new Set(['A', 'B', 'STRONG', 'I', 'EM', 'SPAN', 'DIV', 'P', 'BR', 'SMALL', 'SUB', 'SUP', 'UL', 'OL', 'LI', 'TABLE', 'THEAD', 'TBODY', 'TR', 'TH', 'TD']);
+  const DROP_FRAGMENT_TAGS = /^(SCRIPT|STYLE|IFRAME|FRAME|OBJECT|EMBED|TEMPLATE|NOSCRIPT|SVG|MATH|FORM|INPUT|BUTTON|SELECT|TEXTAREA|LINK|META|BASE|IMG|VIDEO|AUDIO|SOURCE)$/;
+  function sanitizeFragment(html, opts) {
+    const o = opts || {};
+    const d = new DOMParser().parseFromString('<!doctype html><body>' + String(html || ''), 'text/html');
+    const walk = (node) => {
+      Array.from(node.children).forEach((el) => {
+        const tag = el.tagName.toUpperCase();
+        if (DROP_FRAGMENT_TAGS.test(tag)) { el.remove(); return; }
+        walk(el);
+        if (!SAFE_FRAGMENT_TAGS.has(tag)) { el.replaceWith(...Array.from(el.childNodes)); return; }
+        Array.from(el.attributes).forEach((attr) => {
+          const name = attr.name.toLowerCase();
+          if (tag === 'A' && name === 'href') {
+            const href = safeUrl(attr.value);
+            if (href) el.setAttribute('href', href); else el.removeAttribute('href');
+          } else if (name !== 'colspan' && name !== 'rowspan' && name !== 'title') {
+            el.removeAttribute(attr.name);
+          }
+        });
+        if (tag === 'A') {
+          el.setAttribute('target', '_blank');
+          el.setAttribute('rel', 'noopener noreferrer');
+          if (o.linkStyle) el.setAttribute('style', o.linkStyle);
+        }
+        if ((tag === 'TD' || tag === 'TH') && o.cellStyle) el.setAttribute('style', o.cellStyle);
+      });
+    };
+    walk(d.body);
+    return d.body.innerHTML;
+  }
+
   function getSortIndicator(col) {
     if (currentSortBy !== col) return '';
     return currentSortDesc ? ' ▼' : ' ▲';
@@ -3388,7 +3438,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const menu = document.createElement('div');
     menu.id = 'platform-menu';
     menu.style.cssText = 'position:fixed; z-index:9999; min-width:170px; padding:6px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-color); box-shadow:0 10px 30px rgba(0,0,0,.3); font-size:12px;';
-    menu.innerHTML = links.map((l) => `<div data-url="${l.url}" style="padding:7px 9px; border-radius:7px; cursor:pointer; color:var(--text-color);">${l.label}<span style="float:right; color:var(--label-color);">↗</span></div>`).join('');
+    menu.innerHTML = links.filter((l) => safeUrl(l.url)).map((l) => `<div data-url="${escHtml(safeUrl(l.url))}" style="padding:7px 9px; border-radius:7px; cursor:pointer; color:var(--text-color);">${escHtml(l.label)}<span style="float:right; color:var(--label-color);">↗</span></div>`).join('');
     document.body.appendChild(menu);
     try {
       const r = anchor.getBoundingClientRect();
@@ -3534,7 +3584,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const data = cached[ticker];
           
           if (!data || data.success === false || !data.ratios) {
-             const msg = data && data.success === false ? `Could not fetch ${ticker}. Retrying...` : `Waiting for sync (${ticker})...`;
+             const msg = data && data.success === false ? `Could not fetch ${escHtml(ticker)}. Retrying...` : `Waiting for sync (${escHtml(ticker)})...`;
              html += `<tr style="background:${idx % 2 === 0 ? 'var(--row-even)' : 'var(--row-odd)'}; border-bottom:1px solid var(--border-color);">
                 <td colspan="6" style="padding:10px; text-align:left;">${msg}</td>
              </tr>`;
@@ -3544,7 +3594,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.changePct) {
               const color = data.changeDir === 'up' ? '#188038' : '#d93025';
               const sign = data.changeDir === 'up' ? '\u25B2' : '\u25BC';
-              pctHtml = `<span style="color:${color}; font-size:11px;">${sign} ${data.changePct}</span>`;
+              pctHtml = `<span style="color:${color}; font-size:11px;">${sign} ${plainText(data.changePct)}</span>`;
             }
             flashClass = data.flash && (Date.now() - (data.flashTime || 0) < 1500) ? (data.flash === 'up' ? 'screener-flash-up' : 'screener-flash-down') : '';
 
@@ -3559,20 +3609,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const spark = createSparkline(resolveTrendData(ticker, data));
 
             html += `
-              <tr class="watchlist-row" draggable="true" data-ticker="${ticker}" style="background:${idx % 2 === 0 ? 'var(--row-even)' : 'var(--row-odd)'}; border-bottom:1px solid var(--border-color); cursor:grab;">
+              <tr class="watchlist-row" draggable="true" data-ticker="${escHtml(ticker)}" style="background:${idx % 2 === 0 ? 'var(--row-even)' : 'var(--row-odd)'}; border-bottom:1px solid var(--border-color); cursor:grab;">
                 <td style="text-align:left; padding:10px; font-weight:500;">
                   <span style="color:#aaa; margin-right:4px; font-size:10px;" title="${t('dragHint')}">⣿</span>
-                  ${bulkMode ? `<input type="checkbox" class="screener-bulk-check" data-ticker="${ticker}"${bulkSelected.has(ticker) ? ' checked' : ''} style="margin-right:6px; vertical-align:middle; accent-color:var(--link-color,#1a73e8);">` : ''}
-                  <button class="screener-tag-btn${tag && COLOR_TAGS[tag] ? ' has-tag' : ''}" data-ticker="${ticker}" title="${dotTitle}" aria-label="${dotTitle}" style="background:none; border:1px dashed var(--border-color); border-radius:50%; cursor:pointer; padding:4px; vertical-align:middle; line-height:0;"><svg width="14" height="14" viewBox="0 0 24 24" style="fill:${dotColor}; display:block;"><circle cx="12" cy="12" r="8"/></svg></button>
-                  <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + encodeURIComponent(rowBaseSymbol(ticker)) + '/'}" target="_blank" title="${data.companyName || ticker}" style="color:var(--link-green); text-decoration:none;" class="screener-ticker-link" data-ticker="${escHtml(ticker)}" data-source="${data.source || ''}">${ticker}</a>
+                  ${bulkMode ? `<input type="checkbox" class="screener-bulk-check" data-ticker="${escHtml(ticker)}"${bulkSelected.has(ticker) ? ' checked' : ''} style="margin-right:6px; vertical-align:middle; accent-color:var(--link-color,#1a73e8);">` : ''}
+                  <button class="screener-tag-btn${tag && COLOR_TAGS[tag] ? ' has-tag' : ''}" data-ticker="${escHtml(ticker)}" title="${dotTitle}" aria-label="${dotTitle}" style="background:none; border:1px dashed var(--border-color); border-radius:50%; cursor:pointer; padding:4px; vertical-align:middle; line-height:0;"><svg width="14" height="14" viewBox="0 0 24 24" style="fill:${dotColor}; display:block;"><circle cx="12" cy="12" r="8"/></svg></button>
+                  <a href="${data.source === 'yahoo' || ticker.startsWith('^') ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(ticker) : 'https://www.screener.in/company/' + encodeURIComponent(rowBaseSymbol(ticker)) + '/'}" target="_blank" title="${plainText(data.companyName || ticker)}" style="color:var(--link-green); text-decoration:none;" class="screener-ticker-link" data-ticker="${escHtml(ticker)}" data-source="${escHtml(data.source || '')}">${escHtml(ticker)}</a>
                 </td>
-                <td class="trend-cell" data-ticker="${ticker}" style="padding:10px;">${spark}</td>
-                <td class="${flashClass}" style="padding:10px;">${ratios['Current Price']||'-'}<br/>${pctHtml}</td>
+                <td class="trend-cell" data-ticker="${escHtml(ticker)}" style="padding:10px;">${spark}</td>
+                <td class="${flashClass}" style="padding:10px;">${plainText(ratios['Current Price']||'-')}<br/>${pctHtml}</td>
                 <td style="padding:10px;">${formatRatioCell(ratios, data)}</td>
                 <td style="padding:10px;">${formatMcapCell(ratios['Market Cap'], data)}</td>
                 <td style="padding:10px; text-align:center;">
-                  <button class="screener-alert-btn" data-ticker="${ticker}" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px;" title="${t('setAlertTitle')}">${hasAlert ? '\uD83D\uDD14' : '\u23F0'}</button>
-                  <button class="screener-del-btn" data-ticker="${ticker}" style="background:none; border:none; color:#d93025; cursor:pointer; font-size:14px; padding:2px;" title="${t('deleteTitle')}">&#128465;</button>
+                  <button class="screener-alert-btn" data-ticker="${escHtml(ticker)}" style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px;" title="${t('setAlertTitle')}">${hasAlert ? '\uD83D\uDD14' : '\u23F0'}</button>
+                  <button class="screener-del-btn" data-ticker="${escHtml(ticker)}" style="background:none; border:none; color:#d93025; cursor:pointer; font-size:14px; padding:2px;" title="${t('deleteTitle')}">&#128465;</button>
                 </td>
               </tr>
             `;
@@ -3798,7 +3848,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         html += `
           <div class="pinned-card" data-slot="${slot}" style="background:var(--verdict-bg); border:1px solid var(--border-color); border-radius:8px; padding:12px 10px; text-align:center; position:relative; cursor:pointer; transition:border-color 0.2s, box-shadow 0.2s; display:flex; flex-direction:column; justify-content:center; min-height:84px; box-sizing:border-box;" title="${t('clickEditCard', item.key)}">
-            <div style="font-weight:600; color:var(--label-color); font-size:11px; margin-bottom:4px; padding:0 4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-transform:uppercase; letter-spacing:0.04em;" title="${item.key}">${item.key}</div>
+            <div style="font-weight:600; color:var(--label-color); font-size:11px; margin-bottom:4px; padding:0 4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-transform:uppercase; letter-spacing:0.04em;" title="${escHtml(item.key)}">${escHtml(item.key)}</div>
             <div class="pinned-card-price ${flashClass}">${displayPrice}</div>
             <div style="color:${changeColor}; font-size:12px; font-weight:600; line-height:1.2;">${changeSign ? `${changeSign} ` : ''}${displayPct}</div>
           </div>
@@ -4980,14 +5030,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const pctColor = up ? '#188038' : '#d93025';
       const sign = up ? '\u25B2' : '\u25BC';
       return `
-        <div class="overview-mover-row" data-symbol="${q.symbol}" title="${t('clickAnalyze', q.key)}">
+        <div class="overview-mover-row" data-symbol="${escHtml(q.symbol)}" title="${escHtml(t('clickAnalyze', q.key))}">
           <div style="min-width:0; flex:1; margin-right:8px;">
-            <div style="font-weight:400; font-size:13px; color:var(--text-color); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${q.key}</div>
-            <div style="font-size:10px; color:var(--label-color);">${q.symbol}</div>
+            <div style="font-weight:400; font-size:13px; color:var(--text-color); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHtml(q.key)}</div>
+            <div style="font-size:10px; color:var(--label-color);">${escHtml(q.symbol)}</div>
           </div>
           <div style="text-align:right; flex-shrink:0;">
-            <div style="font-size:13px; font-weight:400; color:var(--text-color);">${q.price}</div>
-            <div style="font-size:11px; font-weight:400; color:${pctColor};">${sign} ${q.changePct}</div>
+            <div style="font-size:13px; font-weight:400; color:var(--text-color);">${plainText(q.price)}</div>
+            <div style="font-size:11px; font-weight:400; color:${pctColor};">${sign} ${plainText(q.changePct)}</div>
           </div>
         </div>`;
     };
@@ -5091,8 +5141,8 @@ document.addEventListener('DOMContentLoaded', () => {
       <div style="padding: 10px 12px; border-bottom: 1px solid var(--border-color); display:flex; gap:10px; align-items:center;">
         ${thumb}
         <div style="min-width:0; flex:1;">
-          <a href="${link}" target="_blank" rel="noopener" style="color:var(--text-color); text-decoration:none; font-size:13px; font-weight:500; display:block; margin-bottom:3px; line-height:1.35;">${title}</a>
-          <div style="font-size:11px; color:var(--label-color);">${source} &bull; ${dateStr}</div>
+          <a href="${escHtml(safeUrl(link))}" target="_blank" rel="noopener noreferrer" style="color:var(--text-color); text-decoration:none; font-size:13px; font-weight:500; display:block; margin-bottom:3px; line-height:1.35;">${escHtml(title)}</a>
+          <div style="font-size:11px; color:var(--label-color);">${escHtml(source)} &bull; ${escHtml(dateStr)}</div>
         </div>
       </div>
     `;
@@ -5272,7 +5322,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const itemType = localizeSuggestionType(item);
             div.innerHTML = `
               <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                <span style="font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-right:8px;">${item.name}</span>
+                <span style="font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-right:8px;">${escHtml(item.name)}</span>
                 <span style="font-size:10px; padding:2px 6px; border-radius:4px; background:var(--verdict-bg, #f1f3f4); color:var(--text-color, #3c4043); border:1px solid var(--border-color, #dadce0); flex-shrink:0;">${itemType}</span>
               </div>
             `;
