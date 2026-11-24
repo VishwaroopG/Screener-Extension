@@ -1,0 +1,213 @@
+name: Publish extension
+run-name: >-
+  Publish extension ${{ github.event_name == 'workflow_dispatch'
+  && format('({0}{1})', inputs.target, inputs.dry_run && ', dry run' || '')
+  || '(version bump)' }}
+
+# Publishes Ticker Screener to the Chrome Web Store and Firefox Add-ons (AMO).
+#
+#  * Automatic: push a commit to main that raises the version in BOTH manifests
+#    (.github/scripts/release-extension.ps1 does that in one command).
+#  * Manual: Actions -> Publish extension -> Run workflow. "dry_run" (default
+#    on) only builds and verifies the packages and attaches them to the run.
+#
+# Secrets (Settings -> Environments -> extension-stores), see
+# .github/scripts/PUBLISHING.md:
+#   CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN,
+#   CWS_PUBLISHER_ID, CWS_EXTENSION_ID, AMO_JWT_ISSUER, AMO_JWT_SECRET
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Screener Chrome Extension/extension-code/manifest.json'
+      - 'Screener  Firefox extension/manifest.json'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Which store(s) to publish to
+        type: choice
+        options: [both, chrome, firefox]
+        default: both
+      dry_run:
+        description: Build and verify only, do not upload
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-extension
+  cancel-in-progress: false
+
+env:
+  CHROME_SRC: Screener Chrome Extension/extension-code
+  FIREFOX_SRC: Screener  Firefox extension
+  TERSER_VERSION: 5.51.2
+  WEB_EXT_VERSION: 10.8.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      version: ${{ steps.plan.outputs.version }}
+      publish_chrome: ${{ steps.plan.outputs.publish_chrome }}
+      publish_firefox: ${{ steps.plan.outputs.publish_firefox }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Decide what to publish
+        id: plan
+        env:
+          EVENT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          TARGET: ${{ inputs.target }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          chrome=$(jq -r .version "$CHROME_SRC/manifest.json")
+          firefox=$(jq -r .version "$FIREFOX_SRC/manifest.json")
+          if [ "$chrome" != "$firefox" ]; then
+            echo "::error::Manifest versions differ: Chrome $chrome, Firefox $firefox. Bump both together."
+            exit 1
+          fi
+          echo "version=$chrome" >> "$GITHUB_OUTPUT"
+
+          pc=false; pf=false
+          if [ "$EVENT" = "push" ]; then
+            prev=""
+            if [ -n "$BEFORE" ] && ! echo "$BEFORE" | grep -qE '^0+$'; then
+              prev=$(git show "$BEFORE:$CHROME_SRC/manifest.json" 2>/dev/null | jq -r .version || true)
+            fi
+            if [ "$prev" = "$chrome" ]; then
+              echo "Version unchanged ($chrome): nothing to publish."
+            elif [ -n "$prev" ] && [ "$(printf '%s\n%s\n' "$prev" "$chrome" | sort -V | tail -1)" != "$chrome" ]; then
+              echo "::error::Version went down ($prev -> $chrome)."
+              exit 1
+            else
+              echo "Version bump ${prev:-?} -> $chrome: publishing to both stores."
+              pc=true; pf=true
+            fi
+          elif [ "$DRY_RUN" != "true" ]; then
+            case "$TARGET" in
+              both) pc=true; pf=true ;;
+              chrome) pc=true ;;
+              firefox) pf=true ;;
+            esac
+          fi
+          echo "publish_chrome=$pc" >> "$GITHUB_OUTPUT"
+          echo "publish_firefox=$pf" >> "$GITHUB_OUTPUT"
+          echo "### Ticker Screener v$chrome" >> "$GITHUB_STEP_SUMMARY"
+          echo "Chrome Web Store: $pc, Firefox Add-ons: $pf" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Unit tests
+        run: >-
+          node --test
+          "Screener Chrome Extension/dev-tools/test-fundamentals.cjs"
+          "Screener Chrome Extension/dev-tools/test-refresh.cjs"
+
+      - name: Install minifier
+        run: |
+          npm install --prefix "$RUNNER_TEMP/tools" --no-audit --no-fund "terser@$TERSER_VERSION"
+          echo "NODE_PATH=$RUNNER_TEMP/tools/node_modules" >> "$GITHUB_ENV"
+
+      - name: Build packages
+        shell: pwsh
+        run: |
+          & "Screener Chrome Extension/dev-tools/build-chrome.ps1"
+          & "Screener  Firefox extension/dev-tools/build-firefox.ps1"
+
+      - name: Verify packages
+        env:
+          VERSION: ${{ steps.plan.outputs.version }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/dist"
+          mv "Screener Chrome Extension/Screener-Extension-v$VERSION.zip" "$RUNNER_TEMP/dist/chrome.zip"
+          mv "$FIREFOX_SRC/Screener-Extension-Firefox-v$VERSION.zip" "$RUNNER_TEMP/dist/firefox.zip"
+          for pkg in chrome firefox; do
+            dir="$RUNNER_TEMP/check-$pkg"
+            unzip -q "$RUNNER_TEMP/dist/$pkg.zip" -d "$dir"
+            for f in manifest.json background.js sidepanel.html sidepanel.js ticker_tape.js ticker_tape.css welcome.html welcome.js style.css; do
+              [ -f "$dir/$f" ] || { echo "::error::$pkg package is missing $f"; exit 1; }
+            done
+            [ "$(jq -r .version "$dir/manifest.json")" = "$VERSION" ] || { echo "::error::$pkg package version mismatch"; exit 1; }
+            for js in background.js sidepanel.js ticker_tape.js; do node --check "$dir/$js"; done
+            # Minification must have run (terser missing => readable sources shipped silently).
+            [ "$(wc -l < "$dir/sidepanel.js")" -lt 50 ] || { echo "::error::$pkg sidepanel.js was not minified"; exit 1; }
+            echo "$pkg package OK ($(unzip -Z1 "$RUNNER_TEMP/dist/$pkg.zip" | wc -l) files)"
+          done
+
+      - name: Source archive for Mozilla review
+        run: |
+          git archive --format=zip -o "$RUNNER_TEMP/dist/firefox-source.zip" HEAD -- \
+            "$FIREFOX_SRC" "Screener Chrome Extension/dev-tools/minify-package.cjs"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extension-v${{ steps.plan.outputs.version }}
+          path: ${{ runner.temp }}/dist/
+          if-no-files-found: error
+
+  chrome:
+    needs: build
+    if: needs.build.outputs.publish_chrome == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: extension-stores
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: extension-v${{ needs.build.outputs.version }}
+          path: dist
+      - name: Upload and submit to Chrome Web Store
+        env:
+          CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+          CWS_PUBLISHER_ID: ${{ secrets.CWS_PUBLISHER_ID }}
+          CWS_EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+        run: bash .github/scripts/publish-chrome.sh dist/chrome.zip
+
+  firefox:
+    needs: build
+    if: needs.build.outputs.publish_firefox == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: extension-stores
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@v4
+        with:
+          name: extension-v${{ needs.build.outputs.version }}
+          path: dist
+      - name: Submit to Firefox Add-ons (listed)
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: |
+          if [ -z "$WEB_EXT_API_KEY" ] || [ -z "$WEB_EXT_API_SECRET" ]; then
+            echo "::error::AMO_JWT_ISSUER / AMO_JWT_SECRET are not set in the extension-stores environment. See .github/scripts/PUBLISHING.md."
+            exit 1
+          fi
+          unzip -q dist/firefox.zip -d "$RUNNER_TEMP/firefox"
+          # --approval-timeout 0: submit and return; Mozilla review continues on AMO.
+          npx --yes "web-ext@$WEB_EXT_VERSION" sign \
+            --source-dir "$RUNNER_TEMP/firefox" \
+            --artifacts-dir "$RUNNER_TEMP/web-ext-artifacts" \
+            --channel listed \
+            --upload-source-code dist/firefox-source.zip \
+            --approval-timeout 0
+          echo "Submitted v${{ needs.build.outputs.version }} to AMO for review." >> "$GITHUB_STEP_SUMMARY"

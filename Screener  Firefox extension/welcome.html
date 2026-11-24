@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" data-browser="chrome">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pin Ticker Screener - One last step</title>
+<link rel="icon" type="image/png" href="icon_48.png">
+<style>
+  :root {
+    --bg: #faf9f7; --surface: #fff; --text: #1c1c1e; --muted: #6b6b70;
+    --gold: #c9a96e; --gold-soft: rgba(201,169,110,.14); --border: rgba(0,0,0,.08);
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 56px 24px 64px; }
+  .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.05rem; }
+  .brand img { width: 36px; height: 36px; border-radius: 9px; box-shadow: 0 0 0 1px rgba(201,169,110,.4); }
+  .eyebrow {
+    display: inline-block; margin-top: 40px; font-size: .72rem; font-weight: 700;
+    letter-spacing: .14em; color: var(--gold);
+  }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -.02em; margin: 10px 0 8px; line-height: 1.1; }
+  .sub { color: var(--muted); font-size: 1.02rem; max-width: 60ch; margin: 0; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 32px; }
+  .step {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 22px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+  }
+  .num {
+    display: inline-grid; place-items: center; width: 30px; height: 30px;
+    border-radius: 50%; background: var(--gold-soft); color: var(--gold);
+    font-weight: 800; font-size: .85rem; margin-bottom: 12px;
+  }
+  .step p { margin: 0; font-size: .92rem; line-height: 1.65; color: var(--text); }
+  .step b { font-weight: 700; }
+  kbd {
+    display: inline-block; padding: 1px 8px; border: 1px solid var(--border);
+    border-bottom-width: 2px; border-radius: 6px; background: var(--bg);
+    font-family: inherit; font-size: .82rem; font-weight: 600;
+  }
+  .browser-chrome, .browser-firefox { display: none; }
+  html[data-browser="chrome"] .browser-chrome { display: revert; }
+  html[data-browser="firefox"] .browser-firefox { display: revert; }
+  html[data-browser="firefox"] .only-chrome { display: none; }
+  html[data-browser="chrome"] .only-firefox { display: none; }
+  .tip {
+    margin-top: 22px; padding: 16px 20px; border-radius: var(--radius);
+    background: var(--gold-soft); border: 1px solid rgba(201,169,110,.4);
+    font-size: .9rem; line-height: 1.6; color: var(--text);
+  }
+  .foot { margin-top: 40px; color: var(--muted); font-size: .85rem; text-align: center; }
+  .foot a { color: var(--gold); font-weight: 600; }
+  @media (max-width: 720px) { .steps { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><img src="icon_128.png" alt="Ticker Screener icon">Ticker Screener</div>
+  <span class="eyebrow">ONE LAST STEP</span>
+  <h1 class="browser-chrome">Pin Ticker Screener to Chrome</h1>
+  <h1 class="browser-firefox">Pin Ticker Screener to Firefox</h1>
+  <p class="sub browser-chrome">Pin the extension so your live watchlist is always one click away in the toolbar.</p>
+  <p class="sub browser-firefox">Pin the extension to the toolbar and open the sidebar so your live watchlist is always one click away.</p>
+
+  <div class="steps only-chrome">
+    <div class="step"><span class="num">1</span><p>Click the <b>puzzle piece</b> <kbd>🧩</kbd> icon at the top-right of Chrome, next to the address bar.</p></div>
+    <div class="step"><span class="num">2</span><p>Find <b>Ticker Screener</b> in the extensions list.</p></div>
+    <div class="step"><span class="num">3</span><p>Click the <b>pin</b> <kbd>📌</kbd> icon next to it. Done - the Screener icon now lives in your toolbar.</p></div>
+  </div>
+  <div class="steps only-firefox">
+    <div class="step"><span class="num">1</span><p>Click the <b>puzzle piece</b> <kbd>🧩</kbd> icon at the top-right of Firefox, or press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> and open the <b>Extensions</b> panel.</p></div>
+    <div class="step"><span class="num">2</span><p>Find <b>Ticker Screener</b>, click the <b>gear</b> icon and choose <b>Pin to Toolbar</b>.</p></div>
+    <div class="step"><span class="num">3</span><p>Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> any time to open your live watchlist sidebar.</p></div>
+  </div>
+
+  <div class="tip only-chrome"><b>Tip:</b> after pinning, click the Screener toolbar icon or press <b>Ctrl+Shift+S</b> to open your live watchlist, ticker tape and global markets.</div>
+  <div class="tip only-firefox"><b>Tip:</b> after pinning, open the sidebar once from the toolbar button - Firefox will remember it across restarts.</div>
+
+  <div class="foot">Stuck? Visit <a href="https://vishwaroopg.github.io/Screener-Extension/" target="_blank" rel="noopener">the Screener site</a> or reply to the install email - a human reads every message.</div>
+</div>
+<script src="welcome.js"></script>
+</body>
+</html>
